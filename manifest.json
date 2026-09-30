@@ -1,0 +1,19 @@
+{
+  "name": "Фруктохранилище",
+  "short_name": "Фруктохранилище",
+  "description": "Учёт 56 камер фруктохранилища",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
