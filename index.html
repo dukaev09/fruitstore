@@ -4,63 +4,139 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Фруктохранилище</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f3f6f9;--card:#fff;--text:#17212b;--muted:#687785;--line:#dce4ea;--green:#16a34a;--blue:#2563eb;--yellow:#d97706;--red:#dc2626}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
-header{height:68px;background:#102a43;color:#fff;display:flex;align-items:center;padding:0 24px;gap:18px}
-.logo{font-size:24px}.brand{font-weight:800;font-size:19px}.sub{font-size:12px;color:#b9c8d6}
-main{padding:22px;min-width:0}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}.title h1{margin:0;font-size:27px}.title p{margin:5px 0;color:var(--muted);font-size:13px}
-.actions{display:flex;gap:8px;flex-wrap:wrap}button,.btn{border:1px solid var(--line);background:white;padding:9px 13px;border-radius:8px;cursor:pointer;font-weight:600;color:var(--text)}
-button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}button.green{background:var(--green);color:#fff;border-color:var(--green)}button.warn{background:#f59e0b;color:#fff;border-color:#f59e0b}button.danger{background:#dc2626;color:#fff;border-color:#dc2626}
-.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.filters button{font-size:12px}.filters button.sel{background:#e8f0ff;border-color:#9bbcf8;color:#1d4ed8}
-.wingbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;padding:8px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.wingbar button{font-size:13px;background:#f8fafc;border-color:#cbd5e1}
-.wingbar button.sel{background:#102a43;color:#fff;border-color:#102a43}
-.layout{display:grid;grid-template-columns:minmax(560px,1fr) 370px;gap:16px}
-.wing-section{margin-bottom:22px}
-.wing-title{font-size:16px;font-weight:800;color:#102a43;margin:0 0 10px;padding:8px 0;border-bottom:2px solid #102a43;display:flex;justify-content:space-between}
+:root{--bg:#f5f7fa;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--green:#10b981;--blue:#3b82f6;--yellow:#f59e0b;--red:#ef4444;--slate:#475569;--dark:#0f172a;--accent:#3b82f6}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Inter',-apple-system,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;padding:22px 24px}
+.hwrap{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{font-size:32px}
+.brand{font-weight:800;font-size:22px;letter-spacing:-.3px}
+.sub{font-size:13px;color:#94a3b8;margin-top:2px}
+.hspacer{flex:1}
+.hbtns{display:flex;gap:8px;flex-wrap:wrap}
+.hbtns button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;padding:9px 14px;border-radius:10px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;transition:all .15s}
+.hbtns button:hover{background:rgba(255,255,255,.2)}
+.hbtns button.danger{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.4)}
+.hbtns button.danger:hover{background:rgba(239,68,68,.35)}
+main{max-width:1400px;margin:0 auto;padding:22px 24px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:22px}
+.stat{background:white;border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04)}
+.stat .lbl{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.stat .val{font-size:26px;font-weight:800;margin-top:6px;letter-spacing:-.5px}
+.stat .sub2{font-size:12px;color:var(--muted);margin-top:4px}
+.stat.accent{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
+.stat.accent .lbl,.stat.accent .sub2{color:#dbeafe}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.search{flex:1;min-width:200px;padding:11px 16px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:14px;background:white;transition:border-color .15s}
+.search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+.filters,.wingbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filters button,.wingbar button{background:white;border:1px solid var(--line);padding:9px 14px;border-radius:10px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;color:var(--text);transition:all .15s}
+.filters button:hover,.wingbar button:hover{border-color:#cbd5e1;background:#f8fafc}
+.filters button.sel{background:#0f172a;color:#fff;border-color:#0f172a}
+.wingbar button.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.wing-section{margin-bottom:26px}
+.wing-title{font-size:15px;font-weight:800;color:var(--dark);margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e2e8f0;display:flex;justify-content:space-between;align-items:baseline}
 .wing-title span{font-weight:500;color:var(--muted);font-size:13px}
-.grid{display:grid;grid-template-columns:repeat(7,minmax(105px,1fr));gap:9px}
-.cam{min-height:108px;background:white;border:1px solid var(--line);border-radius:10px;padding:10px;cursor:pointer;position:relative;box-shadow:0 1px 2px #00000008}
-.cam:hover{transform:translateY(-1px);box-shadow:0 3px 10px #00000012}.cam.selected{outline:2px solid #2563eb}
-.cam.storage{background:#ecfdf3;border-color:#a7e3ba}.cam.rgs{background:#eff6ff;border-color:#a9c9fb}.cam.process{background:#fffbeb;border-color:#f4d06f}.cam.problem{background:#fef2f2;border-color:#f4aaaa}.cam.empty{background:#f8fafc;color:#64748b}.cam.inactive{background:#e2e8f0;border-color:#94a3b8;color:#475569}
-.cam .num{font-weight:800}.cam .sort{font-size:12px;margin-top:8px;font-weight:700}.cam .qty{font-size:11px;color:#596876;margin-top:3px}.status{font-size:11px;margin-top:8px;font-weight:700}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;background:var(--green)}.rgs .dot{background:var(--blue)}.process .dot{background:#eab308}.problem .dot{background:var(--red)}.empty .dot{background:#94a3b8}.inactive .dot{background:#475569}
-.panel{background:white;border:1px solid var(--line);border-radius:12px;padding:16px;position:sticky;top:16px}.panel h2{margin:0 0 12px;font-size:20px}.badge{float:right;padding:5px 9px;border-radius:15px;font-size:11px;font-weight:700;background:#dcfce7;color:#15803d}.info{border:1px solid var(--line);border-radius:9px;padding:12px;margin:10px 0}.row{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:13px}.row span:first-child{color:var(--muted)}.buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0}.buttons button{font-size:11px;padding:10px 5px}
-.history{margin-top:14px}.history h3{font-size:14px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center}.history h3 span{font-size:11px;color:var(--muted);font-weight:500}.event{border-left:3px solid #9ca3af;padding:7px 0 7px 10px;font-size:12px;margin-bottom:4px}.event b{display:block}.event small{color:var(--muted)}
-.hist-scroll{max-height:280px;overflow-y:auto;padding-right:4px}
-.modal{display:none;position:fixed;inset:0;background:#0007;align-items:center;justify-content:center;padding:20px;z-index:10}.modal.open{display:flex}.modalbox{background:white;border-radius:14px;width:min(650px,100%);padding:20px;max-height:90vh;overflow:auto}.modalbox h2{margin-top:0}.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:var(--muted)}input,select,textarea{border:1px solid var(--line);border-radius:7px;padding:9px;font:inherit;background:white}textarea{min-height:70px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}
-.hist-table{width:100%;border-collapse:collapse;font-size:12px}.hist-table th,.hist-table td{text-align:left;padding:8px;border-bottom:1px solid #edf1f4;white-space:nowrap}.hist-table th{color:var(--muted);position:sticky;top:0;background:white}
-.search{min-width:250px;padding:10px 12px;border:1px solid var(--line);border-radius:8px}
-@media(max-width:1050px){.layout{grid-template-columns:1fr}.panel{position:static}.grid{grid-template-columns:repeat(4,1fr)}}@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}main{padding:12px}.top{align-items:flex-start;flex-direction:column}.form{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+.cam{background:white;border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;position:relative;transition:all .15s;overflow:hidden;min-height:110px}
+.cam:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--green)}
+.cam:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(15,23,42,.08);border-color:#cbd5e1}
+.cam.selected{box-shadow:0 0 0 3px rgba(59,130,246,.3);border-color:var(--accent)}
+.cam.storage{background:#f0fdf4}.cam.storage:before{background:#10b981}
+.cam.rgs{background:#eff6ff}.cam.rgs:before{background:#3b82f6}
+.cam.process{background:#fffbeb}.cam.process:before{background:#f59e0b}
+.cam.problem{background:#fef2f2}.cam.problem:before{background:#ef4444}
+.cam.empty{background:#f8fafc;color:#64748b}.cam.empty:before{background:#94a3b8}
+.cam.inactive{background:#e2e8f0;color:#475569}.cam.inactive:before{background:#475569}
+.cam .num{font-weight:800;font-size:15px;display:flex;align-items:center;gap:6px}
+.cam .num .cul{font-size:14px}
+.cam .sort{font-size:13px;margin-top:8px;font-weight:700;color:var(--text)}
+.cam .qty{font-size:11px;color:var(--muted);margin-top:3px;font-weight:500}
+.cam .status{font-size:11px;margin-top:8px;font-weight:700;display:flex;align-items:center;gap:5px}
+.dot{width:7px;height:7px;border-radius:50%;background:#10b981}
+.rgs .dot{background:#3b82f6}.process .dot{background:#f59e0b}.problem .dot{background:#ef4444}.empty .dot{background:#94a3b8}.inactive .dot{background:#475569}
+.layout{display:grid;grid-template-columns:1fr 380px;gap:18px;align-items:start}
+.panel{background:white;border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(15,23,42,.06);position:sticky;top:18px}
+.panel h2{margin:0 0 14px;font-size:19px;font-weight:800;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.badge{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:700;background:#dcfce7;color:#15803d;white-space:nowrap}
+.info{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0}
+.row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:13px}
+.row:not(:last-child){border-bottom:1px solid #f1f5f9}
+.row span:first-child{color:var(--muted);font-weight:500}
+.buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.buttons button{font-size:12px;padding:11px 5px;border-radius:9px;font-family:inherit}
+button{font-family:inherit}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+button.green{background:var(--green);color:#fff;border-color:var(--green)}
+button.warn{background:var(--yellow);color:#fff;border-color:var(--yellow)}
+button.danger{background:var(--red);color:#fff;border-color:var(--red)}
+.btn-full{width:100%;padding:11px;border:1px solid var(--line);background:white;border-radius:9px;cursor:pointer;font-weight:600;font-size:13px}
+.btn-full:hover{background:#f8fafc}
+.history{margin-top:16px}
+.history h3{font-size:14px;margin:0 0 10px;display:flex;justify-content:space-between;align-items:baseline}
+.history h3 span{font-size:11px;color:var(--muted);font-weight:500}
+.event{border-left:3px solid #cbd5e1;padding:8px 0 8px 12px;font-size:12px;margin-bottom:6px}
+.event b{display:block;font-weight:600}
+.event small{color:var(--muted)}
+.hist-scroll{max-height:300px;overflow-y:auto;padding-right:6px}
+.modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;z-index:10;animation:fadeIn .15s}
+.modal.open{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modalbox{background:white;border-radius:16px;width:min(650px,100%);padding:24px;max-height:90vh;overflow:auto;animation:slideUp .2s}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modalbox h2{margin-top:0;font-size:19px;font-weight:800}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;color:var(--muted);font-weight:600}
+input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:11px;font:inherit;font-size:14px;background:white;transition:border-color .15s;font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+textarea{min-height:70px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.modal-actions button{padding:11px 18px;border-radius:9px;font-family:inherit;font-weight:600;cursor:pointer;font-size:14px;border:1px solid var(--line);background:white;color:var(--text)}
+.modal-actions button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.hist-table{width:100%;border-collapse:collapse;font-size:12px}
+.hist-table th,.hist-table td{text-align:left;padding:10px;border-bottom:1px solid #f1f5f9;white-space:nowrap}
+.hist-table th{color:var(--muted);position:sticky;top:0;background:white;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.hist-table tbody tr:hover{background:#f8fafc}
+@media(max-width:1100px){.layout{grid-template-columns:1fr}.panel{position:static}.grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}main{padding:14px}header{padding:16px 14px}.brand{font-size:18px}.stats{grid-template-columns:repeat(2,1fr)}.form{grid-template-columns:1fr}.hwrap{gap:10px}}
 </style>
 </head>
 <body>
 <header>
-  <div class="logo">🍎</div>
-  <div><div class="brand">Фруктохранилище</div><div class="sub">Учет камер, партий и операций</div></div>
+  <div class="hwrap">
+    <div class="logo">🍎</div>
+    <div>
+      <div class="brand">Фруктохранилище</div>
+      <div class="sub">Учёт 56 камер · 4 крыла</div>
+    </div>
+    <div class="hspacer"></div>
+    <div class="hbtns">
+      <button onclick="openAllHistory()">📋 Вся история</button>
+      <button onclick="exportData()">⬇ Экспорт</button>
+      <button onclick="importData()">⬆ Импорт</button>
+      <button class="danger" onclick="resetData()">Сброс</button>
+    </div>
+  </div>
 </header>
 <main>
-<div class="top">
-  <div class="title"><h1>Камеры (56)</h1><p id="summary">Загрузка…</p></div>
-  <div class="actions">
-    <input id="search" class="search" placeholder="Поиск...">
-    <button onclick="openAllHistory()">📋 Вся история</button>
-    <button onclick="exportData()">⬇ Экспорт</button>
-    <button onclick="importData()">⬆ Импорт</button>
-    <button class="danger" onclick="resetData()">Сброс</button>
-  </div>
+<div class="stats" id="stats"></div>
+<div class="toolbar">
+  <input id="search" class="search" placeholder="🔍 Поиск: номер камеры, сорт, партия, культура...">
 </div>
 <div class="filters" id="filters"></div>
 <div class="wingbar" id="wingbar"></div>
 <div class="layout">
-  <section>
-    <div id="grid"></div>
-  </section>
+  <section><div id="grid"></div></section>
   <section class="panel" id="panel"></section>
 </div>
 </main>
 
-<!-- Модалка: данные камеры -->
 <div class="modal" id="modal"><div class="modalbox"><h2>Данные камеры</h2>
 <form class="form" onsubmit="return false">
 <div class="field"><label>Статус</label><select id="fStatus"><option value="storage">Хранение</option><option value="process">Обработка</option><option value="rgs">На РГС</option><option value="inactive">Неактивная</option><option value="problem">Проблема</option><option value="empty">Пустая</option></select></div>
@@ -76,7 +152,6 @@ button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}button
 <div class="modal-actions"><button onclick="closeForm()">Отмена</button><button class="primary" onclick="saveForm()">Сохранить</button></div>
 </div></div>
 
-<!-- Модалка: вся история -->
 <div class="modal" id="histModal"><div class="modalbox" style="width:min(900px,100%)">
 <h2>📋 Вся история операций</h2>
 <div style="max-height:60vh;overflow:auto;margin-top:12px">
@@ -87,24 +162,42 @@ button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}button
 
 <input type="file" id="importFile" accept=".json" style="display:none">
 <script>
-const key='fruitstore_v4';
+const key='fruitstore_v5';
 const names={all:'Все',storage:'Хранение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
 const wingNames={1:'Крыло 1',2:'Крыло 2',3:'Крыло 3',4:'Крыло 4'};
 const now=function(){return new Date().toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})};
 function wingOf(id){return Math.floor((id-1)/14)+1;}
+function culIcon(c){if(!c)return '📦';if(c.indexOf('Морковь')>=0)return '🥕';if(c.indexOf('Лук')>=0)return '🧅';if(c.indexOf('Капуст')>=0)return '🥬';if(c.indexOf('Свекл')>=0)return '🍠';return '🍎';}
 var data=JSON.parse(localStorage.getItem(key)||'null');
 var selected=1, filter='all', wingFilter='all';
 
-function seed(){var sorts=['Голден','Гала','Фуджи','Груша','Айдаред','Морковь','Лук','Капуста','Свекла','Ред Чиф'];var a=[];var jr=[];for(var i=1;i<=56;i++){var st=i%14===0?'empty':i%7===0?'rgs':i%9===0?'process':'storage';var s=sorts[(i-1)%sorts.length];var crop=(s==='Морковь'||s==='Лук'||s==='Капуста'||s==='Свекла')?'Овощи':'Яблоко';var qty=st==='empty'?0:(10+(i%16))*1000;a.push({id:i,wing:wingOf(i),status:st,crop:crop,sort:s,batch:'П-'+(240+i),qty:qty,temp:1.5,hum:90,note:'',operator:'Оператор'})}return a}
-if(!data){data={cams:seed(),journal:[]};data.journal.push({time:now(),cam:'01',wing:1,op:'Загрузка камеры',sort:'Голден',batch:'П-241',qty:10000});localStorage.setItem(key,JSON.stringify(data));}
+function seed(){var sorts=['Голден','Гала','Фуджи','Груша','Айдаред','Морковь','Лук','Капуста','Свекла','Ред Чиф'];var a=[];for(var i=1;i<=56;i++){var st=i%14===0?'empty':i%7===0?'rgs':i%9===0?'process':'storage';var s=sorts[(i-1)%sorts.length];var crop=(s==='Морковь'||s==='Лук'||s==='Капуста'||s==='Свекла')?'Овощи':'Яблоко';var qty=st==='empty'?0:(10+(i%16))*1000;a.push({id:i,wing:wingOf(i),status:st,crop:crop,sort:s,batch:'П-'+(240+i),qty:qty,temp:1.5,hum:90,note:'',operator:'Оператор'})}return a}
+if(!data){data={cams:seed(),journal:[]};localStorage.setItem(key,JSON.stringify(data));}
 function save(){localStorage.setItem(key,JSON.stringify(data));}
+
+function renderStats(){
+  var totalKg=0,occupied=0,empty_=0,problem=0,inactive=0;
+  data.cams.forEach(function(c){
+    if(c.status==='storage'||c.status==='process'||c.status==='rgs'){occupied++;totalKg+=(c.qty||0)}
+    else if(c.status==='empty')empty_++;
+    else if(c.status==='problem')problem++;
+    else if(c.status==='inactive')inactive++;
+  });
+  var tons=(totalKg/1000).toFixed(1);
+  document.getElementById('stats').innerHTML=
+    '<div class="stat accent"><div class="lbl">Всего продукции</div><div class="val">'+tons+' т</div><div class="sub2">'+totalKg.toLocaleString('ru-RU')+' кг</div></div>'+
+    '<div class="stat"><div class="lbl">Занято камер</div><div class="val">'+occupied+' / 56</div><div class="sub2">с продукцией</div></div>'+
+    '<div class="stat"><div class="lbl">Свободно</div><div class="val">'+empty_+'</div><div class="sub2">пустых камер</div></div>'+
+    '<div class="stat"><div class="lbl">Проблемных</div><div class="val" style="color:'+(problem>0?'#ef4444':'inherit')+'">'+problem+'</div><div class="sub2">требуют внимания</div></div>'+
+    '<div class="stat"><div class="lbl">Неактивных</div><div class="val">'+inactive+'</div><div class="sub2">отключено</div></div>';
+}
 
 function renderFilters(){var f=document.getElementById('filters');f.innerHTML='';Object.keys(names).forEach(function(k){var b=document.createElement('button');var cnt=k==='all'?data.cams.length:data.cams.filter(function(x){return x.status===k}).length;b.textContent=names[k]+' ('+cnt+')';if(filter===k)b.className='sel';b.onclick=function(){filter=k;render();};f.appendChild(b);});}
 
-function renderWingbar(){var w=document.getElementById('wingbar');w.innerHTML='';var btnAll=document.createElement('button');btnAll.textContent='Все крылья (56)';if(wingFilter==='all')btnAll.className='sel';btnAll.onclick=function(){wingFilter='all';render();};w.appendChild(btnAll);for(var i=1;i<=4;i++){(function(wn){var b=document.createElement('button');var cnt=data.cams.filter(function(x){return wingOf(x.id)===wn}).length;b.textContent=wingNames[wn]+' ('+cnt+')';if(wingFilter===wn)b.className='sel';b.onclick=function(){wingFilter=wn;render();};w.appendChild(b);})(i);}}
+function renderWingbar(){var w=document.getElementById('wingbar');w.innerHTML='';var btnAll=document.createElement('button');btnAll.textContent='Все крылья';if(wingFilter==='all')btnAll.className='sel';btnAll.onclick=function(){wingFilter='all';render();};w.appendChild(btnAll);for(var i=1;i<=4;i++){(function(wn){var b=document.createElement('button');var cnt=data.cams.filter(function(x){return wingOf(x.id)===wn}).length;b.textContent=wingNames[wn]+' ('+cnt+')';if(wingFilter===wn)b.className='sel';b.onclick=function(){wingFilter=wn;render();};w.appendChild(b);})(i);}}
 
 function render(){
-  renderFilters();renderWingbar();
+  renderStats();renderFilters();renderWingbar();
   var q=(document.getElementById('search').value||'').toLowerCase();
   var list=data.cams.filter(function(c){return (filter==='all'||c.status===filter)&&(wingFilter==='all'||wingOf(c.id)===wingFilter)&&((c.id+' '+(c.sort||'')+' '+(c.batch||'')+' '+(c.crop||'')).toLowerCase().indexOf(q)>=0)});
   var wingsToShow = wingFilter==='all'?[1,2,3,4]:[wingFilter];
@@ -118,12 +211,10 @@ function render(){
     title.innerHTML=wingNames[wn]+' <span>'+inWing.length+' камер</span>';
     sec.appendChild(title);
     var g=document.createElement('div');g.className='grid';
-    g.innerHTML=inWing.map(function(c){return '<div class="cam '+c.status+' '+(selected===c.id?'selected':'')+'" onclick="selectCam('+c.id+')"><div class="num">● '+String(c.id).padStart(2,'0')+'</div><div class="sort">'+(c.sort||'—')+'</div><div class="qty">'+(c.qty||0).toLocaleString('ru-RU')+' кг</div><div class="status"><span class="dot"></span>'+(names[c.status]||c.status)+'</div></div>'}).join('');
+    g.innerHTML=inWing.map(function(c){return '<div class="cam '+c.status+' '+(selected===c.id?'selected':'')+'" onclick="selectCam('+c.id+')"><div class="num"><span class="cul">'+culIcon(c.crop||c.sort)+'</span> №'+String(c.id).padStart(2,'0')+'</div><div class="sort">'+(c.sort||'—')+'</div><div class="qty">'+(c.qty||0).toLocaleString('ru-RU')+' кг</div><div class="status"><span class="dot"></span>'+(names[c.status]||c.status)+'</div></div>'}).join('');
     sec.appendChild(g);
     grid.appendChild(sec);
   });
-  var counts={};data.cams.forEach(function(c){counts[c.status]=(counts[c.status]||0)+1});
-  document.getElementById('summary').textContent='Хранение: '+(counts.storage||0)+' · Обработка: '+(counts.process||0)+' · РГС: '+(counts.rgs||0)+' · Неактивные: '+(counts.inactive||0)+' · Пустые: '+(counts.empty||0)+' · Проблема: '+(counts.problem||0);
   renderPanel();
 }
 function selectCam(id){selected=id;render();}
@@ -137,13 +228,13 @@ function renderPanel(){
     h='<div class="hist-scroll">';
     for(var i=0;i<hist.length;i++){h+='<div class="event"><b>'+hist[i].op+'</b><small>'+hist[i].time+'</small></div>';}
     h+='</div>';
-  }else{h='<div style="color:#687785;font-size:12px">История пока пуста</div>';}
+  }else{h='<div style="color:#64748b;font-size:12px">История пока пуста</div>';}
   document.getElementById('panel').innerHTML=
-    '<h2>🍎 Камера №'+cid+' <span class="badge">'+(names[c.status]||c.status)+'</span></h2>'+
+    '<h2>'+culIcon(c.crop||c.sort)+' Камера №'+cid+' <span class="badge">'+(names[c.status]||c.status)+'</span></h2>'+
     '<div class="info"><div class="row"><span>Крыло</span><b>'+wingNames[wingOf(c.id)]+'</b></div><div class="row"><span>Культура</span><b>'+(c.crop||'—')+'</b></div><div class="row"><span>Сорт</span><b>'+(c.sort||'—')+'</b></div><div class="row"><span>Партия</span><b>'+(c.batch||'—')+'</b></div><div class="row"><span>Количество</span><b>'+(c.qty||0).toLocaleString('ru-RU')+' кг</b></div></div>'+
     '<div class="info"><div class="row"><span>Температура</span><b>'+(c.temp!=null?c.temp+' °C':'—')+'</b></div><div class="row"><span>Влажность</span><b>'+(c.hum!=null?c.hum+' %':'—')+'</b></div><div class="row"><span>Оператор</span><b>'+(c.operator||'—')+'</b></div></div>'+
     '<div class="buttons"><button class="warn" onclick="quick('+c.id+',\'process\')">Обработка</button><button class="primary" onclick="quick('+c.id+',\'rgs\')">РГС</button><button class="green" onclick="quick('+c.id+',\'storage\')">Хранение</button></div>'+
-    '<button style="width:100%" onclick="openForm('+c.id+')">✎ Редактировать</button>'+
+    '<button class="btn-full" onclick="openForm('+c.id+')">✎ Редактировать</button>'+
     '<div class="history"><h3>История операций <span>'+hist.length+' записей</span></h3>'+h+'</div>';
 }
 function log(c,op){data.journal.push({time:now(),cam:String(c.id).padStart(2,'0'),wing:wingOf(c.id),op:op,sort:c.sort,batch:c.batch,qty:c.qty});}
