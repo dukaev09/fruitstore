@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#ffffff"/>
+  <g transform="translate(256 256)">
+    <!-- тело яблока -->
+    <path d="M 0,-40 C -70,-100 -180,-70 -180,30 C -180,130 -90,200 0,200 C 90,200 180,130 180,30 C 180,-70 70,-100 0,-40 Z" fill="#dc2626"/>
+    <!-- блик -->
+    <ellipse cx="-60" cy="20" rx="40" ry="60" fill="#ef4444" opacity="0.5"/>
+    <!-- черешок -->
+    <path d="M 0,-40 Q -10,-80 20,-110" stroke="#7c2d12" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <!-- листик -->
+    <path d="M 20,-110 Q 70,-130 90,-100 Q 60,-80 20,-110 Z" fill="#16a34a"/>
+  </g>
+</svg>
