@@ -2,22 +2,15 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Фруктохранилище</title>
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0f172a">
-<link rel="icon" type="image/svg+xml" href="/icon.svg">
-<link rel="apple-touch-icon" href="/icon.svg">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Фруктохранилище">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f5f7fa;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--green:#10b981;--blue:#3b82f6;--yellow:#f59e0b;--red:#ef4444;--slate:#475569;--dark:#0f172a;--accent:#3b82f6}
 *{box-sizing:border-box}
-body{margin:0;font-family:'Inter',-apple-system,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+body{margin:0;font-family:'Inter',-apple-system,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
 header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;padding:22px 24px}
 .hwrap{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .logo{font-size:32px}
@@ -319,12 +312,6 @@ function resetData(){
 
 document.getElementById('search').addEventListener('input',render);
 render();
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/sw.js').catch(function(){});
-  });
-}
 </script>
 </body>
 </html>
