@@ -177,6 +177,7 @@ textarea{min-height:70px}
 </div>
 </main>
 <script>
+window.onerror=function(m,s,l,c,e){document.body.innerHTML='<div style="padding:20px;font:14px monospace;background:#fee;color:#900"><b>ОШИБКА JS:</b><br>'+m+'<br>Строка: '+l+'</div>';};
 const key='fruitstore_v11';
 const keyCollapsed='fruitstore_collapsed_v4';
 const names={all:'Все',storage:'Охлаждение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
