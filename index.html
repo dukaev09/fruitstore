@@ -348,3 +348,49 @@ function saveForm(){
   c.batch=document.getElementById('fBatch').value;
   c.qty=Number(document.getElementById('fQty').value)||0;
   c.temp=document.getElementById('fTemp').value===''?
+null:Number(document.getElementById('fTemp').value);
+  
+  c.hum=document.getElementById('fHum').value===''?null:Number(document.getElementById('fHum').value);
+  c.operator=document.getElementById('fOperator').value;
+  c.note=document.getElementById('fNote').value;
+  c.loadAt=document.getElementById('fLoadAt').value;
+  c.processAt=document.getElementById('fProcessAt').value;
+  c.rgsAt=document.getElementById('fRgsAt').value;
+  log(c,'Изменение данных');save();closeForm();render();
+}
+
+function openAllHistory(){
+  var body=document.getElementById('histBody');
+  var all=data.journal.slice().reverse();
+  body.innerHTML=all.map(function(x){
+    var wing=x.wing!=null?x.wing:wingOf(parseInt(x.cam,10));
+    return '<tr><td>'+x.time+'</td><td>'+x.cam+'</td><td>'+(wingNames[wing]||'—')+'</td><td>'+x.op+'</td><td>'+(x.sort||'—')+'</td><td>'+(x.batch||'—')+'</td><td>'+(x.qty?x.qty.toLocaleString('ru-RU')+' кг':'—')+'</td></tr>';
+  }).join('')||'<tr><td colspan="7">Операций пока нет</td></tr>';
+  document.getElementById('histModal').classList.add('open');
+}
+function closeHist(){document.getElementById('histModal').classList.remove('open');}
+
+function exportData(){
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='fruitstore-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+}
+function importData(){document.getElementById('importFile').click();}
+document.getElementById('importFile').addEventListener('change',function(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(){try{var parsed=JSON.parse(r.result);if(parsed.cams){data=parsed;if(!data.journal)data.journal=[];save();render();alert('Данные загружены');}else alert('Неверный формат файла');}catch(err){alert('Ошибка чтения файла: '+err.message);}};
+  r.readAsText(f);
+});
+function resetData(){
+  if(!confirm('Сбросить все данные и вернуть 56 камер по умолчанию?'))return;
+  data={cams:seed(),journal:[]};save();render();
+}
+
+document.getElementById('search').addEventListener('input',render);
+render();
+</script>
+</body>
+</html>
