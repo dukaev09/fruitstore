@@ -125,21 +125,7 @@ textarea{min-height:70px}
       <button onclick="importData()">⬆ Импорт</button>
       <button class="danger" onclick="resetData()">Сброс</button>
     </div>
-  </div>
-</header>
-<main>
-<div class="stats" id="stats"></div>
-<div class="toolbar">
-  <input id="search" class="search" placeholder="🔍 Поиск: номер камеры, сорт, партия, культура...">
-</div>
-<div class="filters" id="filters"></div>
-<div class="wingbar" id="wingbar"></div>
-<div class="layout">
-  <section><div id="grid"></div></section>
-  <section class="panel" id="panel"></section>
-</div>
-</main>
-
+    
 <!-- Модалка: редактирование -->
 <div class="modal" id="modal"><div class="modalbox"><h2>Данные камеры</h2>
 <form class="form" onsubmit="return false">
@@ -176,6 +162,20 @@ textarea{min-height:70px}
 </div></div>
 
 <input type="file" id="importFile" accept=".json" style="display:none">
+  </div>
+</header>
+<main>
+<div class="stats" id="stats"></div>
+<div class="toolbar">
+  <input id="search" class="search" placeholder="🔍 Поиск: номер камеры, сорт, партия, культура...">
+</div>
+<div class="filters" id="filters"></div>
+<div class="wingbar" id="wingbar"></div>
+<div class="layout">
+  <section><div id="grid"></div></section>
+  <section class="panel" id="panel"></section>
+</div>
+</main>
 <script>
 const key='fruitstore_v11';
 const keyCollapsed='fruitstore_collapsed_v4';
@@ -259,14 +259,8 @@ function render(){
 }
 
 function tapCam(id){
-  if(lastTapped===id){
-    openView(id);
-    lastTapped=null;
-  }else{
-    selected=id;
-    lastTapped=id;
-    render();
-  }
+  if(lastTapped===id){openView(id);lastTapped=null;}
+  else{selected=id;lastTapped=id;render();}
 }
 
 function renderPanel(){
@@ -274,11 +268,8 @@ function renderPanel(){
   var cid=String(c.id).padStart(2,'0');
   var hist=data.journal.filter(function(x){return x.cam===cid}).slice().reverse();
   var h='';
-  if(hist.length){
-    h='<div class="hist-scroll">';
-    for(var i=0;i<hist.length;i++){h+='<div class="event"><b>'+hist[i].op+'</b><small>'+hist[i].time+'</small></div>';}
-    h+='</div>';
-  }else{h='<div style="color:#64748b;font-size:12px">История пока пуста</div>';}
+  if(hist.length){h='<div class="hist-scroll">';for(var i=0;i<hist.length;i++){h+='<div class="event"><b>'+hist[i].op+'</b><small>'+hist[i].time+'</small></div>';}h+='</div>';}
+  else{h='<div style="color:#64748b;font-size:12px">История пока пуста</div>';}
   document.getElementById('panel').innerHTML=
     '<h2>'+culIcon(c.sort,c.crop)+' Камера №'+cid+' <span class="badge">'+(names[c.status]||c.status)+'</span></h2>'+
     '<div class="info"><div class="row"><span>Крыло</span><b>'+wingNames[wingOf(c.id)]+'</b></div><div class="row"><span>Культура</span><b>'+(c.crop||'—')+'</b></div><div class="row"><span>Сорт</span><b>'+(c.sort||'—')+'</b></div><div class="row"><span>Партия</span><b>'+(c.batch||'—')+'</b></div><div class="row"><span>Количество</span><b>'+(c.qty||0).toLocaleString('ru-RU')+' кг</b></div></div>'+
@@ -293,11 +284,8 @@ function openView(id){
   var cid=String(c.id).padStart(2,'0');
   var hist=data.journal.filter(function(x){return x.cam===cid}).slice().reverse();
   var h='';
-  if(hist.length){
-    h='<div class="hist-scroll">';
-    for(var i=0;i<hist.length;i++){h+='<div class="event"><b>'+hist[i].op+'</b><small>'+hist[i].time+'</small></div>';}
-    h+='</div>';
-  }else{h='<div style="color:#64748b;font-size:12px">История пока пуста</div>';}
+  if(hist.length){h='<div class="hist-scroll">';for(var i=0;i<hist.length;i++){h+='<div class="event"><b>'+hist[i].op+'</b><small>'+hist[i].time+'</small></div>';}h+='</div>';}
+  else{h='<div style="color:#64748b;font-size:12px">История пока пуста</div>';}
   document.getElementById('vmTitle').innerHTML=culIcon(c.sort,c.crop)+' Камера №'+cid+' <span class="badge">'+(names[c.status]||c.status)+'</span>';
   document.getElementById('vmContent').innerHTML=
     '<div class="view-info"><div class="vrow"><span>Крыло</span><b>'+wingNames[wingOf(c.id)]+'</b></div><div class="vrow"><span>Культура</span><b>'+(c.crop||'—')+'</b></div><div class="vrow"><span>Сорт</span><b>'+(c.sort||'—')+'</b></div><div class="vrow"><span>Партия</span><b>'+(c.batch||'—')+'</b></div><div class="vrow"><span>Количество</span><b>'+(c.qty||0).toLocaleString('ru-RU')+' кг</b></div></div>'+
@@ -309,4 +297,69 @@ function openView(id){
 }
 function closeView(){document.getElementById('viewModal').classList.remove('open');}
 
-function log(c,op){data.journal.push({time:now(),cam
+function log(c,op){data.journal.push({time:now(),cam:String(c.id).padStart(2,'0'),wing:wingOf(c.id),op:op,sort:c.sort,batch:c.batch,qty:c.qty});}
+
+function openForm(id){
+  var c=data.cams.find(function(x){return x.id===id});selected=id;
+  var fields=['status','crop','sort','batch','qty','temp','hum','operator','note','loadAt','processAt','rgsAt'];
+  for(var i=0;i<fields.length;i++){var k=fields[i];var el=document.getElementById('f'+k.charAt(0).toUpperCase()+k.slice(1));if(el)el.value=c[k]!=null?c[k]:'';}
+  document.getElementById('modal').classList.add('open');
+}
+function onStatusChange(){
+  var st=document.getElementById('fStatus').value;var d=todayDate();
+  if(st==='process'){var p=document.getElementById('fProcessAt');if(!p.value)p.value=d;}
+  if(st==='rgs'){var r=document.getElementById('fRgsAt');if(!r.value)r.value=d;}
+}
+function closeForm(){document.getElementById('modal').classList.remove('open');}
+function saveForm(){
+  var c=data.cams.find(function(x){return x.id===selected});
+  c.status=document.getElementById('fStatus').value;
+  c.crop=document.getElementById('fCrop').value;
+  c.sort=document.getElementById('fSort').value;
+  c.batch=document.getElementById('fBatch').value;
+  c.qty=Number(document.getElementById('fQty').value)||0;
+  c.temp=document.getElementById('fTemp').value===''?null:Number(document.getElementById('fTemp').value);
+  c.hum=document.getElementById('fHum').value===''?null:Number(document.getElementById('fHum').value);
+  c.operator=document.getElementById('fOperator').value;
+  c.note=document.getElementById('fNote').value;
+  c.loadAt=document.getElementById('fLoadAt').value;
+  c.processAt=document.getElementById('fProcessAt').value;
+  c.rgsAt=document.getElementById('fRgsAt').value;
+  log(c,'Изменение данных');save();closeForm();render();
+}
+
+function openAllHistory(){
+  var body=document.getElementById('histBody');
+  var all=data.journal.slice().reverse();
+  body.innerHTML=all.map(function(x){
+    var wing=x.wing!=null?x.wing:wingOf(parseInt(x.cam,10));
+    return '<tr><td>'+x.time+'</td><td>'+x.cam+'</td><td>'+(wingNames[wing]||'—')+'</td><td>'+x.op+'</td><td>'+(x.sort||'—')+'</td><td>'+(x.batch||'—')+'</td><td>'+(x.qty?x.qty.toLocaleString('ru-RU')+' кг':'—')+'</td></tr>';
+  }).join('')||'<tr><td colspan="7">Операций пока нет</td></tr>';
+  document.getElementById('histModal').classList.add('open');
+}
+function closeHist(){document.getElementById('histModal').classList.remove('open');}
+
+function exportData(){
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='fruitstore-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+}
+function importData(){document.getElementById('importFile').click();}
+document.getElementById('importFile').addEventListener('change',function(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(){try{var parsed=JSON.parse(r.result);if(parsed.cams){data=parsed;if(!data.journal)data.journal=[];save();render();alert('Данные загружены');}else alert('Неверный формат файла');}catch(err){alert('Ошибка чтения файла: '+err.message);}};
+  r.readAsText(f);
+});
+function resetData(){
+  if(!confirm('Сбросить все данные и вернуть 56 камер по умолчанию?'))return;
+  data={cams:seed(),journal:[]};save();render();
+}
+
+document.getElementById('search').addEventListener('input',render);
+render();
+</script>
+</body>
+</html>
