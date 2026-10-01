@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f5f7fa;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--green:#10b981;--blue:#3b82f6;--yellow:#f59e0b;--red:#ef4444;--slate:#475569;--dark:#0f172a;--accent:#3b82f6}
+:root{--bg:#f5f7fa;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--green:#10b981;--blue:#3b82f6;--yellow:#f59e0b;--red:#ef4444;--dark:#0f172a;--accent:#3b82f6}
 *{box-sizing:border-box}
 body{margin:0;font-family:'Inter',-apple-system,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
 header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;padding:22px 24px}
@@ -21,7 +21,6 @@ header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;pad
 .hbtns button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;padding:9px 14px;border-radius:10px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;transition:all .15s}
 .hbtns button:hover{background:rgba(255,255,255,.2)}
 .hbtns button.danger{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.4)}
-.hbtns button.danger:hover{background:rgba(239,68,68,.35)}
 main{max-width:1400px;margin:0 auto;padding:22px 24px}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:22px}
 .stat{background:white;border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04)}
@@ -31,7 +30,7 @@ main{max-width:1400px;margin:0 auto;padding:22px 24px}
 .stat.accent{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
 .stat.accent .lbl,.stat.accent .sub2{color:#dbeafe}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
-.search{flex:1;min-width:200px;padding:11px 16px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:14px;background:white;transition:border-color .15s}
+.search{flex:1;min-width:200px;padding:11px 16px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:14px;background:white}
 .search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,.1)}
 .filters,.wingbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .filters button,.wingbar button{background:white;border:1px solid var(--line);padding:9px 14px;border-radius:10px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;color:var(--text);transition:all .15s}
@@ -82,17 +81,15 @@ main{max-width:1400px;margin:0 auto;padding:22px 24px}
 .event b{display:block;font-weight:600}
 .event small{color:var(--muted)}
 .hist-scroll{max-height:300px;overflow-y:auto;padding-right:6px}
-.modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;z-index:10;animation:fadeIn .15s}
+.modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;z-index:10}
 .modal.open{display:flex}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modalbox{background:white;border-radius:16px;width:min(650px,100%);padding:24px;max-height:90vh;overflow:auto;animation:slideUp .2s}
-@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modalbox{background:white;border-radius:16px;width:min(650px,100%);padding:24px;max-height:90vh;overflow:auto}
 .modalbox h2{margin-top:0;font-size:19px;font-weight:800}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .field{display:flex;flex-direction:column;gap:6px}
 .field.full{grid-column:1/-1}
 .field label{font-size:12px;color:var(--muted);font-weight:600}
-input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:11px;font:inherit;font-size:14px;background:white;transition:border-color .15s;font-family:inherit}
+input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:11px;font:inherit;font-size:14px;background:white;font-family:inherit}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,.1)}
 textarea{min-height:70px}
 .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
@@ -101,7 +98,6 @@ textarea{min-height:70px}
 .hist-table{width:100%;border-collapse:collapse;font-size:12px}
 .hist-table th,.hist-table td{text-align:left;padding:10px;border-bottom:1px solid #f1f5f9;white-space:nowrap}
 .hist-table th{color:var(--muted);position:sticky;top:0;background:white;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
-.hist-table tbody tr:hover{background:#f8fafc}
 .view-info{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0}
 .view-info .vrow{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:13px;border-bottom:1px solid #f1f5f9}
 .view-info .vrow:last-child{border-bottom:none}
@@ -125,8 +121,21 @@ textarea{min-height:70px}
       <button onclick="importData()">⬆ Импорт</button>
       <button class="danger" onclick="resetData()">Сброс</button>
     </div>
-    
-<!-- Модалка: редактирование -->
+  </div>
+</header>
+<main>
+<div class="stats" id="stats"></div>
+<div class="toolbar">
+  <input id="search" class="search" placeholder="🔍 Поиск: номер камеры, сорт, партия, культура...">
+</div>
+<div class="filters" id="filters"></div>
+<div class="wingbar" id="wingbar"></div>
+<div class="layout">
+  <section><div id="grid"></div></section>
+  <section class="panel" id="panel"></section>
+</div>
+</main>
+
 <div class="modal" id="modal"><div class="modalbox"><h2>Данные камеры</h2>
 <form class="form" onsubmit="return false">
 <div class="field"><label>Статус</label><select id="fStatus" onchange="onStatusChange()"><option value="storage">Охлаждение</option><option value="process">Обработка</option><option value="rgs">На РГС</option><option value="inactive">Неактивная</option><option value="problem">Проблема</option><option value="empty">Пустая</option></select></div>
@@ -145,14 +154,12 @@ textarea{min-height:70px}
 <div class="modal-actions"><button onclick="closeForm()">Отмена</button><button class="primary" onclick="saveForm()">Сохранить</button></div>
 </div></div>
 
-<!-- Модалка: просмотр камеры (по двойному тапу) -->
 <div class="modal" id="viewModal"><div class="modalbox" style="width:min(560px,100%)">
 <h2 id="vmTitle">🍎 Камера</h2>
 <div id="vmContent"></div>
 <div class="modal-actions"><button onclick="closeView()">Закрыть</button></div>
 </div></div>
 
-<!-- Модалка: вся история -->
 <div class="modal" id="histModal"><div class="modalbox" style="width:min(900px,100%)">
 <h2>📋 Вся история операций</h2>
 <div style="max-height:60vh;overflow:auto;margin-top:12px">
@@ -162,48 +169,41 @@ textarea{min-height:70px}
 </div></div>
 
 <input type="file" id="importFile" accept=".json" style="display:none">
-  </div>
-</header>
-<main>
-<div class="stats" id="stats"></div>
-<div class="toolbar">
-  <input id="search" class="search" placeholder="🔍 Поиск: номер камеры, сорт, партия, культура...">
-</div>
-<div class="filters" id="filters"></div>
-<div class="wingbar" id="wingbar"></div>
-<div class="layout">
-  <section><div id="grid"></div></section>
-  <section class="panel" id="panel"></section>
-</div>
-</main>
 <script>
-window.onerror=function(m,s,l,c,e){document.body.innerHTML='<div style="padding:20px;font:14px monospace;background:#fee;color:#900"><b>ОШИБКА JS:</b><br>'+m+'<br>Строка: '+l+'</div>';};
-const key='fruitstore_v11';
-const keyCollapsed='fruitstore_collapsed_v4';
+const key='fruitstore_v12';
+const keyCollapsed='fruitstore_collapsed_v5';
 const names={all:'Все',storage:'Охлаждение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
 const wingNames={1:'Крыло 1',2:'Крыло 2',3:'Крыло 3',4:'Крыло 4'};
-const now=function(){return new Date().toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})};
-const todayDate=function(){var d=new Date();var dd=String(d.getDate()).padStart(2,'0');var mm=String(d.getMonth()+1).padStart(2,'0');return dd+'.'+mm+'.'+d.getFullYear();};
+function now(){return new Date().toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+function todayDate(){var d=new Date();var dd=String(d.getDate()).padStart(2,'0');var mm=String(d.getMonth()+1).padStart(2,'0');return dd+'.'+mm+'.'+d.getFullYear();}
 function wingOf(id){return Math.floor((id-1)/14)+1;}
 function culIcon(sort,crop){
   var s=(sort||crop||'').toLowerCase();
   if(s.indexOf('груш')>=0)return '🍐';
   if(s.indexOf('морков')>=0)return '🥕';
-  if(s.indexOf('лук')>=0||s.indexOf('луч')>=0)return '🧅';
+  if(s.indexOf('лук')>=0)return '🧅';
   if(s.indexOf('капуст')>=0)return '🥬';
   if(s.indexOf('свекл')>=0)return '🍠';
   if(s.indexOf('вишн')>=0)return '🍒';
-  if(s.indexOf('слив')>=0)return '🫐';
   if(s.indexOf('виноград')>=0)return '🍇';
-  if(s.indexOf('яблок')>=0)return '🍎';
-  if(s.indexOf('голден')>=0||s.indexOf('гала')>=0||s.indexOf('фуджи')>=0||s.indexOf('фудж')>=0||s.indexOf('айдаред')>=0||s.indexOf('чиф')>=0||s.indexOf('ред')>=0||s.indexOf('гренни')>=0||s.indexOf('пинова')>=0||s.indexOf('лигол')>=0||s.indexOf('чемпион')>=0)return '🍎';
-  return '📦';
+  return '🍎';
 }
 var data=JSON.parse(localStorage.getItem(key)||'null');
 var collapsed=JSON.parse(localStorage.getItem(keyCollapsed)||'{}');
 var selected=1, filter='all', wingFilter='all', lastTapped=null;
 
-function seed(){var sorts=['Голден','Гала','Фуджи','Груша','Айдаред','Морковь','Лук','Капуста','Свекла','Ред Чиф'];var a=[];for(var i=1;i<=56;i++){var st=i%14===0?'empty':i%7===0?'rgs':i%9===0?'process':'storage';var s=sorts[(i-1)%sorts.length];var crop=(s==='Морковь'||s==='Лук'||s==='Капуста'||s==='Свекла')?'Овощи':'Яблоко';var qty=st==='empty'?0:(10+(i%16))*1000;a.push({id:i,wing:wingOf(i),status:st,crop:crop,sort:s,batch:'П-'+(240+i),qty:qty,temp:1.5,hum:90,note:'',operator:'Оператор',loadAt:'',processAt:'',rgsAt:''})}return a}
+function seed(){
+  var sorts=['Голден','Гала','Фуджи','Груша','Айдаред','Морковь','Лук','Капуста','Свекла','Ред Чиф'];
+  var a=[];
+  for(var i=1;i<=56;i++){
+    var st=i%14===0?'empty':i%7===0?'rgs':i%9===0?'process':'storage';
+    var s=sorts[(i-1)%sorts.length];
+    var crop=(s==='Морковь'||s==='Лук'||s==='Капуста'||s==='Свекла')?'Овощи':'Яблоко';
+    var qty=st==='empty'?0:(10+(i%16))*1000;
+    a.push({id:i,wing:wingOf(i),status:st,crop:crop,sort:s,batch:'П-'+(240+i),qty:qty,temp:1.5,hum:90,note:'',operator:'Оператор',loadAt:'',processAt:'',rgsAt:''});
+  }
+  return a;
+}
 if(!data){data={cams:seed(),journal:[]};localStorage.setItem(key,JSON.stringify(data));}
 function save(){localStorage.setItem(key,JSON.stringify(data));}
 function saveCollapsed(){localStorage.setItem(keyCollapsed,JSON.stringify(collapsed));}
@@ -226,14 +226,40 @@ function renderStats(){
     '<div class="stat"><div class="lbl">Неактивных</div><div class="val">'+inactive+'</div><div class="sub2">отключено</div></div>';
 }
 
-function renderFilters(){var f=document.getElementById('filters');f.innerHTML='';Object.keys(names).forEach(function(k){var b=document.createElement('button');var cnt=k==='all'?data.cams.length:data.cams.filter(function(x){return x.status===k}).length;b.textContent=names[k]+' ('+cnt+')';if(filter===k)b.className='sel';b.onclick=function(){filter=k;render();};f.appendChild(b);});}
+function renderFilters(){
+  var f=document.getElementById('filters');f.innerHTML='';
+  Object.keys(names).forEach(function(k){
+    var b=document.createElement('button');
+    var cnt=k==='all'?data.cams.length:data.cams.filter(function(x){return x.status===k}).length;
+    b.textContent=names[k]+' ('+cnt+')';
+    if(filter===k)b.className='sel';
+    b.onclick=function(){filter=k;render();};
+    f.appendChild(b);
+  });
+}
 
-function renderWingbar(){var w=document.getElementById('wingbar');w.innerHTML='';var btnAll=document.createElement('button');btnAll.textContent='Все крылья';if(wingFilter==='all')btnAll.className='sel';btnAll.onclick=function(){wingFilter='all';render();};w.appendChild(btnAll);for(var i=1;i<=4;i++){(function(wn){var b=document.createElement('button');var cnt=data.cams.filter(function(x){return wingOf(x.id)===wn}).length;b.textContent=wingNames[wn]+' ('+cnt+')';if(wingFilter===wn)b.className='sel';b.onclick=function(){wingFilter=wn;render();};w.appendChild(b);})(i);}}
+function renderWingbar(){
+  var w=document.getElementById('wingbar');w.innerHTML='';
+  var btnAll=document.createElement('button');btnAll.textContent='Все крылья';
+  if(wingFilter==='all')btnAll.className='sel';
+  btnAll.onclick=function(){wingFilter='all';render();};
+  w.appendChild(btnAll);
+  for(var i=1;i<=4;i++){(function(wn){
+    var b=document.createElement('button');
+    var cnt=data.cams.filter(function(x){return wingOf(x.id)===wn}).length;
+    b.textContent=wingNames[wn]+' ('+cnt+')';
+    if(wingFilter===wn)b.className='sel';
+    b.onclick=function(){wingFilter=wn;render();};
+    w.appendChild(b);
+  })(i);}
+}
 
 function render(){
   renderStats();renderFilters();renderWingbar();
   var q=(document.getElementById('search').value||'').toLowerCase();
-  var list=data.cams.filter(function(c){return (filter==='all'||c.status===filter)&&(wingFilter==='all'||wingOf(c.id)===wingFilter)&&((c.id+' '+(c.sort||'')+' '+(c.batch||'')+' '+(c.crop||'')).toLowerCase().indexOf(q)>=0)});
+  var list=data.cams.filter(function(c){
+    return (filter==='all'||c.status===filter)&&(wingFilter==='all'||wingOf(c.id)===wingFilter)&&((c.id+' '+(c.sort||'')+' '+(c.batch||'')+' '+(c.crop||'')).toLowerCase().indexOf(q)>=0)
+  });
   var wingsToShow = wingFilter==='all'?[1,2,3,4]:[wingFilter];
   var grid=document.getElementById('grid');
   grid.innerHTML='';
@@ -250,7 +276,9 @@ function render(){
     var g=document.createElement('div');
     g.className='wing-cams'+(isCollapsed?' collapsed':'');
     var inner=document.createElement('div');inner.className='grid';
-    inner.innerHTML=inWing.map(function(c){return '<div class="cam '+c.status+' '+(selected===c.id?'selected':'')+'" onclick="tapCam('+c.id+')"><div class="num"><span class="cul">'+culIcon(c.sort,c.crop)+'</span> №'+String(c.id).padStart(2,'0')+'</div><div class="sort">'+(c.sort||'—')+'</div><div class="qty">'+(c.qty||0).toLocaleString('ru-RU')+' кг</div><div class="status"><span class="dot"></span>'+(names[c.status]||c.status)+'</div></div>'}).join('');
+    inner.innerHTML=inWing.map(function(c){
+      return '<div class="cam '+c.status+' '+(selected===c.id?'selected':'')+'" onclick="tapCam('+c.id+')"><div class="num"><span class="cul">'+culIcon(c.sort,c.crop)+'</span> №'+String(c.id).padStart(2,'0')+'</div><div class="sort">'+(c.sort||'—')+'</div><div class="qty">'+(c.qty||0).toLocaleString('ru-RU')+' кг</div><div class="status"><span class="dot"></span>'+(names[c.status]||c.status)+'</div></div>';
+    }).join('');
     g.appendChild(inner);
     if(isCollapsed){g.style.maxHeight='0';}else{g.style.maxHeight='3000px';}
     sec.appendChild(g);
@@ -319,48 +347,4 @@ function saveForm(){
   c.sort=document.getElementById('fSort').value;
   c.batch=document.getElementById('fBatch').value;
   c.qty=Number(document.getElementById('fQty').value)||0;
-  c.temp=document.getElementById('fTemp').value===''?null:Number(document.getElementById('fTemp').value);
-  c.hum=document.getElementById('fHum').value===''?null:Number(document.getElementById('fHum').value);
-  c.operator=document.getElementById('fOperator').value;
-  c.note=document.getElementById('fNote').value;
-  c.loadAt=document.getElementById('fLoadAt').value;
-  c.processAt=document.getElementById('fProcessAt').value;
-  c.rgsAt=document.getElementById('fRgsAt').value;
-  log(c,'Изменение данных');save();closeForm();render();
-}
-
-function openAllHistory(){
-  var body=document.getElementById('histBody');
-  var all=data.journal.slice().reverse();
-  body.innerHTML=all.map(function(x){
-    var wing=x.wing!=null?x.wing:wingOf(parseInt(x.cam,10));
-    return '<tr><td>'+x.time+'</td><td>'+x.cam+'</td><td>'+(wingNames[wing]||'—')+'</td><td>'+x.op+'</td><td>'+(x.sort||'—')+'</td><td>'+(x.batch||'—')+'</td><td>'+(x.qty?x.qty.toLocaleString('ru-RU')+' кг':'—')+'</td></tr>';
-  }).join('')||'<tr><td colspan="7">Операций пока нет</td></tr>';
-  document.getElementById('histModal').classList.add('open');
-}
-function closeHist(){document.getElementById('histModal').classList.remove('open');}
-
-function exportData(){
-  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='fruitstore-'+new Date().toISOString().slice(0,10)+'.json';
-  a.click();
-}
-function importData(){document.getElementById('importFile').click();}
-document.getElementById('importFile').addEventListener('change',function(e){
-  var f=e.target.files[0];if(!f)return;
-  var r=new FileReader();
-  r.onload=function(){try{var parsed=JSON.parse(r.result);if(parsed.cams){data=parsed;if(!data.journal)data.journal=[];save();render();alert('Данные загружены');}else alert('Неверный формат файла');}catch(err){alert('Ошибка чтения файла: '+err.message);}};
-  r.readAsText(f);
-});
-function resetData(){
-  if(!confirm('Сбросить все данные и вернуть 56 камер по умолчанию?'))return;
-  data={cams:seed(),journal:[]};save();render();
-}
-
-document.getElementById('search').addEventListener('input',render);
-render();
-</script>
-</body>
-</html>
+  c.temp=document.getElementById('fTemp').value===''?
