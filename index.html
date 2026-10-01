@@ -73,13 +73,6 @@ main{max-width:1400px;margin:0 auto;padding:22px 24px}
 .row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:13px}
 .row:not(:last-child){border-bottom:1px solid #f1f5f9}
 .row span:first-child{color:var(--muted);font-weight:500}
-.buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
-.buttons button{font-size:12px;padding:11px 5px;border-radius:9px;font-family:inherit}
-button{font-family:inherit}
-button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-button.green{background:var(--green);color:#fff;border-color:var(--green)}
-button.warn{background:var(--yellow);color:#fff;border-color:var(--yellow)}
-button.danger{background:var(--red);color:#fff;border-color:var(--red)}
 .btn-full{width:100%;padding:11px;border:1px solid var(--line);background:white;border-radius:9px;cursor:pointer;font-weight:600;font-size:13px}
 .btn-full:hover{background:#f8fafc}
 .history{margin-top:16px}
@@ -145,7 +138,7 @@ textarea{min-height:70px}
 
 <div class="modal" id="modal"><div class="modalbox"><h2>Данные камеры</h2>
 <form class="form" onsubmit="return false">
-<div class="field"><label>Статус</label><select id="fStatus"><option value="storage">Охлаждение</option><option value="process">Обработка</option><option value="rgs">На РГС</option><option value="inactive">Неактивная</option><option value="problem">Проблема</option><option value="empty">Пустая</option></select></div>
+<div class="field"><label>Статус</label><select id="fStatus" onchange="onStatusChange()"><option value="storage">Охлаждение</option><option value="process">Обработка</option><option value="rgs">На РГС</option><option value="inactive">Неактивная</option><option value="problem">Проблема</option><option value="empty">Пустая</option></select></div>
 <div class="field"><label>Культура</label><input id="fCrop"></div>
 <div class="field"><label>Сорт</label><input id="fSort"></div>
 <div class="field"><label>Партия</label><input id="fBatch"></div>
@@ -153,6 +146,9 @@ textarea{min-height:70px}
 <div class="field"><label>Температура °C</label><input id="fTemp" type="number" step="0.1"></div>
 <div class="field"><label>Влажность %</label><input id="fHum" type="number" min="0" max="100"></div>
 <div class="field"><label>Оператор</label><input id="fOperator"></div>
+<div class="field"><label>Дата загрузки</label><input id="fLoadAt" placeholder="ДД.ММ.ГГГГ"></div>
+<div class="field"><label>Дата обработки</label><input id="fProcessAt" placeholder="ДД.ММ.ГГГГ"></div>
+<div class="field"><label>Дата вывода на РГС</label><input id="fRgsAt" placeholder="ДД.ММ.ГГГГ"></div>
 <div class="field full"><label>Примечание</label><textarea id="fNote"></textarea></div>
 </form>
 <div class="modal-actions"><button onclick="closeForm()">Отмена</button><button class="primary" onclick="saveForm()">Сохранить</button></div>
@@ -168,11 +164,12 @@ textarea{min-height:70px}
 
 <input type="file" id="importFile" accept=".json" style="display:none">
 <script>
-const key='fruitstore_v9';
-const keyCollapsed='fruitstore_collapsed_v2';
+const key='fruitstore_v10';
+const keyCollapsed='fruitstore_collapsed_v3';
 const names={all:'Все',storage:'Охлаждение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
 const wingNames={1:'Крыло 1',2:'Крыло 2',3:'Крыло 3',4:'Крыло 4'};
 const now=function(){return new Date().toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})};
+const todayDate=function(){var d=new Date();var dd=String(d.getDate()).padStart(2,'0');var mm=String(d.getMonth()+1).padStart(2,'0');return dd+'.'+mm+'.'+d.getFullYear();};
 function wingOf(id){return Math.floor((id-1)/14)+1;}
 function culIcon(sort,crop){
   var s=(sort||crop||'').toLowerCase();
@@ -192,7 +189,7 @@ var data=JSON.parse(localStorage.getItem(key)||'null');
 var collapsed=JSON.parse(localStorage.getItem(keyCollapsed)||'{}');
 var selected=1, filter='all', wingFilter='all';
 
-function seed(){var sorts=['Голден','Гала','Фуджи','Груша','Айдаред','Морковь','Лук','Капуста','Свекла','Ред Чиф'];var a=[];for(var i=1;i<=56;i++){var st=i%14===0?'empty':i%7===0?'rgs':i%9===0?'process':'storage';var s=sorts[(i-1)%sorts.length];var crop=(s==='Морковь'||s==='Лук'||s==='Капуста'||s==='Свекла')?'Овощи':'Яблоко';var qty=st==='empty'?0:(10+(i%16))*1000;a.push({id:i,wing:wingOf(i),status:st,crop:crop,sort:s,batch:'П-'+(240+i),qty:qty,temp:1.5,hum:90,note:'',operator:'Оператор'})}return a}
+function seed(){var sorts=['Голден','Гала','Фуджи','Груша','Айдаред','Морковь','Лук','Капуста','Свекла','Ред Чиф'];var a=[];for(var i=1;i<=56;i++){var st=i%14===0?'empty':i%7===0?'rgs':i%9===0?'process':'storage';var s=sorts[(i-1)%sorts.length];var crop=(s==='Морковь'||s==='Лук'||s==='Капуста'||s==='Свекла')?'Овощи':'Яблоко';var qty=st==='empty'?0:(10+(i%16))*1000;a.push({id:i,wing:wingOf(i),status:st,crop:crop,sort:s,batch:'П-'+(240+i),qty:qty,temp:1.5,hum:90,note:'',operator:'Оператор',loadAt:'',processAt:'',rgsAt:''})}return a}
 if(!data){data={cams:seed(),journal:[]};localStorage.setItem(key,JSON.stringify(data));}
 function save(){localStorage.setItem(key,JSON.stringify(data));}
 function saveCollapsed(){localStorage.setItem(keyCollapsed,JSON.stringify(collapsed));}
@@ -263,24 +260,23 @@ function renderPanel(){
     '<h2>'+culIcon(c.sort,c.crop)+' Камера №'+cid+' <span class="badge">'+(names[c.status]||c.status)+'</span></h2>'+
     '<div class="info"><div class="row"><span>Крыло</span><b>'+wingNames[wingOf(c.id)]+'</b></div><div class="row"><span>Культура</span><b>'+(c.crop||'—')+'</b></div><div class="row"><span>Сорт</span><b>'+(c.sort||'—')+'</b></div><div class="row"><span>Партия</span><b>'+(c.batch||'—')+'</b></div><div class="row"><span>Количество</span><b>'+(c.qty||0).toLocaleString('ru-RU')+' кг</b></div></div>'+
     '<div class="info"><div class="row"><span>Температура</span><b>'+(c.temp!=null?c.temp+' °C':'—')+'</b></div><div class="row"><span>Влажность</span><b>'+(c.hum!=null?c.hum+' %':'—')+'</b></div><div class="row"><span>Оператор</span><b>'+(c.operator||'—')+'</b></div></div>'+
-    '<div class="buttons"><button class="warn" onclick="quick('+c.id+',\'process\')">Обработка</button><button class="primary" onclick="quick('+c.id+',\'rgs\')">РГС</button><button class="green" onclick="quick('+c.id+',\'storage\')">Охлаждение</button></div>'+
+    '<div class="info"><div class="row"><span>Дата загрузки</span><b>'+(c.loadAt||'—')+'</b></div><div class="row"><span>Дата обработки</span><b>'+(c.processAt||'—')+'</b></div><div class="row"><span>Дата РГС</span><b>'+(c.rgsAt||'—')+'</b></div></div>'+
     '<button class="btn-full" onclick="openForm('+c.id+')">✎ Редактировать</button>'+
     '<div class="history"><h3>История операций <span>'+hist.length+' записей</span></h3>'+h+'</div>';
 }
 function log(c,op){data.journal.push({time:now(),cam:String(c.id).padStart(2,'0'),wing:wingOf(c.id),op:op,sort:c.sort,batch:c.batch,qty:c.qty});}
 
-function quick(id,st){
-  var c=data.cams.find(function(x){return x.id===id});
-  c.status=st;
-  var opName=st==='process'?'Начало обработки':st==='rgs'?'Начало РГС':'Изменение статуса';
-  log(c,opName);save();render();
-}
-
 function openForm(id){
   var c=data.cams.find(function(x){return x.id===id});selected=id;
-  var fields=['status','crop','sort','batch','qty','temp','hum','operator','note'];
+  var fields=['status','crop','sort','batch','qty','temp','hum','operator','note','loadAt','processAt','rgsAt'];
   for(var i=0;i<fields.length;i++){var k=fields[i];var el=document.getElementById('f'+k.charAt(0).toUpperCase()+k.slice(1));if(el)el.value=c[k]!=null?c[k]:'';}
   document.getElementById('modal').classList.add('open');
+}
+function onStatusChange(){
+  var st=document.getElementById('fStatus').value;
+  var d=todayDate();
+  if(st==='process'){var p=document.getElementById('fProcessAt');if(!p.value)p.value=d;}
+  if(st==='rgs'){var r=document.getElementById('fRgsAt');if(!r.value)r.value=d;}
 }
 function closeForm(){document.getElementById('modal').classList.remove('open');}
 function saveForm(){
@@ -294,6 +290,9 @@ function saveForm(){
   c.hum=document.getElementById('fHum').value===''?null:Number(document.getElementById('fHum').value);
   c.operator=document.getElementById('fOperator').value;
   c.note=document.getElementById('fNote').value;
+  c.loadAt=document.getElementById('fLoadAt').value;
+  c.processAt=document.getElementById('fProcessAt').value;
+  c.rgsAt=document.getElementById('fRgsAt').value;
   log(c,'Изменение данных');save();closeForm();render();
 }
 
