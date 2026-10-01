@@ -38,9 +38,15 @@ main{max-width:1400px;margin:0 auto;padding:22px 24px}
 .filters button:hover,.wingbar button:hover{border-color:#cbd5e1;background:#f8fafc}
 .filters button.sel{background:#0f172a;color:#fff;border-color:#0f172a}
 .wingbar button.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
-.wing-section{margin-bottom:26px}
-.wing-title{font-size:15px;font-weight:800;color:var(--dark);margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e2e8f0;display:flex;justify-content:space-between;align-items:baseline}
-.wing-title span{font-weight:500;color:var(--muted);font-size:13px}
+.wing-section{margin-bottom:22px}
+.wing-title{font-size:15px;font-weight:800;color:var(--dark);margin:0 0 12px;padding:12px 14px;border-radius:10px;background:white;border:1px solid var(--line);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:all .15s}
+.wing-title:hover{background:#f8fafc;border-color:#cbd5e1}
+.wing-title .wt-left{display:flex;align-items:center;gap:10px}
+.wing-title .arrow{transition:transform .2s;display:inline-block;font-size:12px;color:var(--muted);width:14px}
+.wing-title.collapsed .arrow{transform:rotate(-90deg)}
+.wing-title .wt-count{font-weight:500;color:var(--muted);font-size:13px}
+.wing-cams{overflow:hidden;transition:max-height .25s ease,opacity .2s ease}
+.wing-cams.collapsed{max-height:0!important;opacity:0}
 .grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
 .cam{background:white;border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;position:relative;transition:all .15s;overflow:hidden;min-height:110px}
 .cam:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--green)}
@@ -162,7 +168,8 @@ textarea{min-height:70px}
 
 <input type="file" id="importFile" accept=".json" style="display:none">
 <script>
-const key='fruitstore_v7';
+const key='fruitstore_v9';
+const keyCollapsed='fruitstore_collapsed_v2';
 const names={all:'Все',storage:'Охлаждение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
 const wingNames={1:'Крыло 1',2:'Крыло 2',3:'Крыло 3',4:'Крыло 4'};
 const now=function(){return new Date().toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})};
@@ -182,11 +189,14 @@ function culIcon(sort,crop){
   return '📦';
 }
 var data=JSON.parse(localStorage.getItem(key)||'null');
+var collapsed=JSON.parse(localStorage.getItem(keyCollapsed)||'{}');
 var selected=1, filter='all', wingFilter='all';
 
 function seed(){var sorts=['Голден','Гала','Фуджи','Груша','Айдаред','Морковь','Лук','Капуста','Свекла','Ред Чиф'];var a=[];for(var i=1;i<=56;i++){var st=i%14===0?'empty':i%7===0?'rgs':i%9===0?'process':'storage';var s=sorts[(i-1)%sorts.length];var crop=(s==='Морковь'||s==='Лук'||s==='Капуста'||s==='Свекла')?'Овощи':'Яблоко';var qty=st==='empty'?0:(10+(i%16))*1000;a.push({id:i,wing:wingOf(i),status:st,crop:crop,sort:s,batch:'П-'+(240+i),qty:qty,temp:1.5,hum:90,note:'',operator:'Оператор'})}return a}
 if(!data){data={cams:seed(),journal:[]};localStorage.setItem(key,JSON.stringify(data));}
 function save(){localStorage.setItem(key,JSON.stringify(data));}
+function saveCollapsed(){localStorage.setItem(keyCollapsed,JSON.stringify(collapsed));}
+function toggleWing(wn){collapsed[wn]=!collapsed[wn];saveCollapsed();render();}
 
 function renderStats(){
   var totalKg=0,occupied=0,empty_=0,problem=0,inactive=0;
@@ -219,12 +229,19 @@ function render(){
   wingsToShow.forEach(function(wn){
     var inWing=list.filter(function(c){return wingOf(c.id)===wn});
     if(inWing.length===0)return;
+    var isCollapsed=!!collapsed[wn];
     var sec=document.createElement('div');sec.className='wing-section';
-    var title=document.createElement('div');title.className='wing-title';
-    title.innerHTML=wingNames[wn]+' <span>'+inWing.length+' камер</span>';
+    var title=document.createElement('div');
+    title.className='wing-title'+(isCollapsed?' collapsed':'');
+    title.onclick=function(){toggleWing(wn)};
+    title.innerHTML='<div class="wt-left"><span class="arrow">▼</span>'+wingNames[wn]+'</div><span class="wt-count">'+inWing.length+' камер</span>';
     sec.appendChild(title);
-    var g=document.createElement('div');g.className='grid';
-    g.innerHTML=inWing.map(function(c){return '<div class="cam '+c.status+' '+(selected===c.id?'selected':'')+'" onclick="selectCam('+c.id+')"><div class="num"><span class="cul">'+culIcon(c.sort,c.crop)+'</span> №'+String(c.id).padStart(2,'0')+'</div><div class="sort">'+(c.sort||'—')+'</div><div class="qty">'+(c.qty||0).toLocaleString('ru-RU')+' кг</div><div class="status"><span class="dot"></span>'+(names[c.status]||c.status)+'</div></div>'}).join('');
+    var g=document.createElement('div');
+    g.className='wing-cams'+(isCollapsed?' collapsed':'');
+    var inner=document.createElement('div');inner.className='grid';
+    inner.innerHTML=inWing.map(function(c){return '<div class="cam '+c.status+' '+(selected===c.id?'selected':'')+'" onclick="selectCam('+c.id+')"><div class="num"><span class="cul">'+culIcon(c.sort,c.crop)+'</span> №'+String(c.id).padStart(2,'0')+'</div><div class="sort">'+(c.sort||'—')+'</div><div class="qty">'+(c.qty||0).toLocaleString('ru-RU')+' кг</div><div class="status"><span class="dot"></span>'+(names[c.status]||c.status)+'</div></div>'}).join('');
+    g.appendChild(inner);
+    if(isCollapsed){g.style.maxHeight='0';}else{g.style.maxHeight='3000px';}
     sec.appendChild(g);
     grid.appendChild(sec);
   });
