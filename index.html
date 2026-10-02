@@ -3,54 +3,53 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Фруктохранилище — управление камерами</title>
+<title>Фруктохранилище</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#eef1f5;--card:#fff;--text:#172033;--muted:#667085;--line:#d8dee8;--blue:#1f4f8f;--green:#25815f;--yellow:#a86a0a;--red:#b4232f;--shadow:0 4px 14px rgba(16,24,40,.07)}
+:root{--bg:#eef1f5;--card:#fff;--text:#172033;--muted:#667085;--line:#d8dee8;--blue:#1f4f8f;--shadow:0 4px 14px rgba(16,24,40,.07)}
 *{box-sizing:border-box}
 body{margin:0;font-family:'Inter',-apple-system,Arial,sans-serif;background:#eef1f5;color:#172033;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-.header{background:#172235;color:#fff;padding:20px 24px 19px;border-bottom:1px solid #25344b}
-.hwrap{max-width:1450px;margin:auto;display:flex;align-items:center;gap:15px}
-.logo{width:52px;height:52px;background:#fff;border-radius:14px;display:grid;place-items:center;font-size:31px;flex:0 0 auto}
-.brand{font-size:22px;font-weight:800}
+.header{background:#172235;color:#fff;padding:18px 20px;border-bottom:1px solid #25344b}
+.hwrap{max-width:1400px;margin:auto;display:flex;align-items:center;gap:14px}
+.logo{width:50px;height:50px;background:#fff;border-radius:13px;display:grid;place-items:center;font-size:29px;flex:0 0 auto}
+.brand{font-size:21px;font-weight:800}
 .sub{color:#aebbd0;font-size:12px;margin-top:3px}
 .hspacer{flex:1}
-.hbtns{display:flex;gap:8px;align-items:center}
-.hbtns button{background:#202e43;color:#dbe5f2;border:1px solid #34445d;border-radius:10px;padding:9px 12px;font-size:12px;font-weight:700}
-.hbtns button:hover{background:#2a3a52}
-main{max-width:1450px;margin:auto;padding:22px 24px 90px}
-.filters,.wingbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.filters button,.wingbar button{background:#fff;border:1px solid #d5dce6;color:#273449;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:700}
+.hbtns{display:flex;gap:7px;flex-wrap:wrap}
+.hbtns button{background:#202e43;color:#dbe5f2;border:1px solid #34445d;border-radius:9px;padding:8px 11px;font-size:12px;font-weight:700}
+main{max-width:1400px;margin:auto;padding:18px 20px 80px}
+.filters,.wingbar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px}
+.filters button,.wingbar button{background:#fff;border:1px solid #d5dce6;color:#273449;padding:9px 13px;border-radius:9px;font-size:13px;font-weight:700}
 .filters button.sel,.wingbar button.sel{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
 .chip-icon{margin-right:6px}
-.stats{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:10px;margin:18px 0 22px}
-.stat{background:#fff;border-radius:14px;padding:16px;display:flex;gap:12px;border:1px solid #d9e0e9;box-shadow:0 3px 10px rgba(16,24,40,.05)}
-.stat-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:#edf2f8;flex:0 0 auto}
-.stat .lbl{font-size:11px;color:#6f84a3;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.stat .val{font-size:23px;font-weight:800;margin-top:4px}
-.stat .sub2{font-size:10px;color:#7890ae;margin-top:3px}
+.stats{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:9px;margin:16px 0 20px}
+.stat{background:#fff;border-radius:13px;padding:14px;display:flex;gap:11px;border:1px solid #d9e0e9;box-shadow:0 3px 10px rgba(16,24,40,.05)}
+.stat-icon{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:19px;background:#edf2f8;flex:0 0 auto}
+.stat .lbl{font-size:10px;color:#6f84a3;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.stat .val{font-size:21px;font-weight:800;margin-top:4px}
+.stat .sub2{font-size:10px;color:#7890ae;margin-top:2px}
 .stat-primary{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
 .stat-primary .stat-icon{background:rgba(255,255,255,.16)}
 .stat-primary .lbl,.stat-primary .sub2{color:#dbe5f2}
-.content-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #d7dee8;padding-bottom:10px;margin:6px 0 12px}
-.content-head h1{font-size:21px;margin:0}
+.content-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #d7dee8;padding-bottom:9px;margin:5px 0 11px}
+.content-head h1{font-size:20px;margin:0}
 .result-count{font-size:12px;color:#7890ae;font-weight:600}
-.wing-section{margin-bottom:16px}
-.wing-title{background:#fff;border:1px solid #d8dee8;border-radius:12px;padding:13px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:800;font-size:15px;box-shadow:0 2px 8px rgba(16,24,40,.04);margin-bottom:10px}
-.wt-left{display:flex;align-items:center;gap:9px}
-.wing-symbol{font-size:17px}
+.wing-section{margin-bottom:15px}
+.wing-title{background:#fff;border:1px solid #d8dee8;border-radius:11px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:800;font-size:15px;box-shadow:0 2px 8px rgba(16,24,40,.04);margin-bottom:9px}
+.wt-left{display:flex;align-items:center;gap:8px}
+.wing-symbol{font-size:16px}
 .wing-title .arrow{color:#7c8fae;transition:.2s}
 .wing-title.collapsed .arrow{transform:rotate(-90deg)}
 .wt-count{color:#8092ad;font-weight:600;font-size:12px}
 .wing-cams{overflow:hidden;transition:max-height .25s ease}
 .wing-cams.collapsed{max-height:0!important}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.cam{background:#fff;border:1px solid #d5dce6;border-radius:12px;padding:14px;cursor:pointer;position:relative;transition:.15s;box-shadow:0 2px 9px rgba(16,24,40,.045);min-height:180px}
-.cam:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:#35b87f;border-radius:12px 0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.cam{background:#fff;border:1px solid #d5dce6;border-radius:11px;padding:13px;cursor:pointer;position:relative;transition:.15s;box-shadow:0 2px 9px rgba(16,24,40,.045);min-height:170px}
+.cam:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:#35b87f;border-radius:11px 0 0 11px}
 .cam:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(16,24,40,.09)}
 .cam.storage{background:#fff}.cam.storage:before{background:#2563a6}
 .cam.rgs{background:#f7faff}.cam.rgs:before{background:#3f7d58}
@@ -60,11 +59,11 @@ main{max-width:1450px;margin:auto;padding:22px 24px 90px}
 .cam.inactive{background:#eef1f4}.cam.inactive:before{background:#1f2933}
 .cam-top{display:flex;justify-content:space-between;align-items:center}
 .cam .num{font-weight:800;font-size:15px}
-.cam .num .cul{font-size:18px;margin-right:5px}
-.cam-arrow{width:26px;height:26px;border-radius:50%;background:#f0f4fa;display:grid;place-items:center;color:#4d89ee;font-size:16px}
-.cam .sort{font-size:14px;margin-top:14px;font-weight:800}
-.cam .qty{font-size:12px;color:#7185a2;margin-top:5px}
-.status-pill{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:5px 9px;border-radius:7px;font-size:11px;font-weight:700;background:#e9eef5;color:#667b98}
+.cam .num .cul{font-size:17px;margin-right:5px}
+.cam-arrow{width:25px;height:25px;border-radius:50%;background:#f0f4fa;display:grid;place-items:center;color:#4d89ee;font-size:15px}
+.cam .sort{font-size:14px;margin-top:13px;font-weight:800}
+.cam .qty{font-size:12px;color:#7185a2;margin-top:4px}
+.status-pill{display:inline-flex;align-items:center;gap:5px;margin-top:11px;padding:4px 9px;border-radius:7px;font-size:11px;font-weight:700;background:#e9eef5;color:#667b98}
 .dot{width:8px;height:8px;border-radius:50%;background:#35b87f}
 .cam.storage .status-pill{background:#c9dced;color:#245b91}
 .cam.rgs .status-pill{background:#c9dfd2;color:#356b4c}
@@ -78,62 +77,64 @@ main{max-width:1450px;margin:auto;padding:22px 24px 90px}
 .cam.problem .dot{background:#c53b3b}
 .cam.empty .dot{background:#c8ced6}
 .cam.inactive .dot{background:#1f2933}
-.cam-meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px solid #eef2f7;font-size:10px;color:#7186a3;font-weight:600}
+.cam-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:11px;padding-top:9px;border-top:1px solid #eef2f7;font-size:10px;color:#7186a3;font-weight:600}
 .modal{display:none;position:fixed;inset:0;background:rgba(16,24,40,.62);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px;z-index:20}
 .modal.open{display:flex}
-.modalbox{background:#fff;border-radius:14px;padding:24px;width:min(650px,100%);max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(16,24,40,.22)}
-.modalbox h2{margin-top:0;font-size:19px;font-weight:800}
-.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.field{display:flex;flex-direction:column;gap:6px}
+.modalbox{background:#fff;border-radius:14px;padding:22px;width:min(650px,100%);max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(16,24,40,.22)}
+.modalbox h2{margin-top:0;font-size:18px;font-weight:800}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field{display:flex;flex-direction:column;gap:5px}
 .field.full{grid-column:1/-1}
 .field label{font-size:12px;color:#7488a4;font-weight:700}
-input,select,textarea{border:1px solid #dfe7f1;border-radius:11px;padding:11px;font:inherit;font-size:14px;background:#fff}
+input,select,textarea{border:1px solid #dfe7f1;border-radius:10px;padding:10px;font:inherit;font-size:14px;background:#fff}
 input:focus,select:focus,textarea:focus{outline:none;border-color:#7ca7f5;box-shadow:0 0 0 3px rgba(40,117,246,.1)}
-textarea{min-height:70px}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
-.modal-actions button{padding:11px 18px;border-radius:10px;font-weight:700;font-size:13px;border:1px solid #dfe7f1;background:#fff}
+textarea{min-height:65px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.modal-actions button{padding:10px 16px;border-radius:9px;font-weight:700;font-size:13px;border:1px solid #dfe7f1;background:#fff}
 .modal-actions button.primary{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
-.view-info{border:1px solid #e3eaf3;border-radius:13px;padding:12px 14px;margin:10px 0}
-.view-info .vrow{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:13px;border-bottom:1px solid #f0f3f7}
+.view-info{border:1px solid #e3eaf3;border-radius:12px;padding:11px 13px;margin:9px 0}
+.view-info .vrow{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:13px;border-bottom:1px solid #f0f3f7}
 .view-info .vrow:last-child{border-bottom:none}
 .view-info .vrow span:first-child{color:#7b8ea8;font-weight:600}
-.btn-full{width:100%;padding:12px;border:1px solid #cfd7e2;background:#fff;border-radius:9px;font-weight:800;font-size:13px}
+.btn-full{width:100%;padding:11px;border:1px solid #cfd7e2;background:#fff;border-radius:9px;font-weight:800;font-size:13px}
 .primary-action{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
-.mobile-nav{display:none}
 .hist-table{width:100%;border-collapse:collapse;font-size:12px}
-.hist-table th,.hist-table td{text-align:left;padding:10px;border-bottom:1px solid #edf2f7;white-space:nowrap}
-.hist-table th{color:#7185a2;background:#fff;font-weight:800;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+.hist-table th,.hist-table td{text-align:left;padding:9px;border-bottom:1px solid #edf2f7;white-space:nowrap}
+.hist-table th{color:#7185a2;background:#fff;font-weight:800;font-size:10px;text-transform:uppercase;letter-spacing:.4px}
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#eef7ff,#e5edff)}
-.login-box{background:#fff;border-radius:18px;padding:32px 28px;width:min(420px,100%);box-shadow:0 20px 60px rgba(16,24,40,.15)}
-.login-box h1{margin:0 0 6px;font-size:26px;display:flex;align-items:center;gap:10px}
-.login-box p{margin:0 0 22px;color:#7185a3;font-size:13px}
-.login-box input{width:100%;margin-bottom:12px;padding:13px;border:1px solid #dfe7f1;border-radius:11px;font-size:15px}
-.login-box button{width:100%;padding:13px;border:0;border-radius:11px;font-weight:800;font-size:14px;margin-bottom:8px}
+.login-box{background:#fff;border-radius:18px;padding:30px 26px;width:min(420px,100%);box-shadow:0 20px 60px rgba(16,24,40,.15)}
+.login-box h1{margin:0 0 6px;font-size:25px;display:flex;align-items:center;gap:9px}
+.login-box p{margin:0 0 20px;color:#7185a3;font-size:13px}
+.login-box input{width:100%;margin-bottom:11px;padding:12px;border:1px solid #dfe7f1;border-radius:10px;font-size:15px}
+.login-box button{width:100%;padding:12px;border:0;border-radius:10px;font-weight:800;font-size:14px;margin-bottom:7px}
 .login-box button.main{background:#1f4f8f;color:#fff}
 .login-box button.alt{background:#f0f4fa;color:#1f4f8f}
-.err{background:#ffe6e6;color:#b4232f;padding:11px 13px;border-radius:10px;font-size:13px;margin-bottom:12px;display:none}
+.err{background:#ffe6e6;color:#b4232f;padding:10px 12px;border-radius:9px;font-size:13px;margin-bottom:11px;display:none}
 .err.show{display:block}
-.user-bar{background:#202e43;border-top:1px solid #34445d;color:#dbe5f2;padding:8px 24px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
-.user-bar button{background:transparent;color:#dbe5f2;border:1px solid #34445d;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700}
+.user-bar{background:#202e43;color:#dbe5f2;padding:8px 20px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
+.user-bar button{background:transparent;color:#dbe5f2;border:1px solid #34445d;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:700}
 .loading{position:fixed;inset:0;background:rgba(255,255,255,.9);display:none;align-items:center;justify-content:center;z-index:100;font-size:15px;color:#7185a3;font-weight:700}
 .loading.show{display:flex}
 @media(max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){
- main{padding:14px}
- .grid{grid-template-columns:repeat(2,1fr);gap:9px}
- .stats{display:flex;overflow-x:auto;gap:9px;padding-bottom:6px}
- .stat{min-width:160px;flex:0 0 auto}
+ main{padding:12px}
+ .grid{grid-template-columns:repeat(2,1fr);gap:8px}
+ .stats{display:flex;overflow-x:auto;gap:8px;padding-bottom:5px}
+ .stat{min-width:155px;flex:0 0 auto}
  .form{grid-template-columns:1fr}
- .modalbox{padding:18px;border-radius:14px 14px 0 0}
+ .modalbox{padding:16px;border-radius:14px 14px 0 0}
  .modal{align-items:flex-end;padding:0}
- .filters,.wingbar{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px}
+ .filters,.wingbar{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px}
  .filters button,.wingbar button{flex:0 0 auto;white-space:nowrap}
+ .header{padding:14px 12px}
+ .logo{width:44px;height:44px;font-size:26px}
+ .brand{font-size:18px}
+ .hbtns button{padding:7px 9px;font-size:11px}
 }
 </style>
 </head>
 <body>
 
-<!-- ЭКРАН ВХОДА -->
 <div id="loginScreen" class="login-wrap">
   <div class="login-box">
     <h1>🍎 Фруктохранилище</h1>
@@ -146,7 +147,6 @@ textarea{min-height:70px}
   </div>
 </div>
 
-<!-- ОСНОВНОЙ ЭКРАН -->
 <div id="appScreen" style="display:none">
 
 <header class="header">
@@ -154,7 +154,7 @@ textarea{min-height:70px}
     <div class="logo">🍎</div>
     <div>
       <div class="brand">Фруктохранилище</div>
-      <div class="sub">Управление запасами · 56 камер · 4 крыла</div>
+      <div class="sub">Управление запасами · 56 камер</div>
     </div>
     <div class="hspacer"></div>
     <div class="hbtns">
@@ -181,13 +181,12 @@ textarea{min-height:70px}
   <div id="grid"></div>
 </main>
 
-<footer style="text-align:center;padding:20px;color:#71839e;font-size:13px;font-weight:600">
+<footer style="text-align:center;padding:18px;color:#71839e;font-size:12px;font-weight:600">
   ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт
 </footer>
 
 </div>
 
-<!-- МОДАЛКА: ПРОСМОТР КАМЕРЫ -->
 <div class="modal" id="viewModal">
   <div class="modalbox" style="width:min(560px,100%)">
     <h2 id="vmTitle">🍎 Камера</h2>
@@ -198,7 +197,6 @@ textarea{min-height:70px}
   </div>
 </div>
 
-<!-- МОДАЛКА: РЕДАКТИРОВАНИЕ -->
 <div class="modal" id="editModal">
   <div class="modalbox">
     <h2>Данные камеры</h2>
@@ -234,16 +232,13 @@ textarea{min-height:70px}
   </div>
 </div>
 
-<!-- МОДАЛКА: ИСТОРИЯ -->
 <div class="modal" id="histModal">
   <div class="modalbox" style="width:min(900px,100%)">
-    <h2>📋 Вся история операций</h2>
+    <h2>📋 История операций</h2>
     <div style="max-height:60vh;overflow:auto;margin-top:12px">
       <table class="hist-table">
         <thead>
-          <tr>
-            <th>Дата</th><th>Камера</th><th>Действие</th><th>Пользователь</th>
-          </tr>
+          <tr><th>Дата</th><th>Камера</th><th>Действие</th><th>Пользователь</th></tr>
         </thead>
         <tbody id="histBody"></tbody>
       </table>
@@ -259,7 +254,7 @@ textarea{min-height:70px}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, collection, getDocs, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, addDoc, collection, getDocs, updateDoc, writeBatch, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQtB3vJh84ELKJg0qs0ycFSGw9Q62ZAOY",
@@ -289,15 +284,10 @@ function todayDate(){var d=new Date();var dd=String(d.getDate()).padStart(2,'0')
 function wingOf(id){return Math.floor((id-1)/14)+1;}
 function culIcon(sort,crop){var s=(sort||crop||'').toLowerCase();if(s.indexOf('груш')>=0)return '🍐';if(s.indexOf('морков')>=0)return '🥕';if(s.indexOf('лук')>=0)return '🧅';if(s.indexOf('капуст')>=0)return '🥬';if(s.indexOf('свекл')>=0)return '🍠';if(s.indexOf('вишн')>=0)return '🍒';if(s.indexOf('виноград')>=0)return '🍇';return '🍎';}
 function showLoading(s){document.getElementById('loading').className=s?'loading show':'loading';}
-
-function showLoginError(msg){
-  var b=document.getElementById('loginErr');
-  b.textContent=msg;
-  b.className='err show';
-}
+function showLoginError(msg){var b=document.getElementById('loginErr');b.textContent=msg;b.className='err show';}
 function hideLoginError(){document.getElementById('loginErr').className='err';}
 
-async function doLogin(){
+window.doLogin=async function(){
   hideLoginError();
   var email=document.getElementById('loginEmail').value.trim();
   var pass=document.getElementById('loginPass').value;
@@ -307,15 +297,15 @@ async function doLogin(){
     await signInWithEmailAndPassword(auth,email,pass);
   }catch(e){
     showLoading(false);
-    var m=e.code||e.message;
+    var m=(e.code||e.message||'').toLowerCase();
     if(m.indexOf('invalid-credential')>=0||m.indexOf('wrong-password')>=0||m.indexOf('user-not-found')>=0)showLoginError('Неверный email или пароль');
     else if(m.indexOf('too-many-requests')>=0)showLoginError('Слишком много попыток. Подождите.');
     else if(m.indexOf('network')>=0)showLoginError('Нет соединения. Проверьте VPN.');
     else showLoginError('Ошибка: '+m);
   }
-}
+};
 
-async function doSignup(){
+window.doSignup=async function(){
   hideLoginError();
   var email=document.getElementById('loginEmail').value.trim();
   var pass=document.getElementById('loginPass').value;
@@ -326,18 +316,16 @@ async function doSignup(){
     await createUserWithEmailAndPassword(auth,email,pass);
   }catch(e){
     showLoading(false);
-    var m=e.code||e.message;
-    if(m.indexOf('email-already-in-use')>=0)showLoginError('Такой email уже зарегистрирован. Нажмите «Войти».');
-    else if(m.indexOf('weak-password')>=0)showLoginError('Слабый пароль. Минимум 6 символов.');
+    var m=(e.code||e.message||'').toLowerCase();
+    if(m.indexOf('email-already-in-use')>=0)showLoginError('Такой email уже есть. Нажмите «Войти».');
+    else if(m.indexOf('weak-password')>=0)showLoginError('Слабый пароль');
     else if(m.indexOf('invalid-email')>=0)showLoginError('Некорректный email');
     else if(m.indexOf('network')>=0)showLoginError('Нет соединения. Проверьте VPN.');
     else showLoginError('Ошибка: '+m);
   }
-}
+};
 
-async function doLogout(){
-  await signOut(auth);
-}
+window.doLogout=async function(){await signOut(auth);};
 
 onAuthStateChanged(auth,async function(user){
   if(user){
@@ -375,11 +363,7 @@ async function initData(){
     var snap=await getDocs(collection(db,'cameras'));
     if(snap.empty){
       var batch=writeBatch(db);
-      var seed=seedCams();
-      seed.forEach(function(c){
-        var ref=doc(db,'cameras','cam'+c.id);
-        batch.set(ref,c);
-      });
+      seedCams().forEach(function(c){batch.set(doc(db,'cameras','cam'+c.id),c);});
       await batch.commit();
       snap=await getDocs(collection(db,'cameras'));
     }
@@ -394,7 +378,7 @@ async function initData(){
     showLoading(false);
   }catch(e){
     showLoading(false);
-    alert('Ошибка загрузки данных: '+e.message);
+    alert('Ошибка загрузки: '+e.message);
   }
 }
 
@@ -423,7 +407,7 @@ function renderStats(){
   });
   var tons=(totalKg/1000).toFixed(1);
   document.getElementById('stats').innerHTML=
-    '<div class="stat stat-primary"><div class="stat-icon">📦</div><div><div class="lbl">Всего продукции</div><div class="val">'+tons+' т</div><div class="sub2">'+totalKg.toLocaleString('ru-RU')+' кг</div></div></div>'+
+    '<div class="stat stat-primary"><div class="stat-icon">📦</div><div><div class="lbl">Всего</div><div class="val">'+tons+' т</div><div class="sub2">'+totalKg.toLocaleString('ru-RU')+' кг</div></div></div>'+
     '<div class="stat"><div class="stat-icon">❄️</div><div><div class="lbl">Занято</div><div class="val">'+occupied+' / 56</div><div class="sub2">камер</div></div></div>'+
     '<div class="stat"><div class="stat-icon">◌</div><div><div class="lbl">Свободно</div><div class="val">'+empty_+'</div><div class="sub2">камер</div></div></div>'+
     '<div class="stat"><div class="stat-icon">🆘</div><div><div class="lbl">Проблемных</div><div class="val">'+problem+'</div><div class="sub2">камер</div></div></div>'+
@@ -460,7 +444,7 @@ function renderWingbar(){
   })(i);}
 }
 
-function toggleWing(wn){collapsed[wn]=!collapsed[wn];render();}
+window.toggleWing=function(wn){collapsed[wn]=!collapsed[wn];render();};
 
 function render(){
   renderStats();renderFilters();renderWingbar();
@@ -475,7 +459,7 @@ function render(){
     var section=document.createElement('div');section.className='wing-section';
     var title=document.createElement('div');
     title.className='wing-title'+(collapsed[w]?' collapsed':'');
-    title.onclick=function(wn){return function(){toggleWing(wn)}}(w);
+    (function(wn){title.onclick=function(){toggleWing(wn)}})(w);
     title.innerHTML='<div class="wt-left"><span class="wing-symbol">⚪️</span><span>'+wingNames[w]+'</span><span class="wt-count">'+wingCams.length+' камер</span></div><span class="arrow">⌄</span>';
     section.appendChild(title);
     var wrap=document.createElement('div');
@@ -502,9 +486,9 @@ function render(){
   document.getElementById('resultCount').textContent=list.length+' камер';
 }
 
-function tapCam(id){selected=id;openView(id);}
+window.tapCam=function(id){selected=id;openView(id);};
 
-function openView(id){
+window.openView=function(id){
   var c=cams.find(function(x){return x.id===id});if(!c)return;
   selected=id;
   var cid=String(c.id).padStart(2,'0');
@@ -516,10 +500,10 @@ function openView(id){
     (c.note?'<div class="view-info"><div class="vrow" style="flex-direction:column;align-items:flex-start;gap:4px"><span>Примечание</span><b style="font-weight:500">'+c.note+'</b></div></div>':'')+
     '<button class="btn-full primary-action" onclick="closeView();openForm('+c.id+')">✎ Редактировать</button>';
   document.getElementById('viewModal').classList.add('open');
-}
-function closeView(){document.getElementById('viewModal').classList.remove('open');}
+};
+window.closeView=function(){document.getElementById('viewModal').classList.remove('open');};
 
-function openForm(id){
+window.openForm=function(id){
   var c=cams.find(function(x){return x.id===id});if(!c)return;
   selected=id;
   var fields=[['fStatus','status'],['fCrop','crop'],['fSort','sort'],['fBatch','batch'],['fQty','qty'],['fTemp','temp'],['fHum','hum'],['fO2','o2'],['fCo2','co2'],['fOperator','operator'],['fLoadAt','loadAt'],['fProcessAt','processAt'],['fRgsAt','rgsAt'],['fNote','note']];
@@ -528,17 +512,17 @@ function openForm(id){
     if(el)el.value=c[f[1]]!=null?c[f[1]]:'';
   });
   document.getElementById('editModal').classList.add('open');
-}
-function closeForm(){document.getElementById('editModal').classList.remove('open');}
+};
+window.closeForm=function(){document.getElementById('editModal').classList.remove('open');};
 
-function onStatusChange(){
+window.onStatusChange=function(){
   var st=document.getElementById('fStatus').value;
   var d=todayDate();
   if(st==='process'){var p=document.getElementById('fProcessAt');if(!p.value)p.value=d;}
   if(st==='rgs'){var r=document.getElementById('fRgsAt');if(!r.value)r.value=d;}
-}
+};
 
-async function saveForm(){
+window.saveForm=async function(){
   var c=cams.find(function(x){return x.id===selected});if(!c)return;
   var oldStatus=c.status;
   var upd={
@@ -562,34 +546,34 @@ async function saveForm(){
   try{
     await updateDoc(doc(db,'cameras','cam'+selected),upd);
     var action=oldStatus!==upd.status?'Статус: '+names[oldStatus]+' → '+names[upd.status]:'Изменение данных';
-    await addDoc(collection(db,'journal'),{camId:selected,cam:'№'+String(selected).padStart(2,'0'),action:action,user:currentUser.email,ts:Date.now(),date:now()});
+    await addDoc(collection(db,'journal'),{camId:selected,cam:'№'+String(selected).padStart(2,'0'),action:action,user:currentUser?currentUser.email:'',ts:Date.now(),date:now()});
     closeForm();
   }catch(e){
-    alert('Ошибка сохранения: '+e.message);
+    alert('Ошибка: '+e.message);
   }
   showLoading(false);
-}
+};
 
-async function renderJournalOnly(){
+function renderJournalOnly(){
   var body=document.getElementById('histBody');
   if(!body)return;
   var arr=journal.slice().reverse().slice(0,200);
   body.innerHTML=arr.map(function(e){
     return '<tr><td>'+e.date+'</td><td>'+e.cam+'</td><td>'+e.action+'</td><td>'+(e.user||'—')+'</td></tr>';
-  }).join('')||'<tr><td colspan="4" style="text-align:center;padding:20px;color:#8295ae">История пуста</td></tr>';
+  }).join('')||'<tr><td colspan="4" style="text-align:center;padding:20px">История пуста</td></tr>';
 }
 
-function openAllHistory(){renderJournalOnly();document.getElementById('histModal').classList.add('open');}
-function closeHist(){document.getElementById('histModal').classList.remove('open');}
+window.openAllHistory=function(){renderJournalOnly();document.getElementById('histModal').classList.add('open');};
+window.closeHist=function(){document.getElementById('histModal').classList.remove('open');};
 
-function exportData(){
-  var blob=new Blob([JSON.stringify({cams:cams,journal:journal,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
+window.exportData=function(){
+  var blob=new Blob([JSON.stringify({cams:cams,journal:journal},null,2)],{type:'application/json'});
   var a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
   a.download='fruitstore-backup-'+todayDate()+'.json';
   a.click();
-}
-function importData(){document.getElementById('importFile').click();}
+};
+window.importData=function(){document.getElementById('importFile').click();};
 
 document.getElementById('importFile').addEventListener('change',async function(e){
   var f=e.target.files[0];if(!f)return;
@@ -598,7 +582,7 @@ document.getElementById('importFile').addEventListener('change',async function(e
     try{
       var parsed=JSON.parse(r.result);
       if(!parsed.cams||!Array.isArray(parsed.cams)){alert('Неверный формат');return;}
-      if(!confirm('Импортировать '+parsed.cams.length+' камер? Текущие данные будут перезаписаны.'))return;
+      if(!confirm('Импортировать '+parsed.cams.length+' камер?'))return;
       showLoading(true);
       var batch=writeBatch(db);
       parsed.cams.forEach(function(c){
@@ -607,7 +591,7 @@ document.getElementById('importFile').addEventListener('change',async function(e
       });
       await batch.commit();
       showLoading(false);
-      alert('Импортировано. Данные обновятся через пару секунд.');
+      alert('Готово');
     }catch(err){
       showLoading(false);
       alert('Ошибка: '+err.message);
