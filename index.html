@@ -616,5 +616,49 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Escape')document.querySelectorAll('.modal.open').forEach(function(m){m.classList.remove('open');});
 });
 </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getFirestore, doc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+const fb2 = initializeApp({
+  apiKey: "AIzaSyAQtB3vJh84ELKJg0qs0ycFSGw9Q62ZAOY",
+  authDomain: "fruitstore-1eab9.firebaseapp.com",
+  projectId: "fruitstore-1eab9",
+  storageBucket: "fruitstore-1eab9.firebasestorage.app",
+  messagingSenderId: "154714552355",
+  appId: "1:154714552355:web:074164f3daef4c73e59996"
+}, "resetApp2");
+const db2 = getFirestore(fb2);
+
+window.resetWings234 = async function(){
+  if(!confirm('Сбросить крылья 2, 3, 4? Все их камеры → 0 кг, статус «Неактивная».'))return;
+  var snap = await getDocs(collection(db2,'cameras'));
+  var count = 0;
+  for(const d of snap.docs){
+    var c = d.data();
+    if(c.wing>=2 && c.wing<=4){
+      await updateDoc(doc(db2,'cameras',d.id),{qty:0,status:'inactive'});
+      count++;
+    }
+  }
+  alert('Готово! Обновлено камер: '+count+'. Обновите страницу.');
+};
+</script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var t=setInterval(function(){
+    var bar=document.querySelector('.hbtns');
+    if(bar && !document.getElementById('resetBtn234')){
+      var b=document.createElement('button');
+      b.id='resetBtn234';
+      b.textContent='🔧 Обнулить 2-4';
+      b.style.cssText='background:#b4232f;color:#fff;border-color:#b4232f';
+      b.onclick=function(){window.resetWings234()};
+      bar.appendChild(b);
+      clearInterval(t);
+    }
+  },500);
+});
+</script>
 </body>
 </html>
