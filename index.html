@@ -165,10 +165,12 @@ textarea{min-height:65px}
     </div>
     <div class="hspacer"></div>
     <div class="hbtns">
-      <button onclick="openAllHistory()">📋 История</button>
-      <button onclick="exportData()">⬇ Экспорт</button>
-      <button onclick="importData()">⬆ Импорт</button>
-    </div>
+  <button onclick="openAllHistory()">📋 История</button>
+</div>
+<div class="hbtns" id="adminBtns" style="display:none">
+  <button onclick="exportData()">⬇ Экспорт</button>
+  <button onclick="importData()">⬆ Импорт</button>
+</div>
   </div>
 </header>
 
@@ -340,6 +342,12 @@ onAuthStateChanged(auth,async function(user){
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('appScreen').style.display='block';
     document.getElementById('userEmail').textContent=user.email;
+   var ADMIN_EMAIL = 'doctor131360@mail.ru';
+if(user.email === ADMIN_EMAIL){
+  document.getElementById('adminBtns').style.display = 'flex';
+}else{
+  document.getElementById('adminBtns').style.display = 'none';
+}
     await initData();
     subscribeData();
     showLoading(false);
