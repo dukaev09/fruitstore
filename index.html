@@ -637,7 +637,22 @@ window.resetWings234 = async function(){
   for(const d of snap.docs){
     var c = d.data();
     if(c.wing>=2 && c.wing<=4){
-      await updateDoc(doc(db2,'cameras',d.id),{qty:0,status:'inactive'});
+      await updateDoc(doc(db2,'cameras',d.id),{
+        qty:0,
+        status:'inactive',
+        temp:null,
+        hum:null,
+        o2:null,
+        co2:null,
+        crop:'',
+        sort:'',
+        batch:'',
+        loadAt:'',
+        processAt:'',
+        rgsAt:'',
+        operator:'',
+        note:''
+      });
       count++;
     }
   }
