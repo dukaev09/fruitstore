@@ -67,6 +67,7 @@ main{max-width:1400px;margin:auto;padding:18px 20px 80px}
 .cam-top{display:flex;justify-content:space-between;align-items:center}
 .cam .num{font-weight:800;font-size:15px}
 .cam .num .cul{font-size:17px;margin-right:5px}
+.ci{width:22px;height:22px;object-fit:contain;vertical-align:middle} 
 .cam-arrow{width:25px;height:25px;border-radius:50%;background:#f0f4fa;display:grid;place-items:center;color:#4d89ee;font-size:15px}
 .cam .sort{font-size:14px;margin-top:13px;font-weight:800}
 .cam .qty{font-size:12px;color:#7185a2;margin-top:4px}
@@ -292,7 +293,17 @@ let collapsed={};
 function now(){return new Date().toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
 function todayDate(){var d=new Date();var dd=String(d.getDate()).padStart(2,'0');var mm=String(d.getMonth()+1).padStart(2,'0');return dd+'.'+mm+'.'+d.getFullYear();}
 function wingOf(id){return Math.floor((id-1)/14)+1;}
-function culIcon(sort,crop){var s=(sort||crop||'').toLowerCase();if(s.indexOf('груш')>=0)return '🍐';if(s.indexOf('морков')>=0)return '🥕';if(s.indexOf('лук')>=0)return '🧅';if(s.indexOf('капуст')>=0)return '🥬';if(s.indexOf('свекл')>=0)return '🍠';if(s.indexOf('вишн')>=0)return '🍒';if(s.indexOf('виноград')>=0)return '🍇';return '🍎';}
+function culIcon(sort,crop){
+  var s=(sort||crop||'').toLowerCase();
+  if(s.indexOf('груш')>=0)return '<img src="/pear.png" class="ci">';
+  if(s.indexOf('морков')>=0)return '<img src="/carrot.png" class="ci">';
+  if(s.indexOf('лук')>=0)return '<img src="/onion.png" class="ci">';
+  if(s.indexOf('капуст')>=0)return '<img src="/cabbage.png" class="ci">';
+  if(s.indexOf('свекл')>=0)return '<img src="/beet.png" class="ci">';
+  if(s.indexOf('виноград')>=0)return '<img src="/grapes.png" class="ci">';
+  if(s.indexOf('слив')>=0)return '<img src="/plum.png" class="ci">';
+  return '<img src="/apple.png" class="ci">';
+}
 function showLoading(s){document.getElementById('loading').className=s?'loading show':'loading';}
 function showLoginError(msg){var b=document.getElementById('loginErr');b.textContent=msg;b.className='err show';}
 function hideLoginError(){document.getElementById('loginErr').className='err';}
