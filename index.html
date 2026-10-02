@@ -70,6 +70,7 @@ main{max-width:1400px;margin:auto;padding:18px 20px 80px}
 .cam-arrow{width:25px;height:25px;border-radius:50%;background:#f0f4fa;display:grid;place-items:center;color:#4d89ee;font-size:15px}
 .cam .sort{font-size:14px;margin-top:13px;font-weight:800}
 .cam .qty{font-size:12px;color:#7185a2;margin-top:4px}
+ .cam .batch{font-size:11px;color:#8b9bb5;margin-top:3px;font-weight:700}
 .status-pill{display:inline-flex;align-items:center;gap:5px;margin-top:11px;padding:4px 9px;border-radius:7px;font-size:11px;font-weight:700;background:#e9eef5;color:#667b98}
 .dot{width:8px;height:8px;border-radius:50%;background:#35b87f}
 .cam.storage .status-pill{background:#c9dced;color:#245b91}
@@ -489,6 +490,7 @@ function render(){
       return '<div class="cam '+c.status+'" onclick="tapCam('+c.id+')">'+
         '<div class="cam-top"><div class="num"><span class="cul">'+culIcon(c.sort,c.crop)+'</span>№'+String(c.id).padStart(2,'0')+'</div><span class="cam-arrow">›</span></div>'+
         '<div class="sort">'+(c.sort||'—')+'</div>'+
+       '<div class="batch">'+(c.batch||'—')+'</div>'+
         '<div class="qty">'+(c.qty||0).toLocaleString('ru-RU')+' кг</div>'+
         '<div class="status-pill"><span class="dot"></span>'+(names[c.status]||c.status)+'</div>'+
         '<div class="cam-meta"><span>🌡 '+temp+'</span><span>💧 '+hum+'</span><span>O₂ '+o2+'</span><span>CO₂ '+co2+'</span></div>'+
