@@ -18,6 +18,7 @@
 :root{--bg:#eef1f5;--card:#fff;--text:#172033;--muted:#667085;--line:#d8dee8;--blue:#1f4f8f;--shadow:0 4px 14px rgba(16,24,40,.07)}
 *{box-sizing:border-box}
 body{margin:0;font-family:'Inter',-apple-system,Arial,sans-serif;background:#eef1f5;color:#172033;-webkit-font-smoothing:antialiased}
+ html,body{overflow-x:hidden;max-width:100%}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 .header{background:#172235;color:#fff;padding:18px 20px;border-bottom:1px solid #25344b}
@@ -29,7 +30,8 @@ button{cursor:pointer}
 .hbtns{display:flex;gap:7px;flex-wrap:wrap}
 .hbtns button{background:#202e43;color:#dbe5f2;border:1px solid #34445d;border-radius:9px;padding:8px 11px;font-size:12px;font-weight:700}
 main{max-width:1400px;margin:auto;padding:18px 20px 80px}
-.filters,.wingbar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px}
+.filters,.wingbar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px;max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+.filters::-webkit-scrollbar,.wingbar::-webkit-scrollbar{display:none}
 .filters button,.wingbar button{background:#fff;border:1px solid #d5dce6;color:#273449;padding:9px 13px;border-radius:9px;font-size:13px;font-weight:700}
 .filters button.sel,.wingbar button.sel{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
 .chip-icon{margin-right:6px}
