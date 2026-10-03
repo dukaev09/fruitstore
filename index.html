@@ -630,6 +630,50 @@ document.getElementById('importFile').addEventListener('change',async function(e
   r.readAsText(f);
 });
 
+ function lockBody(){
+  document.body.style.overflow='hidden';
+  document.body.style.position='fixed';
+  document.body.style.width='100%';
+  document.body.style.top='0';
+}
+function unlockBody(){
+  document.body.style.overflow='';
+  document.body.style.position='';
+  document.body.style.width='';
+  document.body.style.top='';
+}
+
+var _origOpen=window.openView;
+window.openView=function(id){
+  lockBody();
+  _origOpen(id);
+};
+var _origOpenForm=window.openForm;
+window.openForm=function(id){
+  lockBody();
+  _origOpenForm(id);
+};
+var _origOpenAllHistory=window.openAllHistory;
+window.openAllHistory=function(){
+  lockBody();
+  _origOpenAllHistory();
+};
+
+var _origCloseView=window.closeView;
+window.closeView=function(){
+  _origCloseView();
+  unlockBody();
+};
+var _origCloseForm=window.closeForm;
+window.closeForm=function(){
+  _origCloseForm();
+  unlockBody();
+};
+var _origCloseHist=window.closeHist;
+window.closeHist=function(){
+  _origCloseHist();
+  unlockBody();
+};
 document.querySelectorAll('.modal').forEach(function(m){
   m.addEventListener('click',function(e){
     if(e.target===m)m.classList.remove('open');
