@@ -151,7 +151,7 @@ textarea{min-height:65px}
     <h1>🍎 Фруктохранилище</h1>
     <p>Войдите, чтобы получить доступ к камерам</p>
     <div id="loginErr" class="err"></div>
-    <input id="loginEmail" type="email" placeholder="Email" autocomplete="email">
+    <input id="loginEmail" type="text" placeholder="Имя (латиница)" autocomplete="username">
     <input id="loginPass" type="password" placeholder="Пароль (минимум 6 символов)" autocomplete="current-password">
     <button class="main" onclick="doLogin()">Войти</button>
     <button class="alt" onclick="doSignup()">Создать аккаунт</button>
@@ -315,7 +315,8 @@ function hideLoginError(){document.getElementById('loginErr').className='err';}
 
 window.doLogin=async function(){
   hideLoginError();
-  var email=document.getElementById('loginEmail').value.trim();
+  var name=document.getElementById('loginEmail').value.trim().toLowerCase();
+  var email=name.indexOf('@')>=0?name:name+'@fruit.local';
   var pass=document.getElementById('loginPass').value;
   if(!email||!pass){showLoginError('Введите email и пароль');return;}
   showLoading(true);
@@ -333,7 +334,9 @@ window.doLogin=async function(){
 
 window.doSignup=async function(){
   hideLoginError();
-  var email=document.getElementById('loginEmail').value.trim();
+  var name=document.getElementById('loginEmail').value.trim().toLowerCase();
+  if(!/^[a-z0-9._-]{2,20}$/.test(name)){showLoginError('Имя: только латиница, 2-20 символов');return;}
+  var email=name.indexOf('@')>=0?name:name+'@fruit.local';
   var pass=document.getElementById('loginPass').value;
   if(!email||!pass){showLoginError('Введите email и пароль');return;}
   if(pass.length<6){showLoginError('Пароль минимум 6 символов');return;}
@@ -358,7 +361,7 @@ onAuthStateChanged(auth,async function(user){
     currentUser=user;
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('appScreen').style.display='block';
-    document.getElementById('userEmail').textContent=user.email;
+    document.getElementById('userEmail').textContent=user.email.replace('@fruit.local','');
    var ADMIN_EMAIL = 'doctor131360@mail.ru';
 if(user.email === ADMIN_EMAIL){
   document.getElementById('adminBtns').style.display = 'flex';
