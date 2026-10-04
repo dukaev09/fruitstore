@@ -558,7 +558,8 @@ window.onStatusChange=function(){
   if(st==='rgs'){var r=document.getElementById('fRgsAt');if(!r.value)r.value=d;}
 };
 
-window.saveForm=async function(){
+window.saveForm=async function(){var _c=cams.find(function(x){return x.id===selected});if(!_c)return;
+  if(!confirm('Сохранить изменения?\n\nКамера №'+String(selected).padStart(2,'0')+' · '+(_c.sort||'—')+'\n\nПродолжить?'))return;
   var c=cams.find(function(x){return x.id===selected});if(!c)return;
   var oldStatus=c.status;
   var upd={
