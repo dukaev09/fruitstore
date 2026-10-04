@@ -362,7 +362,7 @@ onAuthStateChanged(auth,async function(user){
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('appScreen').style.display='block';
     document.getElementById('userEmail').textContent=user.email.replace('@fruit.local','');
-   var ADMIN_EMAIL = 'doctor131360@mail.ru';
+   var ADMIN_EMAIL = 'adam@fruit.local';
 if(user.email === ADMIN_EMAIL){
   document.getElementById('adminBtns').style.display = 'flex';
 }else{
