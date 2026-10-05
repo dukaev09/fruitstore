@@ -2,44 +2,49 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Фруктохранилище</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
- <link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#172235">
 <link rel="icon" type="image/png" href="/app-icon.png">
 <link rel="apple-touch-icon" href="/app-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Фруктохранилище">
 <style>
-:root{--bg:#eef1f5;--card:#fff;--text:#172033;--muted:#667085;--line:#d8dee8;--blue:#1f4f8f;--shadow:0 4px 14px rgba(16,24,40,.07)}
 *{box-sizing:border-box}
-body{margin:0;font-family:'Inter',-apple-system,Arial,sans-serif;background:#eef1f5;color:#172033;-webkit-font-smoothing:antialiased}
- html,body{overflow-x:hidden;max-width:100%}
+body{margin:0;font-family:Inter,-apple-system,Arial,sans-serif;background:#eef1f5;color:#172033;-webkit-font-smoothing:antialiased}
+html,body{overflow-x:hidden;max-width:100%}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-.header{background:#172235;color:#fff;padding:18px 20px;border-bottom:1px solid #25344b}
+:focus-visible{outline:2px solid #4d89ee;outline-offset:2px}
+.header{background:#172235;color:#fff;padding:calc(18px + env(safe-area-inset-top)) 20px 18px;border-bottom:1px solid #25344b}
 .hwrap{max-width:1400px;margin:auto;display:flex;align-items:center;gap:14px}
-.logo{width:50px;height:50px;background:#fff;border-radius:13px;display:grid;place-items:center;font-size:29px;flex:0 0 auto}
+.logo{width:50px;height:50px;background:#fff;border-radius:13px;display:grid;place-items:center;font-size:29px;flex:0 0 auto;overflow:hidden}
+.logo img{width:100%;height:100%;object-fit:contain}
 .brand{font-size:21px;font-weight:800}
 .sub{color:#aebbd0;font-size:12px;margin-top:3px}
 .hspacer{flex:1}
 .hbtns{display:flex;gap:7px;flex-wrap:wrap}
-.hbtns button{background:#202e43;color:#dbe5f2;border:1px solid #34445d;border-radius:9px;padding:8px 11px;font-size:12px;font-weight:700}
-main{max-width:1400px;margin:auto;padding:18px 20px 80px}
-.filters,.wingbar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px;max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+.hbtns button,.user-bar button{background:#202e43;color:#dbe5f2;border:1px solid #34445d;border-radius:9px;padding:8px 11px;font-size:12px;font-weight:700}
+.user-bar{background:#202e43;color:#dbe5f2;padding:8px 20px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
+.user-bar button{background:transparent;padding:5px 10px;font-size:11px}
+main{max-width:1400px;margin:auto;padding:18px 20px 40px}
+#q{width:100%;margin-bottom:11px;padding:11px 13px;border-radius:10px}
+.filters,.wingbar{display:flex;gap:7px;margin-bottom:11px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .filters::-webkit-scrollbar,.wingbar::-webkit-scrollbar{display:none}
-.filters button,.wingbar button{background:#fff;border:1px solid #d5dce6;color:#273449;padding:9px 13px;border-radius:9px;font-size:13px;font-weight:700}
+.filters button,.wingbar button{flex:0 0 auto;white-space:nowrap;background:#fff;border:1px solid #d5dce6;color:#273449;padding:9px 13px;border-radius:9px;font-size:13px;font-weight:700}
 .filters button.sel,.wingbar button.sel{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
 .chip-icon{margin-right:6px}
 .stats{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:9px;margin:16px 0 20px}
 .stat{background:#fff;border-radius:13px;padding:14px;display:flex;gap:11px;border:1px solid #d9e0e9;box-shadow:0 3px 10px rgba(16,24,40,.05)}
 .stat-icon{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:19px;background:#edf2f8;flex:0 0 auto}
 .stat .lbl{font-size:10px;color:#6f84a3;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
-.stat .val{font-size:21px;font-weight:800;margin-top:4px}
+.stat .val{font-size:21px;font-weight:800;margin-top:4px;white-space:nowrap}
 .stat .sub2{font-size:10px;color:#7890ae;margin-top:2px}
 .stat-primary{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
 .stat-primary .stat-icon{background:rgba(255,255,255,.16)}
@@ -47,230 +52,161 @@ main{max-width:1400px;margin:auto;padding:18px 20px 80px}
 .content-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #d7dee8;padding-bottom:9px;margin:5px 0 11px}
 .content-head h1{font-size:20px;margin:0}
 .result-count{font-size:12px;color:#7890ae;font-weight:600}
-.wing-section{margin-bottom:15px}
-.wing-title{background:#fff;border:1px solid #d8dee8;border-radius:11px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:800;font-size:15px;box-shadow:0 2px 8px rgba(16,24,40,.04);margin-bottom:9px}
+.wing-title{width:100%;text-align:left;color:inherit;background:#fff;border:1px solid #d8dee8;border-radius:11px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:15px;box-shadow:0 2px 8px rgba(16,24,40,.04);margin-bottom:9px}
 .wt-left{display:flex;align-items:center;gap:8px}
-.wing-symbol{font-size:16px}
-.wing-title .arrow{color:#7c8fae;transition:.2s}
-.wing-title.collapsed .arrow{transform:rotate(-90deg)}
 .wt-count{color:#8092ad;font-weight:600;font-size:12px}
-.wing-cams{overflow:hidden;transition:max-height .25s ease}
-.wing-cams.collapsed{max-height:0!important}
+.arrow{color:#7c8fae;transition:.2s}
+.collapsed .arrow{transform:rotate(-90deg)}
+.wing-section{margin-bottom:15px}
+.wing-section.collapsed .grid{display:none}
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
-.cam{background:#fff;border:1px solid #d5dce6;border-radius:11px;padding:13px;cursor:pointer;position:relative;transition:.15s;box-shadow:0 2px 9px rgba(16,24,40,.045);min-height:170px}
-.cam:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:#35b87f;border-radius:11px 0 0 11px}
+.cam{background:#fff;border:1px solid #d5dce6;border-radius:11px;padding:13px;cursor:pointer;position:relative;transition:.15s;box-shadow:0 2px 9px rgba(16,24,40,.045);min-height:170px;text-align:left;color:inherit;display:block;width:100%}
+.cam:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,#2563a6);border-radius:11px 0 0 11px}
 .cam:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(16,24,40,.09)}
-.cam.storage{background:#fff}.cam.storage:before{background:#2563a6}
-.cam.rgs{background:#f7faff}.cam.rgs:before{background:#3f7d58}
-.cam.process{background:#fffaf1}.cam.process:before{background:#c9791b}
-.cam.problem{background:#fff6f6}.cam.problem:before{background:#c53b3b}
-.cam.empty{background:#f7f8fa}.cam.empty:before{background:#c8ced6}
-.cam.inactive{background:#eef1f4}.cam.inactive:before{background:#1f2933}
+.cam.storage{--c:#2563a6;--p:#c9dced;--t:#245b91}
+.cam.rgs{--c:#3f7d58;--p:#c9dfd2;--t:#356b4c;background:#f7faff}
+.cam.process{--c:#c9791b;--p:#e6cfb0;--t:#955816;background:#fffaf1}
+.cam.problem{--c:#c53b3b;--p:#e8c3c3;--t:#a52f2f;background:#fff6f6}
+.cam.empty{--c:#c8ced6;--p:#e1e4e8;--t:#687384;background:#f7f8fa}
+.cam.inactive{--c:#1f2933;--p:#cbd0d5;--t:#27313b;background:#eef1f4}
 .cam-top{display:flex;justify-content:space-between;align-items:center}
-.cam .num{font-weight:800;font-size:15px}
-.cam .num .cul{font-size:17px;margin-right:5px}
-.ci{width:22px;height:22px;object-fit:contain;vertical-align:middle} 
+.num{font-weight:800;font-size:15px;display:flex;align-items:center;gap:6px}
+.ci{width:22px;height:22px;object-fit:contain}
 .cam-arrow{width:25px;height:25px;border-radius:50%;background:#f0f4fa;display:grid;place-items:center;color:#4d89ee;font-size:15px}
-.cam .sort{font-size:14px;margin-top:13px;font-weight:800}
+.cam .sort{font-size:14px;margin-top:13px;font-weight:800;overflow-wrap:anywhere}
 .cam .qty{font-size:12px;color:#7185a2;margin-top:4px}
- .cam .batch{font-size:11px;color:#8b9bb5;margin-top:3px;font-weight:700}
-.status-pill{display:inline-flex;align-items:center;gap:5px;margin-top:11px;padding:4px 9px;border-radius:7px;font-size:11px;font-weight:700;background:#e9eef5;color:#667b98}
-.dot{width:8px;height:8px;border-radius:50%;background:#35b87f}
-.cam.storage .status-pill{background:#c9dced;color:#245b91}
-.cam.rgs .status-pill{background:#c9dfd2;color:#356b4c}
-.cam.process .status-pill{background:#e6cfb0;color:#955816}
-.cam.problem .status-pill{background:#e8c3c3;color:#a52f2f}
-.cam.empty .status-pill{background:#e1e4e8;color:#687384}
-.cam.inactive .status-pill{background:#cbd0d5;color:#27313b}
-.cam.storage .dot{background:#2563a6}
-.cam.rgs .dot{background:#3f7d58}
-.cam.process .dot{background:#c9791b}
-.cam.problem .dot{background:#c53b3b}
-.cam.empty .dot{background:#c8ced6}
-.cam.inactive .dot{background:#1f2933}
+.cam .batch{font-size:11px;color:#8b9bb5;margin-top:3px;font-weight:700;overflow-wrap:anywhere}
+.status-pill{display:inline-flex;align-items:center;gap:5px;margin-top:11px;padding:4px 9px;border-radius:7px;font-size:11px;font-weight:700;background:var(--p);color:var(--t)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--c)}
 .cam-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:11px;padding-top:9px;border-top:1px solid #eef2f7;font-size:10px;color:#7186a3;font-weight:600}
+.empty-msg{text-align:center;color:#7890ae;padding:40px 10px;font-weight:600}
 .modal{display:none;position:fixed;inset:0;background:rgba(16,24,40,.62);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px;z-index:20}
 .modal.open{display:flex}
 .modalbox{background:#fff;border-radius:14px;padding:22px;width:min(650px,100%);max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(16,24,40,.22)}
-.modalbox h2{margin-top:0;font-size:18px;font-weight:800}
+.modalbox h2{margin-top:0;font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:13px}
 .field{display:flex;flex-direction:column;gap:5px}
 .field.full{grid-column:1/-1}
 .field label{font-size:12px;color:#7488a4;font-weight:700}
-input,select,textarea{border:1px solid #dfe7f1;border-radius:10px;padding:10px;font:inherit;font-size:14px;background:#fff}
+input,select,textarea{border:1px solid #dfe7f1;border-radius:10px;padding:10px;font-size:16px;background:#fff;color:inherit;min-width:0}
 input:focus,select:focus,textarea:focus{outline:none;border-color:#7ca7f5;box-shadow:0 0 0 3px rgba(40,117,246,.1)}
-textarea{min-height:65px}
+textarea{min-height:65px;resize:vertical}
 .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
 .modal-actions button{padding:10px 16px;border-radius:9px;font-weight:700;font-size:13px;border:1px solid #dfe7f1;background:#fff}
-.modal-actions button.primary{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
+.modal-actions button.primary,.btn-full.primary{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
+.modal-actions button:disabled{opacity:.6}
 .view-info{border:1px solid #e3eaf3;border-radius:12px;padding:11px 13px;margin:9px 0}
-.view-info .vrow{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:13px;border-bottom:1px solid #f0f3f7}
-.view-info .vrow:last-child{border-bottom:none}
-.view-info .vrow span:first-child{color:#7b8ea8;font-weight:600}
+.vrow{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:13px;border-bottom:1px solid #f0f3f7}
+.vrow:last-child{border-bottom:none}
+.vrow span:first-child{color:#7b8ea8;font-weight:600}
+.vrow b{text-align:right;overflow-wrap:anywhere}
 .btn-full{width:100%;padding:11px;border:1px solid #cfd7e2;background:#fff;border-radius:9px;font-weight:800;font-size:13px}
-.primary-action{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
+.tablewrap{max-height:60vh;overflow:auto;margin-top:12px}
 .hist-table{width:100%;border-collapse:collapse;font-size:12px}
-.hist-table th,.hist-table td{text-align:left;padding:9px;border-bottom:1px solid #edf2f7;white-space:nowrap}
-.hist-table th{color:#7185a2;background:#fff;font-weight:800;font-size:10px;text-transform:uppercase;letter-spacing:.4px}
+.hist-table th,.hist-table td{text-align:left;padding:9px;border-bottom:1px solid #edf2f7}
+.hist-table td:nth-child(3){min-width:180px}
+.hist-table th{color:#7185a2;background:#fff;font-weight:800;font-size:10px;text-transform:uppercase;letter-spacing:.4px;position:sticky;top:0}
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#eef7ff,#e5edff)}
 .login-box{background:#fff;border-radius:18px;padding:30px 26px;width:min(420px,100%);box-shadow:0 20px 60px rgba(16,24,40,.15)}
-.login-box h1{margin:0 0 6px;font-size:25px;display:flex;align-items:center;gap:9px}
+.login-box h1{margin:0 0 6px;font-size:25px}
 .login-box p{margin:0 0 20px;color:#7185a3;font-size:13px}
-.login-box input{width:100%;margin-bottom:11px;padding:12px;border:1px solid #dfe7f1;border-radius:10px;font-size:15px}
+.login-box input{width:100%;margin-bottom:11px;padding:12px}
 .login-box button{width:100%;padding:12px;border:0;border-radius:10px;font-weight:800;font-size:14px;margin-bottom:7px}
-.login-box button.main{background:#1f4f8f;color:#fff}
-.login-box button.alt{background:#f0f4fa;color:#1f4f8f}
+.login-box .main{background:#1f4f8f;color:#fff}
+.login-box .alt{background:#f0f4fa;color:#1f4f8f}
 .err{background:#ffe6e6;color:#b4232f;padding:10px 12px;border-radius:9px;font-size:13px;margin-bottom:11px;display:none}
 .err.show{display:block}
-.user-bar{background:#202e43;color:#dbe5f2;padding:8px 20px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
-.user-bar button{background:transparent;color:#dbe5f2;border:1px solid #34445d;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:700}
 .loading{position:fixed;inset:0;background:rgba(255,255,255,.9);display:none;align-items:center;justify-content:center;z-index:100;font-size:15px;color:#7185a3;font-weight:700}
 .loading.show{display:flex}
+.foot{text-align:center;color:#71839e;font-size:12px;font-weight:600;padding:0 18px 24px}
+.foot i{display:block;color:#a8b3c4;font-size:11px;margin-bottom:10px}
 @media(max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){
- main{padding:12px}
- .grid{grid-template-columns:repeat(2,1fr);gap:8px}
- .stats{display:flex;overflow-x:auto;gap:8px;padding-bottom:5px}
- .stat{min-width:155px;flex:0 0 auto}
- .form{grid-template-columns:1fr}
- .modalbox{padding:16px;border-radius:14px 14px 0 0}
- .modal{align-items:flex-end;padding:0}
- .filters,.wingbar{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px}
- .filters button,.wingbar button{flex:0 0 auto;white-space:nowrap}
- .header{padding:14px 12px}
- .logo{width:44px;height:44px;font-size:26px}
- .brand{font-size:18px}
- .hbtns button{padding:7px 9px;font-size:11px}
+main{padding:12px}
+.grid{grid-template-columns:repeat(2,1fr);gap:8px}
+.stats{display:flex;overflow-x:auto;gap:8px;padding-bottom:5px}
+.stat{min-width:155px;flex:0 0 auto}
+.form{grid-template-columns:1fr}
+.modalbox{padding:16px;border-radius:14px 14px 0 0;max-height:92vh}
+.modal{align-items:flex-end;padding:0}
+.header{padding:calc(14px + env(safe-area-inset-top)) 12px 14px}
+.logo{width:44px;height:44px}
+.brand{font-size:18px}
+.hbtns button{padding:7px 9px;font-size:11px}
+.user-bar{padding:8px 12px}
 }
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 
 <div id="loginScreen" class="login-wrap">
-  <div class="login-box">
+  <form class="login-box" id="loginForm">
     <h1>🍎 Фруктохранилище</h1>
     <p>Войдите, чтобы получить доступ к камерам</p>
-    <div id="loginErr" class="err"></div>
-    <input id="loginEmail" type="text" placeholder="Имя (латиница)" autocomplete="username">
-    <input id="loginPass" type="password" placeholder="Пароль (минимум 6 символов)" autocomplete="current-password">
-    <button class="main" onclick="doLogin()">Войти</button>
-    <button class="alt" onclick="doSignup()">Создать аккаунт</button>
-  </div>
+    <div id="loginErr" class="err" role="alert"></div>
+    <input id="loginName" type="text" placeholder="Имя (латиница)" autocomplete="username" autocapitalize="none" required>
+    <input id="loginPass" type="password" placeholder="Пароль (минимум 6 символов)" autocomplete="current-password" required>
+    <button class="main" type="submit">Войти</button>
+    <button class="alt" type="button" id="signupBtn" data-act="signup">Создать аккаунт</button>
+  </form>
 </div>
 
 <div id="appScreen" style="display:none">
-
-<header class="header">
-  <div class="hwrap">
-    <div class="logo"><img src="/app-icon.png" style="width:100%;height:100%;object-fit:contain;border-radius:13px" alt="🍎"></div>
-    <div>
-      <div class="brand">Фруктохранилище</div>
-      <div class="sub">Управление запасами · 56 камер</div>
-    </div>
-    <div class="hspacer"></div>
-    <div class="hbtns">
-  <button onclick="openAllHistory()">📋 История</button>
-</div>
-<div class="hbtns" id="adminBtns" style="display:none">
-  <button onclick="exportData()">⬇ Экспорт</button>
-  <button onclick="importData()">⬆ Импорт</button>
-</div>
-  </div>
-</header>
-
-<div class="user-bar">
-  <span>Вы вошли как: <b id="userEmail">—</b></span>
-  <button onclick="doLogout()">Выйти</button>
-</div>
-
-<main>
-  <div class="filters" id="filters"></div>
-  <div class="wingbar" id="wingbar"></div>
-  <div class="stats" id="stats"></div>
-  <div class="content-head">
-    <h1>🧊 Камеры</h1>
-    <div class="result-count" id="resultCount">—</div>
-  </div>
-  <div id="grid"></div>
-</main>
-<div style="text-align:center;padding:16px 18px 4px;color:#a8b3c4;font-size:11px;font-style:italic;font-weight:600">
-  Высокое качество низких температур
-</div>
- 
-<footer style="text-align:center;padding:18px;color:#71839e;font-size:12px;font-weight:600">
-  ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт
-</footer>
-
-</div>
-
-<div class="modal" id="viewModal">
-  <div class="modalbox" style="width:min(560px,100%)">
-    <h2 id="vmTitle">🍎 Камера</h2>
-    <div id="vmContent"></div>
-    <div class="modal-actions">
-      <button onclick="closeView()">Закрыть</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal" id="editModal">
-  <div class="modalbox">
-    <h2>Данные камеры</h2>
-    <form class="form" onsubmit="return false">
-      <div class="field"><label>Статус</label>
-        <select id="fStatus" onchange="onStatusChange()">
-          <option value="storage">Охлаждение</option>
-          <option value="process">Обработка</option>
-          <option value="rgs">На РГС</option>
-          <option value="inactive">Неактивная</option>
-          <option value="problem">Проблема</option>
-          <option value="empty">Пустая</option>
-        </select>
+  <header class="header">
+    <div class="hwrap">
+      <div class="logo"><img src="/app-icon.png" alt="🍎" onerror="this.replaceWith('🍎')"></div>
+      <div><div class="brand">Фруктохранилище</div><div class="sub" id="subTitle">Управление запасами</div></div>
+      <div class="hspacer"></div>
+      <div class="hbtns"><button data-act="history">📋 История</button></div>
+      <div class="hbtns" id="adminBtns" style="display:none">
+        <button data-act="export">⬇ Экспорт</button>
+        <button data-act="import">⬆ Импорт</button>
       </div>
-      <div class="field"><label>Культура</label><input id="fCrop"></div>
-      <div class="field"><label>Сорт</label><input id="fSort"></div>
-      <div class="field"><label>Партия</label><input id="fBatch"></div>
-      <div class="field"><label>Количество, кг</label><input id="fQty" type="number" min="0"></div>
-      <div class="field"><label>Температура °C</label><input id="fTemp" type="number" step="0.1"></div>
-      <div class="field"><label>Влажность %</label><input id="fHum" type="number" min="0" max="100"></div>
-      <div class="field"><label>O₂ %</label><input id="fO2" type="number" min="0" max="100" step="0.1"></div>
-      <div class="field"><label>CO₂ %</label><input id="fCo2" type="number" min="0" max="100" step="0.1"></div>
-      <div class="field"><label>Оператор</label><input id="fOperator"></div>
-      <div class="field"><label>Дата загрузки</label><input id="fLoadAt" placeholder="ДД.ММ.ГГГГ"></div>
-      <div class="field"><label>Дата обработки</label><input id="fProcessAt" placeholder="ДД.ММ.ГГГГ"></div>
-      <div class="field"><label>Дата вывода на РГС</label><input id="fRgsAt" placeholder="ДД.ММ.ГГГГ"></div>
-      <div class="field full"><label>Примечание</label><textarea id="fNote"></textarea></div>
-    </form>
-    <div class="modal-actions">
-      <button onclick="closeForm()">Отмена</button>
-      <button class="primary" onclick="saveForm()">Сохранить</button>
     </div>
-  </div>
+  </header>
+  <div class="user-bar"><span>Вы вошли как: <b id="userName">—</b></span><button data-act="logout">Выйти</button></div>
+  <main>
+    <input id="q" type="search" placeholder="Поиск: номер, сорт, партия, культура" autocomplete="off">
+    <div class="filters" id="filters"></div>
+    <div class="wingbar" id="wingbar"></div>
+    <div class="stats" id="stats"></div>
+    <div class="content-head"><h1>🧊 Камеры</h1><div class="result-count" id="resultCount">—</div></div>
+    <div id="grid"></div>
+  </main>
+  <div class="foot"><i>Высокое качество низких температур</i>ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт</div>
 </div>
 
-<div class="modal" id="histModal">
-  <div class="modalbox" style="width:min(900px,100%)">
-    <h2>📋 История операций</h2>
-    <div style="max-height:60vh;overflow:auto;margin-top:12px">
-      <table class="hist-table">
-        <thead>
-          <tr><th>Дата</th><th>Камера</th><th>Действие</th><th>Пользователь</th></tr>
-        </thead>
-        <tbody id="histBody"></tbody>
-      </table>
-    </div>
-    <div class="modal-actions">
-      <button onclick="closeHist()">Закрыть</button>
-    </div>
-  </div>
-</div>
+<div class="modal" id="viewModal"><div class="modalbox" style="width:min(560px,100%)">
+  <h2 id="vmTitle"></h2><div id="vmContent"></div>
+  <div class="modal-actions"><button data-close>Закрыть</button></div>
+</div></div>
 
-<input type="file" id="importFile" accept=".json" style="display:none">
+<div class="modal" id="editModal"><div class="modalbox">
+  <h2>Данные камеры <span id="emNum"></span></h2>
+  <form class="form" id="editForm"></form>
+  <div class="modal-actions">
+    <button data-close>Отмена</button>
+    <button class="primary" id="saveBtn" data-act="save">Сохранить</button>
+  </div>
+</div></div>
+
+<div class="modal" id="histModal"><div class="modalbox" style="width:min(900px,100%)">
+  <h2>📋 История операций</h2>
+  <div class="tablewrap"><table class="hist-table">
+    <thead><tr><th>Дата</th><th>Камера</th><th>Действие</th><th>Пользователь</th></tr></thead>
+    <tbody id="histBody"></tbody>
+  </table></div>
+  <div class="modal-actions"><button data-close>Закрыть</button></div>
+</div></div>
+
+<input type="file" id="importFile" accept=".json" hidden>
 <div id="loading" class="loading">Загрузка…</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, addDoc, collection, getDocs, updateDoc, writeBatch, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getFirestore, doc, addDoc, collection, updateDoc, writeBatch, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQtB3vJh84ELKJg0qs0ycFSGw9Q62ZAOY",
@@ -281,414 +217,351 @@ const firebaseConfig = {
   appId: "1:154714552355:web:074164f3daef4c73e59996"
 };
 
+/* ===== Настройки ===== */
+const ADMIN_EMAIL = 'adam@fruit.local'; // только для скрытия кнопок; настоящая защита — firestore.rules
+const ALLOW_SIGNUP = true;              // false — скрыть «Создать аккаунт» (и отключите регистрацию в консоли Firebase)
+const DOMAIN = '@fruit.local';
+const WING_SIZE = 14, WINGS = 4;
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const names={all:'Все',storage:'Охлаждение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
-const wingNames={1:'Крыло 1',2:'Крыло 2',3:'Крыло 3',4:'Крыло 4'};
-let currentUser=null;
-let cams=[];
-let journal=[];
-let selected=1;
-let filter='all';
-let wingFilter='all';
-let collapsed={};
+const names = {all:'Все',storage:'Охлаждение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
+const chipIcons = {all:'▦',storage:'❄',process:'⚙',rgs:'🧪',inactive:'⏸',problem:'🆘',empty:'◌'};
+const wingName = n => 'Крыло ' + n;
+/* key, подпись, тип, min, max, step, единица */
+const FIELDS = [
+  ['crop','Культура','text'],['sort','Сорт','text'],['batch','Партия','text'],
+  ['qty','Количество, кг','num',0,1e7,1,' кг'],
+  ['temp','Температура °C','num',-30,40,.1,' °C'],
+  ['hum','Влажность %','num',0,100,1,' %'],
+  ['o2','O₂ %','num',0,100,.1,' %'],
+  ['co2','CO₂ %','num',0,100,.1,' %'],
+  ['operator','Оператор','text'],
+  ['loadAt','Дата загрузки','date'],['processAt','Дата обработки','date'],['rgsAt','Дата вывода на РГС','date']
+];
+const LABEL = Object.fromEntries(FIELDS.map(f => [f[0], f[1].replace(/, кг| °C| %/,'')]));
+Object.assign(LABEL, {status:'Статус', note:'Примечание'});
 
-function now(){return new Date().toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
-function todayDate(){var d=new Date();var dd=String(d.getDate()).padStart(2,'0');var mm=String(d.getMonth()+1).padStart(2,'0');return dd+'.'+mm+'.'+d.getFullYear();}
-function wingOf(id){return Math.floor((id-1)/14)+1;}
-function culIcon(sort,crop){
-  var s=(sort||crop||'').toLowerCase();
-  if(s.indexOf('груш')>=0)return '<img src="/pear.png" class="ci">';
-  if(s.indexOf('морков')>=0)return '<img src="/carrot.png" class="ci">';
-  if(s.indexOf('лук')>=0)return '<img src="/onion.png" class="ci">';
-  if(s.indexOf('капуст')>=0)return '<img src="/cabbage.png" class="ci">';
-  if(s.indexOf('свекл')>=0)return '<img src="/beet.png" class="ci">';
-  if(s.indexOf('виноград')>=0)return '<img src="/grapes.png" class="ci">';
-  if(s.indexOf('слив')>=0)return '<img src="/plum.png" class="ci">';
-  return '<img src="/apple.png" class="ci">';
+/* ===== Утилиты ===== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+const fmtNow = () => new Date().toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+const todayIso = () => { const d = new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); };
+const toIso = s => { const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(s||''); return m ? m[3]+'-'+m[2]+'-'+m[1] : ''; };
+const toDmy = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s||''); return m ? m[3]+'.'+m[2]+'.'+m[1] : ''; };
+const wingOf = id => Math.floor((id-1)/WING_SIZE)+1;
+const showLoading = s => $('loading').classList.toggle('show', s);
+const isAdmin = () => !!user && user.email === ADMIN_EMAIL;
+const val = (v, u='') => v != null && v !== '' ? esc(v)+u : '—';
+
+function culIcon(sort, crop){
+  const s = ((sort||'')+' '+(crop||'')).toLowerCase();
+  const map = [['груш','pear','🍐'],['морков','carrot','🥕'],['лук','onion','🧅'],['капуст','cabbage','🥬'],['свекл','beet','🟣'],['виноград','grapes','🍇'],['слив','plum','🟣']];
+  const m = map.find(x => s.includes(x[0])) || [0,'apple','🍎'];
+  return '<img src="/'+m[1]+'.png" class="ci" alt="" onerror="this.replaceWith(\''+m[2]+'\')">';
 }
-function showLoading(s){document.getElementById('loading').className=s?'loading show':'loading';}
-function showLoginError(msg){var b=document.getElementById('loginErr');b.textContent=msg;b.className='err show';}
-function hideLoginError(){document.getElementById('loginErr').className='err';}
 
-window.doLogin=async function(){
-  hideLoginError();
-  var name=document.getElementById('loginEmail').value.trim().toLowerCase();
-  var email=name.indexOf('@')>=0?name:name+'@fruit.local';
-  var pass=document.getElementById('loginPass').value;
-  if(!email||!pass){showLoginError('Введите email и пароль');return;}
-  showLoading(true);
-  try{
-    await signInWithEmailAndPassword(auth,email,pass);
-  }catch(e){
-    showLoading(false);
-    var m=(e.code||e.message||'').toLowerCase();
-    if(m.indexOf('invalid-credential')>=0||m.indexOf('wrong-password')>=0||m.indexOf('user-not-found')>=0)showLoginError('Неверный email или пароль');
-    else if(m.indexOf('too-many-requests')>=0)showLoginError('Слишком много попыток. Подождите.');
-    else if(m.indexOf('network')>=0)showLoginError('Нет соединения. Проверьте VPN.');
-    else showLoginError('Ошибка: '+m);
+/* ===== Модальные окна (блокировка прокрутки в одном месте) ===== */
+let scrollY = 0;
+function openModal(id){
+  if (!document.querySelector('.modal.open')){
+    scrollY = window.scrollY;
+    document.body.style.cssText = 'position:fixed;width:100%;top:-'+scrollY+'px';
   }
-};
-
-window.doSignup=async function(){
-  hideLoginError();
-  var name=document.getElementById('loginEmail').value.trim().toLowerCase();
-  if(!/^[a-z0-9._-]{2,20}$/.test(name)){showLoginError('Имя: только латиница, 2-20 символов');return;}
-  var email=name.indexOf('@')>=0?name:name+'@fruit.local';
-  var pass=document.getElementById('loginPass').value;
-  if(!email||!pass){showLoginError('Введите email и пароль');return;}
-  if(pass.length<6){showLoginError('Пароль минимум 6 символов');return;}
-  showLoading(true);
-  try{
-    await createUserWithEmailAndPassword(auth,email,pass);
-  }catch(e){
-    showLoading(false);
-    var m=(e.code||e.message||'').toLowerCase();
-    if(m.indexOf('email-already-in-use')>=0)showLoginError('Такой email уже есть. Нажмите «Войти».');
-    else if(m.indexOf('weak-password')>=0)showLoginError('Слабый пароль');
-    else if(m.indexOf('invalid-email')>=0)showLoginError('Некорректный email');
-    else if(m.indexOf('network')>=0)showLoginError('Нет соединения. Проверьте VPN.');
-    else showLoginError('Ошибка: '+m);
-  }
-};
-
-window.doLogout=async function(){await signOut(auth);};
-
-onAuthStateChanged(auth,async function(user){
-  if(user){
-    currentUser=user;
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('appScreen').style.display='block';
-    document.getElementById('userEmail').textContent=user.email.replace('@fruit.local','');
-   var ADMIN_EMAIL = 'adam@fruit.local';
-if(user.email === ADMIN_EMAIL){
-  document.getElementById('adminBtns').style.display = 'flex';
-}else{
-  document.getElementById('adminBtns').style.display = 'none';
+  $(id).classList.add('open');
 }
-    await initData();
-    subscribeData();
-    showLoading(false);
-  }else{
-    currentUser=null;
-    document.getElementById('loginScreen').style.display='flex';
-    document.getElementById('appScreen').style.display='none';
+function closeModal(id){
+  $(id).classList.remove('open');
+  if (!document.querySelector('.modal.open')){
+    document.body.style.cssText = '';
+    window.scrollTo(0, scrollY);
+  }
+}
+function closeTopModal(){
+  const open = [...document.querySelectorAll('.modal.open')].pop();
+  if (open) closeModal(open.id);
+}
+
+/* ===== Состояние ===== */
+let user = null, cams = [], journal = [], selected = null;
+let filter = 'all', wingFilter = 'all', search = '', collapsed = {};
+let unsubs = [], seeded = false;
+
+/* ===== Вход ===== */
+const loginErr = m => { $('loginErr').textContent = m; $('loginErr').classList.toggle('show', !!m); };
+const authError = e => {
+  const m = (e.code || e.message || '').toLowerCase();
+  if (/invalid-credential|wrong-password|user-not-found/.test(m)) return 'Неверное имя или пароль';
+  if (/too-many-requests/.test(m)) return 'Слишком много попыток. Подождите.';
+  if (/network/.test(m)) return 'Нет соединения. Проверьте интернет или VPN.';
+  if (/email-already-in-use/.test(m)) return 'Такое имя уже занято. Нажмите «Войти».';
+  if (/weak-password/.test(m)) return 'Слишком простой пароль';
+  if (/operation-not-allowed/.test(m)) return 'Регистрация отключена. Обратитесь к администратору.';
+  return 'Ошибка: ' + m;
+};
+function credentials(signup){
+  const name = $('loginName').value.trim().toLowerCase();
+  const pass = $('loginPass').value;
+  if (!name || !pass){ loginErr('Введите имя и пароль'); return null; }
+  if (signup){
+    if (!/^[a-z0-9._-]{2,20}$/.test(name)){ loginErr('Имя: только латиница, цифры и . _ - (2–20 символов)'); return null; }
+    if (pass.length < 6){ loginErr('Пароль: минимум 6 символов'); return null; }
+  }
+  return { email: name.includes('@') ? name : name + DOMAIN, pass };
+}
+async function doAuth(signup){
+  loginErr('');
+  const c = credentials(signup); if (!c) return;
+  showLoading(true);
+  try { await (signup ? createUserWithEmailAndPassword : signInWithEmailAndPassword)(auth, c.email, c.pass); }
+  catch(e){ showLoading(false); loginErr(authError(e)); }
+}
+
+onAuthStateChanged(auth, u => {
+  user = u;
+  unsubs.forEach(f => f()); unsubs = []; seeded = false; cams = []; journal = [];
+  if (u){
+    $('loginScreen').style.display = 'none';
+    $('appScreen').style.display = 'block';
+    $('userName').textContent = u.email.replace(DOMAIN, '');
+    $('adminBtns').style.display = isAdmin() ? 'flex' : 'none';
+    showLoading(true);
+    subscribe();
+  } else {
+    document.querySelectorAll('.modal.open').forEach(m => closeModal(m.id));
+    $('loginScreen').style.display = 'flex';
+    $('appScreen').style.display = 'none';
+    $('loginPass').value = '';
     showLoading(false);
   }
 });
 
+/* ===== Данные ===== */
+const cleanCam = c => {
+  const id = Number(c.id);
+  const o = { id, wing: wingOf(id), status: names[c.status] && c.status !== 'all' ? c.status : 'empty', note: String(c.note ?? '') };
+  FIELDS.forEach(([k,,t]) => {
+    if (t === 'num'){ const n = c[k] === '' || c[k] == null ? null : Number(c[k]); o[k] = Number.isFinite(n) ? n : (k === 'qty' ? 0 : null); }
+    else o[k] = String(c[k] ?? '');
+  });
+  return o;
+};
+async function commitAll(list){
+  for (let i = 0; i < list.length; i += 400){
+    const b = writeBatch(db);
+    list.slice(i, i+400).forEach(c => b.set(doc(db,'cameras','cam'+c.id), c));
+    await b.commit();
+  }
+}
 function seedCams(){
-  var sorts=['Голден','Гала','Фуджи','Груша','Айдаред','Морковь','Лук','Капуста','Свекла','Ред Чиф'];
-  var a=[];
-  for(var i=1;i<=56;i++){
-    var st=i%14===0?'empty':i%7===0?'rgs':i%9===0?'process':'storage';
-    var s=sorts[(i-1)%sorts.length];
-    var crop=(s==='Морковь'||s==='Лук'||s==='Капуста'||s==='Свекла')?'Овощи':'Яблоко';
-    var qty=st==='empty'?0:(10+(i%16))*1000;
-    a.push({id:i,wing:wingOf(i),status:st,crop:crop,sort:s,batch:'П-'+(240+i),qty:qty,temp:1.5,hum:90,o2:2.5,co2:3.0,note:'',operator:'',loadAt:'',processAt:'',rgsAt:''});
-  }
-  return a;
+  const sorts = ['Голден','Гала','Фуджи','Груша','Айдаред','Морковь','Лук','Капуста','Свекла','Ред Чиф'];
+  const veg = ['Морковь','Лук','Капуста','Свекла'];
+  return Array.from({length: WING_SIZE*WINGS}, (_, k) => {
+    const i = k+1, s = sorts[k % sorts.length];
+    const st = i%14===0 ? 'empty' : i%7===0 ? 'rgs' : i%9===0 ? 'process' : 'storage';
+    return cleanCam({id:i, status:st, crop: veg.includes(s) ? 'Овощи' : 'Яблоко', sort:s, batch:'П-'+(240+i),
+      qty: st==='empty' ? 0 : (10+(i%16))*1000, temp:1.5, hum:90, o2:2.5, co2:3});
+  });
 }
-
-async function initData(){
-  showLoading(true);
-  try{
-    var snap=await getDocs(collection(db,'cameras'));
-    if(snap.empty){
-      var batch=writeBatch(db);
-      seedCams().forEach(function(c){batch.set(doc(db,'cameras','cam'+c.id),c);});
-      await batch.commit();
-      snap=await getDocs(collection(db,'cameras'));
+function subscribe(){
+  const fail = e => { showLoading(false); alert('Ошибка загрузки: ' + e.message); };
+  unsubs.push(onSnapshot(collection(db,'cameras'), snap => {
+    if (snap.empty && !snap.metadata.fromCache && isAdmin() && !seeded){
+      seeded = true; commitAll(seedCams()).catch(fail); return;
     }
-    cams=[];
-    snap.forEach(function(d){cams.push(d.data());});
-    cams.sort(function(a,b){return a.id-b.id;});
-    var jsnap=await getDocs(collection(db,'journal'));
-    journal=[];
-    jsnap.forEach(function(d){journal.push(d.data());});
-    journal.sort(function(a,b){return (a.ts||0)-(b.ts||0);});
+    cams = snap.docs.map(d => d.data()).sort((a,b) => a.id - b.id);
+    showLoading(false);
     render();
-    showLoading(false);
-  }catch(e){
-    showLoading(false);
-    alert('Ошибка загрузки: '+e.message);
-  }
+  }, fail));
+  unsubs.push(onSnapshot(query(collection(db,'journal'), orderBy('ts','desc'), limit(200)), snap => {
+    journal = snap.docs.map(d => d.data());
+    renderJournal();
+  }, e => console.error(e)));
 }
 
-function subscribeData(){
-  onSnapshot(collection(db,'cameras'),function(snap){
-    cams=[];
-    snap.forEach(function(d){cams.push(d.data());});
-    cams.sort(function(a,b){return a.id-b.id;});
-    render();
-  });
-  onSnapshot(collection(db,'journal'),function(snap){
-    journal=[];
-    snap.forEach(function(d){journal.push(d.data());});
-    journal.sort(function(a,b){return (a.ts||0)-(b.ts||0);});
-    renderJournalOnly();
-  });
-}
-
+/* ===== Отрисовка ===== */
 function renderStats(){
-  var totalKg=0,occupied=0,empty_=0,problem=0,inactive=0;
-  cams.forEach(function(c){
-    if(c.status==='storage'||c.status==='process'||c.status==='rgs'){occupied++;totalKg+=(c.qty||0);}
-    else if(c.status==='empty')empty_++;
-    else if(c.status==='problem')problem++;
-    else if(c.status==='inactive')inactive++;
+  let kg = 0, occ = 0, emp = 0, prob = 0, inact = 0;
+  cams.forEach(c => {
+    if (['storage','process','rgs'].includes(c.status)){ occ++; kg += c.qty || 0; }
+    else if (c.status === 'empty') emp++;
+    else if (c.status === 'problem') prob++;
+    else if (c.status === 'inactive') inact++;
   });
-  var tons=(totalKg/1000).toFixed(1);
-  document.getElementById('stats').innerHTML=
-    '<div class="stat stat-primary"><div class="stat-icon">📦</div><div><div class="lbl">Всего</div><div class="val">'+tons+' т</div><div class="sub2">'+totalKg.toLocaleString('ru-RU')+' кг</div></div></div>'+
-    '<div class="stat"><div class="stat-icon">❄️</div><div><div class="lbl">Занято</div><div class="val">'+occupied+' / 56</div><div class="sub2">камер</div></div></div>'+
-    '<div class="stat"><div class="stat-icon">◌</div><div><div class="lbl">Свободно</div><div class="val">'+empty_+'</div><div class="sub2">камер</div></div></div>'+
-    '<div class="stat"><div class="stat-icon">🆘</div><div><div class="lbl">Проблемных</div><div class="val">'+problem+'</div><div class="sub2">камер</div></div></div>'+
-    '<div class="stat"><div class="stat-icon">⏸</div><div><div class="lbl">Неактивных</div><div class="val">'+inactive+'</div><div class="sub2">камер</div></div></div>';
+  const st = (cls, ic, l, v, s) => '<div class="stat '+cls+'"><div class="stat-icon">'+ic+'</div><div><div class="lbl">'+l+'</div><div class="val">'+v+'</div><div class="sub2">'+s+'</div></div></div>';
+  $('stats').innerHTML =
+    st('stat-primary','📦','Всего',(kg/1000).toFixed(1)+' т',kg.toLocaleString('ru-RU')+' кг') +
+    st('','❄️','Занято',occ+' / '+cams.length,'камер') +
+    st('','◌','Свободно',emp,'камер') +
+    st('','🆘','Проблемных',prob,'камер') +
+    st('','⏸','Неактивных',inact,'камер');
+  $('subTitle').textContent = 'Управление запасами · ' + cams.length + ' камер';
 }
-
-function renderFilters(){
-  var f=document.getElementById('filters');f.innerHTML='';
-  var icons={all:'▦',storage:'❄',process:'⚙',rgs:'🧪',inactive:'⏸',problem:'🆘',empty:'◌'};
-  Object.keys(names).forEach(function(k){
-    var b=document.createElement('button');
-    var cnt=k==='all'?cams.length:cams.filter(function(x){return x.status===k}).length;
-    b.innerHTML='<span class="chip-icon">'+icons[k]+'</span>'+names[k]+' <strong>'+cnt+'</strong>';
-    if(filter===k)b.className='sel';
-    b.onclick=function(){filter=k;render();};
-    f.appendChild(b);
-  });
+function renderChips(){
+  $('filters').innerHTML = Object.keys(names).map(k => {
+    const n = k === 'all' ? cams.length : cams.filter(c => c.status === k).length;
+    return '<button data-filter="'+k+'"'+(filter===k?' class="sel"':'')+'><span class="chip-icon">'+chipIcons[k]+'</span>'+names[k]+' <strong>'+n+'</strong></button>';
+  }).join('');
+  let w = '<button data-wing="all"'+(wingFilter==='all'?' class="sel"':'')+'>⚪ Все крылья <strong>'+cams.length+'</strong></button>';
+  for (let i = 1; i <= WINGS; i++)
+    w += '<button data-wing="'+i+'"'+(wingFilter===i?' class="sel"':'')+'>⚪ '+wingName(i)+' <strong>'+cams.filter(c => c.wing === i).length+'</strong></button>';
+  $('wingbar').innerHTML = w;
 }
-
-function renderWingbar(){
-  var w=document.getElementById('wingbar');w.innerHTML='';
-  var btnAll=document.createElement('button');
-  btnAll.innerHTML='⚪ Все крылья <strong>'+cams.length+'</strong>';
-  if(wingFilter==='all')btnAll.className='sel';
-  btnAll.onclick=function(){wingFilter='all';render();};
-  w.appendChild(btnAll);
-  for(var i=1;i<=4;i++){(function(wn){
-    var b=document.createElement('button');
-    var cnt=cams.filter(function(x){return x.wing===wn}).length;
-    b.innerHTML='⚪ '+wingNames[wn]+' <strong>'+cnt+'</strong>';
-    if(wingFilter===wn)b.className='sel';
-    b.onclick=function(){wingFilter=wn;render();};
-    w.appendChild(b);
-  })(i);}
+function camCard(c){
+  return '<button class="cam '+esc(c.status)+'" data-cam="'+c.id+'">'+
+    '<div class="cam-top"><div class="num">'+culIcon(c.sort,c.crop)+'№'+pad(c.id)+'</div><span class="cam-arrow">›</span></div>'+
+    '<div class="sort">'+val(c.sort)+'</div><div class="batch">'+val(c.batch)+'</div>'+
+    '<div class="qty">'+(c.qty||0).toLocaleString('ru-RU')+' кг</div>'+
+    '<div class="status-pill"><span class="dot"></span>'+esc(names[c.status]||c.status)+'</div>'+
+    '<div class="cam-meta"><span>🌡 '+val(c.temp,'°')+'</span><span>💧 '+val(c.hum,'%')+'</span><span>O₂ '+val(c.o2,'%')+'</span><span>CO₂ '+val(c.co2,'%')+'</span></div></button>';
 }
-
-window.toggleWing=function(wn){collapsed[wn]=!collapsed[wn];render();};
-
 function render(){
-  renderStats();renderFilters();renderWingbar();
-  var list=cams.filter(function(c){
-    return (filter==='all'||c.status===filter)&&(wingFilter==='all'||c.wing===wingFilter);
-  });
-  var grid=document.getElementById('grid');
-  grid.innerHTML='';
-  for(var w=1;w<=4;w++){
-    var wingCams=list.filter(function(c){return c.wing===w});
-    if(!wingCams.length)continue;
-    var section=document.createElement('div');section.className='wing-section';
-    var title=document.createElement('div');
-    title.className='wing-title'+(collapsed[w]?' collapsed':'');
-    (function(wn){title.onclick=function(){toggleWing(wn)}})(w);
-    title.innerHTML='<div class="wt-left"><span class="wing-symbol">⚪️</span><span>'+wingNames[w]+'</span><span class="wt-count">'+wingCams.length+' камер</span></div><span class="arrow">⌄</span>';
-    section.appendChild(title);
-    var wrap=document.createElement('div');
-    wrap.className='wing-cams'+(collapsed[w]?' collapsed':'');
-    wrap.style.maxHeight=collapsed[w]?'0':'3000px';
-    var g=document.createElement('div');g.className='grid';
-    g.innerHTML=wingCams.map(function(c){
-      var temp=c.temp!=null?c.temp+'°':'—';
-      var hum=c.hum!=null?c.hum+'%':'—';
-      var o2=c.o2!=null?c.o2+'%':'—';
-      var co2=c.co2!=null?c.co2+'%':'—';
-      return '<div class="cam '+c.status+'" onclick="tapCam('+c.id+')">'+
-        '<div class="cam-top"><div class="num"><span class="cul">'+culIcon(c.sort,c.crop)+'</span>№'+String(c.id).padStart(2,'0')+'</div><span class="cam-arrow">›</span></div>'+
-        '<div class="sort">'+(c.sort||'—')+'</div>'+
-       '<div class="batch">'+(c.batch||'—')+'</div>'+
-        '<div class="qty">'+(c.qty||0).toLocaleString('ru-RU')+' кг</div>'+
-        '<div class="status-pill"><span class="dot"></span>'+(names[c.status]||c.status)+'</div>'+
-        '<div class="cam-meta"><span>🌡 '+temp+'</span><span>💧 '+hum+'</span><span>O₂ '+o2+'</span><span>CO₂ '+co2+'</span></div>'+
-      '</div>';
-    }).join('');
-    wrap.appendChild(g);
-    section.appendChild(wrap);
-    grid.appendChild(section);
+  renderStats(); renderChips();
+  const q = search.trim().toLowerCase();
+  const list = cams.filter(c =>
+    (filter === 'all' || c.status === filter) &&
+    (wingFilter === 'all' || c.wing === wingFilter) &&
+    (!q || [pad(c.id), c.id, c.sort, c.batch, c.crop].join(' ').toLowerCase().includes(q)));
+  let html = '';
+  for (let w = 1; w <= WINGS; w++){
+    const wc = list.filter(c => c.wing === w); if (!wc.length) continue;
+    html += '<section class="wing-section'+(collapsed[w]?' collapsed':'')+'">'+
+      '<button class="wing-title" data-toggle="'+w+'" aria-expanded="'+!collapsed[w]+'"><span class="wt-left"><span>⚪️</span><span>'+wingName(w)+'</span><span class="wt-count">'+wc.length+' камер</span></span><span class="arrow">⌄</span></button>'+
+      '<div class="grid">'+wc.map(camCard).join('')+'</div></section>';
   }
-  document.getElementById('resultCount').textContent=list.length+' камер';
+  $('grid').innerHTML = html || '<div class="empty-msg">'+(cams.length ? 'Ничего не найдено. Измените фильтр или поиск.' : 'Камер пока нет.')+'</div>';
+  $('resultCount').textContent = list.length + ' камер';
+}
+function renderJournal(){
+  $('histBody').innerHTML = journal.map(e =>
+    '<tr><td>'+esc(e.date)+'</td><td>'+esc(e.cam)+'</td><td>'+esc(e.action)+'</td><td>'+esc((e.user||'—').replace(DOMAIN,''))+'</td></tr>'
+  ).join('') || '<tr><td colspan="4" style="text-align:center;padding:20px">История пуста</td></tr>';
 }
 
-window.tapCam=function(id){selected=id;openView(id);};
-
-window.openView=function(id){
-  var c=cams.find(function(x){return x.id===id});if(!c)return;
-  selected=id;
-  var cid=String(c.id).padStart(2,'0');
-  document.getElementById('vmTitle').innerHTML=culIcon(c.sort,c.crop)+' Камера №'+cid;
-  document.getElementById('vmContent').innerHTML=
-    '<div class="view-info"><div class="vrow"><span>Статус</span><b>'+(names[c.status]||c.status)+'</b></div><div class="vrow"><span>Крыло</span><b>'+wingNames[c.wing]+'</b></div><div class="vrow"><span>Культура</span><b>'+(c.crop||'—')+'</b></div><div class="vrow"><span>Сорт</span><b>'+(c.sort||'—')+'</b></div><div class="vrow"><span>Партия</span><b>'+(c.batch||'—')+'</b></div><div class="vrow"><span>Количество</span><b>'+(c.qty||0).toLocaleString('ru-RU')+' кг</b></div></div>'+
-    '<div class="view-info"><div class="vrow"><span>Температура</span><b>'+(c.temp!=null?c.temp+' °C':'—')+'</b></div><div class="vrow"><span>Влажность</span><b>'+(c.hum!=null?c.hum+' %':'—')+'</b></div><div class="vrow"><span>O₂</span><b>'+(c.o2!=null?c.o2+' %':'—')+'</b></div><div class="vrow"><span>CO₂</span><b>'+(c.co2!=null?c.co2+' %':'—')+'</b></div></div>'+
-    '<div class="view-info"><div class="vrow"><span>Загрузка</span><b>'+(c.loadAt||'—')+'</b></div><div class="vrow"><span>Обработка</span><b>'+(c.processAt||'—')+'</b></div><div class="vrow"><span>РГС</span><b>'+(c.rgsAt||'—')+'</b></div><div class="vrow"><span>Оператор</span><b>'+(c.operator||'—')+'</b></div></div>'+
-    (c.note?'<div class="view-info"><div class="vrow" style="flex-direction:column;align-items:flex-start;gap:4px"><span>Примечание</span><b style="font-weight:500">'+c.note+'</b></div></div>':'')+
-    '<button class="btn-full primary-action" onclick="closeView();openForm('+c.id+')">✎ Редактировать</button>';
-  document.getElementById('viewModal').classList.add('open');
-};
-window.closeView=function(){document.getElementById('viewModal').classList.remove('open');};
-
-window.openForm=function(id){
-  var c=cams.find(function(x){return x.id===id});if(!c)return;
-  selected=id;
-  var fields=[['fStatus','status'],['fCrop','crop'],['fSort','sort'],['fBatch','batch'],['fQty','qty'],['fTemp','temp'],['fHum','hum'],['fO2','o2'],['fCo2','co2'],['fOperator','operator'],['fLoadAt','loadAt'],['fProcessAt','processAt'],['fRgsAt','rgsAt'],['fNote','note']];
-  fields.forEach(function(f){
-    var el=document.getElementById(f[0]);
-    if(el)el.value=c[f[1]]!=null?c[f[1]]:'';
+/* ===== Просмотр и редактирование ===== */
+function openView(id){
+  const c = cams.find(x => x.id === id); if (!c) return;
+  selected = id;
+  const row = (l, v) => '<div class="vrow"><span>'+l+'</span><b>'+v+'</b></div>';
+  const F = k => FIELDS.find(f => f[0] === k);
+  const fv = k => val(c[k], F(k)[6] || '');
+  $('vmTitle').innerHTML = culIcon(c.sort,c.crop) + ' Камера №' + pad(c.id);
+  $('vmContent').innerHTML =
+    '<div class="view-info">'+row('Статус',esc(names[c.status]||c.status))+row('Крыло',wingName(c.wing))+row('Культура',fv('crop'))+row('Сорт',fv('sort'))+row('Партия',fv('batch'))+row('Количество',(c.qty||0).toLocaleString('ru-RU')+' кг')+'</div>'+
+    '<div class="view-info">'+row('Температура',fv('temp'))+row('Влажность',fv('hum'))+row('O₂',fv('o2'))+row('CO₂',fv('co2'))+'</div>'+
+    '<div class="view-info">'+row('Загрузка',fv('loadAt'))+row('Обработка',fv('processAt'))+row('РГС',fv('rgsAt'))+row('Оператор',fv('operator'))+'</div>'+
+    (c.note ? '<div class="view-info"><div class="vrow" style="flex-direction:column;gap:4px"><span>Примечание</span><b style="font-weight:500;text-align:left">'+esc(c.note)+'</b></div></div>' : '')+
+    '<button class="btn-full primary" data-act="edit">✎ Редактировать</button>';
+  openModal('viewModal');
+}
+function buildForm(){
+  let h = '<div class="field"><label for="f_status">Статус</label><select id="f_status">'+
+    Object.keys(names).filter(k => k !== 'all').map(k => '<option value="'+k+'">'+names[k]+'</option>').join('')+'</select></div>';
+  FIELDS.forEach(([k,l,t,mn,mx,step]) => {
+    h += '<div class="field"><label for="f_'+k+'">'+l+'</label><input id="f_'+k+'" '+
+      (t==='num' ? 'type="number" inputmode="decimal" min="'+mn+'" max="'+mx+'" step="'+step+'"' : t==='date' ? 'type="date"' : 'type="text" maxlength="60"')+'></div>';
   });
-  document.getElementById('editModal').classList.add('open');
-};
-window.closeForm=function(){document.getElementById('editModal').classList.remove('open');};
-
-window.onStatusChange=function(){
-  var st=document.getElementById('fStatus').value;
-  var d=todayDate();
-  if(st==='process'){var p=document.getElementById('fProcessAt');if(!p.value)p.value=d;}
-  if(st==='rgs'){var r=document.getElementById('fRgsAt');if(!r.value)r.value=d;}
-};
-
-window.saveForm=async function(){var _c=cams.find(function(x){return x.id===selected});if(!_c)return;
-  if(!confirm('Сохранить изменения?\n\nКамера №'+String(selected).padStart(2,'0')+' · '+(_c.sort||'—')+'\n\nПродолжить?'))return;
-  var c=cams.find(function(x){return x.id===selected});if(!c)return;
-  var oldStatus=c.status;
-  var upd={
-    status:document.getElementById('fStatus').value,
-    crop:document.getElementById('fCrop').value,
-    sort:document.getElementById('fSort').value,
-    batch:document.getElementById('fBatch').value,
-    qty:Number(document.getElementById('fQty').value)||0,
-    temp:document.getElementById('fTemp').value===''?null:Number(document.getElementById('fTemp').value),
-    hum:document.getElementById('fHum').value===''?null:Number(document.getElementById('fHum').value),
-    o2:document.getElementById('fO2').value===''?null:Number(document.getElementById('fO2').value),
-    co2:document.getElementById('fCo2').value===''?null:Number(document.getElementById('fCo2').value),
-    operator:document.getElementById('fOperator').value,
-    loadAt:document.getElementById('fLoadAt').value,
-    processAt:document.getElementById('fProcessAt').value,
-    rgsAt:document.getElementById('fRgsAt').value,
-    note:document.getElementById('fNote').value,
-    updatedBy:currentUser?currentUser.email:''
+  $('editForm').innerHTML = h + '<div class="field full"><label for="f_note">Примечание</label><textarea id="f_note" maxlength="500"></textarea></div>';
+  $('f_status').onchange = () => {
+    const s = $('f_status').value;
+    if (s === 'process' && !$('f_processAt').value) $('f_processAt').value = todayIso();
+    if (s === 'rgs' && !$('f_rgsAt').value) $('f_rgsAt').value = todayIso();
   };
-  showLoading(true);
-  try{
-    await updateDoc(doc(db,'cameras','cam'+selected),upd);
-    var action=oldStatus!==upd.status?'Статус: '+names[oldStatus]+' → '+names[upd.status]:'Изменение данных';
-    await addDoc(collection(db,'journal'),{camId:selected,cam:'№'+String(selected).padStart(2,'0'),action:action,user:currentUser?currentUser.email:'',ts:Date.now(),date:now()});
-    closeForm();
-  }catch(e){
-    alert('Ошибка: '+e.message);
+}
+function openForm(){
+  const c = cams.find(x => x.id === selected); if (!c) return;
+  $('emNum').textContent = '№' + pad(c.id);
+  $('f_status').value = c.status;
+  FIELDS.forEach(([k,,t]) => { $('f_'+k).value = t === 'date' ? toIso(c[k]) : (c[k] ?? ''); });
+  $('f_note').value = c.note || '';
+  closeModal('viewModal');
+  openModal('editModal');
+}
+function collect(){
+  const o = { status: $('f_status').value, note: $('f_note').value.trim() };
+  for (const [k,l,t,mn,mx] of FIELDS){
+    const raw = $('f_'+k).value.trim();
+    if (t === 'num'){
+      if (raw === '') o[k] = k === 'qty' ? 0 : null;
+      else {
+        const n = Number(raw);
+        if (!Number.isFinite(n) || n < mn || n > mx){ alert(l + ': допустимо от ' + mn + ' до ' + mx); return null; }
+        o[k] = n;
+      }
+    } else o[k] = t === 'date' ? toDmy(raw) : raw;
   }
-  showLoading(false);
-};
-
-function renderJournalOnly(){
-  var body=document.getElementById('histBody');
-  if(!body)return;
-  var arr=journal.slice().reverse().slice(0,200);
-  body.innerHTML=arr.map(function(e){
-    return '<tr><td>'+e.date+'</td><td>'+e.cam+'</td><td>'+e.action+'</td><td>'+(e.user||'—')+'</td></tr>';
-  }).join('')||'<tr><td colspan="4" style="text-align:center;padding:20px">История пуста</td></tr>';
+  return o;
+}
+async function save(){
+  const c = cams.find(x => x.id === selected); if (!c || !user) return;
+  const upd = collect(); if (!upd) return;
+  const changed = Object.keys(upd).filter(k => String(upd[k] ?? '') !== String(c[k] ?? ''));
+  if (!changed.length){ closeModal('editModal'); return; }
+  if (!confirm('Сохранить изменения?\n\nКамера №' + pad(c.id) + ' · ' + (c.sort||'—'))) return;
+  const action = changed.includes('status') ? 'Статус: ' + names[c.status] + ' → ' + names[upd.status] + (changed.length > 1 ? ' (+ ещё ' + (changed.length-1) + ')' : '')
+    : 'Изменено: ' + changed.map(k => LABEL[k]).join(', ');
+  $('saveBtn').disabled = true; showLoading(true);
+  try {
+    const b = writeBatch(db);
+    b.update(doc(db,'cameras','cam'+c.id), { ...upd, updatedBy: user.email });
+    b.set(doc(collection(db,'journal')), { camId: c.id, cam: '№'+pad(c.id), action, user: user.email, ts: Date.now(), date: fmtNow() });
+    await b.commit();
+    closeModal('editModal');
+  } catch(e){ alert('Не удалось сохранить: ' + e.message); }
+  $('saveBtn').disabled = false; showLoading(false);
 }
 
-window.openAllHistory=function(){renderJournalOnly();document.getElementById('histModal').classList.add('open');};
-window.closeHist=function(){document.getElementById('histModal').classList.remove('open');};
-
-window.exportData=function(){
-  var blob=new Blob([JSON.stringify({cams:cams,journal:journal},null,2)],{type:'application/json'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='fruitstore-backup-'+todayDate()+'.json';
-  a.click();
-};
-window.importData=function(){document.getElementById('importFile').click();};
-
-document.getElementById('importFile').addEventListener('change',async function(e){
-  var f=e.target.files[0];if(!f)return;
-  var r=new FileReader();
-  r.onload=async function(){
-    try{
-      var parsed=JSON.parse(r.result);
-      if(!parsed.cams||!Array.isArray(parsed.cams)){alert('Неверный формат');return;}
-      if(!confirm('Импортировать '+parsed.cams.length+' камер?'))return;
-      showLoading(true);
-      var batch=writeBatch(db);
-      parsed.cams.forEach(function(c){
-        var id=Number(c.id)||0;if(!id)return;
-        batch.set(doc(db,'cameras','cam'+id),c);
-      });
-      await batch.commit();
-      showLoading(false);
-      alert('Готово');
-    }catch(err){
-      showLoading(false);
-      alert('Ошибка: '+err.message);
-    }
+/* ===== Экспорт / импорт (только админ) ===== */
+function exportData(){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify({cams, journal}, null, 2)], {type:'application/json'}));
+  a.download = 'fruitstore-backup-' + todayIso() + '.json';
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+$('importFile').addEventListener('change', e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f || !isAdmin()) return;
+  const r = new FileReader();
+  r.onload = async () => {
+    try {
+      const p = JSON.parse(r.result);
+      if (!Array.isArray(p.cams)) throw new Error('Неверный формат файла');
+      const list = p.cams.filter(c => Number.isInteger(Number(c.id)) && c.id >= 1 && c.id <= 500).map(cleanCam);
+      if (!list.length) throw new Error('В файле нет камер');
+      if (!confirm('Импортировать ' + list.length + ' камер? Текущие данные этих камер будут заменены.')) return;
+      showLoading(true); await commitAll(list); showLoading(false); alert('Готово');
+    } catch(err){ showLoading(false); alert('Ошибка импорта: ' + err.message); }
   };
   r.readAsText(f);
 });
 
- function lockBody(){
-  document.body.style.overflow='hidden';
-  document.body.style.position='fixed';
-  document.body.style.width='100%';
-  document.body.style.top='0';
-}
-function unlockBody(){
-  document.body.style.overflow='';
-  document.body.style.position='';
-  document.body.style.width='';
-  document.body.style.top='';
-}
+/* ===== События ===== */
+if (!ALLOW_SIGNUP) $('signupBtn').style.display = 'none';
+buildForm();
+$('loginForm').addEventListener('submit', e => { e.preventDefault(); doAuth(false); });
+$('q').addEventListener('input', e => { search = e.target.value; render(); });
 
-var _origOpen=window.openView;
-window.openView=function(id){
-  lockBody();
-  _origOpen(id);
-};
-var _origOpenForm=window.openForm;
-window.openForm=function(id){
-  lockBody();
-  _origOpenForm(id);
-};
-var _origOpenAllHistory=window.openAllHistory;
-window.openAllHistory=function(){
-  lockBody();
-  _origOpenAllHistory();
-};
-
-var _origCloseView=window.closeView;
-window.closeView=function(){
-  _origCloseView();
-  unlockBody();
-};
-var _origCloseForm=window.closeForm;
-window.closeForm=function(){
-  _origCloseForm();
-  unlockBody();
-};
-var _origCloseHist=window.closeHist;
-window.closeHist=function(){
-  _origCloseHist();
-  unlockBody();
-};
-document.querySelectorAll('.modal').forEach(function(m){
-  m.addEventListener('click',function(e){
-    if(e.target===m)m.classList.remove('open');
-  });
+document.addEventListener('click', e => {
+  const t = e.target;
+  if (t.classList && t.classList.contains('modal')) return closeModal(t.id);
+  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-wing],[data-toggle]');
+  if (!x) return;
+  if (x.hasAttribute('data-close')) return closeTopModal();
+  if (x.dataset.cam) return openView(Number(x.dataset.cam));
+  if (x.dataset.filter) { filter = x.dataset.filter; return render(); }
+  if (x.dataset.wing) { wingFilter = x.dataset.wing === 'all' ? 'all' : Number(x.dataset.wing); return render(); }
+  if (x.dataset.toggle) { const w = x.dataset.toggle; collapsed[w] = !collapsed[w]; return render(); }
+  const act = {
+    signup: () => doAuth(true), logout: () => signOut(auth), edit: openForm, save,
+    history: () => { renderJournal(); openModal('histModal'); },
+    export: () => isAdmin() && exportData(),
+    import: () => isAdmin() && $('importFile').click()
+  }[x.dataset.act];
+  if (act) act();
 });
-document.addEventListener('keydown',function(e){
-  if(e.key==='Escape')document.querySelectorAll('.modal.open').forEach(function(m){m.classList.remove('open');});
-});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTopModal(); });
 </script>
 </body>
 </html>
