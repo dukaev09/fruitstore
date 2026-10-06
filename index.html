@@ -36,8 +36,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .offline{display:none;background:#b45309;color:#fff;text-align:center;padding:6px;font-size:12px;font-weight:700}
 .offline.show{display:block}
 main{max-width:1400px;margin:auto;padding:16px 20px 36px}
-.stats{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:10px;margin-bottom:14px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);min-width:0}
+.stats{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.stat,.ovc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);min-width:0}
 .stat .l{font-size:12px;color:var(--mut);font-weight:600;display:flex;gap:6px;align-items:center}
 .stat .v{font-size:24px;font-weight:800;margin-top:4px;white-space:nowrap}.stat .s{font-size:12px;color:var(--mut)}
 .bar{height:6px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:8px}
@@ -45,7 +45,24 @@ main{max-width:1400px;margin:auto;padding:16px 20px 36px}
 .stat.pri{background:linear-gradient(135deg,#1d5fd1,#0e3b8c);color:#fff;border:0}
 .pri .l,.pri .s{color:#d6e4ff}.pri .bar{background:rgba(255,255,255,.25)}.pri .bar i{background:#fff}
 .stat.bad .v{color:var(--bad)}
-.attn{background:color-mix(in srgb,var(--bad) 8%,var(--card));border:1px solid color-mix(in srgb,var(--bad) 40%,var(--line));border-radius:14px;padding:12px;margin-bottom:14px}
+.ov{display:grid;grid-template-columns:1fr 1.2fr;gap:10px;margin-bottom:14px}
+.ovc h3{margin:0 0 10px;font-size:13px;color:var(--mut)}
+.donut{display:flex;gap:16px;align-items:center}
+.ring{width:112px;height:112px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center}
+.ring div{width:76px;height:76px;border-radius:50%;background:var(--card);display:grid;place-items:center;text-align:center;font-weight:800;font-size:20px;line-height:1.1}
+.ring small{display:block;font-size:11px;color:var(--mut);font-weight:600}
+.lg2{display:grid;gap:5px;font-size:12px;flex:1}
+.lg2 span{display:flex;align-items:center;gap:6px}
+.lg2 i{width:9px;height:9px;border-radius:50%;background:var(--c)}.lg2 b{margin-left:auto}
+.crop{display:grid;grid-template-columns:90px 1fr auto;gap:8px;align-items:center;font-size:12px;margin-bottom:7px}.crop .bar{margin:0}
+.plan{grid-column:1/-1}
+.pw{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.pw>b{font-size:12px;width:62px;color:var(--mut);flex:0 0 auto}
+.tl{display:flex;gap:4px;flex-wrap:wrap}
+.tl button{width:30px;height:30px;border-radius:7px;border:0;background:var(--c);color:#fff;font-size:11px;font-weight:700}
+.tl button.warn{outline:2px solid var(--bad);outline-offset:1px}
+.hint{font-size:12px;color:var(--mut);margin:6px 0 0}
+.attn{background:color-mix(in srgb,var(--bad) 8%,var(--card));border:1px solid color-mix(in srgb,var(--bad) 40%,var(--line));border-radius:14px;padding:12px;margin-bottom:10px}
 .attn h2{margin:0 0 8px;font-size:14px;display:flex;gap:6px;align-items:center;color:var(--bad)}
 .alist{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
 .achip{flex:0 0 auto;background:var(--card);border:1px solid color-mix(in srgb,var(--bad) 35%,var(--line));border-radius:10px;padding:8px 11px;text-align:left;font-size:12px;min-height:44px}
@@ -79,6 +96,7 @@ main{max-width:1400px;margin:auto;padding:16px 20px 36px}
 .srt{font-weight:800;font-size:15px;margin-top:8px;overflow-wrap:anywhere}
 .bt{font-size:12px;color:var(--mut);overflow-wrap:anywhere}
 .qt{font-size:19px;font-weight:800;margin:4px 0 8px}.qt small{font-size:12px;color:var(--mut);font-weight:600}
+.qt small.od{color:var(--bad)}
 .mt{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line);font-size:12px}
 .m{display:flex;justify-content:space-between;gap:4px}.m span{color:var(--mut)}.m b{font-weight:700}.m.bad b{color:var(--bad)}
 .empty-msg{text-align:center;color:var(--mut);padding:40px 10px;font-weight:600}
@@ -116,7 +134,6 @@ textarea{min-height:70px;resize:vertical}
 .ht{width:100%;border-collapse:collapse;font-size:13px}
 .ht th,.ht td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
 .ht th{color:var(--mut);font-size:12px;position:sticky;top:0;background:var(--card)}
-.hint{font-size:12px;color:var(--mut);margin:6px 0 0}
 .lw{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 20% 10%,#2a5bd0 0,transparent 45%),linear-gradient(135deg,#0f1b2d,#17355f)}
 .lb{background:var(--card);border-radius:22px;padding:30px 26px;width:min(400px,100%);box-shadow:0 30px 80px #0007}
 .lb .lg{font-size:44px}.lb h1{margin:8px 0 4px;font-size:24px}.lb p{margin:0 0 18px;color:var(--mut)}
@@ -139,13 +156,14 @@ textarea{min-height:70px;resize:vertical}
 main{padding:12px 12px 30px}.chips{margin:0 -12px 10px;padding:8px 12px}
 .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .stats{display:flex;overflow-x:auto;scrollbar-width:none}.stat{min-width:150px;flex:0 0 auto}
+.ov{grid-template-columns:1fr}.tl button{width:34px;height:34px}.pw{align-items:flex-start}
 .tiles{grid-template-columns:repeat(2,1fr)}
 .modal{align-items:flex-end;padding:0}.box{border-radius:18px 18px 0 0;padding:16px}
 .wt .bar{width:56px}
 }
 @media print{
 .hd,.chips,.srow,.acts,.modal,#toasts,.foot,.offline,.attn{display:none!important}
-body{background:#fff;color:#000}.cam,.stat{box-shadow:none;break-inside:avoid}
+body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avoid}
 .wing.col .grid{display:grid!important}.grid{grid-template-columns:repeat(4,1fr)}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -200,6 +218,7 @@ body{background:#fff;color:#000}.cam,.stat{box-shadow:none;break-inside:avoid}
   <main>
     <div id="attn"></div>
     <div class="stats" id="stats"></div>
+    <div class="ov" id="ov"></div>
     <div class="srow">
       <label class="sbox"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Номер, сорт, партия, культура" autocomplete="off"></label>
       <select id="wing" aria-label="Крыло"></select>
@@ -241,12 +260,12 @@ const firebaseConfig = {
 };
 
 /* ===== Настройки ===== */
-const ADMIN_EMAIL = 'adam@fruit.local'; // только скрывает кнопки; настоящая защита — firestore.rules
+const ADMIN_EMAIL = 'adam@fruit.local'; // только скрывает кнопки; защита — firestore.rules
 const ALLOW_SIGNUP = true;              // false — убрать «Создать аккаунт»
 const DOMAIN = '@fruit.local';
-const DEF = { wings: 4, size: 14, norms: { temp:[-1,5], hum:[80,98], o2:[1,5], co2:[0,6] } };
+const DEF = { wings: 4, size: 14, maxDays: 180, norms: { temp:[-1,5], hum:[80,98], o2:[1,5], co2:[0,6] } };
 const NL = { temp:['Температура',' °C'], hum:['Влажность',' %'], o2:['O₂',' %'], co2:['CO₂',' %'] };
-let S = structuredClone(DEF); // рабочие настройки (из Firestore)
+let S = structuredClone(DEF);
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -286,9 +305,12 @@ const isAdmin = () => !!user && user.email === ADMIN_EMAIL;
 const val = (v, u='') => v != null && v !== '' ? esc(v)+u : '—';
 const unit = k => FIELDS.find(f => f[0] === k)[6] || '';
 const toast = (m, err) => { const d = document.createElement('div'); d.className = 'toast'+(err?' err':''); d.textContent = m; $('toasts').append(d); setTimeout(() => d.remove(), 3400); };
-const issues = c => ACTIVE.includes(c.status) ? Object.keys(NL).filter(k => { const n = S.norms[k]; return c[k] != null && n && (c[k] < n[0] || c[k] > n[1]); }) : [];
-const needsAttention = c => c.status === 'problem' || issues(c).length > 0;
 const vis = () => cams.filter(c => c.id <= total());
+const days = c => { const i = toIso(c.loadAt); return i ? Math.max(0, Math.floor((Date.now() - new Date(i)) / 864e5)) : null; };
+const issues = c => ACTIVE.includes(c.status) ? Object.keys(NL).filter(k => { const n = S.norms[k]; return c[k] != null && n && (c[k] < n[0] || c[k] > n[1]); }) : [];
+const over = c => ACTIVE.includes(c.status) && S.maxDays > 0 && (days(c) || 0) > S.maxDays;
+const needsAttention = c => c.status === 'problem' || issues(c).length > 0 || over(c);
+const reasons = c => c.status === 'problem' ? ['Проблема'] : [...issues(c).map(k => NL[k][0]+' '+esc(c[k])+NL[k][1]), ...(over(c) ? ['Срок '+days(c)+' дн.'] : [])];
 
 function culIcon(sort, crop){
   const s = ((sort||'')+' '+(crop||'')).toLowerCase();
@@ -387,7 +409,7 @@ function subscribe(){
   const fail = e => { showLoading(false); toast('Ошибка загрузки: ' + e.message, 1); };
   unsubs.push(onSnapshot(doc(db,'settings','main'), s => {
     const d = s.exists() ? s.data() : {};
-    S = { wings: d.wings || DEF.wings, size: d.size || DEF.size, norms: { ...DEF.norms, ...(d.norms || {}) } };
+    S = { wings: d.wings || DEF.wings, size: d.size || DEF.size, maxDays: d.maxDays ?? DEF.maxDays, norms: { ...DEF.norms, ...(d.norms || {}) } };
     document.body.classList.toggle('is-admin', isAdmin());
     if (cams.length) render();
   }, e => console.error(e)));
@@ -409,8 +431,7 @@ function renderAttn(){
   const bad = vis().filter(needsAttention);
   $('attn').innerHTML = !bad.length ? '' :
     '<section class="attn"><h2>'+ic('alert')+'Требуют внимания: '+bad.length+'</h2><div class="alist">'+
-    bad.map(c => '<button class="achip" data-cam="'+c.id+'"><b>№'+pad(c.id)+' · '+val(c.sort)+'</b><span>'+
-      (c.status === 'problem' ? 'Проблема' : issues(c).map(k => NL[k][0]+' '+esc(c[k])+NL[k][1]).join(', '))+'</span></button>').join('')+
+    bad.map(c => '<button class="achip" data-cam="'+c.id+'"><b>№'+pad(c.id)+' · '+val(c.sort)+'</b><span>'+reasons(c).join(', ')+'</span></button>').join('')+
     '</div></section>';
 }
 function renderStats(){
@@ -424,7 +445,27 @@ function renderStats(){
     st('','snow','Занято камер',occ+' / '+all.length,pct+'% загрузки','<div class="bar"><i style="width:'+pct+'%"></i></div>') +
     st('','circle','Свободно',emp,'камер') +
     st(bad?'bad':'','alert','Внимание',bad,bad?'нужна проверка':'всё в норме');
-  $('subTitle').textContent = 'Управление запасами · ' + all.length + ' камер';
+  $('subTitle').textContent = new Date().toLocaleDateString('ru-RU',{day:'numeric',month:'long'}) + ' · ' + all.length + ' камер';
+}
+function renderOv(){
+  const all = vis(), cnt = {};
+  all.forEach(c => cnt[c.status] = (cnt[c.status] || 0) + 1);
+  const occ = all.filter(c => ACTIVE.includes(c.status));
+  let a = 0;
+  const grad = all.length ? Object.keys(ST).map(k => { const p = (cnt[k] || 0) / all.length * 100, s = ST[k][1]+' '+a+'% '+(a+p)+'%'; a += p; return s; }).join(',') : 'var(--line) 0 100%';
+  const legend = Object.keys(ST).filter(k => cnt[k]).map(k => '<span style="--c:'+ST[k][1]+'"><i></i>'+names[k]+'<b>'+cnt[k]+'</b></span>').join('');
+  const byCrop = {};
+  occ.forEach(c => { const k = c.crop || 'Без культуры'; byCrop[k] = (byCrop[k] || 0) + (c.qty || 0); });
+  const top = Object.entries(byCrop).sort((x, y) => y[1] - x[1]).slice(0, 5), mx = top.length ? top[0][1] || 1 : 1;
+  const ds = occ.map(days).filter(d => d != null), avg = ds.length ? Math.round(ds.reduce((s, d) => s + d, 0) / ds.length) : null;
+  const plan = Array.from({length: S.wings}, (_, i) => i + 1).map(w =>
+    '<div class="pw"><b>'+wingName(w)+'</b><div class="tl">'+all.filter(c => wingOf(c.id) === w).map(c =>
+      '<button class="'+(needsAttention(c)?'warn':'')+'" data-cam="'+c.id+'" style="--c:'+(ST[c.status]||ST.empty)[1]+'" title="№'+pad(c.id)+' · '+esc(names[c.status])+'">'+c.id+'</button>').join('')+'</div></div>').join('');
+  $('ov').innerHTML =
+    '<div class="ovc"><h3>Загрузка хранилища</h3><div class="donut"><div class="ring" style="background:conic-gradient('+grad+')"><div><span>'+Math.round(occ.length/(all.length||1)*100)+'%<small>занято</small></span></div></div><div class="lg2">'+legend+'</div></div></div>'+
+    '<div class="ovc"><h3>Запасы по культурам'+(avg != null ? ' · средний срок '+avg+' дн.' : '')+'</h3>'+
+    (top.map(([k, v]) => '<div class="crop"><span>'+esc(k)+'</span><div class="bar"><i style="width:'+Math.round(v/mx*100)+'%"></i></div><b>'+(v/1000).toFixed(1)+' т</b></div>').join('') || '<div class="hint">Пока нет данных</div>')+'</div>'+
+    '<div class="ovc plan"><h3>План хранилища</h3>'+plan+'</div>';
 }
 function renderChips(){
   const all = vis();
@@ -439,15 +480,15 @@ function renderChips(){
 }
 function camCard(c){
   const bad = issues(c), m = (k, l, u) => '<div class="m'+(bad.includes(k)?' bad':'')+'"><span>'+l+'</span><b>'+val(c[k],u)+'</b></div>';
-  const [icn, col] = ST[c.status] || ST.empty;
+  const [icn, col] = ST[c.status] || ST.empty, d = ACTIVE.includes(c.status) ? days(c) : null;
   return '<button class="cam '+esc(c.status)+(needsAttention(c)?' warn':'')+'" data-cam="'+c.id+'" style="--c:'+col+'">'+
     '<div class="ct"><div class="num">'+culIcon(c.sort,c.crop)+'№'+pad(c.id)+'</div><span class="pill">'+ic(icn)+esc(names[c.status]||c.status)+'</span></div>'+
     '<div class="srt">'+val(c.sort)+'</div><div class="bt">'+val(c.batch)+'</div>'+
-    '<div class="qt">'+(c.qty||0).toLocaleString('ru-RU')+' <small>кг</small></div>'+
+    '<div class="qt">'+(c.qty||0).toLocaleString('ru-RU')+' <small>кг</small>'+(d != null ? ' <small class="'+(over(c)?'od':'')+'">· '+d+' дн.</small>' : '')+'</div>'+
     '<div class="mt">'+m('temp','Темп.','°')+m('hum','Влаж.','%')+m('o2','O₂','%')+m('co2','CO₂','%')+'</div></button>';
 }
 function render(){
-  renderStats(); renderAttn(); renderChips();
+  renderStats(); renderOv(); renderAttn(); renderChips();
   const all = vis(), q = search.trim().toLowerCase();
   const list = all.filter(c => (filter === 'all' || c.status === filter) && (wingFilter === 'all' || wingOf(c.id) === wingFilter) &&
     (!q || [pad(c.id), c.id, c.sort, c.batch, c.crop].join(' ').toLowerCase().includes(q)));
@@ -473,14 +514,14 @@ function renderJournal(){
 function openView(id){
   const c = cams.find(x => x.id === id); if (!c) return;
   selected = id;
-  const [icn, col] = ST[c.status] || ST.empty, bad = issues(c);
+  const [icn, col] = ST[c.status] || ST.empty, bad = issues(c), d = days(c);
   const row = (l, v) => '<div class="vr"><span>'+l+'</span><b>'+v+'</b></div>';
   const tile = k => '<div class="tile'+(bad.includes(k)?' bad':'')+'"><span>'+NL[k][0]+'</span><b>'+val(c[k],unit(k))+'</b>'+(bad.includes(k)?'<small>норма '+S.norms[k][0]+'…'+S.norms[k][1]+'</small>':'')+'</div>';
   $('vmTitle').innerHTML = culIcon(c.sort,c.crop)+'Камера №'+pad(c.id)+' <span class="pill" style="--c:'+col+'">'+ic(icn)+esc(names[c.status]||c.status)+'</span>';
   $('vmContent').innerHTML =
     '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+
     '<div class="rows">'+row('Крыло',wingName(wingOf(c.id)))+row('Культура',val(c.crop))+row('Сорт',val(c.sort))+row('Партия',val(c.batch))+row('Количество',(c.qty||0).toLocaleString('ru-RU')+' кг')+row('Оператор',val(c.operator))+'</div>'+
-    '<div class="rows">'+row('Загрузка',val(c.loadAt))+row('Обработка',val(c.processAt))+row('Вывод на РГС',val(c.rgsAt))+row('Обновлено',c.updatedAt?fmtDT(c.updatedAt):'—')+'</div>'+
+    '<div class="rows">'+row('Загрузка',val(c.loadAt))+row('Срок хранения',d != null && ACTIVE.includes(c.status) ? '<span style="color:'+(over(c)?'var(--bad)':'inherit')+'">'+d+' дн.'+(over(c)?' (превышен)':'')+'</span>' : '—')+row('Обработка',val(c.processAt))+row('Вывод на РГС',val(c.rgsAt))+row('Обновлено',c.updatedAt?fmtDT(c.updatedAt):'—')+'</div>'+
     (c.note ? '<div class="rows"><div class="vr" style="flex-direction:column;gap:4px"><span>Примечание</span><b style="text-align:left;font-weight:500">'+esc(c.note)+'</b></div></div>' : '')+
     '<button class="btn pri full" data-act="edit">Редактировать</button>';
   openModal('viewModal');
@@ -564,14 +605,16 @@ function openSettings(){
     '<div class="grp"><h3>Структура</h3><div class="fg"><div class="fld"><label for="s_wings">Число крыльев</label><input id="s_wings" type="number" min="1" max="12" value="'+S.wings+'"></div>'+
     '<div class="fld"><label for="s_size">Камер в крыле</label><input id="s_size" type="number" min="1" max="60" value="'+S.size+'"></div></div>'+
     '<p class="hint">Всего не больше 400 камер. Недостающие камеры создаются пустыми. Лишние не удаляются, а только скрываются.</p></div>'+
+    '<div class="grp"><h3>Срок хранения</h3><div class="fld"><label for="s_days">Максимум, дней (0 — не контролировать)</label><input id="s_days" type="number" min="0" max="1000" value="'+S.maxDays+'"></div></div>'+
     '<div class="grp"><h3>Нормы (за пределами подсвечиваются красным)</h3><div class="fg">'+
     Object.keys(NL).map(k => '<div class="fld"><label>'+NL[k][0]+', от — до</label><div style="display:flex;gap:6px"><input id="s_'+k+'0" type="number" step="any" value="'+n[k][0]+'" style="width:50%"><input id="s_'+k+'1" type="number" step="any" value="'+n[k][1]+'" style="width:50%"></div></div>').join('')+
     '</div></div>';
   closeModal('menuModal'); openModal('setModal');
 }
 async function saveSettings(){
-  const w = Number($('s_wings').value), z = Number($('s_size').value), norms = {};
+  const w = Number($('s_wings').value), z = Number($('s_size').value), md = Number($('s_days').value), norms = {};
   if (!Number.isInteger(w) || !Number.isInteger(z) || w < 1 || w > 12 || z < 1 || z > 60 || w*z > 400){ toast('Проверьте число крыльев и камер (всего до 400)', 1); return; }
+  if (!Number.isInteger(md) || md < 0 || md > 1000){ toast('Срок хранения: целое число от 0 до 1000', 1); return; }
   for (const k of Object.keys(NL)){
     const a = Number($('s_'+k+'0').value), b = Number($('s_'+k+'1').value);
     if (!Number.isFinite(a) || !Number.isFinite(b) || a > b){ toast(NL[k][0]+': «от» должно быть меньше «до»', 1); return; }
@@ -581,7 +624,7 @@ async function saveSettings(){
   $('setSave').disabled = true; showLoading(true);
   try {
     const b = writeBatch(db), have = new Set(cams.map(c => c.id));
-    b.set(doc(db,'settings','main'), { wings: w, size: z, norms });
+    b.set(doc(db,'settings','main'), { wings: w, size: z, maxDays: md, norms });
     for (let i = 1; i <= w*z; i++) if (!have.has(i)) b.set(doc(db,'cameras','cam'+i), cleanCam({id:i, status:'empty'}));
     await b.commit();
     closeModal('setModal'); toast('Настройки сохранены');
@@ -595,9 +638,9 @@ function download(name, blob){
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 function exportCsv(){
-  const cols = [['id','№'],['wing','Крыло'],['status','Статус'],...FIELDS.map(f => [f[0], f[1]]),['note','Примечание']];
+  const cols = [['id','№'],['wing','Крыло'],['status','Статус'],...FIELDS.map(f => [f[0], f[1]]),['days','Срок, дн.'],['note','Примечание']];
   const cell = v => '"' + String(v ?? '').replace(/"/g,'""') + '"';
-  const rows = vis().map(c => cols.map(([k]) => cell(k==='wing' ? wingOf(c.id) : k==='status' ? names[c.status] : c[k])).join(';'));
+  const rows = vis().map(c => cols.map(([k]) => cell(k==='wing' ? wingOf(c.id) : k==='status' ? names[c.status] : k==='days' ? days(c) : c[k])).join(';'));
   download('kamery-' + todayIso() + '.csv', new Blob(['\ufeff' + cols.map(c => cell(c[1])).join(';') + '\n' + rows.join('\n')], {type:'text/csv;charset=utf-8'}));
 }
 function exportData(){ download('fruitstore-backup-' + todayIso() + '.json', new Blob([JSON.stringify({cams, journal, settings:S}, null, 2)], {type:'application/json'})); }
