@@ -4,11 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Фруктохранилище</title>
+<script>try{var t=localStorage.getItem('th');if(!t&&matchMedia('(prefers-color-scheme:dark)').matches)t='dark';if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#172235">
+<meta name="theme-color" content="#0f1b2d">
 <link rel="icon" type="image/png" href="/app-icon.png">
 <link rel="apple-touch-icon" href="/app-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,197 +17,217 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Фруктохранилище">
 <style>
+:root{--bg:#f1f4f9;--card:#fff;--ink:#14213a;--mut:#64748f;--line:#dde4ee;--brand:#1d5fd1;--bad:#d63a3a;--shadow:0 1px 2px rgba(15,27,45,.06),0 6px 18px rgba(15,27,45,.06)}
+[data-theme=dark]{--bg:#0b1220;--card:#131c2e;--ink:#e8eefb;--mut:#93a4c0;--line:#243250;--brand:#4b8bff;--bad:#ff6b6b;--shadow:0 1px 2px #0006}
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,-apple-system,Arial,sans-serif;background:#eef1f5;color:#172033;-webkit-font-smoothing:antialiased}
-html,body{overflow-x:hidden;max-width:100%}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-:focus-visible{outline:2px solid #4d89ee;outline-offset:2px}
-.header{background:#172235;color:#fff;padding:calc(18px + env(safe-area-inset-top)) 20px 18px;border-bottom:1px solid #25344b}
-.hwrap{max-width:1400px;margin:auto;display:flex;align-items:center;gap:14px}
-.logo{width:50px;height:50px;background:#fff;border-radius:13px;display:grid;place-items:center;font-size:29px;flex:0 0 auto;overflow:hidden}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font:14px/1.4 Inter,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow-x:clip;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.hd{background:linear-gradient(135deg,#0f1b2d,#17355f);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 20px 14px}
+.hwrap{max-width:1400px;margin:auto;display:flex;align-items:center;gap:8px}
+.logo{width:44px;height:44px;background:#fff;border-radius:12px;display:grid;place-items:center;font-size:26px;overflow:hidden;flex:0 0 auto;margin-right:4px}
 .logo img{width:100%;height:100%;object-fit:contain}
-.brand{font-size:21px;font-weight:800}
-.sub{color:#aebbd0;font-size:12px;margin-top:3px}
-.hspacer{flex:1}
-.hbtns{display:flex;gap:7px;flex-wrap:wrap}
-.hbtns button,.user-bar button{background:#202e43;color:#dbe5f2;border:1px solid #34445d;border-radius:9px;padding:8px 11px;font-size:12px;font-weight:700}
-.user-bar{background:#202e43;color:#dbe5f2;padding:8px 20px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
-.user-bar button{background:transparent;padding:5px 10px;font-size:11px}
-main{max-width:1400px;margin:auto;padding:18px 20px 40px}
-#q{width:100%;margin-bottom:11px;padding:11px 13px;border-radius:10px}
-.filters,.wingbar{display:flex;gap:7px;margin-bottom:11px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
-.filters::-webkit-scrollbar,.wingbar::-webkit-scrollbar{display:none}
-.filters button,.wingbar button{flex:0 0 auto;white-space:nowrap;background:#fff;border:1px solid #d5dce6;color:#273449;padding:9px 13px;border-radius:9px;font-size:13px;font-weight:700}
-.filters button.sel,.wingbar button.sel{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
-.chip-icon{margin-right:6px}
-.stats{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:9px;margin:16px 0 20px}
-.stat{background:#fff;border-radius:13px;padding:14px;display:flex;gap:11px;border:1px solid #d9e0e9;box-shadow:0 3px 10px rgba(16,24,40,.05)}
-.stat-icon{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:19px;background:#edf2f8;flex:0 0 auto}
-.stat .lbl{font-size:10px;color:#6f84a3;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
-.stat .val{font-size:21px;font-weight:800;margin-top:4px;white-space:nowrap}
-.stat .sub2{font-size:10px;color:#7890ae;margin-top:2px}
-.stat-primary{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
-.stat-primary .stat-icon{background:rgba(255,255,255,.16)}
-.stat-primary .lbl,.stat-primary .sub2{color:#dbe5f2}
-.content-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #d7dee8;padding-bottom:9px;margin:5px 0 11px}
-.content-head h1{font-size:20px;margin:0}
-.result-count{font-size:12px;color:#7890ae;font-weight:600}
-.wing-title{width:100%;text-align:left;color:inherit;background:#fff;border:1px solid #d8dee8;border-radius:11px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:15px;box-shadow:0 2px 8px rgba(16,24,40,.04);margin-bottom:9px}
-.wt-left{display:flex;align-items:center;gap:8px}
-.wt-count{color:#8092ad;font-weight:600;font-size:12px}
-.arrow{color:#7c8fae;transition:.2s}
-.collapsed .arrow{transform:rotate(-90deg)}
-.wing-section{margin-bottom:15px}
-.wing-section.collapsed .grid{display:none}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
-.cam{background:#fff;border:1px solid #d5dce6;border-radius:11px;padding:13px;cursor:pointer;position:relative;transition:.15s;box-shadow:0 2px 9px rgba(16,24,40,.045);min-height:170px;text-align:left;color:inherit;display:block;width:100%}
-.cam:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,#2563a6);border-radius:11px 0 0 11px}
-.cam:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(16,24,40,.09)}
-.cam.storage{--c:#2563a6;--p:#c9dced;--t:#245b91}
-.cam.rgs{--c:#3f7d58;--p:#c9dfd2;--t:#356b4c;background:#f7faff}
-.cam.process{--c:#c9791b;--p:#e6cfb0;--t:#955816;background:#fffaf1}
-.cam.problem{--c:#c53b3b;--p:#e8c3c3;--t:#a52f2f;background:#fff6f6}
-.cam.empty{--c:#c8ced6;--p:#e1e4e8;--t:#687384;background:#f7f8fa}
-.cam.inactive{--c:#1f2933;--p:#cbd0d5;--t:#27313b;background:#eef1f4}
-.cam-top{display:flex;justify-content:space-between;align-items:center}
-.num{font-weight:800;font-size:15px;display:flex;align-items:center;gap:6px}
+.brand{font-weight:800;font-size:19px}
+.sub{font-size:12px;color:#a9b9d3}
+.sp{flex:1}
+.uname{font-size:12px;color:#c5d3ea;margin-right:4px}
+.ib{width:42px;height:42px;border-radius:11px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;display:grid;place-items:center}
+.ib:hover{background:rgba(255,255,255,.18)}
+.adm{display:none}.is-admin .adm{display:grid}
+main{max-width:1400px;margin:auto;padding:16px 20px 36px}
+.stats{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);min-width:0}
+.stat .l{font-size:12px;color:var(--mut);font-weight:600;display:flex;gap:6px;align-items:center}
+.stat .v{font-size:24px;font-weight:800;margin-top:4px;white-space:nowrap}
+.stat .s{font-size:12px;color:var(--mut)}
+.bar{height:6px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--brand);border-radius:9px}
+.stat.pri{background:linear-gradient(135deg,#1d5fd1,#0e3b8c);color:#fff;border:0}
+.pri .l,.pri .s{color:#d6e4ff}.pri .bar{background:rgba(255,255,255,.25)}.pri .bar i{background:#fff}
+.stat.bad .v{color:var(--bad)}
+.attn{background:color-mix(in srgb,var(--bad) 8%,var(--card));border:1px solid color-mix(in srgb,var(--bad) 40%,var(--line));border-radius:14px;padding:12px;margin-bottom:14px}
+.attn h2{margin:0 0 8px;font-size:14px;display:flex;gap:6px;align-items:center;color:var(--bad)}
+.alist{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.achip{flex:0 0 auto;background:var(--card);border:1px solid color-mix(in srgb,var(--bad) 35%,var(--line));border-radius:10px;padding:8px 11px;text-align:left;font-size:12px;min-height:44px}
+.achip b{display:block;font-size:13px}.achip span{color:var(--bad);font-weight:600}
+.srow{display:flex;gap:8px;margin-bottom:4px}
+.sbox{flex:1;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0 12px;color:var(--mut)}
+.sbox input{flex:1;border:0;background:none;padding:12px 0;font-size:16px;color:var(--ink);min-width:0;outline:none}
+#wing{max-width:150px}
+.chips{position:sticky;top:0;z-index:5;display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;margin:0 -20px 10px;padding:8px 20px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px)}
+.chips::-webkit-scrollbar,.alist::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;display:flex;gap:6px;align-items:center;white-space:nowrap;min-height:40px;padding:0 13px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-weight:600;font-size:13px}
+.chip .i{color:var(--c,var(--mut));width:16px;height:16px}.chip b{color:var(--mut)}
+.chip.sel{background:var(--ink);color:var(--bg);border-color:var(--ink)}.chip.sel .i,.chip.sel b{color:inherit}
+.head{display:flex;justify-content:space-between;align-items:baseline;margin:4px 0 10px}
+.head h1{margin:0;font-size:20px}.head span{color:var(--mut);font-size:12px;font-weight:600}
+.wing{margin-bottom:16px}
+.wt{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:10px;min-height:56px}
+.wt .in{flex:1;min-width:0}.wt .nm{font-weight:800;font-size:15px}.wt .sm{font-size:12px;color:var(--mut)}
+.wt .bar{width:80px;margin:0}.wt .i{transition:.2s;color:var(--mut)}
+.wing.col .wt .i{transform:rotate(-90deg)}.wing.col .grid{display:none}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.cam{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:13px;padding:12px;text-align:left;display:flex;flex-direction:column;gap:2px;min-height:182px;box-shadow:var(--shadow);transition:transform .15s}
+.cam:hover{transform:translateY(-2px)}
+.cam.warn{border-color:var(--bad);box-shadow:0 0 0 1px var(--bad),var(--shadow)}
+.cam.empty,.cam.inactive{opacity:.78}
+.ct{display:flex;justify-content:space-between;align-items:center;gap:4px 6px;flex-wrap:wrap}
+.num{font-weight:800;font-size:15px;display:flex;gap:6px;align-items:center}
 .ci{width:22px;height:22px;object-fit:contain}
-.cam-arrow{width:25px;height:25px;border-radius:50%;background:#f0f4fa;display:grid;place-items:center;color:#4d89ee;font-size:15px}
-.cam .sort{font-size:14px;margin-top:13px;font-weight:800;overflow-wrap:anywhere}
-.cam .qty{font-size:12px;color:#7185a2;margin-top:4px}
-.cam .batch{font-size:11px;color:#8b9bb5;margin-top:3px;font-weight:700;overflow-wrap:anywhere}
-.status-pill{display:inline-flex;align-items:center;gap:5px;margin-top:11px;padding:4px 9px;border-radius:7px;font-size:11px;font-weight:700;background:var(--p);color:var(--t)}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--c)}
-.cam-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:11px;padding-top:9px;border-top:1px solid #eef2f7;font-size:10px;color:#7186a3;font-weight:600}
-.empty-msg{text-align:center;color:#7890ae;padding:40px 10px;font-weight:600}
-.modal{display:none;position:fixed;inset:0;background:rgba(16,24,40,.62);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px;z-index:20}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:color-mix(in srgb,var(--c) 15%,transparent);color:var(--c)}
+.pill .i{width:13px;height:13px}
+.srt{font-weight:800;font-size:15px;margin-top:8px;overflow-wrap:anywhere}
+.bt{font-size:12px;color:var(--mut);overflow-wrap:anywhere}
+.qt{font-size:19px;font-weight:800;margin:4px 0 8px}.qt small{font-size:12px;color:var(--mut);font-weight:600}
+.mt{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line);font-size:12px}
+.m{display:flex;justify-content:space-between;gap:4px}.m span{color:var(--mut)}.m b{font-weight:700}.m.bad b{color:var(--bad)}
+.empty-msg{text-align:center;color:var(--mut);padding:40px 10px;font-weight:600}
+.modal{display:none;position:fixed;inset:0;background:rgba(8,14,26,.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;z-index:30}
 .modal.open{display:flex}
-.modalbox{background:#fff;border-radius:14px;padding:22px;width:min(650px,100%);max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(16,24,40,.22)}
-.modalbox h2{margin-top:0;font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px}
-.form{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.field{display:flex;flex-direction:column;gap:5px}
-.field.full{grid-column:1/-1}
-.field label{font-size:12px;color:#7488a4;font-weight:700}
-input,select,textarea{border:1px solid #dfe7f1;border-radius:10px;padding:10px;font-size:16px;background:#fff;color:inherit;min-width:0}
-input:focus,select:focus,textarea:focus{outline:none;border-color:#7ca7f5;box-shadow:0 0 0 3px rgba(40,117,246,.1)}
-textarea{min-height:65px;resize:vertical}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
-.modal-actions button{padding:10px 16px;border-radius:9px;font-weight:700;font-size:13px;border:1px solid #dfe7f1;background:#fff}
-.modal-actions button.primary,.btn-full.primary{background:#1f4f8f;color:#fff;border-color:#1f4f8f}
-.modal-actions button:disabled{opacity:.6}
-.view-info{border:1px solid #e3eaf3;border-radius:12px;padding:11px 13px;margin:9px 0}
-.vrow{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:13px;border-bottom:1px solid #f0f3f7}
-.vrow:last-child{border-bottom:none}
-.vrow span:first-child{color:#7b8ea8;font-weight:600}
-.vrow b{text-align:right;overflow-wrap:anywhere}
-.btn-full{width:100%;padding:11px;border:1px solid #cfd7e2;background:#fff;border-radius:9px;font-weight:800;font-size:13px}
-.tablewrap{max-height:60vh;overflow:auto;margin-top:12px}
-.hist-table{width:100%;border-collapse:collapse;font-size:12px}
-.hist-table th,.hist-table td{text-align:left;padding:9px;border-bottom:1px solid #edf2f7}
-.hist-table td:nth-child(3){min-width:180px}
-.hist-table th{color:#7185a2;background:#fff;font-weight:800;font-size:10px;text-transform:uppercase;letter-spacing:.4px;position:sticky;top:0}
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#eef7ff,#e5edff)}
-.login-box{background:#fff;border-radius:18px;padding:30px 26px;width:min(420px,100%);box-shadow:0 20px 60px rgba(16,24,40,.15)}
-.login-box h1{margin:0 0 6px;font-size:25px}
-.login-box p{margin:0 0 20px;color:#7185a3;font-size:13px}
-.login-box input{width:100%;margin-bottom:11px;padding:12px}
-.login-box button{width:100%;padding:12px;border:0;border-radius:10px;font-weight:800;font-size:14px;margin-bottom:7px}
-.login-box .main{background:#1f4f8f;color:#fff}
-.login-box .alt{background:#f0f4fa;color:#1f4f8f}
-.err{background:#ffe6e6;color:#b4232f;padding:10px 12px;border-radius:9px;font-size:13px;margin-bottom:11px;display:none}
+.box{background:var(--card);border-radius:18px;padding:20px;width:min(640px,100%);max-height:92vh;overflow:auto;box-shadow:0 24px 70px #0006;animation:pop .18s ease}
+@keyframes pop{from{opacity:0;transform:translateY(12px)}}
+.box h2{margin:0 0 12px;font-size:19px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.tile{background:var(--bg);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:2px}
+.tile span{font-size:12px;color:var(--mut)}.tile b{font-size:18px}.tile small{font-size:11px;color:var(--bad)}
+.tile.bad{background:color-mix(in srgb,var(--bad) 12%,var(--card));outline:1px solid var(--bad)}.tile.bad b{color:var(--bad)}
+.rows{border:1px solid var(--line);border-radius:12px;padding:4px 12px;margin:10px 0}
+.vr{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+.vr:last-child{border:0}.vr span{color:var(--mut)}.vr b{text-align:right;overflow-wrap:anywhere}
+.grp{margin-bottom:14px}.grp h3{margin:0 0 8px;font-size:13px;color:var(--mut)}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fld{display:flex;flex-direction:column;gap:4px}.fld.full{grid-column:1/-1}.fld label{font-size:12px;color:var(--mut);font-weight:600}
+input,select,textarea{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:11px;padding:11px;font:inherit;font-size:16px;min-height:44px;min-width:0}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--brand)}
+textarea{min-height:70px;resize:vertical}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.seg label{position:relative}.seg input{position:absolute;opacity:0;inset:0;min-height:0}
+.seg span{display:flex;gap:6px;align-items:center;justify-content:center;min-height:44px;border:1px solid var(--line);border-radius:11px;font-size:13px;font-weight:600;padding:0 6px;text-align:center}
+.seg span .i{color:var(--c);width:16px;height:16px}
+.seg input:checked+span{border-color:var(--c);background:color-mix(in srgb,var(--c) 14%,var(--card));color:var(--c)}
+.seg input:focus-visible+span{outline:2px solid var(--brand)}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.btn{min-height:44px;padding:0 16px;border-radius:11px;border:1px solid var(--line);background:var(--card);font-weight:700;font-size:14px}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.sm{min-height:38px;font-size:13px;padding:0 12px}.btn.full{width:100%}.btn:disabled{opacity:.6}
+.acts{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.tw{max-height:60vh;overflow:auto}
+.ht{width:100%;border-collapse:collapse;font-size:13px}
+.ht th,.ht td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
+.ht th{color:var(--mut);font-size:12px;position:sticky;top:0;background:var(--card)}
+.lw{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 20% 10%,#2a5bd0 0,transparent 45%),linear-gradient(135deg,#0f1b2d,#17355f)}
+.lb{background:var(--card);border-radius:22px;padding:30px 26px;width:min(400px,100%);box-shadow:0 30px 80px #0007}
+.lb .lg{font-size:44px}.lb h1{margin:8px 0 4px;font-size:24px}.lb p{margin:0 0 18px;color:var(--mut)}
+.lb input{width:100%;margin-bottom:10px}.lb .btn{width:100%;margin-top:4px}
+.err{background:color-mix(in srgb,var(--bad) 14%,var(--card));color:var(--bad);padding:10px 12px;border-radius:10px;font-size:13px;margin-bottom:10px;display:none;font-weight:600}
 .err.show{display:block}
-.loading{position:fixed;inset:0;background:rgba(255,255,255,.9);display:none;align-items:center;justify-content:center;z-index:100;font-size:15px;color:#7185a3;font-weight:700}
-.loading.show{display:flex}
-.foot{text-align:center;color:#71839e;font-size:12px;font-weight:600;padding:0 18px 24px}
-.foot i{display:block;color:#a8b3c4;font-size:11px;margin-bottom:10px}
-@media(max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(3,1fr)}}
+.ld{position:fixed;inset:0;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:100}
+.ld.show{display:flex}
+.spin{width:38px;height:38px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--brand);animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+#toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;width:max-content;max-width:92vw}
+.toast{background:#14213a;color:#fff;padding:11px 16px;border-radius:12px;font-weight:600;box-shadow:0 8px 24px #0005;animation:pop .2s}
+.toast.err{background:#c62f2f}
+.foot{text-align:center;color:var(--mut);font-size:12px;font-weight:600;padding:0 18px 24px}
+.foot i{display:block;font-size:11px;margin-bottom:8px;opacity:.8}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){
-main{padding:12px}
-.grid{grid-template-columns:repeat(2,1fr);gap:8px}
-.stats{display:flex;overflow-x:auto;gap:8px;padding-bottom:5px}
-.stat{min-width:155px;flex:0 0 auto}
-.form{grid-template-columns:1fr}
-.modalbox{padding:16px;border-radius:14px 14px 0 0;max-height:92vh}
-.modal{align-items:flex-end;padding:0}
-.header{padding:calc(14px + env(safe-area-inset-top)) 12px 14px}
-.logo{width:44px;height:44px}
-.brand{font-size:18px}
-.hbtns button{padding:7px 9px;font-size:11px}
-.user-bar{padding:8px 12px}
+.hd{padding:calc(12px + env(safe-area-inset-top)) 12px 12px}
+.brand{font-size:17px}.uname{display:none}.ib{width:40px;height:40px}.logo{width:40px;height:40px}
+main{padding:12px 12px 30px}
+.chips{margin:0 -12px 10px;padding:8px 12px}
+.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.stats{display:flex;overflow-x:auto;scrollbar-width:none}.stat{min-width:150px;flex:0 0 auto}
+.tiles{grid-template-columns:repeat(2,1fr)}
+.modal{align-items:flex-end;padding:0}.box{border-radius:18px 18px 0 0;padding:16px}
+.wt .bar{width:56px}
 }
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2v20M4.9 7l14.2 10M4.9 17L19.1 7"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2l10 5-10 5L2 7zM2 17l10 5 10-5M2 12l10 5 10-5"/></symbol>
+<symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 2h6M10 2v6L4 20a1 1 0 001 1h14a1 1 0 001-1l-6-12V2"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l10 18H2zM12 10v5M12 18h.01"/></symbol>
+<symbol id="i-circle" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18z"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><path d="M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-5-5"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 13A9 9 0 1111 3a7 7 0 0010 10z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
+<symbol id="i-up" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 21h16"/></symbol>
+<symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12"/></symbol>
+</svg>
 
-<div id="loginScreen" class="login-wrap">
-  <form class="login-box" id="loginForm">
-    <h1>🍎 Фруктохранилище</h1>
-    <p>Войдите, чтобы получить доступ к камерам</p>
+<div id="loginScreen" class="lw">
+  <form class="lb" id="loginForm">
+    <div class="lg">🍎</div><h1>Фруктохранилище</h1><p>Войдите, чтобы работать с камерами</p>
     <div id="loginErr" class="err" role="alert"></div>
     <input id="loginName" type="text" placeholder="Имя (латиница)" autocomplete="username" autocapitalize="none" required>
     <input id="loginPass" type="password" placeholder="Пароль (минимум 6 символов)" autocomplete="current-password" required>
-    <button class="main" type="submit">Войти</button>
-    <button class="alt" type="button" id="signupBtn" data-act="signup">Создать аккаунт</button>
+    <button class="btn pri" type="submit">Войти</button>
+    <button class="btn" type="button" id="signupBtn" data-act="signup">Создать аккаунт</button>
   </form>
 </div>
 
 <div id="appScreen" style="display:none">
-  <header class="header">
-    <div class="hwrap">
-      <div class="logo"><img src="/app-icon.png" alt="🍎" onerror="this.replaceWith('🍎')"></div>
-      <div><div class="brand">Фруктохранилище</div><div class="sub" id="subTitle">Управление запасами</div></div>
-      <div class="hspacer"></div>
-      <div class="hbtns"><button data-act="history">📋 История</button></div>
-      <div class="hbtns" id="adminBtns" style="display:none">
-        <button data-act="export">⬇ Экспорт</button>
-        <button data-act="import">⬆ Импорт</button>
-      </div>
-    </div>
-  </header>
-  <div class="user-bar"><span>Вы вошли как: <b id="userName">—</b></span><button data-act="logout">Выйти</button></div>
+  <header class="hd"><div class="hwrap">
+    <div class="logo"><img src="/app-icon.png" alt="🍎" onerror="this.replaceWith('🍎')"></div>
+    <div><div class="brand">Фруктохранилище</div><div class="sub" id="subTitle">Управление запасами</div></div>
+    <div class="sp"></div>
+    <span class="uname" id="userName"></span>
+    <button class="ib" data-act="history" aria-label="История" title="История"><svg class="i"><use href="#i-list"/></svg></button>
+    <button class="ib adm" data-act="export" aria-label="Экспорт" title="Экспорт"><svg class="i"><use href="#i-down"/></svg></button>
+    <button class="ib adm" data-act="import" aria-label="Импорт" title="Импорт"><svg class="i"><use href="#i-up"/></svg></button>
+    <button class="ib" data-act="theme" aria-label="Тема" title="Тёмная / светлая тема"><svg class="i"><use href="#i-moon"/></svg></button>
+    <button class="ib" data-act="logout" aria-label="Выйти" title="Выйти"><svg class="i"><use href="#i-out"/></svg></button>
+  </div></header>
   <main>
-    <input id="q" type="search" placeholder="Поиск: номер, сорт, партия, культура" autocomplete="off">
-    <div class="filters" id="filters"></div>
-    <div class="wingbar" id="wingbar"></div>
+    <div id="attn"></div>
     <div class="stats" id="stats"></div>
-    <div class="content-head"><h1>🧊 Камеры</h1><div class="result-count" id="resultCount">—</div></div>
+    <div class="srow">
+      <label class="sbox"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Номер, сорт, партия, культура" autocomplete="off"></label>
+      <select id="wing" aria-label="Крыло"></select>
+    </div>
+    <div class="chips" id="filters"></div>
+    <div class="head"><h1>Камеры</h1><span id="resultCount"></span></div>
     <div id="grid"></div>
   </main>
   <div class="foot"><i>Высокое качество низких температур</i>ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт</div>
 </div>
 
-<div class="modal" id="viewModal"><div class="modalbox" style="width:min(560px,100%)">
+<div class="modal" id="viewModal"><div class="box">
   <h2 id="vmTitle"></h2><div id="vmContent"></div>
-  <div class="modal-actions"><button data-close>Закрыть</button></div>
+  <div class="acts"><button class="btn" data-close>Закрыть</button></div>
 </div></div>
 
-<div class="modal" id="editModal"><div class="modalbox">
-  <h2>Данные камеры <span id="emNum"></span></h2>
-  <form class="form" id="editForm"></form>
-  <div class="modal-actions">
-    <button data-close>Отмена</button>
-    <button class="primary" id="saveBtn" data-act="save">Сохранить</button>
-  </div>
+<div class="modal" id="editModal"><div class="box">
+  <h2>Камера <span id="emNum"></span></h2>
+  <form id="editForm"></form>
+  <div class="acts"><button class="btn" data-close>Отмена</button><button class="btn pri" id="saveBtn" data-act="save">Сохранить</button></div>
 </div></div>
 
-<div class="modal" id="histModal"><div class="modalbox" style="width:min(900px,100%)">
-  <h2>📋 История операций</h2>
-  <div class="tablewrap"><table class="hist-table">
-    <thead><tr><th>Дата</th><th>Камера</th><th>Действие</th><th>Пользователь</th></tr></thead>
-    <tbody id="histBody"></tbody>
-  </table></div>
-  <div class="modal-actions"><button data-close>Закрыть</button></div>
+<div class="modal" id="histModal"><div class="box" style="width:min(860px,100%)">
+  <h2>История операций</h2>
+  <div class="tw"><table class="ht"><thead><tr><th>Дата</th><th>Камера</th><th>Действие</th><th>Кто</th></tr></thead><tbody id="histBody"></tbody></table></div>
+  <div class="acts"><button class="btn" data-close>Закрыть</button></div>
 </div></div>
 
 <input type="file" id="importFile" accept=".json" hidden>
-<div id="loading" class="loading">Загрузка…</div>
+<div id="loading" class="ld"><div class="spin"></div></div>
+<div id="toasts" aria-live="polite"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import { getFirestore, doc, addDoc, collection, updateDoc, writeBatch, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getFirestore, doc, collection, writeBatch, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQtB3vJh84ELKJg0qs0ycFSGw9Q62ZAOY",
@@ -218,36 +239,38 @@ const firebaseConfig = {
 };
 
 /* ===== Настройки ===== */
-const ADMIN_EMAIL = 'adam@fruit.local'; // только для скрытия кнопок; настоящая защита — firestore.rules
-const ALLOW_SIGNUP = true;              // false — скрыть «Создать аккаунт» (и отключите регистрацию в консоли Firebase)
+const ADMIN_EMAIL = 'adam@fruit.local'; // только скрывает кнопки; настоящая защита — firestore.rules
+const ALLOW_SIGNUP = true;              // false — убрать «Создать аккаунт»
 const DOMAIN = '@fruit.local';
 const WING_SIZE = 14, WINGS = 4;
+/* Нормы: [мин, макс, название, единица]. Всё вне диапазона подсвечивается красным */
+const NORM = { temp:[-1,5,'Температура',' °C'], hum:[80,98,'Влажность',' %'], o2:[1,5,'O₂',' %'], co2:[0,6,'CO₂',' %'] };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 const names = {all:'Все',storage:'Охлаждение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
-const chipIcons = {all:'▦',storage:'❄',process:'⚙',rgs:'🧪',inactive:'⏸',problem:'🆘',empty:'◌'};
-const wingName = n => 'Крыло ' + n;
-/* key, подпись, тип, min, max, step, единица */
+const ST = {storage:['snow','#2573d9'],process:['layers','#e08a12'],rgs:['flask','#1f9d6b'],inactive:['pause','#6b7788'],problem:['alert','#d63a3a'],empty:['circle','#8896ab']};
+const ACTIVE = ['storage','process','rgs'];
 const FIELDS = [
   ['crop','Культура','text'],['sort','Сорт','text'],['batch','Партия','text'],
   ['qty','Количество, кг','num',0,1e7,1,' кг'],
-  ['temp','Температура °C','num',-30,40,.1,' °C'],
-  ['hum','Влажность %','num',0,100,1,' %'],
-  ['o2','O₂ %','num',0,100,.1,' %'],
-  ['co2','CO₂ %','num',0,100,.1,' %'],
+  ['temp','Температура, °C','num',-30,40,.1,' °C'],['hum','Влажность, %','num',0,100,1,' %'],
+  ['o2','O₂, %','num',0,100,.1,' %'],['co2','CO₂, %','num',0,100,.1,' %'],
   ['operator','Оператор','text'],
   ['loadAt','Дата загрузки','date'],['processAt','Дата обработки','date'],['rgsAt','Дата вывода на РГС','date']
 ];
-const LABEL = Object.fromEntries(FIELDS.map(f => [f[0], f[1].replace(/, кг| °C| %/,'')]));
+const GROUPS = [['Продукт',['crop','sort','batch','qty','operator']],['Условия в камере',['temp','hum','o2','co2']],['Даты',['loadAt','processAt','rgsAt']]];
+const LABEL = Object.fromEntries(FIELDS.map(f => [f[0], f[1].split(',')[0]]));
 Object.assign(LABEL, {status:'Статус', note:'Примечание'});
+const wingName = n => 'Крыло ' + n;
 
 /* ===== Утилиты ===== */
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pad = n => String(n).padStart(2,'0');
+const ic = n => '<svg class="i"><use href="#i-'+n+'"/></svg>';
 const fmtNow = () => new Date().toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 const todayIso = () => { const d = new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); };
 const toIso = s => { const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(s||''); return m ? m[3]+'-'+m[2]+'-'+m[1] : ''; };
@@ -256,6 +279,10 @@ const wingOf = id => Math.floor((id-1)/WING_SIZE)+1;
 const showLoading = s => $('loading').classList.toggle('show', s);
 const isAdmin = () => !!user && user.email === ADMIN_EMAIL;
 const val = (v, u='') => v != null && v !== '' ? esc(v)+u : '—';
+const unit = k => FIELDS.find(f => f[0] === k)[6] || '';
+const toast = (m, err) => { const d = document.createElement('div'); d.className = 'toast'+(err?' err':''); d.textContent = m; $('toasts').append(d); setTimeout(() => d.remove(), 3400); };
+const issues = c => ACTIVE.includes(c.status) ? Object.keys(NORM).filter(k => c[k] != null && (c[k] < NORM[k][0] || c[k] > NORM[k][1])) : [];
+const needsAttention = c => c.status === 'problem' || issues(c).length > 0;
 
 function culIcon(sort, crop){
   const s = ((sort||'')+' '+(crop||'')).toLowerCase();
@@ -264,26 +291,17 @@ function culIcon(sort, crop){
   return '<img src="/'+m[1]+'.png" class="ci" alt="" onerror="this.replaceWith(\''+m[2]+'\')">';
 }
 
-/* ===== Модальные окна (блокировка прокрутки в одном месте) ===== */
+/* ===== Модальные окна ===== */
 let scrollY = 0;
 function openModal(id){
-  if (!document.querySelector('.modal.open')){
-    scrollY = window.scrollY;
-    document.body.style.cssText = 'position:fixed;width:100%;top:-'+scrollY+'px';
-  }
+  if (!document.querySelector('.modal.open')){ scrollY = window.scrollY; document.body.style.cssText = 'position:fixed;width:100%;top:-'+scrollY+'px'; }
   $(id).classList.add('open');
 }
 function closeModal(id){
   $(id).classList.remove('open');
-  if (!document.querySelector('.modal.open')){
-    document.body.style.cssText = '';
-    window.scrollTo(0, scrollY);
-  }
+  if (!document.querySelector('.modal.open')){ document.body.style.cssText = ''; window.scrollTo(0, scrollY); }
 }
-function closeTopModal(){
-  const open = [...document.querySelectorAll('.modal.open')].pop();
-  if (open) closeModal(open.id);
-}
+function closeTopModal(){ const o = [...document.querySelectorAll('.modal.open')].pop(); if (o) closeModal(o.id); }
 
 /* ===== Состояние ===== */
 let user = null, cams = [], journal = [], selected = null;
@@ -295,7 +313,7 @@ const loginErr = m => { $('loginErr').textContent = m; $('loginErr').classList.t
 const authError = e => {
   const m = (e.code || e.message || '').toLowerCase();
   if (/invalid-credential|wrong-password|user-not-found/.test(m)) return 'Неверное имя или пароль';
-  if (/too-many-requests/.test(m)) return 'Слишком много попыток. Подождите.';
+  if (/too-many-requests/.test(m)) return 'Слишком много попыток. Подождите немного.';
   if (/network/.test(m)) return 'Нет соединения. Проверьте интернет или VPN.';
   if (/email-already-in-use/.test(m)) return 'Такое имя уже занято. Нажмите «Войти».';
   if (/weak-password/.test(m)) return 'Слишком простой пароль';
@@ -303,11 +321,10 @@ const authError = e => {
   return 'Ошибка: ' + m;
 };
 function credentials(signup){
-  const name = $('loginName').value.trim().toLowerCase();
-  const pass = $('loginPass').value;
+  const name = $('loginName').value.trim().toLowerCase(), pass = $('loginPass').value;
   if (!name || !pass){ loginErr('Введите имя и пароль'); return null; }
   if (signup){
-    if (!/^[a-z0-9._-]{2,20}$/.test(name)){ loginErr('Имя: только латиница, цифры и . _ - (2–20 символов)'); return null; }
+    if (!/^[a-z0-9._-]{2,20}$/.test(name)){ loginErr('Имя: латиница, цифры и . _ - (2–20 символов)'); return null; }
     if (pass.length < 6){ loginErr('Пароль: минимум 6 символов'); return null; }
   }
   return { email: name.includes('@') ? name : name + DOMAIN, pass };
@@ -319,23 +336,19 @@ async function doAuth(signup){
   try { await (signup ? createUserWithEmailAndPassword : signInWithEmailAndPassword)(auth, c.email, c.pass); }
   catch(e){ showLoading(false); loginErr(authError(e)); }
 }
-
 onAuthStateChanged(auth, u => {
   user = u;
   unsubs.forEach(f => f()); unsubs = []; seeded = false; cams = []; journal = [];
   if (u){
-    $('loginScreen').style.display = 'none';
-    $('appScreen').style.display = 'block';
+    $('loginScreen').style.display = 'none'; $('appScreen').style.display = 'block';
     $('userName').textContent = u.email.replace(DOMAIN, '');
-    $('adminBtns').style.display = isAdmin() ? 'flex' : 'none';
-    showLoading(true);
-    subscribe();
+    document.body.classList.toggle('is-admin', isAdmin());
+    showLoading(true); subscribe();
   } else {
     document.querySelectorAll('.modal.open').forEach(m => closeModal(m.id));
-    $('loginScreen').style.display = 'flex';
-    $('appScreen').style.display = 'none';
-    $('loginPass').value = '';
-    showLoading(false);
+    document.body.classList.remove('is-admin');
+    $('loginScreen').style.display = 'flex'; $('appScreen').style.display = 'none';
+    $('loginPass').value = ''; showLoading(false);
   }
 });
 
@@ -367,130 +380,137 @@ function seedCams(){
   });
 }
 function subscribe(){
-  const fail = e => { showLoading(false); alert('Ошибка загрузки: ' + e.message); };
+  const fail = e => { showLoading(false); toast('Ошибка загрузки: ' + e.message, 1); };
   unsubs.push(onSnapshot(collection(db,'cameras'), snap => {
-    if (snap.empty && !snap.metadata.fromCache && isAdmin() && !seeded){
-      seeded = true; commitAll(seedCams()).catch(fail); return;
-    }
+    if (snap.empty && !snap.metadata.fromCache && isAdmin() && !seeded){ seeded = true; commitAll(seedCams()).catch(fail); return; }
     cams = snap.docs.map(d => d.data()).sort((a,b) => a.id - b.id);
-    showLoading(false);
-    render();
+    showLoading(false); render();
   }, fail));
   unsubs.push(onSnapshot(query(collection(db,'journal'), orderBy('ts','desc'), limit(200)), snap => {
-    journal = snap.docs.map(d => d.data());
-    renderJournal();
+    journal = snap.docs.map(d => d.data()); renderJournal();
   }, e => console.error(e)));
 }
 
 /* ===== Отрисовка ===== */
+function renderAttn(){
+  const bad = cams.filter(needsAttention);
+  $('attn').innerHTML = !bad.length ? '' :
+    '<section class="attn"><h2>'+ic('alert')+'Требуют внимания: '+bad.length+'</h2><div class="alist">'+
+    bad.map(c => '<button class="achip" data-cam="'+c.id+'"><b>№'+pad(c.id)+' · '+val(c.sort)+'</b><span>'+
+      (c.status === 'problem' ? 'Проблема' : issues(c).map(k => NORM[k][2]+' '+esc(c[k])+NORM[k][3]).join(', '))+'</span></button>').join('')+
+    '</div></section>';
+}
 function renderStats(){
-  let kg = 0, occ = 0, emp = 0, prob = 0, inact = 0;
-  cams.forEach(c => {
-    if (['storage','process','rgs'].includes(c.status)){ occ++; kg += c.qty || 0; }
-    else if (c.status === 'empty') emp++;
-    else if (c.status === 'problem') prob++;
-    else if (c.status === 'inactive') inact++;
-  });
-  const st = (cls, ic, l, v, s) => '<div class="stat '+cls+'"><div class="stat-icon">'+ic+'</div><div><div class="lbl">'+l+'</div><div class="val">'+v+'</div><div class="sub2">'+s+'</div></div></div>';
+  let kg = 0, occ = 0, emp = 0;
+  cams.forEach(c => { if (ACTIVE.includes(c.status)){ occ++; kg += c.qty || 0; } else if (c.status === 'empty') emp++; });
+  const n = cams.length || 1, pct = Math.round(occ/n*100), bad = cams.filter(needsAttention).length;
+  const st = (cls, i, l, v, s, extra='') => '<div class="stat '+cls+'"><div class="l">'+ic(i)+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div>'+extra+'</div>';
   $('stats').innerHTML =
-    st('stat-primary','📦','Всего',(kg/1000).toFixed(1)+' т',kg.toLocaleString('ru-RU')+' кг') +
-    st('','❄️','Занято',occ+' / '+cams.length,'камер') +
-    st('','◌','Свободно',emp,'камер') +
-    st('','🆘','Проблемных',prob,'камер') +
-    st('','⏸','Неактивных',inact,'камер');
+    st('pri','box','На хранении',(kg/1000).toFixed(1)+' т',kg.toLocaleString('ru-RU')+' кг') +
+    st('','snow','Занято камер',occ+' / '+cams.length,pct+'% загрузки','<div class="bar"><i style="width:'+pct+'%"></i></div>') +
+    st('','circle','Свободно',emp,'камер') +
+    st(bad?'bad':'','alert','Внимание',bad,bad?'нужна проверка':'всё в норме');
   $('subTitle').textContent = 'Управление запасами · ' + cams.length + ' камер';
 }
 function renderChips(){
   $('filters').innerHTML = Object.keys(names).map(k => {
-    const n = k === 'all' ? cams.length : cams.filter(c => c.status === k).length;
-    return '<button data-filter="'+k+'"'+(filter===k?' class="sel"':'')+'><span class="chip-icon">'+chipIcons[k]+'</span>'+names[k]+' <strong>'+n+'</strong></button>';
+    const c = k === 'all' ? cams.length : cams.filter(x => x.status === k).length;
+    return '<button class="chip'+(filter===k?' sel':'')+'" data-filter="'+k+'"'+(k!=='all'?' style="--c:'+ST[k][1]+'"':'')+'>'+ic(k==='all'?'grid':ST[k][0])+names[k]+' <b>'+c+'</b></button>';
   }).join('');
-  let w = '<button data-wing="all"'+(wingFilter==='all'?' class="sel"':'')+'>⚪ Все крылья <strong>'+cams.length+'</strong></button>';
-  for (let i = 1; i <= WINGS; i++)
-    w += '<button data-wing="'+i+'"'+(wingFilter===i?' class="sel"':'')+'>⚪ '+wingName(i)+' <strong>'+cams.filter(c => c.wing === i).length+'</strong></button>';
-  $('wingbar').innerHTML = w;
+  let o = '<option value="all">Все крылья</option>';
+  for (let i = 1; i <= WINGS; i++) o += '<option value="'+i+'">'+wingName(i)+'</option>';
+  $('wing').innerHTML = o; $('wing').value = String(wingFilter);
 }
 function camCard(c){
-  return '<button class="cam '+esc(c.status)+'" data-cam="'+c.id+'">'+
-    '<div class="cam-top"><div class="num">'+culIcon(c.sort,c.crop)+'№'+pad(c.id)+'</div><span class="cam-arrow">›</span></div>'+
-    '<div class="sort">'+val(c.sort)+'</div><div class="batch">'+val(c.batch)+'</div>'+
-    '<div class="qty">'+(c.qty||0).toLocaleString('ru-RU')+' кг</div>'+
-    '<div class="status-pill"><span class="dot"></span>'+esc(names[c.status]||c.status)+'</div>'+
-    '<div class="cam-meta"><span>🌡 '+val(c.temp,'°')+'</span><span>💧 '+val(c.hum,'%')+'</span><span>O₂ '+val(c.o2,'%')+'</span><span>CO₂ '+val(c.co2,'%')+'</span></div></button>';
+  const bad = issues(c), m = (k, l, u) => '<div class="m'+(bad.includes(k)?' bad':'')+'"><span>'+l+'</span><b>'+val(c[k],u)+'</b></div>';
+  const [icn, col] = ST[c.status] || ST.empty;
+  return '<button class="cam '+esc(c.status)+(needsAttention(c)?' warn':'')+'" data-cam="'+c.id+'" style="--c:'+col+'">'+
+    '<div class="ct"><div class="num">'+culIcon(c.sort,c.crop)+'№'+pad(c.id)+'</div><span class="pill">'+ic(icn)+esc(names[c.status]||c.status)+'</span></div>'+
+    '<div class="srt">'+val(c.sort)+'</div><div class="bt">'+val(c.batch)+'</div>'+
+    '<div class="qt">'+(c.qty||0).toLocaleString('ru-RU')+' <small>кг</small></div>'+
+    '<div class="mt">'+m('temp','Темп.','°')+m('hum','Влаж.','%')+m('o2','O₂','%')+m('co2','CO₂','%')+'</div></button>';
 }
 function render(){
-  renderStats(); renderChips();
+  renderStats(); renderAttn(); renderChips();
   const q = search.trim().toLowerCase();
-  const list = cams.filter(c =>
-    (filter === 'all' || c.status === filter) &&
-    (wingFilter === 'all' || c.wing === wingFilter) &&
+  const list = cams.filter(c => (filter === 'all' || c.status === filter) && (wingFilter === 'all' || c.wing === wingFilter) &&
     (!q || [pad(c.id), c.id, c.sort, c.batch, c.crop].join(' ').toLowerCase().includes(q)));
   let html = '';
   for (let w = 1; w <= WINGS; w++){
     const wc = list.filter(c => c.wing === w); if (!wc.length) continue;
-    html += '<section class="wing-section'+(collapsed[w]?' collapsed':'')+'">'+
-      '<button class="wing-title" data-toggle="'+w+'" aria-expanded="'+!collapsed[w]+'"><span class="wt-left"><span>⚪️</span><span>'+wingName(w)+'</span><span class="wt-count">'+wc.length+' камер</span></span><span class="arrow">⌄</span></button>'+
+    const all = cams.filter(c => c.wing === w), occ = all.filter(c => ACTIVE.includes(c.status));
+    const t = occ.reduce((s,c) => s + (c.qty||0), 0)/1000, pct = Math.round(occ.length/(all.length||1)*100);
+    html += '<section class="wing'+(collapsed[w]?' col':'')+'"><button class="wt" data-toggle="'+w+'" aria-expanded="'+!collapsed[w]+'">'+
+      '<div class="in"><div class="nm">'+wingName(w)+'</div><div class="sm">'+occ.length+' из '+all.length+' занято · '+t.toFixed(1)+' т</div></div>'+
+      '<div class="bar"><i style="width:'+pct+'%"></i></div>'+ic('chev')+'</button>'+
       '<div class="grid">'+wc.map(camCard).join('')+'</div></section>';
   }
   $('grid').innerHTML = html || '<div class="empty-msg">'+(cams.length ? 'Ничего не найдено. Измените фильтр или поиск.' : 'Камер пока нет.')+'</div>';
-  $('resultCount').textContent = list.length + ' камер';
+  $('resultCount').textContent = list.length + ' из ' + cams.length;
 }
 function renderJournal(){
-  $('histBody').innerHTML = journal.map(e =>
-    '<tr><td>'+esc(e.date)+'</td><td>'+esc(e.cam)+'</td><td>'+esc(e.action)+'</td><td>'+esc((e.user||'—').replace(DOMAIN,''))+'</td></tr>'
-  ).join('') || '<tr><td colspan="4" style="text-align:center;padding:20px">История пуста</td></tr>';
+  $('histBody').innerHTML = journal.map(e => '<tr><td>'+esc(e.date)+'</td><td>'+esc(e.cam)+'</td><td>'+esc(e.action)+'</td><td>'+esc((e.user||'—').replace(DOMAIN,''))+'</td></tr>').join('')
+    || '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--mut)">История пока пуста</td></tr>';
 }
 
-/* ===== Просмотр и редактирование ===== */
+/* ===== Просмотр ===== */
 function openView(id){
   const c = cams.find(x => x.id === id); if (!c) return;
   selected = id;
-  const row = (l, v) => '<div class="vrow"><span>'+l+'</span><b>'+v+'</b></div>';
-  const F = k => FIELDS.find(f => f[0] === k);
-  const fv = k => val(c[k], F(k)[6] || '');
-  $('vmTitle').innerHTML = culIcon(c.sort,c.crop) + ' Камера №' + pad(c.id);
+  const [icn, col] = ST[c.status] || ST.empty, bad = issues(c);
+  const row = (l, v) => '<div class="vr"><span>'+l+'</span><b>'+v+'</b></div>';
+  const tile = k => '<div class="tile'+(bad.includes(k)?' bad':'')+'"><span>'+NORM[k][2]+'</span><b>'+val(c[k],unit(k))+'</b>'+(bad.includes(k)?'<small>норма '+NORM[k][0]+'…'+NORM[k][1]+'</small>':'')+'</div>';
+  $('vmTitle').innerHTML = culIcon(c.sort,c.crop)+'Камера №'+pad(c.id)+' <span class="pill" style="--c:'+col+'">'+ic(icn)+esc(names[c.status]||c.status)+'</span>';
   $('vmContent').innerHTML =
-    '<div class="view-info">'+row('Статус',esc(names[c.status]||c.status))+row('Крыло',wingName(c.wing))+row('Культура',fv('crop'))+row('Сорт',fv('sort'))+row('Партия',fv('batch'))+row('Количество',(c.qty||0).toLocaleString('ru-RU')+' кг')+'</div>'+
-    '<div class="view-info">'+row('Температура',fv('temp'))+row('Влажность',fv('hum'))+row('O₂',fv('o2'))+row('CO₂',fv('co2'))+'</div>'+
-    '<div class="view-info">'+row('Загрузка',fv('loadAt'))+row('Обработка',fv('processAt'))+row('РГС',fv('rgsAt'))+row('Оператор',fv('operator'))+'</div>'+
-    (c.note ? '<div class="view-info"><div class="vrow" style="flex-direction:column;gap:4px"><span>Примечание</span><b style="font-weight:500;text-align:left">'+esc(c.note)+'</b></div></div>' : '')+
-    '<button class="btn-full primary" data-act="edit">✎ Редактировать</button>';
+    '<div class="tiles">'+Object.keys(NORM).map(tile).join('')+'</div>'+
+    '<div class="rows">'+row('Крыло',wingName(c.wing))+row('Культура',val(c.crop))+row('Сорт',val(c.sort))+row('Партия',val(c.batch))+row('Количество',(c.qty||0).toLocaleString('ru-RU')+' кг')+row('Оператор',val(c.operator))+'</div>'+
+    '<div class="rows">'+row('Загрузка',val(c.loadAt))+row('Обработка',val(c.processAt))+row('Вывод на РГС',val(c.rgsAt))+'</div>'+
+    (c.note ? '<div class="rows"><div class="vr" style="flex-direction:column;gap:4px"><span>Примечание</span><b style="text-align:left;font-weight:500">'+esc(c.note)+'</b></div></div>' : '')+
+    '<button class="btn pri full" data-act="edit">Редактировать</button>';
   openModal('viewModal');
 }
+
+/* ===== Редактирование ===== */
 function buildForm(){
-  let h = '<div class="field"><label for="f_status">Статус</label><select id="f_status">'+
-    Object.keys(names).filter(k => k !== 'all').map(k => '<option value="'+k+'">'+names[k]+'</option>').join('')+'</select></div>';
-  FIELDS.forEach(([k,l,t,mn,mx,step]) => {
-    h += '<div class="field"><label for="f_'+k+'">'+l+'</label><input id="f_'+k+'" '+
-      (t==='num' ? 'type="number" inputmode="decimal" min="'+mn+'" max="'+mx+'" step="'+step+'"' : t==='date' ? 'type="date"' : 'type="text" maxlength="60"')+'></div>';
-  });
-  $('editForm').innerHTML = h + '<div class="field full"><label for="f_note">Примечание</label><textarea id="f_note" maxlength="500"></textarea></div>';
-  $('f_status').onchange = () => {
-    const s = $('f_status').value;
-    if (s === 'process' && !$('f_processAt').value) $('f_processAt').value = todayIso();
-    if (s === 'rgs' && !$('f_rgsAt').value) $('f_rgsAt').value = todayIso();
-  };
+  const F = k => FIELDS.find(f => f[0] === k);
+  const fld = k => { const [,l,t,mn,mx,step] = F(k);
+    return '<div class="fld"><label for="f_'+k+'">'+l+'</label><input id="f_'+k+'" '+(t==='num'?'type="number" inputmode="decimal" min="'+mn+'" max="'+mx+'" step="'+step+'"':t==='date'?'type="date"':'type="text" maxlength="60"')+'></div>'; };
+  $('editForm').innerHTML =
+    '<div class="grp"><h3>Статус</h3><div class="seg">'+Object.keys(ST).map(k =>
+      '<label style="--c:'+ST[k][1]+'"><input type="radio" name="st" value="'+k+'"><span>'+ic(ST[k][0])+names[k]+'</span></label>').join('')+'</div>'+
+    '<div class="quick"><button type="button" class="btn sm" data-q="free">Освободить камеру</button><button type="button" class="btn sm" data-q="process">На обработку</button><button type="button" class="btn sm" data-q="rgs">На РГС</button></div></div>'+
+    GROUPS.map(([t, ks]) => '<div class="grp"><h3>'+t+'</h3><div class="fg">'+ks.map(fld).join('')+'</div></div>').join('')+
+    '<div class="grp"><h3>Примечание</h3><textarea id="f_note" maxlength="500" style="width:100%"></textarea></div>';
+}
+const getStatus = () => document.querySelector('input[name=st]:checked').value;
+const setStatus = v => { document.querySelector('input[name=st][value='+v+']').checked = true; };
+function autoDate(s){
+  const k = s === 'process' ? 'processAt' : s === 'rgs' ? 'rgsAt' : null;
+  if (k && !$('f_'+k).value) $('f_'+k).value = todayIso();
+}
+function quick(q){
+  if (q === 'free'){
+    setStatus('empty');
+    ['crop','sort','batch','operator','loadAt','processAt','rgsAt'].forEach(k => $('f_'+k).value = '');
+    $('f_qty').value = 0; $('f_note').value = '';
+  } else { setStatus(q); autoDate(q); }
+  toast('Проверьте данные и нажмите «Сохранить»');
 }
 function openForm(){
   const c = cams.find(x => x.id === selected); if (!c) return;
   $('emNum').textContent = '№' + pad(c.id);
-  $('f_status').value = c.status;
+  setStatus(c.status);
   FIELDS.forEach(([k,,t]) => { $('f_'+k).value = t === 'date' ? toIso(c[k]) : (c[k] ?? ''); });
   $('f_note').value = c.note || '';
-  closeModal('viewModal');
-  openModal('editModal');
+  closeModal('viewModal'); openModal('editModal');
 }
 function collect(){
-  const o = { status: $('f_status').value, note: $('f_note').value.trim() };
+  const o = { status: getStatus(), note: $('f_note').value.trim() };
   for (const [k,l,t,mn,mx] of FIELDS){
     const raw = $('f_'+k).value.trim();
     if (t === 'num'){
       if (raw === '') o[k] = k === 'qty' ? 0 : null;
-      else {
-        const n = Number(raw);
-        if (!Number.isFinite(n) || n < mn || n > mx){ alert(l + ': допустимо от ' + mn + ' до ' + mx); return null; }
-        o[k] = n;
-      }
+      else { const n = Number(raw); if (!Number.isFinite(n) || n < mn || n > mx){ toast(l.split(',')[0]+': допустимо от '+mn+' до '+mx, 1); return null; } o[k] = n; }
     } else o[k] = t === 'date' ? toDmy(raw) : raw;
   }
   return o;
@@ -501,7 +521,7 @@ async function save(){
   const changed = Object.keys(upd).filter(k => String(upd[k] ?? '') !== String(c[k] ?? ''));
   if (!changed.length){ closeModal('editModal'); return; }
   if (!confirm('Сохранить изменения?\n\nКамера №' + pad(c.id) + ' · ' + (c.sort||'—'))) return;
-  const action = changed.includes('status') ? 'Статус: ' + names[c.status] + ' → ' + names[upd.status] + (changed.length > 1 ? ' (+ ещё ' + (changed.length-1) + ')' : '')
+  const action = changed.includes('status') ? 'Статус: '+names[c.status]+' → '+names[upd.status]+(changed.length>1?' (+ ещё '+(changed.length-1)+')':'')
     : 'Изменено: ' + changed.map(k => LABEL[k]).join(', ');
   $('saveBtn').disabled = true; showLoading(true);
   try {
@@ -509,12 +529,12 @@ async function save(){
     b.update(doc(db,'cameras','cam'+c.id), { ...upd, updatedBy: user.email });
     b.set(doc(collection(db,'journal')), { camId: c.id, cam: '№'+pad(c.id), action, user: user.email, ts: Date.now(), date: fmtNow() });
     await b.commit();
-    closeModal('editModal');
-  } catch(e){ alert('Не удалось сохранить: ' + e.message); }
+    closeModal('editModal'); toast('Сохранено');
+  } catch(e){ toast('Не удалось сохранить: ' + e.message, 1); }
   $('saveBtn').disabled = false; showLoading(false);
 }
 
-/* ===== Экспорт / импорт (только админ) ===== */
+/* ===== Экспорт / импорт (админ) ===== */
 function exportData(){
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([JSON.stringify({cams, journal}, null, 2)], {type:'application/json'}));
@@ -530,9 +550,9 @@ $('importFile').addEventListener('change', e => {
       if (!Array.isArray(p.cams)) throw new Error('Неверный формат файла');
       const list = p.cams.filter(c => Number.isInteger(Number(c.id)) && c.id >= 1 && c.id <= 500).map(cleanCam);
       if (!list.length) throw new Error('В файле нет камер');
-      if (!confirm('Импортировать ' + list.length + ' камер? Текущие данные этих камер будут заменены.')) return;
-      showLoading(true); await commitAll(list); showLoading(false); alert('Готово');
-    } catch(err){ showLoading(false); alert('Ошибка импорта: ' + err.message); }
+      if (!confirm('Импортировать ' + list.length + ' камер? Данные этих камер будут заменены.')) return;
+      showLoading(true); await commitAll(list); showLoading(false); toast('Импорт завершён');
+    } catch(err){ showLoading(false); toast('Ошибка импорта: ' + err.message, 1); }
   };
   r.readAsText(f);
 });
@@ -541,23 +561,27 @@ $('importFile').addEventListener('change', e => {
 if (!ALLOW_SIGNUP) $('signupBtn').style.display = 'none';
 buildForm();
 $('loginForm').addEventListener('submit', e => { e.preventDefault(); doAuth(false); });
+$('editForm').addEventListener('submit', e => { e.preventDefault(); save(); });
+$('editForm').addEventListener('change', e => { if (e.target.name === 'st') autoDate(e.target.value); });
 $('q').addEventListener('input', e => { search = e.target.value; render(); });
+$('wing').addEventListener('change', e => { wingFilter = e.target.value === 'all' ? 'all' : Number(e.target.value); render(); });
 
 document.addEventListener('click', e => {
   const t = e.target;
   if (t.classList && t.classList.contains('modal')) return closeModal(t.id);
-  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-wing],[data-toggle]');
+  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-toggle],[data-q]');
   if (!x) return;
   if (x.hasAttribute('data-close')) return closeTopModal();
   if (x.dataset.cam) return openView(Number(x.dataset.cam));
-  if (x.dataset.filter) { filter = x.dataset.filter; return render(); }
-  if (x.dataset.wing) { wingFilter = x.dataset.wing === 'all' ? 'all' : Number(x.dataset.wing); return render(); }
-  if (x.dataset.toggle) { const w = x.dataset.toggle; collapsed[w] = !collapsed[w]; return render(); }
+  if (x.dataset.filter){ filter = x.dataset.filter; return render(); }
+  if (x.dataset.toggle){ const w = x.dataset.toggle; collapsed[w] = !collapsed[w]; return render(); }
+  if (x.dataset.q) return quick(x.dataset.q);
   const act = {
     signup: () => doAuth(true), logout: () => signOut(auth), edit: openForm, save,
     history: () => { renderJournal(); openModal('histModal'); },
     export: () => isAdmin() && exportData(),
-    import: () => isAdmin() && $('importFile').click()
+    import: () => isAdmin() && $('importFile').click(),
+    theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try{ localStorage.setItem('th', n); }catch(_){} }
   }[x.dataset.act];
   if (act) act();
 });
