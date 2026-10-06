@@ -29,19 +29,17 @@ button{font:inherit;color:inherit;cursor:pointer}
 .hwrap{max-width:1400px;margin:auto;display:flex;align-items:center;gap:8px}
 .logo{width:44px;height:44px;background:#fff;border-radius:12px;display:grid;place-items:center;font-size:26px;overflow:hidden;flex:0 0 auto;margin-right:4px}
 .logo img{width:100%;height:100%;object-fit:contain}
-.brand{font-weight:800;font-size:19px}
-.sub{font-size:12px;color:#a9b9d3}
-.sp{flex:1}
+.brand{font-weight:800;font-size:19px}.sub{font-size:12px;color:#a9b9d3}.sp{flex:1}
 .uname{font-size:12px;color:#c5d3ea;margin-right:4px}
 .ib{width:42px;height:42px;border-radius:11px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;display:grid;place-items:center}
 .ib:hover{background:rgba(255,255,255,.18)}
-.adm{display:none}.is-admin .adm{display:grid}
+.offline{display:none;background:#b45309;color:#fff;text-align:center;padding:6px;font-size:12px;font-weight:700}
+.offline.show{display:block}
 main{max-width:1400px;margin:auto;padding:16px 20px 36px}
 .stats{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:10px;margin-bottom:14px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);min-width:0}
 .stat .l{font-size:12px;color:var(--mut);font-weight:600;display:flex;gap:6px;align-items:center}
-.stat .v{font-size:24px;font-weight:800;margin-top:4px;white-space:nowrap}
-.stat .s{font-size:12px;color:var(--mut)}
+.stat .v{font-size:24px;font-weight:800;margin-top:4px;white-space:nowrap}.stat .s{font-size:12px;color:var(--mut)}
 .bar{height:6px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:8px}
 .bar i{display:block;height:100%;background:var(--brand);border-radius:9px}
 .stat.pri{background:linear-gradient(135deg,#1d5fd1,#0e3b8c);color:#fff;border:0}
@@ -98,7 +96,7 @@ main{max-width:1400px;margin:auto;padding:16px 20px 36px}
 .vr:last-child{border:0}.vr span{color:var(--mut)}.vr b{text-align:right;overflow-wrap:anywhere}
 .grp{margin-bottom:14px}.grp h3{margin:0 0 8px;font-size:13px;color:var(--mut)}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.fld{display:flex;flex-direction:column;gap:4px}.fld.full{grid-column:1/-1}.fld label{font-size:12px;color:var(--mut);font-weight:600}
+.fld{display:flex;flex-direction:column;gap:4px}.fld label{font-size:12px;color:var(--mut);font-weight:600}
 input,select,textarea{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:11px;padding:11px;font:inherit;font-size:16px;min-height:44px;min-width:0}
 input:focus,select:focus,textarea:focus{outline:2px solid var(--brand)}
 textarea{min-height:70px;resize:vertical}
@@ -109,14 +107,16 @@ textarea{min-height:70px;resize:vertical}
 .seg input:checked+span{border-color:var(--c);background:color-mix(in srgb,var(--c) 14%,var(--card));color:var(--c)}
 .seg input:focus-visible+span{outline:2px solid var(--brand)}
 .quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.btn{min-height:44px;padding:0 16px;border-radius:11px;border:1px solid var(--line);background:var(--card);font-weight:700;font-size:14px}
+.btn{min-height:44px;padding:0 16px;border-radius:11px;border:1px solid var(--line);background:var(--card);font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px;justify-content:center}
 .btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
 .btn.sm{min-height:38px;font-size:13px;padding:0 12px}.btn.full{width:100%}.btn:disabled{opacity:.6}
+.menu{display:grid;gap:8px}.menu .btn{justify-content:flex-start}
 .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
 .tw{max-height:60vh;overflow:auto}
 .ht{width:100%;border-collapse:collapse;font-size:13px}
 .ht th,.ht td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
 .ht th{color:var(--mut);font-size:12px;position:sticky;top:0;background:var(--card)}
+.hint{font-size:12px;color:var(--mut);margin:6px 0 0}
 .lw{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 20% 10%,#2a5bd0 0,transparent 45%),linear-gradient(135deg,#0f1b2d,#17355f)}
 .lb{background:var(--card);border-radius:22px;padding:30px 26px;width:min(400px,100%);box-shadow:0 30px 80px #0007}
 .lb .lg{font-size:44px}.lb h1{margin:8px 0 4px;font-size:24px}.lb p{margin:0 0 18px;color:var(--mut)}
@@ -136,13 +136,17 @@ textarea{min-height:70px;resize:vertical}
 @media(max-width:700px){
 .hd{padding:calc(12px + env(safe-area-inset-top)) 12px 12px}
 .brand{font-size:17px}.uname{display:none}.ib{width:40px;height:40px}.logo{width:40px;height:40px}
-main{padding:12px 12px 30px}
-.chips{margin:0 -12px 10px;padding:8px 12px}
+main{padding:12px 12px 30px}.chips{margin:0 -12px 10px;padding:8px 12px}
 .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .stats{display:flex;overflow-x:auto;scrollbar-width:none}.stat{min-width:150px;flex:0 0 auto}
 .tiles{grid-template-columns:repeat(2,1fr)}
 .modal{align-items:flex-end;padding:0}.box{border-radius:18px 18px 0 0;padding:16px}
 .wt .bar{width:56px}
+}
+@media print{
+.hd,.chips,.srow,.acts,.modal,#toasts,.foot,.offline,.attn{display:none!important}
+body{background:#fff;color:#000}.cam,.stat{box-shadow:none;break-inside:avoid}
+.wing.col .grid{display:grid!important}.grid{grid-template-columns:repeat(4,1fr)}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -164,6 +168,10 @@ main{padding:12px 12px 30px}
 <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
 <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
 <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12"/></symbol>
+<symbol id="i-table" viewBox="0 0 24 24"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol>
+<symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a1 1 0 01-1-1v-6a1 1 0 011-1h16a1 1 0 011 1v6a1 1 0 01-1 1h-2M6 14h12v7H6z"/></symbol>
+<symbol id="i-dots" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"/></symbol>
 </svg>
 
 <div id="loginScreen" class="lw">
@@ -184,11 +192,11 @@ main{padding:12px 12px 30px}
     <div class="sp"></div>
     <span class="uname" id="userName"></span>
     <button class="ib" data-act="history" aria-label="История" title="История"><svg class="i"><use href="#i-list"/></svg></button>
-    <button class="ib adm" data-act="export" aria-label="Экспорт" title="Экспорт"><svg class="i"><use href="#i-down"/></svg></button>
-    <button class="ib adm" data-act="import" aria-label="Импорт" title="Импорт"><svg class="i"><use href="#i-up"/></svg></button>
+    <button class="ib" data-act="menu" aria-label="Меню" title="Меню"><svg class="i"><use href="#i-dots"/></svg></button>
     <button class="ib" data-act="theme" aria-label="Тема" title="Тёмная / светлая тема"><svg class="i"><use href="#i-moon"/></svg></button>
     <button class="ib" data-act="logout" aria-label="Выйти" title="Выйти"><svg class="i"><use href="#i-out"/></svg></button>
   </div></header>
+  <div class="offline" id="offline">Нет связи. Показаны сохранённые данные, изменения отправятся при подключении.</div>
   <main>
     <div id="attn"></div>
     <div class="stats" id="stats"></div>
@@ -203,22 +211,16 @@ main{padding:12px 12px 30px}
   <div class="foot"><i>Высокое качество низких температур</i>ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт</div>
 </div>
 
-<div class="modal" id="viewModal"><div class="box">
-  <h2 id="vmTitle"></h2><div id="vmContent"></div>
-  <div class="acts"><button class="btn" data-close>Закрыть</button></div>
-</div></div>
-
-<div class="modal" id="editModal"><div class="box">
-  <h2>Камера <span id="emNum"></span></h2>
-  <form id="editForm"></form>
-  <div class="acts"><button class="btn" data-close>Отмена</button><button class="btn pri" id="saveBtn" data-act="save">Сохранить</button></div>
-</div></div>
-
-<div class="modal" id="histModal"><div class="box" style="width:min(860px,100%)">
-  <h2>История операций</h2>
+<div class="modal" id="viewModal"><div class="box"><h2 id="vmTitle"></h2><div id="vmContent"></div><div class="acts"><button class="btn" data-close>Закрыть</button></div></div></div>
+<div class="modal" id="editModal"><div class="box"><h2>Камера <span id="emNum"></span></h2><form id="editForm"></form>
+  <div class="acts"><button class="btn" data-close>Отмена</button><button class="btn pri" id="saveBtn" data-act="save">Сохранить</button></div></div></div>
+<div class="modal" id="histModal"><div class="box" style="width:min(860px,100%)"><h2>История операций</h2>
   <div class="tw"><table class="ht"><thead><tr><th>Дата</th><th>Камера</th><th>Действие</th><th>Кто</th></tr></thead><tbody id="histBody"></tbody></table></div>
-  <div class="acts"><button class="btn" data-close>Закрыть</button></div>
-</div></div>
+  <div class="acts"><button class="btn" data-close>Закрыть</button></div></div></div>
+<div class="modal" id="menuModal"><div class="box" style="width:min(420px,100%)"><h2>Меню</h2><div class="menu" id="menuList"></div>
+  <div class="acts"><button class="btn" data-close>Закрыть</button></div></div></div>
+<div class="modal" id="setModal"><div class="box"><h2>Настройки хранилища</h2><form id="setForm"></form>
+  <div class="acts"><button class="btn" data-close>Отмена</button><button class="btn pri" id="setSave" data-act="setsave">Сохранить</button></div></div></div>
 
 <input type="file" id="importFile" accept=".json" hidden>
 <div id="loading" class="ld"><div class="spin"></div></div>
@@ -227,7 +229,7 @@ main{padding:12px 12px 30px}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import { getFirestore, doc, collection, writeBatch, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, collection, writeBatch, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQtB3vJh84ELKJg0qs0ycFSGw9Q62ZAOY",
@@ -242,13 +244,15 @@ const firebaseConfig = {
 const ADMIN_EMAIL = 'adam@fruit.local'; // только скрывает кнопки; настоящая защита — firestore.rules
 const ALLOW_SIGNUP = true;              // false — убрать «Создать аккаунт»
 const DOMAIN = '@fruit.local';
-const WING_SIZE = 14, WINGS = 4;
-/* Нормы: [мин, макс, название, единица]. Всё вне диапазона подсвечивается красным */
-const NORM = { temp:[-1,5,'Температура',' °C'], hum:[80,98,'Влажность',' %'], o2:[1,5,'O₂',' %'], co2:[0,6,'CO₂',' %'] };
+const DEF = { wings: 4, size: 14, norms: { temp:[-1,5], hum:[80,98], o2:[1,5], co2:[0,6] } };
+const NL = { temp:['Температура',' °C'], hum:['Влажность',' %'], o2:['O₂',' %'], co2:['CO₂',' %'] };
+let S = structuredClone(DEF); // рабочие настройки (из Firestore)
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+let db;
+try { db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) }); }
+catch(e){ db = initializeFirestore(app, {}); }
 
 const names = {all:'Все',storage:'Охлаждение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
 const ST = {storage:['snow','#2573d9'],process:['layers','#e08a12'],rgs:['flask','#1f9d6b'],inactive:['pause','#6b7788'],problem:['alert','#d63a3a'],empty:['circle','#8896ab']};
@@ -271,18 +275,20 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pad = n => String(n).padStart(2,'0');
 const ic = n => '<svg class="i"><use href="#i-'+n+'"/></svg>';
-const fmtNow = () => new Date().toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+const fmtDT = t => new Date(t).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 const todayIso = () => { const d = new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); };
 const toIso = s => { const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(s||''); return m ? m[3]+'-'+m[2]+'-'+m[1] : ''; };
 const toDmy = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s||''); return m ? m[3]+'.'+m[2]+'.'+m[1] : ''; };
-const wingOf = id => Math.floor((id-1)/WING_SIZE)+1;
+const wingOf = id => Math.floor((id-1)/S.size)+1;
+const total = () => S.wings * S.size;
 const showLoading = s => $('loading').classList.toggle('show', s);
 const isAdmin = () => !!user && user.email === ADMIN_EMAIL;
 const val = (v, u='') => v != null && v !== '' ? esc(v)+u : '—';
 const unit = k => FIELDS.find(f => f[0] === k)[6] || '';
 const toast = (m, err) => { const d = document.createElement('div'); d.className = 'toast'+(err?' err':''); d.textContent = m; $('toasts').append(d); setTimeout(() => d.remove(), 3400); };
-const issues = c => ACTIVE.includes(c.status) ? Object.keys(NORM).filter(k => c[k] != null && (c[k] < NORM[k][0] || c[k] > NORM[k][1])) : [];
+const issues = c => ACTIVE.includes(c.status) ? Object.keys(NL).filter(k => { const n = S.norms[k]; return c[k] != null && n && (c[k] < n[0] || c[k] > n[1]); }) : [];
 const needsAttention = c => c.status === 'problem' || issues(c).length > 0;
+const vis = () => cams.filter(c => c.id <= total());
 
 function culIcon(sort, crop){
   const s = ((sort||'')+' '+(crop||'')).toLowerCase();
@@ -342,11 +348,9 @@ onAuthStateChanged(auth, u => {
   if (u){
     $('loginScreen').style.display = 'none'; $('appScreen').style.display = 'block';
     $('userName').textContent = u.email.replace(DOMAIN, '');
-    document.body.classList.toggle('is-admin', isAdmin());
     showLoading(true); subscribe();
   } else {
     document.querySelectorAll('.modal.open').forEach(m => closeModal(m.id));
-    document.body.classList.remove('is-admin');
     $('loginScreen').style.display = 'flex'; $('appScreen').style.display = 'none';
     $('loginPass').value = ''; showLoading(false);
   }
@@ -355,7 +359,7 @@ onAuthStateChanged(auth, u => {
 /* ===== Данные ===== */
 const cleanCam = c => {
   const id = Number(c.id);
-  const o = { id, wing: wingOf(id), status: names[c.status] && c.status !== 'all' ? c.status : 'empty', note: String(c.note ?? '') };
+  const o = { id, wing: wingOf(id), status: names[c.status] && c.status !== 'all' ? c.status : 'empty', note: String(c.note ?? ''), updatedAt: Number(c.updatedAt) || 0 };
   FIELDS.forEach(([k,,t]) => {
     if (t === 'num'){ const n = c[k] === '' || c[k] == null ? null : Number(c[k]); o[k] = Number.isFinite(n) ? n : (k === 'qty' ? 0 : null); }
     else o[k] = String(c[k] ?? '');
@@ -372,7 +376,7 @@ async function commitAll(list){
 function seedCams(){
   const sorts = ['Голден','Гала','Фуджи','Груша','Айдаред','Морковь','Лук','Капуста','Свекла','Ред Чиф'];
   const veg = ['Морковь','Лук','Капуста','Свекла'];
-  return Array.from({length: WING_SIZE*WINGS}, (_, k) => {
+  return Array.from({length: total()}, (_, k) => {
     const i = k+1, s = sorts[k % sorts.length];
     const st = i%14===0 ? 'empty' : i%7===0 ? 'rgs' : i%9===0 ? 'process' : 'storage';
     return cleanCam({id:i, status:st, crop: veg.includes(s) ? 'Овощи' : 'Яблоко', sort:s, batch:'П-'+(240+i),
@@ -381,7 +385,14 @@ function seedCams(){
 }
 function subscribe(){
   const fail = e => { showLoading(false); toast('Ошибка загрузки: ' + e.message, 1); };
+  unsubs.push(onSnapshot(doc(db,'settings','main'), s => {
+    const d = s.exists() ? s.data() : {};
+    S = { wings: d.wings || DEF.wings, size: d.size || DEF.size, norms: { ...DEF.norms, ...(d.norms || {}) } };
+    document.body.classList.toggle('is-admin', isAdmin());
+    if (cams.length) render();
+  }, e => console.error(e)));
   unsubs.push(onSnapshot(collection(db,'cameras'), snap => {
+    $('offline').classList.toggle('show', snap.metadata.fromCache && !navigator.onLine);
     if (snap.empty && !snap.metadata.fromCache && isAdmin() && !seeded){ seeded = true; commitAll(seedCams()).catch(fail); return; }
     cams = snap.docs.map(d => d.data()).sort((a,b) => a.id - b.id);
     showLoading(false); render();
@@ -390,35 +401,40 @@ function subscribe(){
     journal = snap.docs.map(d => d.data()); renderJournal();
   }, e => console.error(e)));
 }
+addEventListener('online', () => $('offline').classList.remove('show'));
+addEventListener('offline', () => $('offline').classList.add('show'));
 
 /* ===== Отрисовка ===== */
 function renderAttn(){
-  const bad = cams.filter(needsAttention);
+  const bad = vis().filter(needsAttention);
   $('attn').innerHTML = !bad.length ? '' :
     '<section class="attn"><h2>'+ic('alert')+'Требуют внимания: '+bad.length+'</h2><div class="alist">'+
     bad.map(c => '<button class="achip" data-cam="'+c.id+'"><b>№'+pad(c.id)+' · '+val(c.sort)+'</b><span>'+
-      (c.status === 'problem' ? 'Проблема' : issues(c).map(k => NORM[k][2]+' '+esc(c[k])+NORM[k][3]).join(', '))+'</span></button>').join('')+
+      (c.status === 'problem' ? 'Проблема' : issues(c).map(k => NL[k][0]+' '+esc(c[k])+NL[k][1]).join(', '))+'</span></button>').join('')+
     '</div></section>';
 }
 function renderStats(){
+  const all = vis();
   let kg = 0, occ = 0, emp = 0;
-  cams.forEach(c => { if (ACTIVE.includes(c.status)){ occ++; kg += c.qty || 0; } else if (c.status === 'empty') emp++; });
-  const n = cams.length || 1, pct = Math.round(occ/n*100), bad = cams.filter(needsAttention).length;
+  all.forEach(c => { if (ACTIVE.includes(c.status)){ occ++; kg += c.qty || 0; } else if (c.status === 'empty') emp++; });
+  const pct = Math.round(occ/(all.length||1)*100), bad = all.filter(needsAttention).length;
   const st = (cls, i, l, v, s, extra='') => '<div class="stat '+cls+'"><div class="l">'+ic(i)+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div>'+extra+'</div>';
   $('stats').innerHTML =
     st('pri','box','На хранении',(kg/1000).toFixed(1)+' т',kg.toLocaleString('ru-RU')+' кг') +
-    st('','snow','Занято камер',occ+' / '+cams.length,pct+'% загрузки','<div class="bar"><i style="width:'+pct+'%"></i></div>') +
+    st('','snow','Занято камер',occ+' / '+all.length,pct+'% загрузки','<div class="bar"><i style="width:'+pct+'%"></i></div>') +
     st('','circle','Свободно',emp,'камер') +
     st(bad?'bad':'','alert','Внимание',bad,bad?'нужна проверка':'всё в норме');
-  $('subTitle').textContent = 'Управление запасами · ' + cams.length + ' камер';
+  $('subTitle').textContent = 'Управление запасами · ' + all.length + ' камер';
 }
 function renderChips(){
+  const all = vis();
   $('filters').innerHTML = Object.keys(names).map(k => {
-    const c = k === 'all' ? cams.length : cams.filter(x => x.status === k).length;
+    const c = k === 'all' ? all.length : all.filter(x => x.status === k).length;
     return '<button class="chip'+(filter===k?' sel':'')+'" data-filter="'+k+'"'+(k!=='all'?' style="--c:'+ST[k][1]+'"':'')+'>'+ic(k==='all'?'grid':ST[k][0])+names[k]+' <b>'+c+'</b></button>';
   }).join('');
+  if (wingFilter !== 'all' && wingFilter > S.wings) wingFilter = 'all';
   let o = '<option value="all">Все крылья</option>';
-  for (let i = 1; i <= WINGS; i++) o += '<option value="'+i+'">'+wingName(i)+'</option>';
+  for (let i = 1; i <= S.wings; i++) o += '<option value="'+i+'">'+wingName(i)+'</option>';
   $('wing').innerHTML = o; $('wing').value = String(wingFilter);
 }
 function camCard(c){
@@ -432,21 +448,21 @@ function camCard(c){
 }
 function render(){
   renderStats(); renderAttn(); renderChips();
-  const q = search.trim().toLowerCase();
-  const list = cams.filter(c => (filter === 'all' || c.status === filter) && (wingFilter === 'all' || c.wing === wingFilter) &&
+  const all = vis(), q = search.trim().toLowerCase();
+  const list = all.filter(c => (filter === 'all' || c.status === filter) && (wingFilter === 'all' || wingOf(c.id) === wingFilter) &&
     (!q || [pad(c.id), c.id, c.sort, c.batch, c.crop].join(' ').toLowerCase().includes(q)));
   let html = '';
-  for (let w = 1; w <= WINGS; w++){
-    const wc = list.filter(c => c.wing === w); if (!wc.length) continue;
-    const all = cams.filter(c => c.wing === w), occ = all.filter(c => ACTIVE.includes(c.status));
-    const t = occ.reduce((s,c) => s + (c.qty||0), 0)/1000, pct = Math.round(occ.length/(all.length||1)*100);
+  for (let w = 1; w <= S.wings; w++){
+    const wc = list.filter(c => wingOf(c.id) === w); if (!wc.length) continue;
+    const wa = all.filter(c => wingOf(c.id) === w), occ = wa.filter(c => ACTIVE.includes(c.status));
+    const t = occ.reduce((s,c) => s + (c.qty||0), 0)/1000, pct = Math.round(occ.length/(wa.length||1)*100);
     html += '<section class="wing'+(collapsed[w]?' col':'')+'"><button class="wt" data-toggle="'+w+'" aria-expanded="'+!collapsed[w]+'">'+
-      '<div class="in"><div class="nm">'+wingName(w)+'</div><div class="sm">'+occ.length+' из '+all.length+' занято · '+t.toFixed(1)+' т</div></div>'+
+      '<div class="in"><div class="nm">'+wingName(w)+'</div><div class="sm">'+occ.length+' из '+wa.length+' занято · '+t.toFixed(1)+' т</div></div>'+
       '<div class="bar"><i style="width:'+pct+'%"></i></div>'+ic('chev')+'</button>'+
       '<div class="grid">'+wc.map(camCard).join('')+'</div></section>';
   }
-  $('grid').innerHTML = html || '<div class="empty-msg">'+(cams.length ? 'Ничего не найдено. Измените фильтр или поиск.' : 'Камер пока нет.')+'</div>';
-  $('resultCount').textContent = list.length + ' из ' + cams.length;
+  $('grid').innerHTML = html || '<div class="empty-msg">'+(all.length ? 'Ничего не найдено. Измените фильтр или поиск.' : 'Камер пока нет.')+'</div>';
+  $('resultCount').textContent = list.length + ' из ' + all.length;
 }
 function renderJournal(){
   $('histBody').innerHTML = journal.map(e => '<tr><td>'+esc(e.date)+'</td><td>'+esc(e.cam)+'</td><td>'+esc(e.action)+'</td><td>'+esc((e.user||'—').replace(DOMAIN,''))+'</td></tr>').join('')
@@ -459,12 +475,12 @@ function openView(id){
   selected = id;
   const [icn, col] = ST[c.status] || ST.empty, bad = issues(c);
   const row = (l, v) => '<div class="vr"><span>'+l+'</span><b>'+v+'</b></div>';
-  const tile = k => '<div class="tile'+(bad.includes(k)?' bad':'')+'"><span>'+NORM[k][2]+'</span><b>'+val(c[k],unit(k))+'</b>'+(bad.includes(k)?'<small>норма '+NORM[k][0]+'…'+NORM[k][1]+'</small>':'')+'</div>';
+  const tile = k => '<div class="tile'+(bad.includes(k)?' bad':'')+'"><span>'+NL[k][0]+'</span><b>'+val(c[k],unit(k))+'</b>'+(bad.includes(k)?'<small>норма '+S.norms[k][0]+'…'+S.norms[k][1]+'</small>':'')+'</div>';
   $('vmTitle').innerHTML = culIcon(c.sort,c.crop)+'Камера №'+pad(c.id)+' <span class="pill" style="--c:'+col+'">'+ic(icn)+esc(names[c.status]||c.status)+'</span>';
   $('vmContent').innerHTML =
-    '<div class="tiles">'+Object.keys(NORM).map(tile).join('')+'</div>'+
-    '<div class="rows">'+row('Крыло',wingName(c.wing))+row('Культура',val(c.crop))+row('Сорт',val(c.sort))+row('Партия',val(c.batch))+row('Количество',(c.qty||0).toLocaleString('ru-RU')+' кг')+row('Оператор',val(c.operator))+'</div>'+
-    '<div class="rows">'+row('Загрузка',val(c.loadAt))+row('Обработка',val(c.processAt))+row('Вывод на РГС',val(c.rgsAt))+'</div>'+
+    '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+
+    '<div class="rows">'+row('Крыло',wingName(wingOf(c.id)))+row('Культура',val(c.crop))+row('Сорт',val(c.sort))+row('Партия',val(c.batch))+row('Количество',(c.qty||0).toLocaleString('ru-RU')+' кг')+row('Оператор',val(c.operator))+'</div>'+
+    '<div class="rows">'+row('Загрузка',val(c.loadAt))+row('Обработка',val(c.processAt))+row('Вывод на РГС',val(c.rgsAt))+row('Обновлено',c.updatedAt?fmtDT(c.updatedAt):'—')+'</div>'+
     (c.note ? '<div class="rows"><div class="vr" style="flex-direction:column;gap:4px"><span>Примечание</span><b style="text-align:left;font-weight:500">'+esc(c.note)+'</b></div></div>' : '')+
     '<button class="btn pri full" data-act="edit">Редактировать</button>';
   openModal('viewModal');
@@ -526,21 +542,65 @@ async function save(){
   $('saveBtn').disabled = true; showLoading(true);
   try {
     const b = writeBatch(db);
-    b.update(doc(db,'cameras','cam'+c.id), { ...upd, updatedBy: user.email });
-    b.set(doc(collection(db,'journal')), { camId: c.id, cam: '№'+pad(c.id), action, user: user.email, ts: Date.now(), date: fmtNow() });
+    b.update(doc(db,'cameras','cam'+c.id), { ...upd, updatedBy: user.email, updatedAt: Date.now() });
+    b.set(doc(collection(db,'journal')), { camId: c.id, cam: '№'+pad(c.id), action, user: user.email, ts: Date.now(), date: fmtDT(Date.now()) });
     await b.commit();
     closeModal('editModal'); toast('Сохранено');
   } catch(e){ toast('Не удалось сохранить: ' + e.message, 1); }
   $('saveBtn').disabled = false; showLoading(false);
 }
 
-/* ===== Экспорт / импорт (админ) ===== */
-function exportData(){
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([JSON.stringify({cams, journal}, null, 2)], {type:'application/json'}));
-  a.download = 'fruitstore-backup-' + todayIso() + '.json';
-  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+/* ===== Меню, настройки ===== */
+function openMenu(){
+  const b = (a, i, t) => '<button class="btn" data-act="'+a+'">'+ic(i)+t+'</button>';
+  $('menuList').innerHTML = b('csv','table','Скачать таблицу (Excel)') + b('print','print','Печать') +
+    (isAdmin() ? b('settings','gear','Настройки хранилища') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') : '');
+  openModal('menuModal');
 }
+function openSettings(){
+  if (!isAdmin()) return;
+  const n = S.norms;
+  $('setForm').innerHTML =
+    '<div class="grp"><h3>Структура</h3><div class="fg"><div class="fld"><label for="s_wings">Число крыльев</label><input id="s_wings" type="number" min="1" max="12" value="'+S.wings+'"></div>'+
+    '<div class="fld"><label for="s_size">Камер в крыле</label><input id="s_size" type="number" min="1" max="60" value="'+S.size+'"></div></div>'+
+    '<p class="hint">Всего не больше 400 камер. Недостающие камеры создаются пустыми. Лишние не удаляются, а только скрываются.</p></div>'+
+    '<div class="grp"><h3>Нормы (за пределами подсвечиваются красным)</h3><div class="fg">'+
+    Object.keys(NL).map(k => '<div class="fld"><label>'+NL[k][0]+', от — до</label><div style="display:flex;gap:6px"><input id="s_'+k+'0" type="number" step="any" value="'+n[k][0]+'" style="width:50%"><input id="s_'+k+'1" type="number" step="any" value="'+n[k][1]+'" style="width:50%"></div></div>').join('')+
+    '</div></div>';
+  closeModal('menuModal'); openModal('setModal');
+}
+async function saveSettings(){
+  const w = Number($('s_wings').value), z = Number($('s_size').value), norms = {};
+  if (!Number.isInteger(w) || !Number.isInteger(z) || w < 1 || w > 12 || z < 1 || z > 60 || w*z > 400){ toast('Проверьте число крыльев и камер (всего до 400)', 1); return; }
+  for (const k of Object.keys(NL)){
+    const a = Number($('s_'+k+'0').value), b = Number($('s_'+k+'1').value);
+    if (!Number.isFinite(a) || !Number.isFinite(b) || a > b){ toast(NL[k][0]+': «от» должно быть меньше «до»', 1); return; }
+    norms[k] = [a, b];
+  }
+  if (w*z < total() && !confirm('Камеры с номерами выше '+w*z+' будут скрыты. Продолжить?')) return;
+  $('setSave').disabled = true; showLoading(true);
+  try {
+    const b = writeBatch(db), have = new Set(cams.map(c => c.id));
+    b.set(doc(db,'settings','main'), { wings: w, size: z, norms });
+    for (let i = 1; i <= w*z; i++) if (!have.has(i)) b.set(doc(db,'cameras','cam'+i), cleanCam({id:i, status:'empty'}));
+    await b.commit();
+    closeModal('setModal'); toast('Настройки сохранены');
+  } catch(e){ toast('Не удалось сохранить: ' + e.message, 1); }
+  $('setSave').disabled = false; showLoading(false);
+}
+
+/* ===== Экспорт ===== */
+function download(name, blob){
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+function exportCsv(){
+  const cols = [['id','№'],['wing','Крыло'],['status','Статус'],...FIELDS.map(f => [f[0], f[1]]),['note','Примечание']];
+  const cell = v => '"' + String(v ?? '').replace(/"/g,'""') + '"';
+  const rows = vis().map(c => cols.map(([k]) => cell(k==='wing' ? wingOf(c.id) : k==='status' ? names[c.status] : c[k])).join(';'));
+  download('kamery-' + todayIso() + '.csv', new Blob(['\ufeff' + cols.map(c => cell(c[1])).join(';') + '\n' + rows.join('\n')], {type:'text/csv;charset=utf-8'}));
+}
+function exportData(){ download('fruitstore-backup-' + todayIso() + '.json', new Blob([JSON.stringify({cams, journal, settings:S}, null, 2)], {type:'application/json'})); }
 $('importFile').addEventListener('change', e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f || !isAdmin()) return;
   const r = new FileReader();
@@ -562,6 +622,7 @@ if (!ALLOW_SIGNUP) $('signupBtn').style.display = 'none';
 buildForm();
 $('loginForm').addEventListener('submit', e => { e.preventDefault(); doAuth(false); });
 $('editForm').addEventListener('submit', e => { e.preventDefault(); save(); });
+$('setForm').addEventListener('submit', e => { e.preventDefault(); saveSettings(); });
 $('editForm').addEventListener('change', e => { if (e.target.name === 'st') autoDate(e.target.value); });
 $('q').addEventListener('input', e => { search = e.target.value; render(); });
 $('wing').addEventListener('change', e => { wingFilter = e.target.value === 'all' ? 'all' : Number(e.target.value); render(); });
@@ -579,6 +640,8 @@ document.addEventListener('click', e => {
   const act = {
     signup: () => doAuth(true), logout: () => signOut(auth), edit: openForm, save,
     history: () => { renderJournal(); openModal('histModal'); },
+    menu: openMenu, settings: openSettings, setsave: saveSettings,
+    csv: exportCsv, print: () => { closeTopModal(); setTimeout(() => print(), 100); },
     export: () => isAdmin() && exportData(),
     import: () => isAdmin() && $('importFile').click(),
     theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try{ localStorage.setItem('th', n); }catch(_){} }
