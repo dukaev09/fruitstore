@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0f1b2d">
+<meta name="theme-color" content="#0b1626">
 <link rel="icon" type="image/png" href="/app-icon.png">
 <link rel="apple-touch-icon" href="/app-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,12 +20,12 @@
 :root{--bg:#f1f4f9;--card:#fff;--ink:#14213a;--mut:#64748f;--line:#dde4ee;--brand:#1d5fd1;--bad:#d63a3a;--shadow:0 1px 2px rgba(15,27,45,.06),0 6px 18px rgba(15,27,45,.06)}
 [data-theme=dark]{--bg:#0b1220;--card:#131c2e;--ink:#e8eefb;--mut:#93a4c0;--line:#243250;--brand:#4b8bff;--bad:#ff6b6b;--shadow:0 1px 2px #0006}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;touch-action:manipulation}
 body{margin:0;font:14px/1.4 Inter,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow-x:clip;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
-button{font:inherit;color:inherit;cursor:pointer}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
 :focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 .i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
-.hd{background:linear-gradient(135deg,#0f1b2d,#17355f);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 20px 14px}
+.hd{background:radial-gradient(circle at 85% -40%,#3b7bff66,transparent 55%),radial-gradient(circle at 10% 140%,#16c79a40,transparent 50%),linear-gradient(135deg,#0b1626,#15335e);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 20px 14px}
 .hwrap{max-width:1400px;margin:auto;display:flex;align-items:center;gap:8px}
 .logo{width:44px;height:44px;background:#fff;border-radius:12px;display:grid;place-items:center;font-size:26px;overflow:hidden;flex:0 0 auto;margin-right:4px}
 .logo img{width:100%;height:100%;object-fit:contain}
@@ -36,13 +36,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 .offline{display:none;background:#b45309;color:#fff;text-align:center;padding:6px;font-size:12px;font-weight:700}
 .offline.show{display:block}
 main{max-width:1400px;margin:auto;padding:16px 20px 36px}
+.ph{display:none}
 .stats{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:10px;margin-bottom:10px}
 .stat,.ovc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);min-width:0}
 .stat .l{font-size:12px;color:var(--mut);font-weight:600;display:flex;gap:6px;align-items:center}
 .stat .v{font-size:24px;font-weight:800;margin-top:4px;white-space:nowrap}.stat .s{font-size:12px;color:var(--mut)}
 .bar{height:6px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:8px}
 .bar i{display:block;height:100%;background:var(--brand);border-radius:9px}
-.stat.pri{background:linear-gradient(135deg,#1d5fd1,#0e3b8c);color:#fff;border:0}
+.stat.pri{background:radial-gradient(circle at 100% 0,#5fa0ff66,transparent 55%),linear-gradient(135deg,#1d5fd1,#0e3b8c);color:#fff;border:0}
 .pri .l,.pri .s{color:#d6e4ff}.pri .bar{background:rgba(255,255,255,.25)}.pri .bar i{background:#fff}
 .stat.bad .v{color:var(--bad)}
 .ov{display:grid;grid-template-columns:1fr 1.2fr;gap:10px;margin-bottom:14px}
@@ -70,7 +71,7 @@ main{max-width:1400px;margin:auto;padding:16px 20px 36px}
 .srow{display:flex;gap:8px;margin-bottom:4px}
 .sbox{flex:1;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0 12px;color:var(--mut)}
 .sbox input{flex:1;border:0;background:none;padding:12px 0;font-size:16px;color:var(--ink);min-width:0;outline:none}
-#wing{max-width:150px}
+#wing{max-width:150px}#sort{max-width:160px}
 .chips{position:sticky;top:0;z-index:5;display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;margin:0 -20px 10px;padding:8px 20px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px)}
 .chips::-webkit-scrollbar,.alist::-webkit-scrollbar{display:none}
 .chip{flex:0 0 auto;display:flex;gap:6px;align-items:center;white-space:nowrap;min-height:40px;padding:0 13px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-weight:600;font-size:13px}
@@ -84,8 +85,8 @@ main{max-width:1400px;margin:auto;padding:16px 20px 36px}
 .wt .bar{width:80px;margin:0}.wt .i{transition:.2s;color:var(--mut)}
 .wing.col .wt .i{transform:rotate(-90deg)}.wing.col .grid{display:none}
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.cam{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:13px;padding:12px;text-align:left;display:flex;flex-direction:column;gap:2px;min-height:182px;box-shadow:var(--shadow);transition:transform .15s}
-.cam:hover{transform:translateY(-2px)}
+.cam{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:13px;padding:12px;text-align:left;display:flex;flex-direction:column;gap:2px;min-height:182px;box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
+.cam:hover{transform:translateY(-2px);box-shadow:0 0 0 1px var(--c),0 10px 28px color-mix(in srgb,var(--c) 28%,transparent)}
 .cam.warn{border-color:var(--bad);box-shadow:0 0 0 1px var(--bad),var(--shadow)}
 .cam.empty,.cam.inactive{opacity:.78}
 .ct{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
@@ -109,6 +110,9 @@ main{max-width:1400px;margin:auto;padding:16px 20px 36px}
 .tile{background:var(--bg);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:2px}
 .tile span{font-size:12px;color:var(--mut)}.tile b{font-size:18px}.tile small{font-size:11px;color:var(--bad)}
 .tile.bad{background:color-mix(in srgb,var(--bad) 12%,var(--card));outline:1px solid var(--bad)}.tile.bad b{color:var(--bad)}
+.chart{background:var(--bg);border-radius:12px;padding:10px;margin:10px 0}
+.chart h4{margin:0 0 6px;font-size:12px;color:var(--mut);display:flex;justify-content:space-between;gap:8px}
+.chart svg{width:100%;height:90px;display:block}
 .rows{border:1px solid var(--line);border-radius:12px;padding:4px 12px;margin:10px 0}
 .vr{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
 .vr:last-child{border:0}.vr span{color:var(--mut)}.vr b{text-align:right;overflow-wrap:anywhere}
@@ -155,6 +159,7 @@ textarea{min-height:70px;resize:vertical}
 .brand{font-size:17px}.uname{display:none}.ib{width:40px;height:40px}.logo{width:40px;height:40px}
 main{padding:12px 12px 30px}.chips{margin:0 -12px 10px;padding:8px 12px}
 .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.srow{flex-wrap:wrap}#wing,#sort{flex:1;max-width:none}
 .stats{display:flex;overflow-x:auto;scrollbar-width:none}.stat{min-width:150px;flex:0 0 auto}
 .ov{grid-template-columns:1fr}.tl button{width:34px;height:34px}.pw{align-items:flex-start}
 .tiles{grid-template-columns:repeat(2,1fr)}
@@ -165,6 +170,7 @@ main{padding:12px 12px 30px}.chips{margin:0 -12px 10px;padding:8px 12px}
 .hd,.chips,.srow,.acts,.modal,#toasts,.foot,.offline,.attn{display:none!important}
 body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avoid}
 .wing.col .grid{display:grid!important}.grid{grid-template-columns:repeat(4,1fr)}
+.ph{display:block;padding:0 0 12px}.ph h1{margin:0;font-size:22px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -216,12 +222,14 @@ body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avo
   </div></header>
   <div class="offline" id="offline">Нет связи. Показаны сохранённые данные, изменения отправятся при подключении.</div>
   <main>
+    <div class="ph"><h1>Отчёт о состоянии хранилища</h1><div id="phDate"></div></div>
     <div id="attn"></div>
     <div class="stats" id="stats"></div>
     <div class="ov" id="ov"></div>
     <div class="srow">
-      <label class="sbox"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Номер, сорт, партия, культура" autocomplete="off"></label>
+      <label class="sbox"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Номер, сорт, партия, культура (/)" autocomplete="off"></label>
       <select id="wing" aria-label="Крыло"></select>
+      <select id="sort" aria-label="Сортировка"><option value="num">По номеру</option><option value="days">Дольше хранятся</option><option value="qty">Больше товара</option><option value="warn">Сначала проблемные</option></select>
     </div>
     <div class="chips" id="filters"></div>
     <div class="head"><h1>Камеры</h1><span id="resultCount"></span></div>
@@ -334,7 +342,7 @@ function closeTopModal(){ const o = [...document.querySelectorAll('.modal.open')
 /* ===== Состояние ===== */
 let user = null, cams = [], journal = [], selected = null;
 let filter = 'all', wingFilter = 'all', search = '', collapsed = {};
-let unsubs = [], seeded = false;
+let unsubs = [], seeded = false, sortBy = 'num';
 
 /* ===== Вход ===== */
 const loginErr = m => { $('loginErr').textContent = m; $('loginErr').classList.toggle('show', !!m); };
@@ -381,7 +389,7 @@ onAuthStateChanged(auth, u => {
 /* ===== Данные ===== */
 const cleanCam = c => {
   const id = Number(c.id);
-  const o = { id, wing: wingOf(id), status: names[c.status] && c.status !== 'all' ? c.status : 'empty', note: String(c.note ?? ''), updatedAt: Number(c.updatedAt) || 0 };
+  const o = { id, wing: wingOf(id), status: names[c.status] && c.status !== 'all' ? c.status : 'empty', note: String(c.note ?? ''), updatedAt: Number(c.updatedAt) || 0, hist: Array.isArray(c.hist) ? c.hist.slice(-30) : [] };
   FIELDS.forEach(([k,,t]) => {
     if (t === 'num'){ const n = c[k] === '' || c[k] == null ? null : Number(c[k]); o[k] = Number.isFinite(n) ? n : (k === 'qty' ? 0 : null); }
     else o[k] = String(c[k] ?? '');
@@ -410,7 +418,6 @@ function subscribe(){
   unsubs.push(onSnapshot(doc(db,'settings','main'), s => {
     const d = s.exists() ? s.data() : {};
     S = { wings: d.wings || DEF.wings, size: d.size || DEF.size, maxDays: d.maxDays ?? DEF.maxDays, norms: { ...DEF.norms, ...(d.norms || {}) } };
-    document.body.classList.toggle('is-admin', isAdmin());
     if (cams.length) render();
   }, e => console.error(e)));
   unsubs.push(onSnapshot(collection(db,'cameras'), snap => {
@@ -487,6 +494,28 @@ function camCard(c){
     '<div class="qt">'+(c.qty||0).toLocaleString('ru-RU')+' <small>кг</small>'+(d != null ? ' <small class="'+(over(c)?'od':'')+'">· '+d+' дн.</small>' : '')+'</div>'+
     '<div class="mt">'+m('temp','Темп.','°')+m('hum','Влаж.','%')+m('o2','O₂','%')+m('co2','CO₂','%')+'</div></button>';
 }
+function sortList(a){
+  const f = {
+    num: (x, y) => x.id - y.id,
+    days: (x, y) => (days(y) ?? -1) - (days(x) ?? -1),
+    qty: (x, y) => (y.qty || 0) - (x.qty || 0),
+    warn: (x, y) => needsAttention(y) - needsAttention(x) || x.id - y.id
+  }[sortBy];
+  return [...a].sort(f);
+}
+function chartSvg(c, k){
+  const h = (c.hist || []).filter(p => p[k] != null);
+  if (h.length < 2) return '';
+  const n = S.norms[k], vals = h.map(p => p[k]);
+  const lo = Math.min(...vals, n[0]), hi = Math.max(...vals, n[1]), r = (hi - lo) || 1;
+  const X = i => 6 + i * 288 / (h.length - 1), Y = v => 6 + (1 - (v - lo) / r) * 78;
+  const pts = h.map((p, i) => X(i).toFixed(1) + ',' + Y(p[k]).toFixed(1)).join(' ');
+  const last = h[h.length - 1], bad = last[k] < n[0] || last[k] > n[1];
+  const fd = t => new Date(t).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+  return '<div class="chart"><h4><span>' + NL[k][0] + ' · ' + h.length + ' замеров</span><span>' + fd(h[0].t) + ' — ' + fd(last.t) + '</span></h4>' +
+    '<svg viewBox="0 0 300 90" preserveAspectRatio="none"><rect x="0" y="' + Y(n[1]).toFixed(1) + '" width="300" height="' + Math.max(1, Y(n[0]) - Y(n[1])).toFixed(1) + '" fill="#1f9d6b" opacity=".16"/>' +
+    '<polyline points="' + pts + '" fill="none" stroke="' + (bad ? 'var(--bad)' : 'var(--brand)') + '" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg></div>';
+}
 function render(){
   renderStats(); renderOv(); renderAttn(); renderChips();
   const all = vis(), q = search.trim().toLowerCase();
@@ -494,7 +523,7 @@ function render(){
     (!q || [pad(c.id), c.id, c.sort, c.batch, c.crop].join(' ').toLowerCase().includes(q)));
   let html = '';
   for (let w = 1; w <= S.wings; w++){
-    const wc = list.filter(c => wingOf(c.id) === w); if (!wc.length) continue;
+    const wc = sortList(list.filter(c => wingOf(c.id) === w)); if (!wc.length) continue;
     const wa = all.filter(c => wingOf(c.id) === w), occ = wa.filter(c => ACTIVE.includes(c.status));
     const t = occ.reduce((s,c) => s + (c.qty||0), 0)/1000, pct = Math.round(occ.length/(wa.length||1)*100);
     html += '<section class="wing'+(collapsed[w]?' col':'')+'"><button class="wt" data-toggle="'+w+'" aria-expanded="'+!collapsed[w]+'">'+
@@ -519,7 +548,7 @@ function openView(id){
   const tile = k => '<div class="tile'+(bad.includes(k)?' bad':'')+'"><span>'+NL[k][0]+'</span><b>'+val(c[k],unit(k))+'</b>'+(bad.includes(k)?'<small>норма '+S.norms[k][0]+'…'+S.norms[k][1]+'</small>':'')+'</div>';
   $('vmTitle').innerHTML = culIcon(c.sort,c.crop)+'Камера №'+pad(c.id)+' <span class="pill" style="--c:'+col+'">'+ic(icn)+esc(names[c.status]||c.status)+'</span>';
   $('vmContent').innerHTML =
-    '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+
+    '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+chartSvg(c,'temp')+chartSvg(c,'hum')+
     '<div class="rows">'+row('Крыло',wingName(wingOf(c.id)))+row('Культура',val(c.crop))+row('Сорт',val(c.sort))+row('Партия',val(c.batch))+row('Количество',(c.qty||0).toLocaleString('ru-RU')+' кг')+row('Оператор',val(c.operator))+'</div>'+
     '<div class="rows">'+row('Загрузка',val(c.loadAt))+row('Срок хранения',d != null && ACTIVE.includes(c.status) ? '<span style="color:'+(over(c)?'var(--bad)':'inherit')+'">'+d+' дн.'+(over(c)?' (превышен)':'')+'</span>' : '—')+row('Обработка',val(c.processAt))+row('Вывод на РГС',val(c.rgsAt))+row('Обновлено',c.updatedAt?fmtDT(c.updatedAt):'—')+'</div>'+
     (c.note ? '<div class="rows"><div class="vr" style="flex-direction:column;gap:4px"><span>Примечание</span><b style="text-align:left;font-weight:500">'+esc(c.note)+'</b></div></div>' : '')+
@@ -583,7 +612,9 @@ async function save(){
   $('saveBtn').disabled = true; showLoading(true);
   try {
     const b = writeBatch(db);
-    b.update(doc(db,'cameras','cam'+c.id), { ...upd, updatedBy: user.email, updatedAt: Date.now() });
+    const moved = ['temp','hum','o2','co2'].some(k => upd[k] !== c[k] && upd[k] != null);
+    const hist = moved ? [...(c.hist || []), { t: Date.now(), temp: upd.temp, hum: upd.hum, o2: upd.o2, co2: upd.co2 }].slice(-30) : (c.hist || []);
+    b.update(doc(db,'cameras','cam'+c.id), { ...upd, hist, updatedBy: user.email, updatedAt: Date.now() });
     b.set(doc(collection(db,'journal')), { camId: c.id, cam: '№'+pad(c.id), action, user: user.email, ts: Date.now(), date: fmtDT(Date.now()) });
     await b.commit();
     closeModal('editModal'); toast('Сохранено');
@@ -594,7 +625,7 @@ async function save(){
 /* ===== Меню, настройки ===== */
 function openMenu(){
   const b = (a, i, t) => '<button class="btn" data-act="'+a+'">'+ic(i)+t+'</button>';
-  $('menuList').innerHTML = b('csv','table','Скачать таблицу (Excel)') + b('print','print','Печать') +
+  $('menuList').innerHTML = b('csv','table','Скачать таблицу (Excel)') + b('print','print','Печать отчёта') +
     (isAdmin() ? b('settings','gear','Настройки хранилища') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') : '');
   openModal('menuModal');
 }
@@ -669,6 +700,7 @@ $('setForm').addEventListener('submit', e => { e.preventDefault(); saveSettings(
 $('editForm').addEventListener('change', e => { if (e.target.name === 'st') autoDate(e.target.value); });
 $('q').addEventListener('input', e => { search = e.target.value; render(); });
 $('wing').addEventListener('change', e => { wingFilter = e.target.value === 'all' ? 'all' : Number(e.target.value); render(); });
+$('sort').addEventListener('change', e => { sortBy = e.target.value; render(); });
 
 document.addEventListener('click', e => {
   const t = e.target;
@@ -684,23 +716,19 @@ document.addEventListener('click', e => {
     signup: () => doAuth(true), logout: () => signOut(auth), edit: openForm, save,
     history: () => { renderJournal(); openModal('histModal'); },
     menu: openMenu, settings: openSettings, setsave: saveSettings,
-    csv: exportCsv, print: () => { closeTopModal(); setTimeout(() => print(), 100); },
+    csv: exportCsv, print: () => { $('phDate').textContent = fmtDT(Date.now()); closeTopModal(); setTimeout(() => print(), 100); },
     export: () => isAdmin() && exportData(),
     import: () => isAdmin() && $('importFile').click(),
     theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try{ localStorage.setItem('th', n); }catch(_){} }
   }[x.dataset.act];
   if (act) act();
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTopModal(); });
-  /* Запрет зума на iOS */
-document.addEventListener('gesturestart', function(e){ e.preventDefault(); });
-document.addEventListener('touchstart', function(e){ if(e.touches.length > 1) e.preventDefault(); }, {passive:false});
-let lastTouchEnd = 0;
-document.addEventListener('touchend', function(e){
-  const now = Date.now();
-  if(now - lastTouchEnd <= 300) e.preventDefault();
-  lastTouchEnd = now;
-}, {passive:false});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeTopModal();
+  if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){ e.preventDefault(); $('q').focus(); }
+});
+/* Запрет зума щипком на iOS (двойной тап отключён через touch-action в CSS) */
+document.addEventListener('gesturestart', e => e.preventDefault());
 </script>
 </body>
 </html>
