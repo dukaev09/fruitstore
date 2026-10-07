@@ -166,6 +166,52 @@ main{padding:12px 12px 30px}.chips{margin:0 -12px 10px;padding:8px 12px}
 .modal{align-items:flex-end;padding:0}.box{border-radius:18px 18px 0 0;padding:16px}
 .wt .bar{width:56px}
 }
+
+.tab{display:none}.tab.on{display:block}
+main{padding-bottom:96px}
+#toasts{bottom:calc(78px + env(safe-area-inset-bottom))}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;background:none;font-size:11px;font-weight:700;color:var(--mut);min-height:50px;position:relative}
+.nav button.on{color:var(--brand)}
+.nav .bd{position:absolute;top:2px;left:calc(50% + 6px);min-width:16px;height:16px;border-radius:9px;background:var(--bad);color:#fff;font-size:10px;font-style:normal;display:none;place-items:center;padding:0 4px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);margin-bottom:10px}
+.card h3{margin:0 0 8px;font-size:13px;color:var(--mut);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.li{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.li:last-child{border:0}.li .t{flex:1;min-width:0}.li .t b{display:block;overflow-wrap:anywhere}.li .t small{color:var(--mut)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--bg);color:var(--mut);white-space:nowrap}
+.tag.bad{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.tag.ok{background:color-mix(in srgb,#1f9d6b 16%,transparent);color:#1f9d6b}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}
+.sg{display:flex;gap:6px;margin-bottom:10px}
+.sg button{flex:1;min-height:40px;border:1px solid var(--line);background:var(--card);border-radius:10px;font-weight:700}
+.sg button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.mapw{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mw{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.mw h3{margin:0 0 10px;font-size:14px;display:flex;justify-content:space-between}
+.mw h3 span{font-size:11px;color:var(--mut)}
+.mg{display:grid;grid-template-columns:1fr 16px 1fr;gap:6px}
+.cor{background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 12px);border-radius:4px}
+.mc{border:0;border-radius:9px;background:var(--c);color:#fff;min-height:48px;font-weight:800;font-size:13px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.mc small{font-weight:600;opacity:.9;font-size:11px}
+.mc.warn{outline:2px solid var(--bad);outline-offset:1px}
+.leg{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin-top:10px}
+.leg span{display:flex;align-items:center;gap:5px}.leg i{width:10px;height:10px;border-radius:3px;background:var(--c)}
+.rb{display:flex;gap:6px}
+.rb button{min-width:48px;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-weight:800;font-size:16px}
+.rb .ok{background:#1f9d6b;color:#fff;border-color:#1f9d6b}.rb .bd2{background:var(--bad);color:#fff;border-color:var(--bad)}
+.ban{display:inline-flex;gap:4px;align-items:center;font-size:11px;font-weight:800;color:#fff;background:var(--bad);padding:3px 8px;border-radius:999px;margin-top:4px}
+.ban .i{width:13px;height:13px}
+.banner{background:color-mix(in srgb,var(--bad) 10%,var(--card));border:1px solid var(--bad);color:var(--bad);border-radius:12px;padding:10px 12px;font-weight:700;margin:10px 0;display:flex;gap:8px;align-items:center}
+.nl{max-height:200px;overflow:auto;display:grid;gap:6px;margin:8px 0}
+.nb{background:var(--bg);border-radius:10px;padding:8px 10px;font-size:13px;overflow-wrap:anywhere}
+.nb small{display:block;color:var(--mut);font-size:11px}
+.nin{display:flex;gap:6px}.nin input{flex:1}
+.pimg{max-width:100%;border-radius:10px;margin-top:8px}
+.fld select,.fld input,.fld textarea{width:100%}
+.hbtn{display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:700px){.kpis{grid-template-columns:repeat(2,1fr)}.mapw{grid-template-columns:1fr}}
+@media print{.nav{display:none!important}}
 @media print{
 .hd,.chips,.srow,.acts,.modal,#toasts,.foot,.offline,.attn{display:none!important}
 body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avoid}
@@ -196,6 +242,13 @@ body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avo
 <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol>
 <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a1 1 0 01-1-1v-6a1 1 0 011-1h16a1 1 0 011 1v6a1 1 0 01-1 1h-2M6 14h12v7H6z"/></symbol>
 <symbol id="i-dots" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 3L3 5v16l6-2 6 2 6-2V3l-6 2zM9 3v16M15 5v16"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+<symbol id="i-todo" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.9M16 3.1a4 4 0 010 7.8"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M7 14v4M12 8v10M17 11v7"/></symbol>
+<symbol id="i-ban" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM5.6 5.6l12.8 12.8"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
 </svg>
 
 <div id="loginScreen" class="lw">
@@ -217,25 +270,38 @@ body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avo
     <span class="uname" id="userName"></span>
     <button class="ib" data-act="history" aria-label="История" title="История"><svg class="i"><use href="#i-list"/></svg></button>
     <button class="ib" data-act="menu" aria-label="Меню" title="Меню"><svg class="i"><use href="#i-dots"/></svg></button>
-    <button class="ib" data-act="theme" aria-label="Тема" title="Тёмная / светлая тема"><svg class="i"><use href="#i-moon"/></svg></button>
+    <button class="ib" data-act="theme" aria-label="Тема" title="Тема"><svg class="i"><use href="#i-moon"/></svg></button>
     <button class="ib" data-act="logout" aria-label="Выйти" title="Выйти"><svg class="i"><use href="#i-out"/></svg></button>
   </div></header>
   <div class="offline" id="offline">Нет связи. Показаны сохранённые данные, изменения отправятся при подключении.</div>
   <main>
-    <div class="ph"><h1>Отчёт о состоянии хранилища</h1><div id="phDate"></div></div>
-    <div id="attn"></div>
-    <div class="stats" id="stats"></div>
-    <div class="ov" id="ov"></div>
-    <div class="srow">
-      <label class="sbox"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Номер, сорт, партия, культура (/)" autocomplete="off"></label>
-      <select id="wing" aria-label="Крыло"></select>
-      <select id="sort" aria-label="Сортировка"><option value="num">По номеру</option><option value="days">Дольше хранятся</option><option value="qty">Больше товара</option><option value="warn">Сначала проблемные</option></select>
-    </div>
-    <div class="chips" id="filters"></div>
-    <div class="head"><h1>Камеры</h1><span id="resultCount"></span></div>
-    <div id="grid"></div>
+    <section class="tab on" id="t-cams">
+      <div class="ph"><h1>Отчёт о состоянии хранилища</h1><div id="phDate"></div></div>
+      <div id="attn"></div>
+      <div class="stats" id="stats"></div>
+      <div class="ov" id="ov"></div>
+      <div class="srow">
+        <label class="sbox"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Номер, сорт, партия, культура (/)" autocomplete="off"></label>
+        <select id="wing" aria-label="Крыло"></select>
+        <select id="sort" aria-label="Сортировка"><option value="num">По номеру</option><option value="days">Дольше хранятся</option><option value="qty">Больше товара</option><option value="warn">Сначала проблемные</option></select>
+      </div>
+      <div class="chips" id="filters"></div>
+      <div class="head"><h1>Камеры</h1><span id="resultCount"></span></div>
+      <div id="grid"></div>
+    </section>
+    <section class="tab" id="t-map"><div class="head"><h1>Схема хранилища</h1><span id="mapInfo"></span></div><div id="map"></div></section>
+    <section class="tab" id="t-today"><div class="head"><h1>Сегодня</h1><span id="todayInfo"></span></div><div id="today"></div></section>
+    <section class="tab" id="t-sum"><div class="head"><h1>Сводка</h1></div><div id="sum"></div></section>
+    <section class="tab" id="t-team"><div class="head"><h1>Команда</h1></div><div id="team"></div></section>
+    <div class="foot"><i>Высокое качество низких температур</i>ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт</div>
   </main>
-  <div class="foot"><i>Высокое качество низких температур</i>ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт</div>
+  <nav class="nav" id="nav">
+    <button data-tab="cams" class="on"><svg class="i"><use href="#i-grid"/></svg>Камеры</button>
+    <button data-tab="map"><svg class="i"><use href="#i-map"/></svg>Схема</button>
+    <button data-tab="today"><svg class="i"><use href="#i-todo"/></svg>Сегодня<i class="bd" id="bdToday"></i></button>
+    <button data-tab="sum"><svg class="i"><use href="#i-chart"/></svg>Сводка</button>
+    <button data-tab="team" id="navTeam" style="display:none"><svg class="i"><use href="#i-users"/></svg>Команда</button>
+  </nav>
 </div>
 
 <div class="modal" id="viewModal"><div class="box"><h2 id="vmTitle"></h2><div id="vmContent"></div><div class="acts"><button class="btn" data-close>Закрыть</button></div></div></div>
@@ -249,6 +315,8 @@ body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avo
 <div class="modal" id="setModal"><div class="box"><h2>Настройки хранилища</h2><form id="setForm"></form>
   <div class="acts"><button class="btn" data-close>Отмена</button><button class="btn pri" id="setSave" data-act="setsave">Сохранить</button></div></div></div>
 
+<div class="modal" id="roundModal"><div class="box"><h2 id="rdTitle"></h2><div id="rdBody"></div><div class="acts"><button class="btn" data-close>Закрыть</button></div></div></div>
+<div class="modal" id="dlgModal"><div class="box"><h2 id="dlgTitle"></h2><div id="dlgBody"></div></div></div>
 <input type="file" id="importFile" accept=".json" hidden>
 <div id="loading" class="ld"><div class="spin"></div></div>
 <div id="toasts" aria-live="polite"></div>
@@ -256,7 +324,7 @@ body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avo
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, collection, writeBatch, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, collection, writeBatch, onSnapshot, query, orderBy, limit, where, getDocs, setDoc, updateDoc, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQtB3vJh84ELKJg0qs0ycFSGw9Q62ZAOY",
@@ -268,10 +336,12 @@ const firebaseConfig = {
 };
 
 /* ===== Настройки ===== */
-const ADMIN_EMAIL = 'adam@fruit.local'; // только скрывает кнопки; защита — firestore.rules
+const ADMIN_EMAIL = 'adam@fruit.local'; // главный администратор (защита — firestore.rules)
 const ALLOW_SIGNUP = true;              // false — убрать «Создать аккаунт»
 const DOMAIN = '@fruit.local';
-const DEF = { wings: 4, size: 14, maxDays: 180, norms: { temp:[-1,5], hum:[80,98], o2:[1,5], co2:[0,6] } };
+const SLOT_HOUR = 14;                   // до этого часа обход «утренний», после — «вечерний»
+const SAN_DAYS = 30;                    // как часто дезинфицировать камеру
+const DEF = { wings: 4, size: 14, maxDays: 180, safeO2: 19.5, norms: { temp:[-1,5], hum:[80,98], o2:[1,5], co2:[0,6] } };
 const NL = { temp:['Температура',' °C'], hum:['Влажность',' %'], o2:['O₂',' %'], co2:['CO₂',' %'] };
 let S = structuredClone(DEF);
 
@@ -295,6 +365,8 @@ const FIELDS = [
 const GROUPS = [['Продукт',['crop','sort','batch','qty','operator']],['Условия в камере',['temp','hum','o2','co2']],['Даты',['loadAt','processAt','rgsAt']]];
 const LABEL = Object.fromEntries(FIELDS.map(f => [f[0], f[1].split(',')[0]]));
 Object.assign(LABEL, {status:'Статус', note:'Примечание'});
+const ROLE_RU = {viewer:'Просмотр', operator:'Оператор', admin:'Администратор'};
+const SL = {am:'Утренний', pm:'Вечерний'};
 const wingName = n => 'Крыло ' + n;
 
 /* ===== Утилиты ===== */
@@ -303,28 +375,47 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
 const pad = n => String(n).padStart(2,'0');
 const ic = n => '<svg class="i"><use href="#i-'+n+'"/></svg>';
 const fmtDT = t => new Date(t).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-const todayIso = () => { const d = new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); };
+const fmtD = t => new Date(t).toLocaleDateString('ru-RU');
+const hm = t => new Date(t).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+const dayStr = (d = new Date()) => d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const todayIso = () => dayStr();
+const startDay = () => { const d = new Date(); d.setHours(0,0,0,0); return d.getTime(); };
+const todayEnd = () => { const d = new Date(); d.setHours(23,59,59,999); return d.getTime(); };
+const slotNow = () => new Date().getHours() < SLOT_HOUR ? 'am' : 'pm';
+const dur = ms => { const m = Math.max(0, Math.round(ms/6e4)); return m < 60 ? m+' мин' : Math.floor(m/60)+' ч '+pad(m%60)+' мин'; };
+const rel = t => { const d = t - Date.now(), m = Math.round(Math.abs(d)/6e4), s = m < 60 ? m+' мин' : m < 1440 ? Math.round(m/60)+' ч' : Math.round(m/1440)+' дн.'; return d < 0 ? 'просрочено на '+s : 'через '+s; };
+const kgf = x => x >= 1000 ? (x/1000).toFixed(1)+' т' : Math.round(x)+' кг';
 const toIso = s => { const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(s||''); return m ? m[3]+'-'+m[2]+'-'+m[1] : ''; };
 const toDmy = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s||''); return m ? m[3]+'.'+m[2]+'.'+m[1] : ''; };
 const wingOf = id => Math.floor((id-1)/S.size)+1;
 const total = () => S.wings * S.size;
 const showLoading = s => $('loading').classList.toggle('show', s);
-const isAdmin = () => !!user && user.email === ADMIN_EMAIL;
 const val = (v, u='') => v != null && v !== '' ? esc(v)+u : '—';
 const unit = k => FIELDS.find(f => f[0] === k)[6] || '';
-const toast = (m, err) => { const d = document.createElement('div'); d.className = 'toast'+(err?' err':''); d.textContent = m; $('toasts').append(d); setTimeout(() => d.remove(), 3400); };
+const toast = (m, err) => { const d = document.createElement('div'); d.className = 'toast'+(err?' err':''); d.textContent = m; $('toasts').append(d); setTimeout(() => d.remove(), 3600); };
+const nameOf = e => { const u = users.find(x => x.email === e); return u && u.name ? u.name : String(e||'—').replace(DOMAIN,''); };
+const camById = id => cams.find(x => x.id === id);
 const vis = () => cams.filter(c => c.id <= total());
 const days = c => { const i = toIso(c.loadAt); return i ? Math.max(0, Math.floor((Date.now() - new Date(i)) / 864e5)) : null; };
 const issues = c => ACTIVE.includes(c.status) ? Object.keys(NL).filter(k => { const n = S.norms[k]; return c[k] != null && n && (c[k] < n[0] || c[k] > n[1]); }) : [];
 const over = c => ACTIVE.includes(c.status) && S.maxDays > 0 && (days(c) || 0) > S.maxDays;
+const noEntry = c => c.status === 'rgs' && (c.o2 == null || c.o2 < S.safeO2);
 const needsAttention = c => c.status === 'problem' || issues(c).length > 0 || over(c);
 const reasons = c => c.status === 'problem' ? ['Проблема'] : [...issues(c).map(k => NL[k][0]+' '+esc(c[k])+NL[k][1]), ...(over(c) ? ['Срок '+days(c)+' дн.'] : [])];
+const rk = (day, slot, id) => day+'_'+slot+'_'+id;
+const run = async (fn, okMsg) => { showLoading(true); try { await fn(); if (okMsg) toast(okMsg); } catch(e){ toast('Ошибка: '+e.message, 1); } showLoading(false); };
 
 function culIcon(sort, crop){
   const s = ((sort||'')+' '+(crop||'')).toLowerCase();
   const map = [['груш','pear','🍐'],['морков','carrot','🥕'],['лук','onion','🧅'],['капуст','cabbage','🥬'],['свекл','beet','🟣'],['виноград','grapes','🍇'],['слив','plum','🟣']];
   const m = map.find(x => s.includes(x[0])) || [0,'apple','🍎'];
   return '<img src="/'+m[1]+'.png" class="ci" alt="" onerror="this.replaceWith(\''+m[2]+'\')">';
+}
+function devInfo(){
+  const u = navigator.userAgent;
+  const os = /iPhone|iPad/.test(u) ? 'iOS' : /Android/.test(u) ? 'Android' : /Windows/.test(u) ? 'Windows' : /Mac/.test(u) ? 'macOS' : /Linux/.test(u) ? 'Linux' : '?';
+  const br = /Edg\//.test(u) ? 'Edge' : /Chrome\//.test(u) ? 'Chrome' : /Safari\//.test(u) ? 'Safari' : /Firefox\//.test(u) ? 'Firefox' : '?';
+  return os+' · '+br+' · '+screen.width+'×'+screen.height;
 }
 
 /* ===== Модальные окна ===== */
@@ -338,11 +429,20 @@ function closeModal(id){
   if (!document.querySelector('.modal.open')){ document.body.style.cssText = ''; window.scrollTo(0, scrollY); }
 }
 function closeTopModal(){ const o = [...document.querySelectorAll('.modal.open')].pop(); if (o) closeModal(o.id); }
+function dlg(title, body, act, lab){
+  $('dlgTitle').innerHTML = title;
+  $('dlgBody').innerHTML = body + '<div class="acts"><button class="btn" data-close>'+(act ? 'Отмена' : 'Закрыть')+'</button>'+(act ? '<button class="btn pri" data-act="'+act+'">'+lab+'</button>' : '')+'</div>';
+  openModal('dlgModal');
+}
+function danger(msg, id){ const v = prompt(msg+'\n\nДля подтверждения введите номер камеры ('+id+'):'); return v !== null && v.trim() === String(id); }
 
 /* ===== Состояние ===== */
-let user = null, cams = [], journal = [], selected = null;
-let filter = 'all', wingFilter = 'all', search = '', collapsed = {};
-let unsubs = [], seeded = false, sortBy = 'num';
+let user = null, me = null, cams = [], journal = [], users = [], rounds = {}, tasks = [], notes = [], anns = [], incs = [], hands = [], myShift = null;
+let selected = null, tab = 'cams', filter = 'all', wingFilter = 'all', search = '', sortBy = 'num', collapsed = {};
+let unsubs = [], seeded = false, creating = false, gated = false, SUM = null, sumRange = 'day', TEAM = null, hpId = null, ip = null;
+const myRole = () => !user ? 'viewer' : user.email === ADMIN_EMAIL ? 'admin' : (me && me.role) || 'viewer';
+const isAdmin = () => myRole() === 'admin';
+const canW = () => myRole() !== 'viewer';
 
 /* ===== Вход ===== */
 const loginErr = m => { $('loginErr').textContent = m; $('loginErr').classList.toggle('show', !!m); };
@@ -373,23 +473,31 @@ async function doAuth(signup){
   catch(e){ showLoading(false); loginErr(authError(e)); }
 }
 onAuthStateChanged(auth, u => {
-  user = u;
-  unsubs.forEach(f => f()); unsubs = []; seeded = false; cams = []; journal = [];
+  user = u; unsubs.forEach(f => f()); unsubs = [];
+  seeded = creating = gated = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; myShift = null; me = null; SUM = null; TEAM = null;
   if (u){
     $('loginScreen').style.display = 'none'; $('appScreen').style.display = 'block';
-    $('userName').textContent = u.email.replace(DOMAIN, '');
-    showLoading(true); subscribe();
+    afterRole(); showLoading(true); subscribe();
+    if (!sessionStorage.getItem('lg'+u.uid)){ sessionStorage.setItem('lg'+u.uid, '1'); addDoc(collection(db,'logins'), { uid:u.uid, email:u.email, ts:Date.now(), device:devInfo() }).catch(() => {}); }
   } else {
     document.querySelectorAll('.modal.open').forEach(m => closeModal(m.id));
     $('loginScreen').style.display = 'flex'; $('appScreen').style.display = 'none';
     $('loginPass').value = ''; showLoading(false);
   }
 });
+function afterRole(){
+  if (!user) return;
+  const r = myRole();
+  $('userName').textContent = user.email.replace(DOMAIN,'') + ' · ' + ROLE_RU[r];
+  $('navTeam').style.display = r === 'admin' ? '' : 'none';
+  if (tab === 'team' && r !== 'admin') showTab('cams'); else renderTab();
+}
 
 /* ===== Данные ===== */
 const cleanCam = c => {
   const id = Number(c.id);
-  const o = { id, wing: wingOf(id), status: names[c.status] && c.status !== 'all' ? c.status : 'empty', note: String(c.note ?? ''), updatedAt: Number(c.updatedAt) || 0, hist: Array.isArray(c.hist) ? c.hist.slice(-30) : [] };
+  const o = { id, wing: wingOf(id), status: names[c.status] && c.status !== 'all' ? c.status : 'empty', note: String(c.note ?? ''), updatedAt: Number(c.updatedAt) || 0,
+    hist: Array.isArray(c.hist) ? c.hist.slice(-30) : [], locked: !!c.locked, cleanAt: Number(c.cleanAt) || 0, disAt: Number(c.disAt) || 0 };
   FIELDS.forEach(([k,,t]) => {
     if (t === 'num'){ const n = c[k] === '' || c[k] == null ? null : Number(c[k]); o[k] = Number.isFinite(n) ? n : (k === 'qty' ? 0 : null); }
     else o[k] = String(c[k] ?? '');
@@ -403,43 +511,83 @@ async function commitAll(list){
     await b.commit();
   }
 }
-function seedCams(){
-  const sorts = ['Голден','Гала','Фуджи','Груша','Айдаред','Морковь','Лук','Капуста','Свекла','Ред Чиф'];
-  const veg = ['Морковь','Лук','Капуста','Свекла'];
-  return Array.from({length: total()}, (_, k) => {
-    const i = k+1, s = sorts[k % sorts.length];
-    const st = i%14===0 ? 'empty' : i%7===0 ? 'rgs' : i%9===0 ? 'process' : 'storage';
-    return cleanCam({id:i, status:st, crop: veg.includes(s) ? 'Овощи' : 'Яблоко', sort:s, batch:'П-'+(240+i),
-      qty: st==='empty' ? 0 : (10+(i%16))*1000, temp:1.5, hum:90, o2:2.5, co2:3});
-  });
+const seedCams = () => Array.from({length: total()}, (_, k) => cleanCam({ id: k+1, status: 'empty' }));
+async function commitCam(c, patch, action, extra = {}, touch = true){
+  const b = writeBatch(db), t = Date.now();
+  b.update(doc(db,'cameras','cam'+c.id), touch ? { ...patch, updatedBy: user.email, updatedAt: t } : patch);
+  b.set(doc(collection(db,'journal')), { camId: c.id, cam: '№'+pad(c.id), action, user: user.email, ts: t, date: fmtDT(t), ...extra });
+  await b.commit();
 }
 function subscribe(){
   const fail = e => { showLoading(false); toast('Ошибка загрузки: ' + e.message, 1); };
-  unsubs.push(onSnapshot(doc(db,'settings','main'), s => {
+  const q = (c, ...a) => query(collection(db, c), ...a);
+  const on = (ref, fn, nm) => unsubs.push(onSnapshot(ref, fn, e => console.error(nm, e)));
+  const rows = s => s.docs.map(d => ({ id: d.id, ...d.data() }));
+  on(doc(db,'settings','main'), s => {
     const d = s.exists() ? s.data() : {};
-    S = { wings: d.wings || DEF.wings, size: d.size || DEF.size, maxDays: d.maxDays ?? DEF.maxDays, norms: { ...DEF.norms, ...(d.norms || {}) } };
-    if (cams.length) render();
-  }, e => console.error(e)));
+    S = { wings: d.wings || DEF.wings, size: d.size || DEF.size, maxDays: d.maxDays ?? DEF.maxDays, safeO2: d.safeO2 ?? DEF.safeO2, norms: { ...DEF.norms, ...(d.norms || {}) } };
+    if (cams.length) renderTab();
+  }, 'settings');
   unsubs.push(onSnapshot(collection(db,'cameras'), snap => {
     $('offline').classList.toggle('show', snap.metadata.fromCache && !navigator.onLine);
     if (snap.empty && !snap.metadata.fromCache && isAdmin() && !seeded){ seeded = true; commitAll(seedCams()).catch(fail); return; }
     cams = snap.docs.map(d => d.data()).sort((a,b) => a.id - b.id);
-    showLoading(false); render();
+    showLoading(false); renderTab(); renderNotes();
   }, fail));
-  unsubs.push(onSnapshot(query(collection(db,'journal'), orderBy('ts','desc'), limit(200)), snap => {
-    journal = snap.docs.map(d => d.data()); renderJournal();
-  }, e => console.error(e)));
+  on(q('journal', orderBy('ts','desc'), limit(200)), s => { journal = s.docs.map(d => d.data()); renderJournal(); }, 'journal');
+  on(collection(db,'users'), s => {
+    users = rows(s); me = users.find(x => x.id === user.uid) || null;
+    if (!me && !s.metadata.fromCache && !creating){
+      creating = true;
+      setDoc(doc(db,'users',user.uid), { email:user.email, name:user.email.replace(DOMAIN,''), role: user.email === ADMIN_EMAIL ? 'admin' : 'viewer', createdAt:Date.now() }).catch(console.error);
+    }
+    afterRole();
+  }, 'users');
+  on(q('rounds', where('day','>=', dayStr(new Date(Date.now() - 2*864e5)))), s => { rounds = {}; s.docs.forEach(d => rounds[d.id] = d.data()); refreshLive(); }, 'rounds');
+  on(q('tasks', where('done','==',false)), s => { tasks = rows(s); refreshLive(); }, 'tasks');
+  on(q('notes', orderBy('ts','desc'), limit(300)), s => { notes = rows(s); renderNotes(); refreshLive(); }, 'notes');
+  on(q('announcements', orderBy('ts','desc'), limit(30)), s => { anns = rows(s); refreshLive(); gateCheck(); }, 'ann');
+  on(q('incidents', orderBy('start','desc'), limit(60)), s => { incs = rows(s); refreshLive(); }, 'inc');
+  on(q('handovers', orderBy('ts','desc'), limit(5)), s => { hands = rows(s); refreshLive(); }, 'hand');
+  on(q('shifts', where('uid','==',user.uid), where('end','==',null)), s => { myShift = s.docs[0] ? { id: s.docs[0].id, ...s.docs[0].data() } : null; refreshLive(); }, 'shift');
 }
 addEventListener('online', () => $('offline').classList.remove('show'));
 addEventListener('offline', () => $('offline').classList.add('show'));
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); ip = e; });
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 
-/* ===== Отрисовка ===== */
+/* ===== Вкладки ===== */
+function showTab(t){
+  tab = t;
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x.id === 't-'+t));
+  document.querySelectorAll('#nav button').forEach(x => x.classList.toggle('on', x.dataset.tab === t));
+  window.scrollTo(0, 0);
+  if (t === 'sum' && !SUM) loadSum();
+  if (t === 'team' && !TEAM) loadTeam();
+  renderTab();
+}
+function renderTab(){
+  if (!user) return;
+  if (tab === 'cams') render(); else if (tab === 'map') renderMap(); else if (tab === 'today') renderToday(); else if (tab === 'sum') renderSum(); else if (tab === 'team') renderTeam();
+  badge();
+}
+let rt;
+function refreshLive(){
+  clearTimeout(rt);
+  rt = setTimeout(() => { if (tab === 'today') renderToday(); if ($('roundModal').classList.contains('open')) renderRound(); badge(); }, 60);
+}
+function badge(){
+  if (!user) return;
+  const n = anns.filter(a => !(a.ack && a.ack[user.uid])).length + (hands.some(x => !x.acceptedBy && x.fromEmail !== user.email) ? 1 : 0) + myTasks().filter(t => t.due <= todayEnd()).length;
+  const b = $('bdToday'); b.textContent = n; b.style.display = n ? 'grid' : 'none';
+}
+
+/* ===== Отрисовка камер ===== */
 function renderAttn(){
   const bad = vis().filter(needsAttention);
   $('attn').innerHTML = !bad.length ? '' :
     '<section class="attn"><h2>'+ic('alert')+'Требуют внимания: '+bad.length+'</h2><div class="alist">'+
-    bad.map(c => '<button class="achip" data-cam="'+c.id+'"><b>№'+pad(c.id)+' · '+val(c.sort)+'</b><span>'+reasons(c).join(', ')+'</span></button>').join('')+
-    '</div></section>';
+    bad.map(c => '<button class="achip" data-cam="'+c.id+'"><b>№'+pad(c.id)+' · '+val(c.sort)+'</b><span>'+reasons(c).join(', ')+'</span></button>').join('')+'</div></section>';
 }
 function renderStats(){
   const all = vis();
@@ -465,21 +613,17 @@ function renderOv(){
   occ.forEach(c => { const k = c.crop || 'Без культуры'; byCrop[k] = (byCrop[k] || 0) + (c.qty || 0); });
   const top = Object.entries(byCrop).sort((x, y) => y[1] - x[1]).slice(0, 5), mx = top.length ? top[0][1] || 1 : 1;
   const ds = occ.map(days).filter(d => d != null), avg = ds.length ? Math.round(ds.reduce((s, d) => s + d, 0) / ds.length) : null;
-  const plan = Array.from({length: S.wings}, (_, i) => i + 1).map(w =>
-    '<div class="pw"><b>'+wingName(w)+'</b><div class="tl">'+all.filter(c => wingOf(c.id) === w).map(c =>
-      '<button class="'+(needsAttention(c)?'warn':'')+'" data-cam="'+c.id+'" style="--c:'+(ST[c.status]||ST.empty)[1]+'" title="№'+pad(c.id)+' · '+esc(names[c.status])+'">'+c.id+'</button>').join('')+'</div></div>').join('');
   $('ov').innerHTML =
     '<div class="ovc"><h3>Загрузка хранилища</h3><div class="donut"><div class="ring" style="background:conic-gradient('+grad+')"><div><span>'+Math.round(occ.length/(all.length||1)*100)+'%<small>занято</small></span></div></div><div class="lg2">'+legend+'</div></div></div>'+
     '<div class="ovc"><h3>Запасы по культурам'+(avg != null ? ' · средний срок '+avg+' дн.' : '')+'</h3>'+
-    (top.map(([k, v]) => '<div class="crop"><span>'+esc(k)+'</span><div class="bar"><i style="width:'+Math.round(v/mx*100)+'%"></i></div><b>'+(v/1000).toFixed(1)+' т</b></div>').join('') || '<div class="hint">Пока нет данных</div>')+'</div>'+
-    '<div class="ovc plan"><h3>План хранилища</h3>'+plan+'</div>';
+    (top.map(([k, v]) => '<div class="crop"><span>'+esc(k)+'</span><div class="bar"><i style="width:'+Math.round(v/mx*100)+'%"></i></div><b>'+(v/1000).toFixed(1)+' т</b></div>').join('') || '<div class="hint">Пока нет данных</div>')+'</div>';
 }
+const match = c => filter === 'all' || (filter === 'noentry' ? noEntry(c) : c.status === filter);
 function renderChips(){
   const all = vis();
-  $('filters').innerHTML = Object.keys(names).map(k => {
-    const c = k === 'all' ? all.length : all.filter(x => x.status === k).length;
-    return '<button class="chip'+(filter===k?' sel':'')+'" data-filter="'+k+'"'+(k!=='all'?' style="--c:'+ST[k][1]+'"':'')+'>'+ic(k==='all'?'grid':ST[k][0])+names[k]+' <b>'+c+'</b></button>';
-  }).join('');
+  const chip = (k, icn, label, n, col) => '<button class="chip'+(filter===k?' sel':'')+'" data-filter="'+k+'"'+(col?' style="--c:'+col+'"':'')+'>'+ic(icn)+label+' <b>'+n+'</b></button>';
+  $('filters').innerHTML = Object.keys(names).map(k => chip(k, k==='all'?'grid':ST[k][0], names[k], k==='all'?all.length:all.filter(x => x.status===k).length, k==='all'?'':ST[k][1])).join('') +
+    chip('noentry','ban','Вход запрещён', all.filter(noEntry).length, '#d63a3a');
   if (wingFilter !== 'all' && wingFilter > S.wings) wingFilter = 'all';
   let o = '<option value="all">Все крылья</option>';
   for (let i = 1; i <= S.wings; i++) o += '<option value="'+i+'">'+wingName(i)+'</option>';
@@ -489,7 +633,8 @@ function camCard(c){
   const bad = issues(c), m = (k, l, u) => '<div class="m'+(bad.includes(k)?' bad':'')+'"><span>'+l+'</span><b>'+val(c[k],u)+'</b></div>';
   const [icn, col] = ST[c.status] || ST.empty, d = ACTIVE.includes(c.status) ? days(c) : null;
   return '<button class="cam '+esc(c.status)+(needsAttention(c)?' warn':'')+'" data-cam="'+c.id+'" style="--c:'+col+'">'+
-    '<div class="ct"><div class="num">'+culIcon(c.sort,c.crop)+'№'+pad(c.id)+'</div><span class="pill">'+ic(icn)+esc(names[c.status]||c.status)+'</span></div>'+
+    '<div class="ct"><div class="num">'+culIcon(c.sort,c.crop)+'№'+pad(c.id)+(c.locked?' 🔒':'')+'</div><span class="pill">'+ic(icn)+esc(names[c.status]||c.status)+'</span>'+
+    (noEntry(c) ? '<span class="ban">'+ic('ban')+'Вход запрещён</span>' : '')+'</div>'+
     '<div class="srt">'+val(c.sort)+'</div><div class="bt">'+val(c.batch)+'</div>'+
     '<div class="qt">'+(c.qty||0).toLocaleString('ru-RU')+' <small>кг</small>'+(d != null ? ' <small class="'+(over(c)?'od':'')+'">· '+d+' дн.</small>' : '')+'</div>'+
     '<div class="mt">'+m('temp','Темп.','°')+m('hum','Влаж.','%')+m('o2','O₂','%')+m('co2','CO₂','%')+'</div></button>';
@@ -519,7 +664,7 @@ function chartSvg(c, k){
 function render(){
   renderStats(); renderOv(); renderAttn(); renderChips();
   const all = vis(), q = search.trim().toLowerCase();
-  const list = all.filter(c => (filter === 'all' || c.status === filter) && (wingFilter === 'all' || wingOf(c.id) === wingFilter) &&
+  const list = all.filter(c => match(c) && (wingFilter === 'all' || wingOf(c.id) === wingFilter) &&
     (!q || [pad(c.id), c.id, c.sort, c.batch, c.crop].join(' ').toLowerCase().includes(q)));
   let html = '';
   for (let w = 1; w <= S.wings; w++){
@@ -535,25 +680,75 @@ function render(){
   $('resultCount').textContent = list.length + ' из ' + all.length;
 }
 function renderJournal(){
-  $('histBody').innerHTML = journal.map(e => '<tr><td>'+esc(e.date)+'</td><td>'+esc(e.cam)+'</td><td>'+esc(e.action)+'</td><td>'+esc((e.user||'—').replace(DOMAIN,''))+'</td></tr>').join('')
+  $('histBody').innerHTML = journal.map(e => '<tr><td>'+esc(e.date)+'</td><td>'+esc(e.cam)+'</td><td>'+esc(e.action)+'</td><td>'+esc(nameOf(e.user))+'</td></tr>').join('')
     || '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--mut)">История пока пуста</td></tr>';
 }
 
-/* ===== Просмотр ===== */
+/* ===== Схема хранилища ===== */
+function renderMap(){
+  const all = vis();
+  const cell = c => '<button class="mc'+(needsAttention(c)?' warn':'')+'" data-cam="'+c.id+'" style="--c:'+(ST[c.status]||ST.empty)[1]+'"><span>'+(noEntry(c)?'⛔ ':'')+c.id+(c.locked?' 🔒':'')+'</span><small>'+(c.temp != null ? c.temp+'°' : '—')+'</small></button>';
+  let h = '<div class="mapw">';
+  for (let w = 1; w <= S.wings; w++){
+    const wc = all.filter(c => wingOf(c.id) === w); let r = '';
+    for (let i = 0; i < wc.length; i += 2) r += cell(wc[i]) + '<i class="cor"></i>' + (wc[i+1] ? cell(wc[i+1]) : '<span></span>');
+    h += '<div class="mw"><h3>'+wingName(w)+'<span>вход ▼ коридор</span></h3><div class="mg">'+r+'</div></div>';
+  }
+  $('map').innerHTML = h + '</div><div class="leg">'+Object.keys(ST).map(k => '<span style="--c:'+ST[k][1]+'"><i></i>'+names[k]+'</span>').join('')+'<span>⛔ вход запрещён</span><span>🔒 партия закрыта</span></div>';
+  $('mapInfo').textContent = all.length + ' камер';
+}
+
+/* ===== Просмотр камеры ===== */
+const lastChange = id => journal.find(e => e.camId === id && e.prev);
+function renderNotes(){
+  const el = $('nlist'); if (!el || !selected) return;
+  const l = notes.filter(n => n.camId === selected).slice(0, 15).reverse();
+  el.innerHTML = l.map(n => '<div class="nb"><small>'+esc(nameOf(n.by))+' · '+fmtDT(n.ts)+'</small>'+esc(n.text).replace(/@([\w.-]+)/g,'<b>@$1</b>')+'</div>').join('') || '<div class="hint">Заметок пока нет</div>';
+  el.scrollTop = el.scrollHeight;
+}
 function openView(id){
-  const c = cams.find(x => x.id === id); if (!c) return;
+  const c = camById(id); if (!c) return;
   selected = id;
-  const [icn, col] = ST[c.status] || ST.empty, bad = issues(c), d = days(c);
+  const [icn, col] = ST[c.status] || ST.empty, bad = issues(c), d = days(c), w = canW(), le = lastChange(id);
   const row = (l, v) => '<div class="vr"><span>'+l+'</span><b>'+v+'</b></div>';
   const tile = k => '<div class="tile'+(bad.includes(k)?' bad':'')+'"><span>'+NL[k][0]+'</span><b>'+val(c[k],unit(k))+'</b>'+(bad.includes(k)?'<small>норма '+S.norms[k][0]+'…'+S.norms[k][1]+'</small>':'')+'</div>';
-  $('vmTitle').innerHTML = culIcon(c.sort,c.crop)+'Камера №'+pad(c.id)+' <span class="pill" style="--c:'+col+'">'+ic(icn)+esc(names[c.status]||c.status)+'</span>';
+  const san = t => t ? fmtD(t)+' ('+Math.floor((Date.now()-t)/864e5)+' дн. назад)' : '<span style="color:var(--bad)">нет данных</span>';
+  $('vmTitle').innerHTML = culIcon(c.sort,c.crop)+'Камера №'+pad(c.id)+(c.locked?' 🔒':'')+' <span class="pill" style="--c:'+col+'">'+ic(icn)+esc(names[c.status]||c.status)+'</span>';
   $('vmContent').innerHTML =
+    (noEntry(c) ? '<div class="banner">'+ic('ban')+'<span>ВХОД ЗАПРЕЩЁН: O₂ '+(c.o2 != null ? c.o2+' %' : 'не измерен')+', безопасно от '+S.safeO2+' %</span></div>' : '')+
+    (c.locked ? '<div class="banner" style="color:var(--ink);border-color:var(--line);background:var(--bg)">🔒 Партия закрыта, редактирование заблокировано</div>' : '')+
     '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+chartSvg(c,'temp')+chartSvg(c,'hum')+
     '<div class="rows">'+row('Крыло',wingName(wingOf(c.id)))+row('Культура',val(c.crop))+row('Сорт',val(c.sort))+row('Партия',val(c.batch))+row('Количество',(c.qty||0).toLocaleString('ru-RU')+' кг')+row('Оператор',val(c.operator))+'</div>'+
     '<div class="rows">'+row('Загрузка',val(c.loadAt))+row('Срок хранения',d != null && ACTIVE.includes(c.status) ? '<span style="color:'+(over(c)?'var(--bad)':'inherit')+'">'+d+' дн.'+(over(c)?' (превышен)':'')+'</span>' : '—')+row('Обработка',val(c.processAt))+row('Вывод на РГС',val(c.rgsAt))+row('Обновлено',c.updatedAt?fmtDT(c.updatedAt):'—')+'</div>'+
+    '<div class="rows">'+row('Уборка',san(c.cleanAt))+row('Дезинфекция',san(c.disAt))+'</div>'+
+    (w ? '<div class="quick"><button class="btn sm" data-act="clean">Отметить уборку</button><button class="btn sm" data-act="disinf">Отметить дезинфекцию</button></div>' : '')+
     (c.note ? '<div class="rows"><div class="vr" style="flex-direction:column;gap:4px"><span>Примечание</span><b style="text-align:left;font-weight:500">'+esc(c.note)+'</b></div></div>' : '')+
-    '<button class="btn pri full" data-act="edit">Редактировать</button>';
-  openModal('viewModal');
+    '<div class="grp" style="margin-top:14px"><h3>Заметки команды</h3><div class="nl" id="nlist"></div>'+
+    (w ? '<div class="nin"><input id="nin" maxlength="300" placeholder="Заметка, @имя чтобы упомянуть"><button class="btn sm pri" data-act="noteadd">Отправить</button></div>' : '')+'</div>'+
+    (w ? (c.locked ? '<div class="banner" style="color:var(--mut);border-color:var(--line);background:none">Чтобы править, администратор должен открыть партию</div>' : '<button class="btn pri full" data-act="edit" style="margin-top:12px">Редактировать</button>') : '')+
+    (w && !c.locked && le ? '<button class="btn full" data-act="undo" style="margin-top:8px">↶ Отменить последнее изменение ('+esc(le.date)+')</button>' : '')+
+    (isAdmin() ? '<button class="btn full" data-act="lock" style="margin-top:8px">'+(c.locked ? '🔓 Открыть партию' : '🔒 Закрыть партию')+'</button>' : '');
+  openModal('viewModal'); renderNotes();
+}
+async function noteAdd(){
+  const i = $('nin'), t = i.value.trim(); if (!t) return;
+  const ms = [...t.matchAll(/@([\w.-]+)/g)].map(m => m[1].toLowerCase());
+  const mentions = users.filter(u => ms.includes((u.name||'').toLowerCase()) || ms.includes(u.email.replace(DOMAIN,'').toLowerCase())).map(u => u.email);
+  try { await addDoc(collection(db,'notes'), { camId: selected, text: t, by: user.email, ts: Date.now(), mentions }); i.value = ''; }
+  catch(e){ toast('Не отправлено: ' + e.message, 1); }
+}
+const sanit = (key, label) => { const c = camById(selected); if (c && canW()) run(() => commitCam(c, { [key]: Date.now() }, label, {}, false), label+' отмечена').then(() => setTimeout(() => openView(c.id), 600)); };
+function undo(){
+  const c = camById(selected), e = lastChange(selected); if (!c || !e || !canW() || c.locked) return;
+  if (!confirm('Отменить изменение от '+e.date+'?\n\n'+e.action)) return;
+  const cur = {}; Object.keys(e.prev).forEach(k => cur[k] = c[k] ?? null);
+  run(() => commitCam(c, { ...e.prev }, 'Откат: '+e.action, { prev: cur }), 'Изменение отменено').then(() => closeModal('viewModal'));
+}
+function lockToggle(){
+  const c = camById(selected); if (!c || !isAdmin()) return;
+  const lock = !c.locked;
+  if (!confirm(lock ? 'Закрыть партию? Редактирование будет заблокировано.' : 'Открыть партию для редактирования?')) return;
+  run(() => commitCam(c, { locked: lock }, lock ? 'Партия закрыта' : 'Партия открыта', {}, false), lock ? 'Партия закрыта' : 'Партия открыта').then(() => closeModal('viewModal'));
 }
 
 /* ===== Редактирование ===== */
@@ -583,7 +778,8 @@ function quick(q){
   toast('Проверьте данные и нажмите «Сохранить»');
 }
 function openForm(){
-  const c = cams.find(x => x.id === selected); if (!c) return;
+  const c = camById(selected); if (!c || !canW()) return;
+  if (c.locked){ toast('Партия закрыта. Администратор должен её открыть.', 1); return; }
   $('emNum').textContent = '№' + pad(c.id);
   setStatus(c.status);
   FIELDS.forEach(([k,,t]) => { $('f_'+k).value = t === 'date' ? toIso(c[k]) : (c[k] ?? ''); });
@@ -602,30 +798,283 @@ function collect(){
   return o;
 }
 async function save(){
-  const c = cams.find(x => x.id === selected); if (!c || !user) return;
+  const c = camById(selected); if (!c || !user || !canW()) return;
   const upd = collect(); if (!upd) return;
   const changed = Object.keys(upd).filter(k => String(upd[k] ?? '') !== String(c[k] ?? ''));
   if (!changed.length){ closeModal('editModal'); return; }
-  if (!confirm('Сохранить изменения?\n\nКамера №' + pad(c.id) + ' · ' + (c.sort||'—'))) return;
+  const freeing = (c.qty||0) > 0 && ((upd.qty||0) === 0 || upd.status === 'empty' || upd.status === 'inactive');
+  if (freeing){ if (!danger('Камера №'+pad(c.id)+' содержит '+(c.qty||0).toLocaleString('ru-RU')+' кг ('+(c.sort||'—')+'). Вы убираете из неё запасы.', c.id)) return; }
+  else if (!confirm('Сохранить изменения?\n\nКамера №' + pad(c.id) + ' · ' + (c.sort||'—'))) return;
+  const after = { ...c, ...upd };
+  const fixed = Math.max(0, issues(c).length - issues(after).length) + (c.status === 'problem' && upd.status !== 'problem' ? 1 : 0);
+  const prev = {}; changed.forEach(k => prev[k] = c[k] ?? null);
   const action = changed.includes('status') ? 'Статус: '+names[c.status]+' → '+names[upd.status]+(changed.length>1?' (+ ещё '+(changed.length-1)+')':'')
     : 'Изменено: ' + changed.map(k => LABEL[k]).join(', ');
+  const moved = ['temp','hum','o2','co2'].some(k => upd[k] !== c[k] && upd[k] != null);
+  const hist = moved ? [...(c.hist || []), { t: Date.now(), temp: upd.temp, hum: upd.hum, o2: upd.o2, co2: upd.co2 }].slice(-30) : (c.hist || []);
   $('saveBtn').disabled = true; showLoading(true);
-  try {
-    const b = writeBatch(db);
-    const moved = ['temp','hum','o2','co2'].some(k => upd[k] !== c[k] && upd[k] != null);
-    const hist = moved ? [...(c.hist || []), { t: Date.now(), temp: upd.temp, hum: upd.hum, o2: upd.o2, co2: upd.co2 }].slice(-30) : (c.hist || []);
-    b.update(doc(db,'cameras','cam'+c.id), { ...upd, hist, updatedBy: user.email, updatedAt: Date.now() });
-    b.set(doc(collection(db,'journal')), { camId: c.id, cam: '№'+pad(c.id), action, user: user.email, ts: Date.now(), date: fmtDT(Date.now()) });
-    await b.commit();
-    closeModal('editModal'); toast('Сохранено');
-  } catch(e){ toast('Не удалось сохранить: ' + e.message, 1); }
+  try { await commitCam(c, { ...upd, hist }, action, { st0: c.status, st1: upd.status, q0: c.qty||0, q1: upd.qty||0, fixed, prev }); closeModal('editModal'); toast('Сохранено'); }
+  catch(e){ toast('Не удалось сохранить: ' + e.message, 1); }
   $('saveBtn').disabled = false; showLoading(false);
 }
 
-/* ===== Меню, настройки ===== */
+/* ===== Вкладка «Сегодня» ===== */
+const myTasks = () => tasks.filter(t => isAdmin() || t.assignee === 'all' || t.assignee === user.email).sort((a,b) => a.due - b.due);
+function reminders(){
+  const r = [];
+  vis().forEach(c => {
+    if (ACTIVE.includes(c.status) && S.maxDays > 0){ const d = days(c); if (d != null && d <= S.maxDays && S.maxDays - d <= 3) r.push([c.id, 'Срок хранения истекает через '+(S.maxDays-d)+' дн.']); }
+    if (c.status === 'empty' && (!c.disAt || Date.now() - c.disAt > SAN_DAYS*864e5)) r.push([c.id, 'Нужна дезинфекция перед загрузкой']);
+  });
+  return r;
+}
+function complHtml(ds, cnt){
+  const N = vis().length, td = dayStr(), h = new Date().getHours();
+  return ds.map(d => {
+    const t = d === td, f = s => { const n = cnt(d, s), due = !t || (s === 'am' && h >= SLOT_HOUR); return '<span class="tag '+(n >= N ? 'ok' : due ? 'bad' : '')+'">'+(s === 'am' ? 'Утро' : 'Вечер')+' '+n+'/'+N+'</span>'; };
+    return '<div class="li"><div class="t"><b>'+d.slice(8)+'.'+d.slice(5,7)+(t ? ' (сегодня)' : '')+'</b></div>'+f('am')+f('pm')+'</div>';
+  }).join('');
+}
+function taskRow(t){
+  const od = t.due < Date.now(), adm = isAdmin();
+  return '<div class="li"><div class="t"><b>'+esc(t.title)+'</b><small>'+(t.camId ? 'Камера №'+pad(t.camId)+' · ' : '')+fmtDT(t.due)+' · '+rel(t.due)+(adm ? ' · '+(t.assignee === 'all' ? 'все' : esc(nameOf(t.assignee))) : '')+'</small></div>'+
+    (od ? '<span class="tag bad">срок</span>' : '')+(canW() ? '<button class="btn sm" data-done="'+t.id+'">✓</button>' : '')+(adm ? '<button class="btn sm" data-deltask="'+t.id+'" aria-label="Удалить">✕</button>' : '')+'</div>';
+}
+function renderToday(){
+  if (!user) return;
+  const el = $('today'), w = canW(), adm = isAdmin(), em = user.email, now = Date.now(), day = dayStr(), sl = slotNow(), all = vis();
+  const done = all.filter(c => rounds[rk(day, sl, c.id)]).length, pct = Math.round(done/(all.length||1)*100);
+  const hp = hands.find(x => !x.acceptedBy && x.fromEmail !== em);
+  const un = anns.filter(a => !(a.ack && a.ack[user.uid]));
+  const mt = myTasks(), ms = notes.filter(n => (n.mentions||[]).includes(em) && n.by !== em && n.ts > now - 7*864e5).slice(0, 5);
+  const rem = reminders(), oi = incs.filter(i => !i.end);
+  $('todayInfo').textContent = new Date().toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
+  let h = '<div class="card"><h3>Смена</h3>';
+  if (myShift){
+    const s = shiftStats();
+    h += '<div class="li"><div class="t"><b>Смена идёт</b><small>с '+hm(myShift.start)+' · '+dur(now - myShift.start)+'</small></div><button class="btn sm pri" data-act="shiftend">Сдать смену</button></div>'+
+      '<div class="tags"><span class="tag">Обходов: '+s.rounds+'</span><span class="tag ok">Устранено отклонений: '+s.fixed+'</span><span class="tag">Действий: '+s.acts+'</span></div>';
+  } else h += w ? '<div class="li"><div class="t"><b>Смена не начата</b><small>Начните смену, чтобы учитывалось рабочее время</small></div><button class="btn sm pri" data-act="shiftstart">Начать смену</button></div>' : '<div class="hint">Режим просмотра: правки недоступны</div>';
+  h += '</div>';
+  if (hp) h += '<div class="card"><h3>Передача смены</h3><div class="li"><div class="t"><b>'+esc(nameOf(hp.fromEmail))+' сдал(а) смену</b><small>'+fmtDT(hp.ts)+(hp.note ? ' · '+esc(hp.note.slice(0,60)) : '')+'</small></div><button class="btn sm pri" data-act="handview">Принять</button></div></div>';
+  un.forEach(a => { h += '<div class="card"><h3>📢 Объявление<span class="tag bad">нужно подтвердить</span></h3><b>'+esc(a.title)+'</b><div style="margin:6px 0">'+esc(a.text)+'</div><small style="color:var(--mut)">'+esc(nameOf(a.by))+' · '+fmtDT(a.ts)+'</small><button class="btn pri full" style="margin-top:10px" data-ack="'+a.id+'">Прочитал(а)</button></div>'; });
+  h += '<div class="card"><h3>'+SL[sl]+' обход<span>'+done+' / '+all.length+'</span></h3><div class="bar" style="margin:0 0 10px"><i style="width:'+pct+'%"></i></div>'+(w ? '<button class="btn pri full" data-act="round">'+(done >= all.length ? 'Обход завершён · открыть' : 'Начать обход')+'</button>' : '')+'</div>';
+  h += '<div class="card"><h3>Мои дела'+(adm ? '<button class="btn sm" data-act="newtask">+ Задача</button>' : '')+'</h3>'+(mt.map(taskRow).join('') || '<div class="hint">Задач нет</div>')+'</div>';
+  if (oi.length) h += '<div class="card"><h3>Аварии и простои сейчас</h3>'+oi.map(incRow).join('')+'</div>';
+  h += '<div class="card"><h3>Напоминания</h3>'+(rem.slice(0, 8).map(([id, t]) => '<div class="li"><div class="t"><b>Камера №'+pad(id)+'</b><small>'+t+'</small></div><button class="btn sm" data-cam="'+id+'">Открыть</button></div>').join('') || '<div class="hint">Всё в порядке</div>')+(rem.length > 8 ? '<div class="hint">и ещё '+(rem.length-8)+'</div>' : '')+'</div>';
+  if (ms.length) h += '<div class="card"><h3>Вас упомянули</h3>'+ms.map(n => '<div class="li"><div class="t"><b>'+esc(nameOf(n.by))+' · камера №'+pad(n.camId)+'</b><small>'+esc(n.text)+'</small></div><button class="btn sm" data-cam="'+n.camId+'">Открыть</button></div>').join('')+'</div>';
+  if (w) h += '<div class="card"><h3>Быстрые действия</h3><div class="hbtn"><button class="btn sm" data-act="newinc">⚠ Авария / простой</button>'+(adm ? '<button class="btn sm" data-act="newann">📢 Объявление</button>' : '')+'</div></div>';
+  if (adm){
+    const ds = [0,1,2].map(i => dayStr(new Date(now - i*864e5)));
+    h += '<div class="card"><h3>Обходы за 3 дня (руководителю)</h3>'+complHtml(ds, (d, s) => all.filter(c => rounds[rk(d, s, c.id)]).length)+'</div>';
+    h += '<div class="card"><h3>Объявления</h3>'+(anns.slice(0, 5).map(a => { const got = Object.keys(a.ack || {}).length; return '<div class="li"><div class="t"><b>'+esc(a.title)+'</b><small>Прочитали '+got+' из '+users.length+'</small></div><button class="btn sm" data-delann="'+a.id+'" aria-label="Удалить">✕</button></div>'; }).join('') || '<div class="hint">Объявлений нет</div>')+'</div>';
+  }
+  el.innerHTML = h;
+}
+
+/* ===== Смены и передача ===== */
+function stat(since, email){
+  const r = { in:0, out:0, fixed:0, acts:0, prob:0, rounds:0 };
+  journal.filter(e => e.ts >= since && (!email || e.user === email)).forEach(e => {
+    const d = (e.q1||0) - (e.q0||0); if (d > 0) r.in += d; else r.out -= d;
+    r.fixed += e.fixed || 0; r.acts++; if (e.st1 === 'problem' && e.st0 !== 'problem') r.prob++;
+  });
+  r.rounds = Object.values(rounds).filter(x => x.email === email && x.ts >= since).length;
+  return r;
+}
+const shiftStats = () => stat(myShift.start, user.email);
+const sumTags = s => '<div class="tags"><span class="tag ok">Принято '+kgf(s.in)+'</span><span class="tag">Отгружено '+kgf(s.out)+'</span><span class="tag">Обходов '+s.rounds+'</span><span class="tag ok">Устранено '+s.fixed+'</span><span class="tag '+(s.prob ? 'bad' : '')+'">Проблем '+s.prob+'</span></div>';
+const shiftStart = () => run(async () => {
+  await addDoc(collection(db,'shifts'), { uid:user.uid, email:user.email, start:Date.now(), end:null });
+  if (hands.some(x => !x.acceptedBy && x.fromEmail !== user.email)) toast('Не забудьте принять смену от коллеги');
+}, 'Смена начата');
+function shiftEnd(){
+  if (!myShift) return;
+  dlg('Сдать смену', '<div class="hint">Итоги смены с '+hm(myShift.start)+' ('+dur(Date.now()-myShift.start)+')</div>'+sumTags(shiftStats())+
+    '<div class="fld"><label for="d_note">Заметка следующей смене (что важно знать)</label><textarea id="d_note" maxlength="600"></textarea></div>'+
+    '<div class="fld" style="margin-top:10px"><label for="d_photo">Фото (по желанию)</label><input id="d_photo" type="file" accept="image/*"></div>', 'shiftdone', 'Сдать смену');
+}
+function shrink(file){
+  return new Promise((res, rej) => {
+    const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => { const k = Math.min(1, 800/Math.max(img.width, img.height)), c = document.createElement('canvas'); c.width = img.width*k; c.height = img.height*k; c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(u); res(c.toDataURL('image/jpeg', .6)); };
+    img.onerror = rej; img.src = u;
+  });
+}
+async function shiftDone(){
+  if (!myShift) return;
+  const f = $('d_photo').files[0]; let photo = '';
+  if (f){ try { photo = await shrink(f); } catch(e){ toast('Фото не обработано', 1); } }
+  if (photo.length > 700000){ photo = ''; toast('Фото слишком большое, пропущено', 1); }
+  const s = shiftStats(), t = Date.now(), note = $('d_note').value.trim();
+  await run(async () => {
+    const b = writeBatch(db);
+    b.update(doc(db,'shifts',myShift.id), { end:t, summary:s });
+    b.set(doc(collection(db,'handovers')), { fromUid:user.uid, fromEmail:user.email, ts:t, note, photo, summary:s, acceptedBy:null, acceptedAt:null });
+    await b.commit(); closeModal('dlgModal');
+  }, 'Смена сдана');
+}
+function handView(){
+  const h = hands.find(x => !x.acceptedBy && x.fromEmail !== user.email); if (!h) return;
+  hpId = h.id;
+  dlg('Принять смену', '<div class="hint">'+esc(nameOf(h.fromEmail))+' · '+fmtDT(h.ts)+'</div>'+sumTags(h.summary || { in:0, out:0, rounds:0, fixed:0, prob:0 })+
+    '<div class="rows"><div class="vr" style="flex-direction:column;gap:4px"><span>Заметка</span><b style="text-align:left;font-weight:500">'+(esc(h.note) || '—')+'</b></div></div>'+
+    (h.photo ? '<img class="pimg" src="'+h.photo+'" alt="Фото смены">' : ''), 'handok', 'Принял(а) смену');
+}
+const handOk = () => run(async () => { await updateDoc(doc(db,'handovers',hpId), { acceptedBy:user.email, acceptedAt:Date.now() }); closeModal('dlgModal'); }, 'Смена принята');
+
+/* ===== Обходы ===== */
+function renderRound(){
+  const day = dayStr(), sl = slotNow(), all = vis(), key = c => rk(day, sl, c.id);
+  const dn = all.filter(c => rounds[key(c)]), td = all.filter(c => !rounds[key(c)]);
+  $('rdTitle').textContent = SL[sl]+' обход · '+dn.length+'/'+all.length;
+  const row = (c, d) => '<div class="li"><div class="t"><b>№'+pad(c.id)+' · '+val(c.sort)+(noEntry(c) ? ' ⛔' : '')+'</b><small>🌡 '+val(c.temp,'°')+' · 💧 '+val(c.hum,'%')+' · O₂ '+val(c.o2,'%')+' · CO₂ '+val(c.co2,'%')+'</small></div>'+
+    (d ? '<span class="tag '+(d.ok ? 'ok' : 'bad')+'">'+(d.ok ? '✓ '+hm(d.ts) : '⚠ '+esc(d.note||''))+'</span>' : '<div class="rb"><button class="ok" data-r="1" data-rc="'+c.id+'" aria-label="В норме">✓</button><button class="bd2" data-r="0" data-rc="'+c.id+'" aria-label="Замечание">⚠</button></div>')+'</div>';
+  $('rdBody').innerHTML = '<div class="bar" style="margin:0 0 8px"><i style="width:'+Math.round(dn.length/(all.length||1)*100)+'%"></i></div>'+
+    (td.map(c => row(c)).join('') || '<div class="banner" style="color:#1f9d6b;border-color:#1f9d6b">Все камеры обойдены</div>')+
+    (dn.length ? '<h3 style="margin:14px 0 4px;font-size:13px;color:var(--mut)">Уже отмечены</h3>'+dn.map(c => row(c, rounds[key(c)])).join('') : '');
+}
+function markRound(id, ok){
+  let note = '';
+  if (!ok){ const n = prompt('Что не так? (кратко)'); if (n === null) return; note = n.trim(); }
+  const day = dayStr(), sl = slotNow();
+  setDoc(doc(db,'rounds',rk(day, sl, id)), { day, slot:sl, camId:id, email:user.email, uid:user.uid, ts:Date.now(), ok, note }).catch(e => toast('Не сохранено: '+e.message, 1));
+}
+
+/* ===== Задачи, объявления, аварии ===== */
+const dtLocal = t => { const d = new Date(t); return dayStr(d)+'T'+pad(d.getHours())+':'+pad(d.getMinutes()); };
+function newTask(){
+  if (!isAdmin()) return;
+  const cams_ = '<option value="0">— без камеры —</option>'+vis().map(c => '<option value="'+c.id+'">№'+pad(c.id)+' '+esc(c.sort||'')+'</option>').join('');
+  const us = '<option value="all">Все операторы</option>'+users.filter(u => u.role !== 'viewer' || u.email === ADMIN_EMAIL).map(u => '<option value="'+esc(u.email)+'">'+esc(u.name||u.email)+'</option>').join('');
+  dlg('Новая задача', '<div class="fld"><label for="d_title">Что сделать</label><input id="d_title" maxlength="120" placeholder="Проверить камеру 12"></div>'+
+    '<div class="fg" style="margin-top:10px"><div class="fld"><label for="d_cam">Камера</label><select id="d_cam">'+cams_+'</select></div><div class="fld"><label for="d_as">Исполнитель</label><select id="d_as">'+us+'</select></div></div>'+
+    '<div class="fld" style="margin-top:10px"><label for="d_due">Срок</label><input id="d_due" type="datetime-local" value="'+dtLocal(Date.now()+3*36e5)+'"></div>', 'tasksave', 'Создать');
+}
+const taskSave = () => {
+  const title = $('d_title').value.trim(), due = new Date($('d_due').value).getTime();
+  if (!title || !Number.isFinite(due)){ toast('Укажите задачу и срок', 1); return; }
+  run(async () => { await addDoc(collection(db,'tasks'), { title, camId:Number($('d_cam').value)||0, assignee:$('d_as').value, due, createdBy:user.email, createdAt:Date.now(), done:false }); closeModal('dlgModal'); }, 'Задача создана');
+};
+const taskDone = id => run(() => updateDoc(doc(db,'tasks',id), { done:true, doneAt:Date.now(), doneBy:user.email }), 'Выполнено');
+function newAnn(){
+  if (!isAdmin()) return;
+  dlg('Новое объявление', '<div class="fld"><label for="d_title">Заголовок</label><input id="d_title" maxlength="100"></div><div class="fld" style="margin-top:10px"><label for="d_text">Текст</label><textarea id="d_text" maxlength="800"></textarea></div><div class="hint">Каждый сотрудник должен подтвердить прочтение.</div>', 'annsave', 'Опубликовать');
+}
+const annSave = () => {
+  const title = $('d_title').value.trim(), text = $('d_text').value.trim();
+  if (!title || !text){ toast('Заполните заголовок и текст', 1); return; }
+  run(async () => { await addDoc(collection(db,'announcements'), { title, text, by:user.email, ts:Date.now(), ack:{} }); closeModal('dlgModal'); }, 'Объявление опубликовано');
+};
+const ack = id => run(async () => {
+  await updateDoc(doc(db,'announcements',id), { ['ack.'+user.uid]: Date.now() });
+  const b = document.querySelector('#dlgBody [data-ack="'+id+'"]'); if (b) b.closest('.card').remove();
+  if ($('dlgModal').classList.contains('open') && gated && !$('dlgBody').querySelector('[data-ack]')) closeModal('dlgModal');
+});
+function gateCheck(){
+  if (gated || !user) return;
+  const un = anns.filter(a => !(a.ack && a.ack[user.uid]));
+  if (!un.length || document.querySelector('.modal.open')) return;
+  gated = true;
+  dlg('📢 Нужно подтвердить', un.map(a => '<div class="card"><b>'+esc(a.title)+'</b><div style="margin:6px 0">'+esc(a.text)+'</div><small style="color:var(--mut)">'+esc(nameOf(a.by))+' · '+fmtDT(a.ts)+'</small><button class="btn pri full" style="margin-top:10px" data-ack="'+a.id+'">Прочитал(а)</button></div>').join(''), '', '');
+}
+const incLabel = i => (i.kind || 'Простой')+' · '+(i.camId ? 'камера №'+pad(i.camId) : 'всё хранилище')+' · '+esc(i.cause||'');
+const incRow = i => '<div class="li"><div class="t"><b>'+incLabel(i)+'</b><small>'+fmtDT(i.start)+' · '+(i.end ? dur(i.end - i.start) : 'идёт '+dur(Date.now() - i.start))+'</small></div>'+
+  (!i.end && canW() ? '<button class="btn sm" data-incclose="'+i.id+'">Закрыть</button>' : '<span class="tag '+(i.end ? 'ok' : 'bad')+'">'+(i.end ? 'закрыто' : 'идёт')+'</span>')+'</div>';
+function newInc(){
+  if (!canW()) return;
+  const cams_ = '<option value="0">Всё хранилище</option>'+vis().map(c => '<option value="'+c.id+'">№'+pad(c.id)+' '+esc(c.sort||'')+'</option>').join('');
+  const causes = ['Нет электричества','Поломка компрессора','Утечка хладагента','Оттайка испарителя','Открыта дверь','Неисправность датчика','Другое'].map(x => '<option>'+x+'</option>').join('');
+  dlg('Авария или простой', '<div class="fg"><div class="fld"><label for="d_kind">Тип</label><select id="d_kind"><option>Авария</option><option>Простой</option></select></div><div class="fld"><label for="d_cam">Где</label><select id="d_cam">'+cams_+'</select></div></div>'+
+    '<div class="fld" style="margin-top:10px"><label for="d_cause">Причина</label><select id="d_cause">'+causes+'</select></div>'+
+    '<div class="fld" style="margin-top:10px"><label for="d_start">Началось</label><input id="d_start" type="datetime-local" value="'+dtLocal(Date.now())+'"></div>', 'incsave', 'Записать');
+}
+const incSave = () => {
+  const start = new Date($('d_start').value).getTime(); if (!Number.isFinite(start)){ toast('Укажите время', 1); return; }
+  run(async () => { await addDoc(collection(db,'incidents'), { kind:$('d_kind').value, camId:Number($('d_cam').value)||0, cause:$('d_cause').value, start, end:null, by:user.email }); closeModal('dlgModal'); }, 'Записано');
+};
+const incClose = id => run(() => updateDoc(doc(db,'incidents',id), { end:Date.now(), endBy:user.email }), 'Закрыто');
+
+/* ===== Сводка и команда ===== */
+async function fetchRange(since){
+  const ds = dayStr(new Date(since));
+  const g = (c, ...a) => getDocs(query(collection(db, c), ...a)).then(s => s.docs.map(d => ({ id: d.id, ...d.data() })));
+  const [J, R, I, T, SH] = await Promise.all([
+    g('journal', where('ts','>=',since), orderBy('ts','desc'), limit(2000)),
+    g('rounds', where('day','>=',ds)),
+    g('incidents', where('start','>=',since)),
+    g('tasks', where('doneAt','>=',since)),
+    g('shifts', where('start','>=',since))
+  ]);
+  return { J, R, I, T, SH, since };
+}
+const sinceOf = r => startDay() - (r === 'day' ? 0 : r === '7' ? 6 : 29) * 864e5;
+const dayList = since => { const out = [], d = new Date(since); while (d.getTime() <= Date.now()){ out.push(dayStr(d)); d.setDate(d.getDate()+1); } return out; };
+async function loadSum(){
+  SUM = 'load'; renderSum();
+  try { SUM = { range: sumRange, ...(await fetchRange(sinceOf(sumRange))) }; }
+  catch(e){ SUM = null; toast('Не удалось загрузить сводку: '+e.message, 1); }
+  renderSum();
+}
+function renderSum(){
+  const el = $('sum'); if (!user || tab !== 'sum') return;
+  const seg = '<div class="sg">'+[['day','Сегодня'],['7','7 дней'],['30','30 дней']].map(([k,l]) => '<button data-range="'+k+'" class="'+(sumRange===k?'on':'')+'">'+l+'</button>').join('')+'</div>';
+  if (SUM === 'load' || !SUM){ el.innerHTML = seg + '<div class="empty-msg">Загрузка…</div>'; return; }
+  const { J, R, I, T, since } = SUM, all = vis(), N = all.length, ds = dayList(since), now = Date.now(), h = new Date().getHours();
+  const a = { in:0, out:0, fixed:0 }; J.forEach(e => { const d = (e.q1||0) - (e.q0||0); if (d > 0) a.in += d; else a.out -= d; a.fixed += e.fixed || 0; });
+  const exp = ds.reduce((s, d) => s + (d === dayStr() ? (h < SLOT_HOUR ? 1 : 2) : 2), 0) * N;
+  const rd = R.filter(r => r.camId <= total()).length, rp = exp ? Math.min(100, Math.round(rd/exp*100)) : 0;
+  const down = I.reduce((s, i) => s + ((i.end || now) - i.start), 0);
+  const kp = (l, v, s, cls) => '<div class="stat '+(cls||'')+'"><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div>';
+  const perDay = ds.map(d => J.filter(e => dayStr(new Date(e.ts)) === d).length), mx = Math.max(1, ...perDay), bw = 300/ds.length;
+  const bars = '<svg viewBox="0 0 300 70" preserveAspectRatio="none" style="width:100%;height:70px;display:block">'+perDay.map((n, i) => '<rect x="'+(i*bw+1).toFixed(1)+'" y="'+(66 - n/mx*62).toFixed(1)+'" width="'+Math.max(1, bw-2).toFixed(1)+'" height="'+(n/mx*62+4).toFixed(1)+'" rx="2" fill="var(--brand)" opacity=".85"/>').join('')+'</svg>';
+  const probs = J.filter(e => e.st1 === 'problem' && e.st0 !== 'problem').slice(0, 8);
+  el.innerHTML = seg +
+    '<div class="kpis">'+kp('Принято', kgf(a.in), 'по журналу', 'pri')+kp('Отгружено', kgf(a.out), 'по журналу')+kp('Обходы', rp+'%', rd+' из '+exp, rp < 80 && exp ? 'bad' : '')+kp('Устранено', a.fixed, 'отклонений')+'</div>'+
+    '<div class="kpis">'+kp('Изменений', J.length, 'записей')+kp('Аварии', I.length, 'простой '+dur(down), I.length ? 'bad' : '')+kp('Задач готово', T.length, 'просрочено сейчас: '+tasks.filter(t => t.due < now).length)+kp('Проблем', probs.length, 'новых за период', probs.length ? 'bad' : '')+'</div>'+
+    (ds.length > 1 ? '<div class="card"><h3>Активность по дням</h3>'+bars+'</div>' : '')+
+    '<div class="card"><h3>Выполнение обходов</h3>'+complHtml([...ds].reverse().slice(0, 14), (d, s) => R.filter(r => r.day === d && r.slot === s && r.camId <= total()).length)+'</div>'+
+    '<div class="card"><h3>Аварии и простои'+(canW() ? '<button class="btn sm" data-act="newinc">+ Записать</button>' : '')+'</h3>'+(I.sort((x, y) => y.start - x.start).slice(0, 10).map(incRow).join('') || '<div class="hint">За период не было</div>')+'</div>'+
+    (probs.length ? '<div class="card"><h3>Камеры, ставшие проблемными</h3>'+probs.map(e => '<div class="li"><div class="t"><b>'+esc(e.cam)+'</b><small>'+esc(e.date)+' · '+esc(nameOf(e.user))+'</small></div><button class="btn sm" data-cam="'+e.camId+'">Открыть</button></div>').join('')+'</div>' : '');
+}
+async function loadTeam(){
+  if (!isAdmin()) return;
+  TEAM = 'load'; renderTeam();
+  try {
+    const d = await fetchRange(startDay() - 29*864e5);
+    const L = await getDocs(query(collection(db,'logins'), orderBy('ts','desc'), limit(60)));
+    TEAM = { ...d, L: L.docs.map(x => x.data()) };
+  } catch(e){ TEAM = null; toast('Не удалось загрузить: '+e.message, 1); }
+  renderTeam();
+}
+function renderTeam(){
+  const el = $('team'); if (!user || tab !== 'team') return;
+  if (!isAdmin()){ el.innerHTML = '<div class="empty-msg">Раздел доступен администратору</div>'; return; }
+  if (!TEAM || TEAM === 'load'){ el.innerHTML = '<div class="empty-msg">Загрузка…</div>'; return; }
+  const { J, R, T, SH, L } = TEAM, st = {}, g = e => st[e] || (st[e] = { h:0, r:0, t:0, f:0, a:0 });
+  SH.forEach(s => g(s.email).h += ((s.end || Date.now()) - s.start)/36e5);
+  R.forEach(r => g(r.email).r++); T.forEach(t => g(t.doneBy).t++); J.forEach(e => { const x = g(e.user); x.f += e.fixed || 0; x.a++; });
+  users.forEach(u => g(u.email));
+  const rows = Object.entries(st).map(([e, x]) => ({ e, ...x, sc: x.r + 3*x.t + 2*x.f + Math.floor(x.h) })).sort((a, b) => b.sc - a.sc);
+  const medal = ['🥇','🥈','🥉'];
+  el.innerHTML =
+    '<div class="card"><h3>Рейтинг за 30 дней<span>условные баллы</span></h3><div class="tw"><table class="ht"><thead><tr><th></th><th>Сотрудник</th><th>Часы</th><th>Обходы</th><th>Задачи</th><th>Устран.</th><th>Балл</th></tr></thead><tbody>'+
+    rows.map((x, i) => '<tr data-uh="'+esc(x.e)+'" style="cursor:pointer"><td>'+(medal[i]||'')+'</td><td>'+esc(nameOf(x.e))+'</td><td>'+x.h.toFixed(1)+'</td><td>'+x.r+'</td><td>'+x.t+'</td><td>'+x.f+'</td><td><b>'+x.sc+'</b></td></tr>').join('')+'</tbody></table></div><div class="hint">Балл = обходы + 3×задачи + 2×устранённые отклонения + часы смен. Нажмите на строку, чтобы увидеть историю действий.</div></div>'+
+    '<div class="card"><h3>Роли сотрудников</h3>'+users.map(u => '<div class="li"><div class="t"><b>'+esc(u.name||u.email)+'</b><small>'+esc(u.email)+'</small></div><select data-role="'+u.id+'"'+(u.email === ADMIN_EMAIL ? ' disabled' : '')+'>'+Object.keys(ROLE_RU).map(r => '<option value="'+r+'"'+((u.email === ADMIN_EMAIL ? 'admin' : u.role) === r ? ' selected' : '')+'>'+ROLE_RU[r]+'</option>').join('')+'</select></div>').join('')+'<div class="hint">Новые сотрудники входят с ролью «Просмотр». Назначьте им «Оператор».</div></div>'+
+    '<div class="card"><h3>Журнал входов</h3><div class="tw"><table class="ht"><thead><tr><th>Когда</th><th>Кто</th><th>Устройство</th></tr></thead><tbody>'+
+    (L.map(x => '<tr><td>'+fmtDT(x.ts)+'</td><td>'+esc(nameOf(x.email))+'</td><td>'+esc(x.device)+'</td></tr>').join('') || '<tr><td colspan="3">Пока пусто</td></tr>')+'</tbody></table></div></div>';
+}
+function userHist(email){
+  if (!TEAM || TEAM === 'load') return;
+  const l = TEAM.J.filter(e => e.user === email).slice(0, 100);
+  dlg('История: '+esc(nameOf(email)), '<div class="tw"><table class="ht"><thead><tr><th>Дата</th><th>Камера</th><th>Действие</th></tr></thead><tbody>'+(l.map(e => '<tr><td>'+esc(e.date)+'</td><td>'+esc(e.cam)+'</td><td>'+esc(e.action)+'</td></tr>').join('') || '<tr><td colspan="3">За 30 дней действий нет</td></tr>')+'</tbody></table></div>', '', '');
+}
+
+/* ===== Меню и настройки ===== */
 function openMenu(){
   const b = (a, i, t) => '<button class="btn" data-act="'+a+'">'+ic(i)+t+'</button>';
-  $('menuList').innerHTML = b('csv','table','Скачать таблицу (Excel)') + b('print','print','Печать отчёта') +
+  const standalone = matchMedia('(display-mode:standalone)').matches || navigator.standalone;
+  $('menuList').innerHTML = b('csv','table','Скачать таблицу (Excel)') + b('print','print','Печать отчёта') + (standalone ? '' : b('install','down','Установить на телефон')) +
     (isAdmin() ? b('settings','gear','Настройки хранилища') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') : '');
   openModal('menuModal');
 }
@@ -635,32 +1084,32 @@ function openSettings(){
   $('setForm').innerHTML =
     '<div class="grp"><h3>Структура</h3><div class="fg"><div class="fld"><label for="s_wings">Число крыльев</label><input id="s_wings" type="number" min="1" max="12" value="'+S.wings+'"></div>'+
     '<div class="fld"><label for="s_size">Камер в крыле</label><input id="s_size" type="number" min="1" max="60" value="'+S.size+'"></div></div>'+
-    '<p class="hint">Всего не больше 400 камер. Недостающие камеры создаются пустыми. Лишние не удаляются, а только скрываются.</p></div>'+
-    '<div class="grp"><h3>Срок хранения</h3><div class="fld"><label for="s_days">Максимум, дней (0 — не контролировать)</label><input id="s_days" type="number" min="0" max="1000" value="'+S.maxDays+'"></div></div>'+
+    '<p class="hint">Всего не больше 400 камер. Недостающие камеры создаются пустыми, лишние только скрываются.</p></div>'+
+    '<div class="grp"><h3>Срок хранения и безопасность</h3><div class="fg"><div class="fld"><label for="s_days">Максимум, дней (0 — не контролировать)</label><input id="s_days" type="number" min="0" max="1000" value="'+S.maxDays+'"></div>'+
+    '<div class="fld"><label for="s_o2">Безопасный O₂ для входа в РГС, %</label><input id="s_o2" type="number" step="0.1" min="0" max="25" value="'+S.safeO2+'"></div></div></div>'+
     '<div class="grp"><h3>Нормы (за пределами подсвечиваются красным)</h3><div class="fg">'+
-    Object.keys(NL).map(k => '<div class="fld"><label>'+NL[k][0]+', от — до</label><div style="display:flex;gap:6px"><input id="s_'+k+'0" type="number" step="any" value="'+n[k][0]+'" style="width:50%"><input id="s_'+k+'1" type="number" step="any" value="'+n[k][1]+'" style="width:50%"></div></div>').join('')+
-    '</div></div>';
+    Object.keys(NL).map(k => '<div class="fld"><label>'+NL[k][0]+', от — до</label><div style="display:flex;gap:6px"><input id="s_'+k+'0" type="number" step="any" value="'+n[k][0]+'" style="width:50%"><input id="s_'+k+'1" type="number" step="any" value="'+n[k][1]+'" style="width:50%"></div></div>').join('')+'</div></div>';
   closeModal('menuModal'); openModal('setModal');
 }
 async function saveSettings(){
-  const w = Number($('s_wings').value), z = Number($('s_size').value), md = Number($('s_days').value), norms = {};
+  const w = Number($('s_wings').value), z = Number($('s_size').value), md = Number($('s_days').value), so = Number($('s_o2').value), norms = {};
   if (!Number.isInteger(w) || !Number.isInteger(z) || w < 1 || w > 12 || z < 1 || z > 60 || w*z > 400){ toast('Проверьте число крыльев и камер (всего до 400)', 1); return; }
   if (!Number.isInteger(md) || md < 0 || md > 1000){ toast('Срок хранения: целое число от 0 до 1000', 1); return; }
+  if (!Number.isFinite(so) || so < 0 || so > 25){ toast('Безопасный O₂: от 0 до 25 %', 1); return; }
   for (const k of Object.keys(NL)){
     const a = Number($('s_'+k+'0').value), b = Number($('s_'+k+'1').value);
     if (!Number.isFinite(a) || !Number.isFinite(b) || a > b){ toast(NL[k][0]+': «от» должно быть меньше «до»', 1); return; }
     norms[k] = [a, b];
   }
   if (w*z < total() && !confirm('Камеры с номерами выше '+w*z+' будут скрыты. Продолжить?')) return;
-  $('setSave').disabled = true; showLoading(true);
-  try {
+  $('setSave').disabled = true;
+  await run(async () => {
     const b = writeBatch(db), have = new Set(cams.map(c => c.id));
-    b.set(doc(db,'settings','main'), { wings: w, size: z, maxDays: md, norms });
-    for (let i = 1; i <= w*z; i++) if (!have.has(i)) b.set(doc(db,'cameras','cam'+i), cleanCam({id:i, status:'empty'}));
-    await b.commit();
-    closeModal('setModal'); toast('Настройки сохранены');
-  } catch(e){ toast('Не удалось сохранить: ' + e.message, 1); }
-  $('setSave').disabled = false; showLoading(false);
+    b.set(doc(db,'settings','main'), { wings:w, size:z, maxDays:md, safeO2:so, norms });
+    for (let i = 1; i <= w*z; i++) if (!have.has(i)) b.set(doc(db,'cameras','cam'+i), cleanCam({ id:i, status:'empty' }));
+    await b.commit(); closeModal('setModal');
+  }, 'Настройки сохранены');
+  $('setSave').disabled = false;
 }
 
 /* ===== Экспорт ===== */
@@ -674,7 +1123,7 @@ function exportCsv(){
   const rows = vis().map(c => cols.map(([k]) => cell(k==='wing' ? wingOf(c.id) : k==='status' ? names[c.status] : k==='days' ? days(c) : c[k])).join(';'));
   download('kamery-' + todayIso() + '.csv', new Blob(['\ufeff' + cols.map(c => cell(c[1])).join(';') + '\n' + rows.join('\n')], {type:'text/csv;charset=utf-8'}));
 }
-function exportData(){ download('fruitstore-backup-' + todayIso() + '.json', new Blob([JSON.stringify({cams, journal, settings:S}, null, 2)], {type:'application/json'})); }
+const exportData = () => download('fruitstore-backup-' + todayIso() + '.json', new Blob([JSON.stringify({ cams, journal, settings:S }, null, 2)], {type:'application/json'}));
 $('importFile').addEventListener('change', e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f || !isAdmin()) return;
   const r = new FileReader();
@@ -684,7 +1133,8 @@ $('importFile').addEventListener('change', e => {
       if (!Array.isArray(p.cams)) throw new Error('Неверный формат файла');
       const list = p.cams.filter(c => Number.isInteger(Number(c.id)) && c.id >= 1 && c.id <= 500).map(cleanCam);
       if (!list.length) throw new Error('В файле нет камер');
-      if (!confirm('Импортировать ' + list.length + ' камер? Данные этих камер будут заменены.')) return;
+      const v = prompt('Будут заменены данные '+list.length+' камер. Для подтверждения введите ДА:');
+      if (!v || v.trim().toUpperCase() !== 'ДА') return;
       showLoading(true); await commitAll(list); showLoading(false); toast('Импорт завершён');
     } catch(err){ showLoading(false); toast('Ошибка импорта: ' + err.message, 1); }
   };
@@ -701,31 +1151,49 @@ $('editForm').addEventListener('change', e => { if (e.target.name === 'st') auto
 $('q').addEventListener('input', e => { search = e.target.value; render(); });
 $('wing').addEventListener('change', e => { wingFilter = e.target.value === 'all' ? 'all' : Number(e.target.value); render(); });
 $('sort').addEventListener('change', e => { sortBy = e.target.value; render(); });
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.dataset && t.dataset.role){ run(() => updateDoc(doc(db,'users',t.dataset.role), { role: t.value }), 'Роль изменена'); }
+});
 
+const ACTS = {
+  signup: () => doAuth(true), logout: () => signOut(auth), edit: openForm, save, undo, lock: lockToggle, noteadd: noteAdd,
+  clean: () => sanit('cleanAt', 'Уборка'), disinf: () => sanit('disAt', 'Дезинфекция'),
+  history: () => { renderJournal(); openModal('histModal'); },
+  menu: openMenu, settings: openSettings, setsave: saveSettings,
+  csv: exportCsv, print: () => { $('phDate').textContent = fmtDT(Date.now()); closeTopModal(); setTimeout(() => print(), 100); },
+  export: () => isAdmin() && exportData(), import: () => isAdmin() && $('importFile').click(),
+  install: () => { closeTopModal(); if (ip){ ip.prompt(); ip = null; } else toast('iPhone: «Поделиться» → «На экран Домой». Android: меню браузера → «Установить»'); },
+  theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try { localStorage.setItem('th', n); } catch(_){} },
+  shiftstart: shiftStart, shiftend: shiftEnd, shiftdone: shiftDone, handview: handView, handok: handOk,
+  round: () => { renderRound(); openModal('roundModal'); },
+  newtask: newTask, tasksave: taskSave, newann: newAnn, annsave: annSave, newinc: newInc, incsave: incSave
+};
 document.addEventListener('click', e => {
   const t = e.target;
   if (t.classList && t.classList.contains('modal')) return closeModal(t.id);
-  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-toggle],[data-q]');
+  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-toggle],[data-q],[data-tab],[data-r],[data-ack],[data-done],[data-deltask],[data-delann],[data-incclose],[data-range],[data-uh]');
   if (!x) return;
+  const d = x.dataset;
   if (x.hasAttribute('data-close')) return closeTopModal();
-  if (x.dataset.cam) return openView(Number(x.dataset.cam));
-  if (x.dataset.filter){ filter = x.dataset.filter; return render(); }
-  if (x.dataset.toggle){ const w = x.dataset.toggle; collapsed[w] = !collapsed[w]; return render(); }
-  if (x.dataset.q) return quick(x.dataset.q);
-  const act = {
-    signup: () => doAuth(true), logout: () => signOut(auth), edit: openForm, save,
-    history: () => { renderJournal(); openModal('histModal'); },
-    menu: openMenu, settings: openSettings, setsave: saveSettings,
-    csv: exportCsv, print: () => { $('phDate').textContent = fmtDT(Date.now()); closeTopModal(); setTimeout(() => print(), 100); },
-    export: () => isAdmin() && exportData(),
-    import: () => isAdmin() && $('importFile').click(),
-    theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try{ localStorage.setItem('th', n); }catch(_){} }
-  }[x.dataset.act];
-  if (act) act();
+  if (d.r !== undefined) return markRound(Number(d.rc), d.r === '1');
+  if (d.cam){ if ($('roundModal').classList.contains('open')) closeModal('roundModal'); return openView(Number(d.cam)); }
+  if (d.tab) return showTab(d.tab);
+  if (d.filter){ filter = d.filter; return render(); }
+  if (d.toggle){ collapsed[d.toggle] = !collapsed[d.toggle]; return render(); }
+  if (d.q) return quick(d.q);
+  if (d.ack) return ack(d.ack);
+  if (d.done) return taskDone(d.done);
+  if (d.deltask){ if (confirm('Удалить задачу?')) run(() => deleteDoc(doc(db,'tasks',d.deltask))); return; }
+  if (d.delann){ if (confirm('Удалить объявление?')) run(() => deleteDoc(doc(db,'announcements',d.delann))); return; }
+  if (d.incclose) return incClose(d.incclose);
+  if (d.range){ sumRange = d.range; SUM = null; loadSum(); return; }
+  if (d.uh) return userHist(d.uh);
+  const act = ACTS[d.act]; if (act) act();
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeTopModal();
-  if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){ e.preventDefault(); $('q').focus(); }
+  if (e.key === '/' && tab === 'cams' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){ e.preventDefault(); $('q').focus(); }
 });
 /* Запрет зума щипком на iOS (двойной тап отключён через touch-action в CSS) */
 document.addEventListener('gesturestart', e => e.preventDefault());
