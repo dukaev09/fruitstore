@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Фруктохранилище</title>
-<script>try{var t=localStorage.getItem('th');if(!t&&matchMedia('(prefers-color-scheme:dark)').matches)t='dark';if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>try{var t=localStorage.getItem('th');if(!t)t='dark';if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -228,6 +228,80 @@ body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avo
 .nx{border-left:4px solid var(--brand);padding-left:10px}
 .fh{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left;min-height:32px}
 .fh .i{transition:transform .2s}.fh[aria-expanded=false] .i{transform:rotate(-90deg)}
+
+/* ===== Тёмный неоновый стиль ===== */
+[data-theme=dark]{--bg:#050c1a;--card:#0c1830;--ink:#eef3ff;--mut:#8da2c8;--line:#1c2f55;--brand:#2f7bff;--bad:#ff4d5e;--shadow:0 0 0 #0000}
+[data-theme=dark] body{background:radial-gradient(900px 500px at 85% -5%,#103a8040,transparent 60%),radial-gradient(700px 400px at 0% 12%,#0b4a5a30,transparent 60%),#050c1a}
+.hd{background:transparent;color:var(--ink);padding:calc(12px + env(safe-area-inset-top)) 16px 8px;border:0}
+.hwrap{align-items:flex-start;gap:10px}
+.logo{width:clamp(44px,13vw,58px);height:clamp(44px,13vw,58px);border-radius:16px;background:linear-gradient(145deg,#12306e,#0a1b3d);border:1px solid #2a5bb0;box-shadow:0 0 18px #2f7bff40;margin:0}
+.ht{padding-top:2px;min-width:0}
+.brand{font-size:clamp(17px,5.2vw,26px);letter-spacing:-.4px}
+.sub{color:var(--mut);font-size:clamp(12px,3.4vw,14px)}
+.hbw{display:flex;flex-direction:column;align-items:center;gap:3px}.hbw small{font-size:11px;font-weight:700}
+.ib{position:relative;width:clamp(42px,12vw,50px);height:clamp(42px,12vw,50px);border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 85%,transparent);color:var(--ink)}
+.bdg{position:absolute;top:-5px;right:-5px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#ff3b4e;color:#fff;font:800 11px/1 Inter,sans-serif;font-style:normal;display:none;place-items:center;border:2px solid var(--bg)}
+main{padding-top:6px}
+.attn{background:color-mix(in srgb,var(--bad) 7%,transparent);border:1.5px solid var(--bad);border-radius:20px;padding:14px;box-shadow:0 0 24px color-mix(in srgb,var(--bad) 22%,transparent);margin-bottom:12px}
+.attn-h{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.attn-h h2{margin:0;font-size:14px;letter-spacing:.4px;text-transform:uppercase;color:var(--bad);display:flex;gap:8px;align-items:center}
+.attn-h h2 .i{width:24px;height:24px}
+.attn-h button{background:none;border:0;color:var(--brand);font-weight:700;font-size:13px;display:flex;gap:4px;align-items:center;min-height:36px}
+.alist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;overflow:visible}
+.achip{display:flex;align-items:center;gap:8px;background:color-mix(in srgb,var(--card) 90%,transparent);border:1px solid var(--line);border-radius:14px;padding:10px;min-height:0;min-width:0}
+.achip>.i{color:var(--mut);width:16px;height:16px}
+.ai{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;background:color-mix(in srgb,var(--c) 20%,transparent);color:var(--c);border:1.5px solid var(--c)}
+.ai .i{width:18px;height:18px}
+.at{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left}
+.at b{font-size:13px;overflow-wrap:anywhere}.at small{color:var(--ink);font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 6px;overflow:visible}
+.stat{min-width:0;flex:none;border-radius:18px;padding:12px;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 12%,var(--card)),var(--card));border:1.5px solid color-mix(in srgb,var(--c) 70%,var(--line));box-shadow:0 0 18px color-mix(in srgb,var(--c) 20%,transparent);color:var(--ink)}
+.sc{display:flex;flex-direction:column;gap:8px}
+.si{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 22%,transparent);border:1px solid color-mix(in srgb,var(--c) 60%,transparent);color:var(--c)}
+.rg{width:44px;height:44px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center}
+.rg b{width:34px;height:34px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:11px}
+.stat .l{font-size:12px;color:var(--ink);font-weight:600}
+.stat .v{font-size:clamp(18px,5.4vw,26px);font-weight:800;margin:0;white-space:nowrap}
+.stat .s{font-size:12px;color:var(--mut)}
+@media(min-width:560px){.sc{flex-direction:row;align-items:center}}
+.head h1{font-size:clamp(22px,7vw,28px);display:flex;gap:10px;align-items:center}
+.head h1 .i{width:28px;height:28px;color:var(--mut)}
+.head span{color:var(--brand);font-weight:700;font-size:15px}
+.sbox,#wing,#sort{border-radius:14px}
+.sbox{background:color-mix(in srgb,var(--card) 85%,transparent)}
+.chip{background:transparent;border:1.5px solid color-mix(in srgb,var(--c,var(--brand)) 55%,var(--line));color:var(--ink);min-height:44px;padding:0 16px;font-size:14px}
+.chip .i{color:var(--c,var(--brand))}.chip b{color:var(--mut)}
+.chip.sel{background:var(--c,var(--brand));border-color:var(--c,var(--brand));color:#fff}
+.chip.sel .i,.chip.sel b{color:#fff}
+.wt{background:none;border:0;padding:6px 2px;min-height:0;margin-bottom:6px}
+.wt .nm{font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut)}
+.wt .bar{display:none}
+.grid{gap:12px}
+.cam{border-radius:20px;border:2px solid var(--c);padding:0;min-height:0;gap:0;overflow:hidden;color:var(--ink);background:linear-gradient(180deg,color-mix(in srgb,var(--c) 9%,var(--card)),var(--card) 55%);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 35%,transparent),0 0 22px color-mix(in srgb,var(--c) 24%,transparent)}
+.cam:hover{box-shadow:0 0 0 1px var(--c),0 0 30px color-mix(in srgb,var(--c) 40%,transparent)}
+.cam.warn{outline:2px solid var(--bad);outline-offset:3px}
+.cam.empty,.cam.inactive{opacity:.85}
+.ch{display:flex;justify-content:space-between;align-items:center;gap:4px 6px;padding:10px 10px 0;flex-wrap:wrap}
+.upd{display:flex;align-items:center;gap:4px;color:var(--mut);font-size:11px;white-space:nowrap}
+.upd .i{width:13px;height:13px}
+.cb{display:flex;gap:8px;align-items:center;padding:10px}
+.cb>.i{color:var(--mut);align-self:flex-start;width:16px;height:16px;margin-top:2px}
+.cf{width:44px;height:44px;display:grid;place-items:center;font-size:34px;flex:0 0 auto}
+.cf .ci{width:44px;height:44px}
+.cn{flex:1;min-width:0}.cn b{font-size:15px;display:block;overflow-wrap:anywhere}
+.cn small{color:var(--mut);font-size:12px;display:block;overflow-wrap:anywhere}
+.qq{display:block;font-size:13px;font-weight:700;margin-top:4px}.qq span{color:var(--mut);font-weight:500}.qq .od{color:var(--bad)}
+.cm{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid color-mix(in srgb,var(--c) 30%,var(--line));margin-top:auto}
+.cm>div{display:flex;align-items:center;gap:7px;padding:8px 10px;min-width:0}
+.cm>div:nth-child(odd){border-right:1px solid color-mix(in srgb,var(--c) 25%,var(--line))}
+.cm>div:nth-child(-n+2){border-bottom:1px solid color-mix(in srgb,var(--c) 25%,var(--line))}
+.cm .i{color:var(--brand);width:18px;height:18px}
+.cm span{display:flex;flex-direction:column;line-height:1.15}.cm small{color:var(--mut);font-size:11px}.cm b{font-size:14px}
+.cm .bad b{color:var(--bad)}.cm .bad .i{color:var(--bad)}
+.nav{border-radius:24px 24px 0 0;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(16px);border:1px solid var(--line);border-bottom:0;padding:8px 8px calc(10px + env(safe-area-inset-bottom))}
+.nav button{font-size:12px}.nav button .i{width:26px;height:26px}.nav button.on{color:var(--brand)}
+.card,.ovc,.mw{border-radius:18px}
+.box{border:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -258,6 +332,18 @@ body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avo
 <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M7 14v4M12 8v10M17 11v7"/></symbol>
 <symbol id="i-ban" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM5.6 5.6l12.8 12.8"/></symbol>
 <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="i-door" viewBox="0 0 24 24"><path d="M5 21V4a1 1 0 011-1h12a1 1 0 011 1v17M3 21h18M15 12h.01"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2zM12 17a4 4 0 100-8 4 4 0 000 8z"/></symbol>
+<symbol id="i-thermo" viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"/></symbol>
+<symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 2.7s7 6.3 7 11.3a7 7 0 01-14 0c0-5 7-11.3 7-11.3z"/></symbol>
+<symbol id="i-o2dot" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM9 12a3 3 0 106 0 3 3 0 00-6 0"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M18 10h-1.3A7 7 0 104 14.9 4.5 4.5 0 006.5 19H18a4.5 4.5 0 000-9z"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-chevr" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="i-alertc" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM12 8v5M12 16h.01"/></symbol>
 </svg>
 
 <div id="loginScreen" class="lw">
@@ -274,13 +360,12 @@ body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avo
 <div id="appScreen" style="display:none">
   <header class="hd"><div class="hwrap">
     <div class="logo"><img src="/app-icon.png" alt="🍎" onerror="this.replaceWith('🍎')"></div>
-    <div><div class="brand">Фруктохранилище</div><div class="sub" id="subTitle">Управление запасами</div></div>
+    <div class="ht"><div class="brand">Фруктохранилище</div><div class="sub" id="subTitle">Управление запасами</div></div>
     <div class="sp"></div>
-    <span class="uname" id="userName"></span>
-    <button class="ib" data-act="history" aria-label="История" title="История"><svg class="i"><use href="#i-list"/></svg></button>
-    <button class="ib" data-act="menu" aria-label="Меню" title="Меню"><svg class="i"><use href="#i-dots"/></svg></button>
-    <button class="ib" data-act="theme" aria-label="Тема" title="Тема"><svg class="i"><use href="#i-moon"/></svg></button>
-    <button class="ib" data-act="logout" aria-label="Выйти" title="Выйти"><svg class="i"><use href="#i-out"/></svg></button>
+    <span id="userName" hidden></span>
+    <div class="hbw"><button class="ib" data-act="history" aria-label="История"><svg class="i"><use href="#i-clock"/></svg></button><small>История</small></div>
+    <div class="hbw"><button class="ib" data-act="bell" aria-label="Уведомления"><svg class="i"><use href="#i-bell"/></svg><i class="bdg" id="bdBell"></i></button></div>
+    <div class="hbw"><button class="ib" data-act="menu" aria-label="Меню"><svg class="i"><use href="#i-menu"/></svg></button></div>
   </div></header>
   <div class="offline" id="offline">Нет связи. Показаны сохранённые данные, изменения отправятся при подключении.</div>
   <main>
@@ -288,15 +373,16 @@ body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avo
       <div class="ph"><h1>Отчёт о состоянии хранилища</h1><div id="phDate"></div></div>
       <div id="attn"></div>
       <div class="stats" id="stats"></div>
-      <div class="ov" id="ov"></div>
       <div class="srow">
         <label class="sbox"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Номер, сорт, партия, культура (/)" autocomplete="off"></label>
         <select id="wing" aria-label="Крыло"></select>
         <select id="sort" aria-label="Сортировка"><option value="num">По номеру</option><option value="days">Дольше хранятся</option><option value="qty">Больше товара</option><option value="warn">Сначала проблемные</option></select>
       </div>
       <div class="chips" id="filters"></div>
-      <div class="head"><h1>Камеры</h1><span id="resultCount"></span></div>
+      <div class="head"><h1><svg class="i"><use href="#i-camera"/></svg>Камеры</h1><span id="resultCount"></span></div>
       <div id="grid"></div>
+      <div class="head" style="margin-top:22px"><h1 style="font-size:18px">Аналитика</h1></div>
+      <div class="ov" id="ov"></div>
     </section>
     <section class="tab" id="t-map"><div class="head"><h1>Схема хранилища</h1><span id="mapInfo"></span></div><div id="map"></div></section>
     <section class="tab" id="t-today"><div class="head"><h1>Сегодня</h1><span id="todayInfo"></span></div><div id="today"></div></section>
@@ -410,7 +496,7 @@ const issues = c => ACTIVE.includes(c.status) ? Object.keys(NL).filter(k => { co
 const over = c => ACTIVE.includes(c.status) && S.maxDays > 0 && (days(c) || 0) > S.maxDays;
 const noEntry = c => c.status === 'rgs' && (c.o2 == null || c.o2 < S.safeO2);
 const needsAttention = c => c.status === 'problem' || issues(c).length > 0 || over(c);
-const reasons = c => c.status === 'problem' ? ['Проблема'] : [...issues(c).map(k => NL[k][0]+' '+esc(c[k])+NL[k][1]), ...(over(c) ? ['Срок '+days(c)+' дн.'] : [])];
+const reasons = c => c.status === 'problem' ? ['Проблема'] : [...issues(c).map(k => NL[k][0]+(c[k] > S.norms[k][1] ? ' выше нормы' : ' ниже нормы')), ...(over(c) ? ['Срок хранения превышен'] : [])];
 const rk = (day, slot, id) => day+'_'+slot+'_'+id;
 const run = async (fn, okMsg) => { showLoading(true); try { await fn(); if (okMsg) toast(okMsg); } catch(e){ toast('Ошибка: '+e.message, 1); } showLoading(false); };
 
@@ -590,27 +676,27 @@ function badge(){
   if (!user) return;
   const n = anns.filter(a => !(a.ack && a.ack[user.uid])).length + (hands.some(x => !x.acceptedBy && x.fromEmail !== user.email) ? 1 : 0) + myTasks().filter(t => t.due <= todayEnd()).length + nexts.filter(x => !x.done).length;
   const b = $('bdToday'); b.textContent = n; b.style.display = n ? 'grid' : 'none';
+  const nb = n + vis().filter(needsAttention).length, bb = $('bdBell'); bb.textContent = nb; bb.style.display = nb ? 'grid' : 'none';
 }
 
 /* ===== Отрисовка камер ===== */
 function renderAttn(){
   const bad = vis().filter(needsAttention);
   $('attn').innerHTML = !bad.length ? '' :
-    '<section class="attn"><h2>'+ic('alert')+'Требуют внимания: '+bad.length+'</h2><div class="alist">'+
-    bad.map(c => '<button class="achip" data-cam="'+c.id+'"><b>№'+pad(c.id)+' · '+val(c.sort)+'</b><span>'+reasons(c).join(', ')+'</span></button>').join('')+'</div></section>';
+    '<section class="attn"><div class="attn-h"><h2>'+ic('alert')+'Требуют внимания · '+bad.length+'</h2><button data-act="attnall">Все проблемы '+ic('arrow')+'</button></div><div class="alist">'+
+    bad.slice(0, 4).map(c => { const pr = c.status === 'problem'; return '<button class="achip" data-cam="'+c.id+'" style="--c:'+(pr ? '#ff4d5e' : '#f5a524')+'"><span class="ai">'+ic(pr ? 'alertc' : 'alert')+'</span><span class="at"><b>№'+pad(c.id)+' · '+val(c.sort)+'</b>'+(pr ? '<span class="pill" style="--c:#ff4d5e">Проблема</span>' : '<small>'+reasons(c).join(', ')+'</small>')+'</span>'+ic('chevr')+'</button>'; }).join('')+'</div></section>';
 }
 function renderStats(){
   const all = vis();
   let kg = 0, occ = 0, emp = 0;
   all.forEach(c => { if (ACTIVE.includes(c.status)){ occ++; kg += c.qty || 0; } else if (c.status === 'empty') emp++; });
-  const pct = Math.round(occ/(all.length||1)*100), bad = all.filter(needsAttention).length;
-  const st = (cls, i, l, v, s, extra='') => '<div class="stat '+cls+'"><div class="l">'+ic(i)+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div>'+extra+'</div>';
+  const pct = Math.round(occ/(all.length||1)*100);
+  const card = (col, left, l, v, s) => '<div class="stat" style="--c:'+col+'"><div class="sc">'+left+'<div><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div></div></div>';
   $('stats').innerHTML =
-    st('pri','box','На хранении',(kg/1000).toFixed(1)+' т',kg.toLocaleString('ru-RU')+' кг') +
-    st('','snow','Занято камер',occ+' / '+all.length,pct+'% загрузки','<div class="bar"><i style="width:'+pct+'%"></i></div>') +
-    st('','circle','Свободно',emp,'камер') +
-    st(bad?'bad':'','alert','Внимание',bad,bad?'нужна проверка':'всё в норме');
-  $('subTitle').textContent = new Date().toLocaleDateString('ru-RU',{day:'numeric',month:'long'}) + ' · ' + all.length + ' камер';
+    card('#2f7bff', '<div class="si">'+ic('box')+'</div>', 'На хранении', (kg/1000).toFixed(1).replace('.', ',')+' т', 'Общий вес') +
+    card('#2f7bff', '<div class="rg" style="--p:'+pct+'"><b>'+pct+'%</b></div>', 'Занято', occ+' / '+all.length, 'камер') +
+    card('#1fbf8a', '<div class="si">'+ic('door')+'</div>', 'Свободно', emp, 'камер');
+  $('subTitle').textContent = all.length + ' камер · Обновлено ' + hm(Date.now());
 }
 function renderOv(){
   const all = vis(), cnt = {};
@@ -628,26 +714,29 @@ function renderOv(){
     '<div class="ovc"><h3>Запасы по культурам'+(avg != null ? ' · средний срок '+avg+' дн.' : '')+'</h3>'+
     (top.map(([k, v]) => '<div class="crop"><span>'+esc(k)+'</span><div class="bar"><i style="width:'+Math.round(v/mx*100)+'%"></i></div><b>'+(v/1000).toFixed(1)+' т</b></div>').join('') || '<div class="hint">Пока нет данных</div>')+'</div>';
 }
-const match = c => filter === 'all' || (filter === 'noentry' ? noEntry(c) : c.status === filter);
+const match = c => filter === 'all' || (filter === 'attn' ? needsAttention(c) : filter === 'noentry' ? noEntry(c) : c.status === filter);
 function renderChips(){
   const all = vis();
-  const chip = (k, icn, label, n, col) => '<button class="chip'+(filter===k?' sel':'')+'" data-filter="'+k+'"'+(col?' style="--c:'+col+'"':'')+'>'+ic(icn)+label+' <b>'+n+'</b></button>';
-  $('filters').innerHTML = Object.keys(names).map(k => chip(k, k==='all'?'grid':ST[k][0], names[k], k==='all'?all.length:all.filter(x => x.status===k).length, k==='all'?'':ST[k][1])).join('') +
-    chip('noentry','ban','Вход запрещён', all.filter(noEntry).length, '#d63a3a');
+  const chip = (key, icn, label, n, col) => '<button class="chip'+(filter===key?' sel':'')+'" data-filter="'+key+'"'+(col ? ' style="--c:'+col+'"' : '')+'>'+(icn ? ic(icn) : '')+label+' <b>'+n+'</b></button>';
+  const order = ['all','storage','process','rgs','problem','inactive','empty'];
+  $('filters').innerHTML = order.map(key => key === 'all' ? chip(key, '', names[key], all.length, '') : chip(key, ST[key][0], names[key], all.filter(x => x.status === key).length, ST[key][1])).join('') +
+    chip('noentry', 'ban', 'Вход запрещён', all.filter(noEntry).length, '#d63a3a') +
+    (filter === 'attn' ? chip('attn', 'alert', 'Внимание', all.filter(needsAttention).length, '#ff4d5e') : '');
   if (wingFilter !== 'all' && wingFilter > S.wings) wingFilter = 'all';
   let o = '<option value="all">Все крылья</option>';
   for (let i = 1; i <= S.wings; i++) o += '<option value="'+i+'">'+wingName(i)+'</option>';
   $('wing').innerHTML = o; $('wing').value = String(wingFilter);
 }
+const fmtN = v => Number(v).toLocaleString('ru-RU');
 function camCard(c){
-  const bad = issues(c), m = (k, l, u) => '<div class="m'+(bad.includes(k)?' bad':'')+'"><span>'+l+'</span><b>'+val(c[k],u)+'</b></div>';
-  const [icn, col] = ST[c.status] || ST.empty, d = ACTIVE.includes(c.status) ? days(c) : null;
-  return '<button class="cam '+esc(c.status)+(needsAttention(c)?' warn':'')+'" data-cam="'+c.id+'" style="--c:'+col+'">'+
-    '<div class="ct"><div class="num">'+culIcon(c.sort,c.crop)+'№'+pad(c.id)+(c.locked?' 🔒':'')+'</div><span class="pill">'+ic(icn)+esc(names[c.status]||c.status)+'</span>'+
-    (noEntry(c) ? '<span class="ban">'+ic('ban')+'Вход запрещён</span>' : '')+'</div>'+
-    '<div class="srt">'+val(c.sort)+'</div><div class="bt">'+val(c.batch)+'</div>'+
-    '<div class="qt">'+(c.qty||0).toLocaleString('ru-RU')+' <small>кг</small>'+(d != null ? ' <small class="'+(over(c)?'od':'')+'">· '+d+' дн.</small>' : '')+'</div>'+
-    '<div class="mt">'+m('temp','Темп.','°')+m('hum','Влаж.','%')+m('o2','O₂','%')+m('co2','CO₂','%')+'</div></button>';
+  const bad = issues(c), [icn, col] = ST[c.status] || ST.empty, d = ACTIVE.includes(c.status) ? days(c) : null;
+  const cell = (key, ico, l, u) => '<div class="'+(bad.includes(key) ? 'bad' : '')+'">'+ico+'<span><small>'+l+'</small><b>'+(c[key] == null ? '—' : fmtN(c[key])+u)+'</b></span></div>';
+  return '<button class="cam '+esc(c.status)+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+c.id+'" style="--c:'+col+'">'+
+    '<div class="ch"><span class="pill">'+ic(icn)+esc(names[c.status] || c.status)+'</span><span class="upd">'+ic('clock')+(c.updatedAt ? 'Обновлено '+hm(c.updatedAt) : 'нет данных')+'</span></div>'+
+    (noEntry(c) ? '<div class="ch" style="padding-top:6px"><span class="ban">'+ic('ban')+'Вход запрещён</span></div>' : '')+
+    '<div class="cb"><span class="cf">'+culIcon(c.sort, c.crop)+'</span><span class="cn"><b>№'+pad(c.id)+' '+val(c.sort)+(c.locked ? ' 🔒' : '')+'</b><small>'+val(c.batch)+'</small>'+
+    '<span class="qq">'+(c.qty || 0).toLocaleString('ru-RU')+' кг'+(d != null ? ' <span class="'+(over(c) ? 'od' : '')+'">· '+d+' дн.</span>' : '')+'</span></span>'+ic('chevr')+'</div>'+
+    '<div class="cm">'+cell('temp', ic('thermo'), 'Темп.', '°C')+cell('hum', ic('drop'), 'Влаж.', '%')+cell('o2', ic('o2dot'), 'O₂', '%')+cell('co2', ic('cloud'), 'CO₂', '%')+'</div></button>';
 }
 function sortList(a){
   const f = {
@@ -687,7 +776,7 @@ function render(){
       '<div class="grid">'+wc.map(camCard).join('')+'</div></section>';
   }
   $('grid').innerHTML = html || '<div class="empty-msg">'+(all.length ? 'Ничего не найдено. Измените фильтр или поиск.' : 'Камер пока нет.')+'</div>';
-  $('resultCount').textContent = list.length + ' из ' + all.length;
+  $('resultCount').textContent = list.length === all.length ? all.length + ' камер' : list.length + ' из ' + all.length;
 }
 function renderJournal(){
   $('histBody').innerHTML = journal.map(e => '<tr><td>'+esc(e.date)+'</td><td>'+esc(e.cam)+'</td><td>'+esc(e.action)+'</td><td>'+esc(nameOf(e.user))+'</td></tr>').join('')
@@ -1139,8 +1228,8 @@ function userHist(email){
 function openMenu(){
   const b = (a, i, t) => '<button class="btn" data-act="'+a+'">'+ic(i)+t+'</button>';
   const standalone = matchMedia('(display-mode:standalone)').matches || navigator.standalone;
-  $('menuList').innerHTML = b('csv','table','Скачать таблицу (Excel)') + b('print','print','Печать отчёта') + (standalone ? '' : b('install','down','Установить на телефон')) +
-    (isAdmin() ? b('settings','gear','Настройки хранилища') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') : '');
+  $('menuList').innerHTML = '<div class="hint" style="margin:0 0 4px">'+esc($('userName').textContent)+'</div>' + b('csv','table','Скачать таблицу (Excel)') + b('print','print','Печать отчёта') + b('theme','moon','Сменить тему (тёмная / светлая)') + (standalone ? '' : b('install','down','Установить на телефон')) +
+    (isAdmin() ? b('settings','gear','Настройки хранилища') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') : '') + b('logout','out','Выйти');
   openModal('menuModal');
 }
 function openSettings(){
@@ -1232,6 +1321,7 @@ const ACTS = {
   theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try { localStorage.setItem('th', n); } catch(_){} },
   shiftstart: shiftStart, shiftend: shiftEnd, shiftdone: shiftDone, handview: handView, handok: handOk,
   round: () => { renderRound(); openModal('roundModal'); },
+  bell: () => showTab('today'), attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
   newtask: newTask, newnext: newNext, nextsave: nextSave, feedmore: () => { feedN += 30; renderToday(); },
   feedtoggle: () => { feedOpen = !feedOpen; try { localStorage.setItem('feed', feedOpen ? '1' : '0'); } catch(_){} renderToday(); }, tasksave: taskSave, newann: newAnn, annsave: annSave, newinc: newInc, incsave: incSave
 };
