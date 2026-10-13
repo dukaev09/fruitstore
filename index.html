@@ -219,6 +219,13 @@ body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avo
 .ph{display:block;padding:0 0 12px}.ph h1{margin:0;font-size:22px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.fday{font-size:12px;font-weight:800;color:var(--mut);margin:12px 0 4px;text-transform:uppercase;letter-spacing:.4px}
+.fi{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.fi:last-child{border:0}.fi[data-cam]{cursor:pointer}
+.fic{width:32px;height:32px;border-radius:50%;background:var(--bg);display:grid;place-items:center;flex:0 0 auto;font-size:15px}
+.fi.bad .fic{background:color-mix(in srgb,var(--bad) 16%,transparent)}
+.fb{flex:1;min-width:0;font-size:13px;overflow-wrap:anywhere}.fb small{display:block;color:var(--mut);font-size:11px}
+.nx{border-left:4px solid var(--brand);padding-left:10px}
 </style>
 </head>
 <body>
@@ -437,9 +444,9 @@ function dlg(title, body, act, lab){
 function danger(msg, id){ const v = prompt(msg+'\n\nДля подтверждения введите номер камеры ('+id+'):'); return v !== null && v.trim() === String(id); }
 
 /* ===== Состояние ===== */
-let user = null, me = null, cams = [], journal = [], users = [], rounds = {}, tasks = [], notes = [], anns = [], incs = [], hands = [], myShift = null;
+let user = null, me = null, cams = [], journal = [], users = [], rounds = {}, tasks = [], notes = [], anns = [], incs = [], hands = [], myShift = null, nexts = [];
 let selected = null, tab = 'cams', filter = 'all', wingFilter = 'all', search = '', sortBy = 'num', collapsed = {};
-let unsubs = [], seeded = false, creating = false, gated = false, SUM = null, sumRange = 'day', TEAM = null, hpId = null, ip = null;
+let feedN = 30, unsubs = [], seeded = false, creating = false, gated = false, SUM = null, sumRange = 'day', TEAM = null, hpId = null, ip = null;
 const myRole = () => !user ? 'viewer' : user.email === ADMIN_EMAIL ? 'admin' : (me && me.role) || 'viewer';
 const isAdmin = () => myRole() === 'admin';
 const canW = () => myRole() !== 'viewer';
@@ -474,7 +481,7 @@ async function doAuth(signup){
 }
 onAuthStateChanged(auth, u => {
   user = u; unsubs.forEach(f => f()); unsubs = [];
-  seeded = creating = gated = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; myShift = null; me = null; SUM = null; TEAM = null;
+  seeded = creating = gated = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; nexts = []; myShift = null; me = null; SUM = null; TEAM = null;
   if (u){
     $('loginScreen').style.display = 'none'; $('appScreen').style.display = 'block';
     afterRole(); showLoading(true); subscribe();
@@ -549,6 +556,7 @@ function subscribe(){
   on(q('announcements', orderBy('ts','desc'), limit(30)), s => { anns = rows(s); refreshLive(); gateCheck(); }, 'ann');
   on(q('incidents', orderBy('start','desc'), limit(60)), s => { incs = rows(s); refreshLive(); }, 'inc');
   on(q('handovers', orderBy('ts','desc'), limit(5)), s => { hands = rows(s); refreshLive(); }, 'hand');
+  on(q('nextshift', orderBy('ts','desc'), limit(60)), s => { nexts = rows(s); refreshLive(); }, 'next');
   on(q('shifts', where('uid','==',user.uid), where('end','==',null)), s => { myShift = s.docs[0] ? { id: s.docs[0].id, ...s.docs[0].data() } : null; refreshLive(); }, 'shift');
 }
 addEventListener('online', () => $('offline').classList.remove('show'));
@@ -578,7 +586,7 @@ function refreshLive(){
 }
 function badge(){
   if (!user) return;
-  const n = anns.filter(a => !(a.ack && a.ack[user.uid])).length + (hands.some(x => !x.acceptedBy && x.fromEmail !== user.email) ? 1 : 0) + myTasks().filter(t => t.due <= todayEnd()).length;
+  const n = anns.filter(a => !(a.ack && a.ack[user.uid])).length + (hands.some(x => !x.acceptedBy && x.fromEmail !== user.email) ? 1 : 0) + myTasks().filter(t => t.due <= todayEnd()).length + nexts.filter(x => !x.done).length;
   const b = $('bdToday'); b.textContent = n; b.style.display = n ? 'grid' : 'none';
 }
 
@@ -858,11 +866,14 @@ function renderToday(){
   h += '</div>';
   if (hp) h += '<div class="card"><h3>Передача смены</h3><div class="li"><div class="t"><b>'+esc(nameOf(hp.fromEmail))+' сдал(а) смену</b><small>'+fmtDT(hp.ts)+(hp.note ? ' · '+esc(hp.note.slice(0,60)) : '')+'</small></div><button class="btn sm pri" data-act="handview">Принять</button></div></div>';
   un.forEach(a => { h += '<div class="card"><h3>📢 Объявление<span class="tag bad">нужно подтвердить</span></h3><b>'+esc(a.title)+'</b><div style="margin:6px 0">'+esc(a.text)+'</div><small style="color:var(--mut)">'+esc(nameOf(a.by))+' · '+fmtDT(a.ts)+'</small><button class="btn pri full" style="margin-top:10px" data-ack="'+a.id+'">Прочитал(а)</button></div>'; });
+  const nx = nextOpen();
+  h += '<div class="card nx"><h3>Следующему оператору<span>'+nx.length+'</span></h3>'+(nx.map(nextRow).join('') || '<div class="hint">Пока ничего не передано</div>')+(w ? '<button class="btn full" data-act="newnext" style="margin-top:8px">+ Добавить пункт</button>' : '')+'</div>';
   h += '<div class="card"><h3>'+SL[sl]+' обход<span>'+done+' / '+all.length+'</span></h3><div class="bar" style="margin:0 0 10px"><i style="width:'+pct+'%"></i></div>'+(w ? '<button class="btn pri full" data-act="round">'+(done >= all.length ? 'Обход завершён · открыть' : 'Начать обход')+'</button>' : '')+'</div>';
   h += '<div class="card"><h3>Мои дела'+(adm ? '<button class="btn sm" data-act="newtask">+ Задача</button>' : '')+'</h3>'+(mt.map(taskRow).join('') || '<div class="hint">Задач нет</div>')+'</div>';
   if (oi.length) h += '<div class="card"><h3>Аварии и простои сейчас</h3>'+oi.map(incRow).join('')+'</div>';
   h += '<div class="card"><h3>Напоминания</h3>'+(rem.slice(0, 8).map(([id, t]) => '<div class="li"><div class="t"><b>Камера №'+pad(id)+'</b><small>'+t+'</small></div><button class="btn sm" data-cam="'+id+'">Открыть</button></div>').join('') || '<div class="hint">Всё в порядке</div>')+(rem.length > 8 ? '<div class="hint">и ещё '+(rem.length-8)+'</div>' : '')+'</div>';
   if (ms.length) h += '<div class="card"><h3>Вас упомянули</h3>'+ms.map(n => '<div class="li"><div class="t"><b>'+esc(nameOf(n.by))+' · камера №'+pad(n.camId)+'</b><small>'+esc(n.text)+'</small></div><button class="btn sm" data-cam="'+n.camId+'">Открыть</button></div>').join('')+'</div>';
+  h += '<div class="card"><h3>Лента событий</h3>'+feedHtml()+'</div>';
   if (w) h += '<div class="card"><h3>Быстрые действия</h3><div class="hbtn"><button class="btn sm" data-act="newinc">⚠ Авария / простой</button>'+(adm ? '<button class="btn sm" data-act="newann">📢 Объявление</button>' : '')+'</div></div>';
   if (adm){
     const ds = [0,1,2].map(i => dayStr(new Date(now - i*864e5)));
@@ -870,6 +881,55 @@ function renderToday(){
     h += '<div class="card"><h3>Объявления</h3>'+(anns.slice(0, 5).map(a => { const got = Object.keys(a.ack || {}).length; return '<div class="li"><div class="t"><b>'+esc(a.title)+'</b><small>Прочитали '+got+' из '+users.length+'</small></div><button class="btn sm" data-delann="'+a.id+'" aria-label="Удалить">✕</button></div>'; }).join('') || '<div class="hint">Объявлений нет</div>')+'</div>';
   }
   el.innerHTML = h;
+}
+
+/* ===== Следующему оператору и лента событий ===== */
+const nextOpen = () => nexts.filter(x => !x.done).sort((a, b) => (b.urgent|0) - (a.urgent|0) || a.ts - b.ts);
+function nextRow(x){
+  const mine = x.by === user.email || isAdmin();
+  return '<div class="li"><div class="t"><b>'+(x.urgent ? '🔥 ' : '')+esc(x.text)+'</b><small>'+(x.camId ? 'Камера №'+pad(x.camId)+' · ' : '')+esc(nameOf(x.by))+' · '+fmtDT(x.ts)+'</small></div>'+
+    (canW() ? '<button class="btn sm" data-ndone="'+x.id+'" aria-label="Выполнено">✓</button>' : '')+(mine && canW() ? '<button class="btn sm" data-ndel="'+x.id+'" aria-label="Удалить">✕</button>' : '')+'</div>';
+}
+const nextList = () => { const l = nextOpen(); return l.length ? '<div class="rows"><div class="vr" style="flex-direction:column;gap:4px;align-items:flex-start"><span>Задачи для этой смены</span>'+l.map(x => '<b style="text-align:left;font-weight:500">'+(x.urgent ? '🔥 ' : '• ')+esc(x.text)+'</b>').join('')+'</div></div>' : ''; };
+function newNext(){
+  if (!canW()) return;
+  const cs = '<option value="0">— без камеры —</option>'+vis().map(c => '<option value="'+c.id+'">№'+pad(c.id)+' '+esc(c.sort||'')+'</option>').join('');
+  dlg('Передать следующему оператору', '<div class="fld"><label for="d_text">Что нужно сделать</label><textarea id="d_text" maxlength="160" placeholder="Например: проверить температуру в камере 12 в 22:00"></textarea></div>'+
+    '<div class="fg" style="margin-top:10px"><div class="fld"><label for="d_cam">Камера</label><select id="d_cam">'+cs+'</select></div><div class="fld"><label for="d_urg">Важность</label><select id="d_urg"><option value="0">Обычно</option><option value="1">Срочно 🔥</option></select></div></div>', 'nextsave', 'Добавить');
+}
+const nextSave = () => {
+  const text = $('d_text').value.trim(); if (!text){ toast('Напишите, что нужно сделать', 1); return; }
+  run(async () => { await addDoc(collection(db,'nextshift'), { text, camId:Number($('d_cam').value)||0, urgent:$('d_urg').value === '1', by:user.email, ts:Date.now(), done:false }); closeModal('dlgModal'); }, 'Добавлено');
+};
+const nextDone = id => run(() => updateDoc(doc(db,'nextshift',id), { done:true, doneAt:Date.now(), doneBy:user.email }), 'Выполнено');
+const nextDel = id => { if (confirm('Удалить пункт?')) run(() => deleteDoc(doc(db,'nextshift',id))); };
+function feedItems(){
+  const it = [], add = (ts, icon, html, cam, tone) => it.push({ ts, icon, html, cam, tone }), nm = e => '<b>'+esc(nameOf(e))+'</b>';
+  journal.forEach(e => add(e.ts, e.prev ? '📝' : '🧹', nm(e.user)+' · '+esc(e.cam)+': '+esc(e.action), e.camId, e.st1 === 'problem' && e.st0 !== 'problem' ? 'bad' : ''));
+  const g = {};
+  Object.values(rounds).forEach(r => {
+    if (!r.ok) add(r.ts, '⚠', nm(r.email)+' · замечание на обходе, камера №'+pad(r.camId)+(r.note ? ': '+esc(r.note) : ''), r.camId, 'bad');
+    const k = r.email+'|'+r.day+'|'+r.slot, x = g[k] || (g[k] = { email:r.email, slot:r.slot, n:0, ts:0 });
+    x.n++; x.ts = Math.max(x.ts, r.ts);
+  });
+  Object.values(g).forEach(x => add(x.ts, '✅', nm(x.email)+' · '+SL[x.slot].toLowerCase()+' обход: '+x.n+' из '+vis().length));
+  incs.forEach(i => { add(i.start, '🚨', nm(i.by)+' · '+esc(incLabel(i)), i.camId, 'bad'); if (i.end) add(i.end, '🔧', 'Закрыто: '+esc(incLabel(i))+' ('+dur(i.end - i.start)+')', i.camId); });
+  notes.forEach(n => add(n.ts, '💬', nm(n.by)+' · заметка, камера №'+pad(n.camId)+': '+esc(n.text), n.camId));
+  hands.forEach(h => { add(h.ts, '🔄', nm(h.fromEmail)+' сдал(а) смену'+(h.note ? ': '+esc(h.note.slice(0, 80)) : '')); if (h.acceptedAt) add(h.acceptedAt, '🤝', nm(h.acceptedBy)+' принял(а) смену от '+esc(nameOf(h.fromEmail))); });
+  anns.forEach(a => add(a.ts, '📢', 'Объявление «'+esc(a.title)+'» · '+esc(nameOf(a.by))));
+  nexts.forEach(n => { add(n.ts, '📌', nm(n.by)+' → следующей смене: '+esc(n.text), n.camId, n.urgent && !n.done ? 'bad' : ''); if (n.doneAt) add(n.doneAt, '✔', nm(n.doneBy)+' выполнил(а): '+esc(n.text), n.camId); });
+  return it.sort((a, b) => b.ts - a.ts);
+}
+function feedHtml(){
+  const all = feedItems(), l = all.slice(0, feedN);
+  if (!l.length) return '<div class="hint">Событий пока нет</div>';
+  let last = '', h = '';
+  l.forEach(x => {
+    const d = dayStr(new Date(x.ts)), lab = d === dayStr() ? 'Сегодня' : d === dayStr(new Date(Date.now() - 864e5)) ? 'Вчера' : fmtD(x.ts);
+    if (lab !== last){ h += '<div class="fday">'+lab+'</div>'; last = lab; }
+    h += '<div class="fi'+(x.tone ? ' '+x.tone : '')+'"'+(x.cam ? ' data-cam="'+x.cam+'"' : '')+'><span class="fic">'+x.icon+'</span><div class="fb">'+x.html+'<small>'+hm(x.ts)+'</small></div></div>';
+  });
+  return h + (all.length > feedN ? '<button class="btn full" data-act="feedmore" style="margin-top:8px">Показать ещё</button>' : '');
 }
 
 /* ===== Смены и передача ===== */
@@ -892,6 +952,7 @@ function shiftEnd(){
   if (!myShift) return;
   dlg('Сдать смену', '<div class="hint">Итоги смены с '+hm(myShift.start)+' ('+dur(Date.now()-myShift.start)+')</div>'+sumTags(shiftStats())+
     '<div class="fld"><label for="d_note">Заметка следующей смене (что важно знать)</label><textarea id="d_note" maxlength="600"></textarea></div>'+
+    '<div class="fld" style="margin-top:10px"><label for="d_next">Что сделать следующему оператору (каждая строка — отдельный пункт)</label><textarea id="d_next" maxlength="800" placeholder="Проверить камеру 12 в 22:00"></textarea></div>'+
     '<div class="fld" style="margin-top:10px"><label for="d_photo">Фото (по желанию)</label><input id="d_photo" type="file" accept="image/*"></div>', 'shiftdone', 'Сдать смену');
 }
 function shrink(file){
@@ -911,6 +972,7 @@ async function shiftDone(){
     const b = writeBatch(db);
     b.update(doc(db,'shifts',myShift.id), { end:t, summary:s });
     b.set(doc(collection(db,'handovers')), { fromUid:user.uid, fromEmail:user.email, ts:t, note, photo, summary:s, acceptedBy:null, acceptedAt:null });
+    ($('d_next').value || '').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 15).forEach(line => b.set(doc(collection(db,'nextshift')), { text:line.slice(0, 160), camId:0, urgent:false, by:user.email, ts:t, done:false }));
     await b.commit(); closeModal('dlgModal');
   }, 'Смена сдана');
 }
@@ -919,7 +981,7 @@ function handView(){
   hpId = h.id;
   dlg('Принять смену', '<div class="hint">'+esc(nameOf(h.fromEmail))+' · '+fmtDT(h.ts)+'</div>'+sumTags(h.summary || { in:0, out:0, rounds:0, fixed:0, prob:0 })+
     '<div class="rows"><div class="vr" style="flex-direction:column;gap:4px"><span>Заметка</span><b style="text-align:left;font-weight:500">'+(esc(h.note) || '—')+'</b></div></div>'+
-    (h.photo ? '<img class="pimg" src="'+h.photo+'" alt="Фото смены">' : ''), 'handok', 'Принял(а) смену');
+    (h.photo ? '<img class="pimg" src="'+h.photo+'" alt="Фото смены">' : '')+nextList(), 'handok', 'Принял(а) смену');
 }
 const handOk = () => run(async () => { await updateDoc(doc(db,'handovers',hpId), { acceptedBy:user.email, acceptedAt:Date.now() }); closeModal('dlgModal'); }, 'Смена принята');
 
@@ -1167,12 +1229,12 @@ const ACTS = {
   theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try { localStorage.setItem('th', n); } catch(_){} },
   shiftstart: shiftStart, shiftend: shiftEnd, shiftdone: shiftDone, handview: handView, handok: handOk,
   round: () => { renderRound(); openModal('roundModal'); },
-  newtask: newTask, tasksave: taskSave, newann: newAnn, annsave: annSave, newinc: newInc, incsave: incSave
+  newtask: newTask, newnext: newNext, nextsave: nextSave, feedmore: () => { feedN += 30; renderToday(); }, tasksave: taskSave, newann: newAnn, annsave: annSave, newinc: newInc, incsave: incSave
 };
 document.addEventListener('click', e => {
   const t = e.target;
   if (t.classList && t.classList.contains('modal')) return closeModal(t.id);
-  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-toggle],[data-q],[data-tab],[data-r],[data-ack],[data-done],[data-deltask],[data-delann],[data-incclose],[data-range],[data-uh]');
+  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-toggle],[data-q],[data-tab],[data-r],[data-ack],[data-done],[data-deltask],[data-delann],[data-incclose],[data-range],[data-uh],[data-ndone],[data-ndel]');
   if (!x) return;
   const d = x.dataset;
   if (x.hasAttribute('data-close')) return closeTopModal();
@@ -1182,6 +1244,8 @@ document.addEventListener('click', e => {
   if (d.filter){ filter = d.filter; return render(); }
   if (d.toggle){ collapsed[d.toggle] = !collapsed[d.toggle]; return render(); }
   if (d.q) return quick(d.q);
+  if (d.ndone) return nextDone(d.ndone);
+  if (d.ndel) return nextDel(d.ndel);
   if (d.ack) return ack(d.ack);
   if (d.done) return taskDone(d.done);
   if (d.deltask){ if (confirm('Удалить задачу?')) run(() => deleteDoc(doc(db,'tasks',d.deltask))); return; }
