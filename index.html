@@ -226,6 +226,8 @@ body{background:#fff;color:#000}.cam,.stat,.ovc{box-shadow:none;break-inside:avo
 .fi.bad .fic{background:color-mix(in srgb,var(--bad) 16%,transparent)}
 .fb{flex:1;min-width:0;font-size:13px;overflow-wrap:anywhere}.fb small{display:block;color:var(--mut);font-size:11px}
 .nx{border-left:4px solid var(--brand);padding-left:10px}
+.fh{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left;min-height:32px}
+.fh .i{transition:transform .2s}.fh[aria-expanded=false] .i{transform:rotate(-90deg)}
 </style>
 </head>
 <body>
@@ -446,7 +448,7 @@ function danger(msg, id){ const v = prompt(msg+'\n\nДля подтвержде�
 /* ===== Состояние ===== */
 let user = null, me = null, cams = [], journal = [], users = [], rounds = {}, tasks = [], notes = [], anns = [], incs = [], hands = [], myShift = null, nexts = [];
 let selected = null, tab = 'cams', filter = 'all', wingFilter = 'all', search = '', sortBy = 'num', collapsed = {};
-let feedN = 30, unsubs = [], seeded = false, creating = false, gated = false, SUM = null, sumRange = 'day', TEAM = null, hpId = null, ip = null;
+let feedOpen = (() => { try { return localStorage.getItem('feed') !== '0'; } catch(e){ return true; } })(), feedN = 30, unsubs = [], seeded = false, creating = false, gated = false, SUM = null, sumRange = 'day', TEAM = null, hpId = null, ip = null;
 const myRole = () => !user ? 'viewer' : user.email === ADMIN_EMAIL ? 'admin' : (me && me.role) || 'viewer';
 const isAdmin = () => myRole() === 'admin';
 const canW = () => myRole() !== 'viewer';
@@ -873,7 +875,8 @@ function renderToday(){
   if (oi.length) h += '<div class="card"><h3>Аварии и простои сейчас</h3>'+oi.map(incRow).join('')+'</div>';
   h += '<div class="card"><h3>Напоминания</h3>'+(rem.slice(0, 8).map(([id, t]) => '<div class="li"><div class="t"><b>Камера №'+pad(id)+'</b><small>'+t+'</small></div><button class="btn sm" data-cam="'+id+'">Открыть</button></div>').join('') || '<div class="hint">Всё в порядке</div>')+(rem.length > 8 ? '<div class="hint">и ещё '+(rem.length-8)+'</div>' : '')+'</div>';
   if (ms.length) h += '<div class="card"><h3>Вас упомянули</h3>'+ms.map(n => '<div class="li"><div class="t"><b>'+esc(nameOf(n.by))+' · камера №'+pad(n.camId)+'</b><small>'+esc(n.text)+'</small></div><button class="btn sm" data-cam="'+n.camId+'">Открыть</button></div>').join('')+'</div>';
-  h += '<div class="card"><h3>Лента событий</h3>'+feedHtml()+'</div>';
+  const fn = feedItems().filter(x => x.ts >= startDay()).length;
+  h += '<div class="card"><h3><button class="fh" data-act="feedtoggle" aria-expanded="'+feedOpen+'"><span>Лента событий <span class="tag">сегодня: '+fn+'</span></span>'+ic('chev')+'</button></h3>'+(feedOpen ? feedHtml() : '')+'</div>';
   if (w) h += '<div class="card"><h3>Быстрые действия</h3><div class="hbtn"><button class="btn sm" data-act="newinc">⚠ Авария / простой</button>'+(adm ? '<button class="btn sm" data-act="newann">📢 Объявление</button>' : '')+'</div></div>';
   if (adm){
     const ds = [0,1,2].map(i => dayStr(new Date(now - i*864e5)));
@@ -1229,7 +1232,8 @@ const ACTS = {
   theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try { localStorage.setItem('th', n); } catch(_){} },
   shiftstart: shiftStart, shiftend: shiftEnd, shiftdone: shiftDone, handview: handView, handok: handOk,
   round: () => { renderRound(); openModal('roundModal'); },
-  newtask: newTask, newnext: newNext, nextsave: nextSave, feedmore: () => { feedN += 30; renderToday(); }, tasksave: taskSave, newann: newAnn, annsave: annSave, newinc: newInc, incsave: incSave
+  newtask: newTask, newnext: newNext, nextsave: nextSave, feedmore: () => { feedN += 30; renderToday(); },
+  feedtoggle: () => { feedOpen = !feedOpen; try { localStorage.setItem('feed', feedOpen ? '1' : '0'); } catch(_){} renderToday(); }, tasksave: taskSave, newann: newAnn, annsave: annSave, newinc: newInc, incsave: incSave
 };
 document.addEventListener('click', e => {
   const t = e.target;
