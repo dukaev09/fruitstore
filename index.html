@@ -302,6 +302,7 @@ main{padding-top:6px}
 .nav button{font-size:12px}.nav button .i{width:26px;height:26px}.nav button.on{color:var(--brand)}
 .card,.ovc,.mw{border-radius:18px}
 .box{border:1px solid var(--line)}
+@media(max-width:700px){.box{max-height:calc(100dvh - env(safe-area-inset-top) - 24px)}}
 </style>
 </head>
 <body>
@@ -747,19 +748,6 @@ function sortList(a){
   }[sortBy];
   return [...a].sort(f);
 }
-function chartSvg(c, k){
-  const h = (c.hist || []).filter(p => p[k] != null);
-  if (h.length < 2) return '';
-  const n = S.norms[k], vals = h.map(p => p[k]);
-  const lo = Math.min(...vals, n[0]), hi = Math.max(...vals, n[1]), r = (hi - lo) || 1;
-  const X = i => 6 + i * 288 / (h.length - 1), Y = v => 6 + (1 - (v - lo) / r) * 78;
-  const pts = h.map((p, i) => X(i).toFixed(1) + ',' + Y(p[k]).toFixed(1)).join(' ');
-  const last = h[h.length - 1], bad = last[k] < n[0] || last[k] > n[1];
-  const fd = t => new Date(t).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
-  return '<div class="chart"><h4><span>' + NL[k][0] + ' · ' + h.length + ' замеров</span><span>' + fd(h[0].t) + ' — ' + fd(last.t) + '</span></h4>' +
-    '<svg viewBox="0 0 300 90" preserveAspectRatio="none"><rect x="0" y="' + Y(n[1]).toFixed(1) + '" width="300" height="' + Math.max(1, Y(n[0]) - Y(n[1])).toFixed(1) + '" fill="#1f9d6b" opacity=".16"/>' +
-    '<polyline points="' + pts + '" fill="none" stroke="' + (bad ? 'var(--bad)' : 'var(--brand)') + '" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg></div>';
-}
 function render(){
   renderStats(); renderOv(); renderAttn(); renderChips();
   const all = vis(), q = search.trim().toLowerCase();
@@ -816,7 +804,7 @@ function openView(id){
   $('vmContent').innerHTML =
     (noEntry(c) ? '<div class="banner">'+ic('ban')+'<span>ВХОД ЗАПРЕЩЁН: O₂ '+(c.o2 != null ? c.o2+' %' : 'не измерен')+', безопасно от '+S.safeO2+' %</span></div>' : '')+
     (c.locked ? '<div class="banner" style="color:var(--ink);border-color:var(--line);background:var(--bg)">🔒 Партия закрыта, редактирование заблокировано</div>' : '')+
-    '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+chartSvg(c,'temp')+chartSvg(c,'hum')+
+    '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+
     '<div class="rows">'+row('Крыло',wingName(wingOf(c.id)))+row('Культура',val(c.crop))+row('Сорт',val(c.sort))+row('Партия',val(c.batch))+row('Количество',(c.qty||0).toLocaleString('ru-RU')+' кг')+row('Оператор',val(c.operator))+'</div>'+
     '<div class="rows">'+row('Загрузка',val(c.loadAt))+row('Срок хранения',d != null && ACTIVE.includes(c.status) ? '<span style="color:'+(over(c)?'var(--bad)':'inherit')+'">'+d+' дн.'+(over(c)?' (превышен)':'')+'</span>' : '—')+row('Обработка',val(c.processAt))+row('Вывод на РГС',val(c.rgsAt))+row('Обновлено',c.updatedAt?fmtDT(c.updatedAt):'—')+'</div>'+
     '<div class="rows">'+row('Уборка',san(c.cleanAt))+row('Дезинфекция',san(c.disAt))+'</div>'+
@@ -909,10 +897,8 @@ async function save(){
   const prev = {}; changed.forEach(k => prev[k] = c[k] ?? null);
   const action = changed.includes('status') ? 'Статус: '+names[c.status]+' → '+names[upd.status]+(changed.length>1?' (+ ещё '+(changed.length-1)+')':'')
     : 'Изменено: ' + changed.map(k => LABEL[k]).join(', ');
-  const moved = ['temp','hum','o2','co2'].some(k => upd[k] !== c[k] && upd[k] != null);
-  const hist = moved ? [...(c.hist || []), { t: Date.now(), temp: upd.temp, hum: upd.hum, o2: upd.o2, co2: upd.co2 }].slice(-30) : (c.hist || []);
   $('saveBtn').disabled = true; showLoading(true);
-  try { await commitCam(c, { ...upd, hist }, action, { st0: c.status, st1: upd.status, q0: c.qty||0, q1: upd.qty||0, fixed, prev }); closeModal('editModal'); toast('Сохранено'); }
+  try { await commitCam(c, { ...upd }, action, { st0: c.status, st1: upd.status, q0: c.qty||0, q1: upd.qty||0, fixed, prev }); closeModal('editModal'); toast('Сохранено'); }
   catch(e){ toast('Не удалось сохранить: ' + e.message, 1); }
   $('saveBtn').disabled = false; showLoading(false);
 }
