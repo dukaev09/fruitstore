@@ -404,6 +404,29 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 [data-theme=dark] .chip{box-shadow:0 0 8px color-mix(in srgb,var(--c,var(--brand)) 40%,transparent)}
 [data-theme=dark] .chip.sel{box-shadow:0 0 14px var(--c,var(--brand))}
 [data-theme=dark] .nav{box-shadow:none}
+
+/* ===== Окна-шторки, плавность ===== */
+*{-webkit-tap-highlight-color:transparent}
+button,.chip,.cam,.achip{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+html.lock,html.lock body{overflow:hidden;overscroll-behavior:none}
+html.lock #appScreen main{visibility:hidden}
+.modal{background:rgba(3,8,18,.88)}
+.box{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.hdl{display:none}
+#viewModal .box{padding:0;display:flex;flex-direction:column;overflow:hidden}
+#vmTitle{position:static;margin:0;padding:10px 16px 12px;flex:none;touch-action:none}
+#vmContent{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px 16px calc(18px + env(safe-area-inset-bottom))}
+#viewModal .box>.acts{display:none}
+@keyframes sheet{from{transform:translateY(34px);opacity:0}to{transform:none;opacity:1}}
+@media(max-width:700px){
+.box{animation:sheet .22s cubic-bezier(.2,.8,.2,1)}
+.hdl{display:block;height:22px;flex:none;position:relative;touch-action:none;margin:-6px 0 0}
+#viewModal .hdl{margin:0}
+.hdl::after{content:'';position:absolute;left:50%;top:9px;width:42px;height:5px;margin-left:-21px;border-radius:3px;background:color-mix(in srgb,var(--mut) 55%,transparent)}
+}
+.sk{min-height:190px;animation:skp 1.3s ease-in-out infinite;border:1.5px solid var(--line)!important;box-shadow:none!important;background:var(--card)!important;pointer-events:none}
+@keyframes skp{50%{opacity:.4}}
+.cam:active,.achip:active,.btn:active,.chip:active,.ib:active,.stat:active,[data-theme=dark] .cam:active{transform:scale(.97)}
 </style>
 </head>
 <body>
@@ -502,7 +525,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
   </nav>
 </div>
 
-<div class="modal" id="viewModal"><div class="box"><h2 id="vmTitle"></h2><div id="vmContent"></div><div class="acts"><button class="btn" data-close>Закрыть</button></div></div></div>
+<div class="modal" id="viewModal"><div class="box"><h2 id="vmTitle" data-grab></h2><div id="vmContent"></div><div class="acts"><button class="btn" data-close>Закрыть</button></div></div></div>
 <div class="modal" id="editModal"><div class="box"><h2>Камера <span id="emNum"></span></h2><form id="editForm"></form>
   <div class="acts"><button class="btn" data-close>Отмена</button><button class="btn pri" id="saveBtn" data-act="save">Сохранить</button></div></div></div>
 <div class="modal" id="histModal"><div class="box" style="width:min(860px,100%)"><h2>История операций</h2>
@@ -629,14 +652,18 @@ function devInfo(){
 }
 
 /* ===== Модальные окна ===== */
-let scrollY = 0;
+let dirty = false, loaded = false, rq;
+const modalOpen = () => !!document.querySelector('.modal.open');
 function openModal(id){
-  if (!document.querySelector('.modal.open')){ scrollY = window.scrollY; document.body.style.cssText = 'position:fixed;width:100%;top:-'+scrollY+'px'; }
   $(id).classList.add('open');
+  document.documentElement.classList.add('lock');
 }
 function closeModal(id){
   $(id).classList.remove('open');
-  if (!document.querySelector('.modal.open')){ document.body.style.cssText = ''; window.scrollTo(0, scrollY); }
+  if (!modalOpen()){
+    document.documentElement.classList.remove('lock');
+    if (dirty){ dirty = false; renderTab(); }
+  }
 }
 function closeTopModal(){ const o = [...document.querySelectorAll('.modal.open')].pop(); if (o) closeModal(o.id); }
 function dlg(title, body, act, lab){
@@ -684,7 +711,7 @@ async function doAuth(signup){
 }
 onAuthStateChanged(auth, u => {
   user = u; unsubs.forEach(f => f()); unsubs = [];
-  seeded = creating = gated = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; nexts = []; myShift = null; me = null; SUM = null; TEAM = null;
+  seeded = creating = gated = loaded = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; nexts = []; myShift = null; me = null; SUM = null; TEAM = null;
   if (u){
     $('loginScreen').style.display = 'none'; $('appScreen').style.display = 'block';
     afterRole(); showLoading(true); subscribe();
@@ -742,7 +769,7 @@ function subscribe(){
     $('offline').classList.toggle('show', snap.metadata.fromCache && !navigator.onLine);
     if (snap.empty && !snap.metadata.fromCache && isAdmin() && !seeded){ seeded = true; commitAll(seedCams()).catch(fail); return; }
     cams = snap.docs.map(d => d.data()).sort((a,b) => a.id - b.id);
-    showLoading(false); renderTab(); renderNotes();
+    loaded = true; showLoading(false); renderTab(); renderNotes();
   }, fail));
   on(q('journal', orderBy('ts','desc'), limit(200)), s => { journal = s.docs.map(d => d.data()); renderJournal(); }, 'journal');
   on(collection(db,'users'), s => {
@@ -779,13 +806,18 @@ function showTab(t){
 }
 function renderTab(){
   if (!user) return;
-  if (tab === 'cams') render(); else if (tab === 'map') renderMap(); else if (tab === 'today') renderToday(); else if (tab === 'sum') renderSum(); else if (tab === 'team') renderTeam();
-  badge();
+  if (modalOpen()){ dirty = true; badge(); return; }
+  cancelAnimationFrame(rq);
+  rq = requestAnimationFrame(() => {
+    if (!user) return;
+    if (tab === 'cams') render(); else if (tab === 'map') renderMap(); else if (tab === 'today') renderToday(); else if (tab === 'sum') renderSum(); else if (tab === 'team') renderTeam();
+    badge();
+  });
 }
 let rt;
 function refreshLive(){
   clearTimeout(rt);
-  rt = setTimeout(() => { if (tab === 'today') renderToday(); if ($('roundModal').classList.contains('open')) renderRound(); badge(); }, 60);
+  rt = setTimeout(() => { if (tab === 'today'){ if (modalOpen()) dirty = true; else renderToday(); } if ($('roundModal').classList.contains('open')) renderRound(); badge(); }, 60);
 }
 function badge(){
   if (!user) return;
@@ -877,7 +909,7 @@ function render(){
       '<div class="bar"><i style="width:'+pct+'%"></i></div>'+ic('chev')+'</button>'+
       '<div class="grid">'+wc.map(camCard).join('')+'</div></section>';
   }
-  $('grid').innerHTML = html || '<div class="empty-msg">'+(all.length ? 'Ничего не найдено. Измените фильтр или поиск.' : 'Камер пока нет.')+'</div>';
+  $('grid').innerHTML = html || (!loaded ? '<div class="grid">'+'<div class="cam sk"></div>'.repeat(6)+'</div>' : '<div class="empty-msg">'+(all.length ? 'Ничего не найдено. Измените фильтр или поиск.' : 'Камер пока нет.')+'</div>');
   $('resultCount').textContent = list.length === all.length ? all.length + ' камер' : list.length + ' из ' + all.length;
 }
 function renderJournal(){
@@ -1474,6 +1506,41 @@ document.addEventListener('keydown', e => {
 document.addEventListener('gesturestart', e => e.preventDefault());
 document.addEventListener('visibilitychange', () => { if (!document.hidden) showLoading(false); });
 addEventListener('pageshow', () => showLoading(false));
+/* Окна на iPhone: страница сзади не тянется, окно закрывается свайпом вниз за шапку или ручку */
+document.querySelectorAll('.box').forEach(b => b.insertAdjacentHTML('afterbegin', '<i class="hdl" data-grab></i>'));
+let tY = 0, dg = null;
+document.addEventListener('touchstart', e => {
+  tY = e.touches[0].clientY; dg = null;
+  const g = e.target.closest && e.target.closest('[data-grab]');
+  if (g && e.touches.length === 1){ const box = g.closest('.box'); if (box){ dg = { box, dy: 0 }; box.style.transition = 'none'; } }
+}, { passive: true });
+document.addEventListener('touchmove', e => {
+  if (!modalOpen() || e.touches.length > 1) return;
+  const dy = e.touches[0].clientY - tY;
+  if (dg){ dg.dy = Math.max(0, dy); dg.box.style.transform = 'translateY(' + dg.dy + 'px)'; if (e.cancelable) e.preventDefault(); return; }
+  let el = e.target;
+  while (el && el !== document.body){
+    if (el.scrollHeight > el.clientHeight + 1 && /(auto|scroll)/.test(getComputedStyle(el).overflowY)){
+      const top = el.scrollTop <= 0, bot = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+      if (((dy > 0 && top) || (dy < 0 && bot)) && e.cancelable) e.preventDefault();
+      return;
+    }
+    el = el.parentElement;
+  }
+  if (e.cancelable) e.preventDefault();
+}, { passive: false });
+const dgEnd = () => {
+  if (!dg) return;
+  const { box, dy } = dg; dg = null;
+  box.style.transition = 'transform .2s ease';
+  if (dy > 110){
+    box.style.transform = 'translateY(100%)';
+    setTimeout(() => { const m = box.closest('.modal'); box.style.transform = ''; box.style.transition = ''; if (m) closeModal(m.id); }, 190);
+  } else { box.style.transform = ''; setTimeout(() => { box.style.transition = ''; }, 220); }
+};
+document.addEventListener('touchend', dgEnd);
+document.addEventListener('touchcancel', dgEnd);
+
 </script>
 </body>
 </html>
