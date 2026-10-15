@@ -348,6 +348,43 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 [data-theme=dark] .nav button.on .i{filter:drop-shadow(0 0 6px #3b82ff)}
 [data-theme=dark] .mc{color:#04101f;box-shadow:0 0 12px color-mix(in srgb,var(--c) 60%,transparent)}
 [data-theme=dark] .mc.warn{outline-color:#fff}
+
+/* ===== Окно камеры ===== */
+#vmTitle{position:sticky;top:0;z-index:3;margin:-20px -20px 12px;padding:16px 20px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 22%,var(--card)),var(--card));border-bottom:1px solid color-mix(in srgb,var(--c) 40%,var(--line))}
+.vf{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;font-size:26px;background:color-mix(in srgb,var(--c) 18%,transparent);border:1.5px solid var(--c);box-shadow:0 0 16px color-mix(in srgb,var(--c) 55%,transparent)}
+.vf .ci{width:34px;height:34px}
+.vt{min-width:0}.vt small{display:block;color:var(--c);font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase}
+.vt b{font-size:22px;line-height:1.1;overflow-wrap:anywhere}
+.x{margin-left:auto;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 80%,transparent);display:grid;place-items:center;color:var(--ink)}
+.tiles{grid-template-columns:repeat(2,1fr)}
+.tile{border-radius:16px;padding:12px;gap:6px;background:color-mix(in srgb,var(--c) 8%,var(--bg));border:1px solid color-mix(in srgb,var(--c) 45%,var(--line));outline:0}
+.tile span{display:flex;align-items:center;gap:6px;color:var(--ink);font-size:12px;font-weight:600}
+.tile span .i{width:16px;height:16px;color:var(--c)}
+.tile b{font-size:24px;line-height:1.1;color:var(--ink)}
+.tile small{color:var(--mut);font-size:11px}.tile.bad small{color:var(--bad);font-weight:700}
+.gauge{position:relative;height:6px;border-radius:4px;background:color-mix(in srgb,var(--c) 14%,var(--line));margin:4px 0}
+.gz{position:absolute;top:0;bottom:0;background:#19f5a066;border-radius:4px}
+.gm{position:absolute;top:-4px;width:4px;height:14px;margin-left:-2px;border-radius:2px;background:#fff;box-shadow:0 0 8px var(--c)}
+.gf{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+.life{padding:10px 0 6px;border-bottom:1px solid var(--line)}.lh{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px}.lh span{color:var(--mut)}
+.sec h4{margin:16px 0 6px;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--c);display:flex;align-items:center;gap:8px}
+.sec h4::before{content:'';width:18px;height:2px;background:var(--c);border-radius:2px}
+.sec .rows{margin:0}
+.btn.neon{background:linear-gradient(135deg,#3b82ff,#7c5cff);border:0;color:#fff;min-height:50px;font-size:16px}
+[data-theme=dark] #viewModal .box{border:1.5px solid color-mix(in srgb,var(--c) 70%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--c) 10%,#070f20),#070f20 45%);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 35%,transparent),0 0 30px color-mix(in srgb,var(--c) 40%,transparent),0 0 70px color-mix(in srgb,var(--c) 18%,transparent)}
+[data-theme=dark] #viewModal .rows{border-color:color-mix(in srgb,var(--c) 35%,var(--line));background:color-mix(in srgb,var(--c) 4%,transparent)}
+[data-theme=dark] #viewModal .vr,[data-theme=dark] #viewModal .life{border-color:color-mix(in srgb,var(--c) 18%,var(--line))}
+[data-theme=dark] .sec h4{text-shadow:0 0 8px var(--c)}
+[data-theme=dark] .sec h4::before{box-shadow:0 0 8px var(--c)}
+[data-theme=dark] .tile{box-shadow:0 0 14px color-mix(in srgb,var(--c) 30%,transparent),inset 0 0 14px color-mix(in srgb,var(--c) 8%,transparent)}
+[data-theme=dark] .tile b{text-shadow:0 0 12px color-mix(in srgb,var(--c) 60%,transparent)}
+[data-theme=dark] .tile span .i{filter:drop-shadow(0 0 4px var(--c))}
+[data-theme=dark] .btn.neon{box-shadow:0 0 18px #3b82ff90,0 0 42px #7c5cff40}
+@media(max-width:700px){
+#vmTitle{margin:-16px -16px 12px;padding:14px 16px 10px}
+.modal{padding:calc(env(safe-area-inset-top) + 10px) 0 0}
+.box{max-height:100%;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+}
 </style>
 </head>
 <body>
@@ -390,6 +427,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
 <symbol id="i-chevr" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
 <symbol id="i-alertc" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM12 8v5M12 16h.01"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
 </svg>
 
 <div id="loginScreen" class="lw">
@@ -842,22 +880,39 @@ function openView(id){
   const c = camById(id); if (!c) return;
   selected = id;
   const [icn, col] = ST[c.status] || ST.empty, bad = issues(c), d = days(c), w = canW(), le = lastChange(id);
+  const MET = { temp:['thermo','#2db6ff'], hum:['drop','#a78bfa'], o2:['o2dot','#19f5a0'], co2:['cloud','#ffa51f'] };
   const row = (l, v) => '<div class="vr"><span>'+l+'</span><b>'+v+'</b></div>';
-  const tile = k => '<div class="tile'+(bad.includes(k)?' bad':'')+'"><span>'+NL[k][0]+'</span><b>'+val(c[k],unit(k))+'</b>'+(bad.includes(k)?'<small>норма '+S.norms[k][0]+'…'+S.norms[k][1]+'</small>':'')+'</div>';
+  const sec = (t, body) => '<div class="sec"><h4>'+t+'</h4><div class="rows">'+body+'</div></div>';
   const san = t => t ? fmtD(t)+' ('+Math.floor((Date.now()-t)/864e5)+' дн. назад)' : '<span style="color:var(--bad)">нет данных</span>';
-  $('vmTitle').innerHTML = culIcon(c.sort,c.crop)+'Камера №'+pad(c.id)+(c.locked?' 🔒':'')+' <span class="pill" style="--c:'+col+'">'+ic(icn)+esc(names[c.status]||c.status)+'</span>';
+  const tile = k => {
+    const v = c[k], n = S.norms[k], isBad = bad.includes(k); let g = '';
+    if (v != null && n){
+      const wd = (n[1] - n[0]) || 1, lo = Math.min(n[0], v) - wd*.3, hi = Math.max(n[1], v) + wd*.3, p = x => (x-lo)/(hi-lo)*100;
+      g = '<div class="gauge"><i class="gz" style="left:'+p(n[0]).toFixed(1)+'%;width:'+(p(n[1])-p(n[0])).toFixed(1)+'%"></i><i class="gm" style="left:'+p(v).toFixed(1)+'%"></i></div>';
+    }
+    return '<div class="tile'+(isBad ? ' bad' : '')+'" style="--c:'+(isBad ? '#ff3860' : MET[k][1])+'"><span>'+ic(MET[k][0])+NL[k][0]+'</span><b>'+(v == null ? '—' : fmtN(v)+unit(k))+'</b>'+g+
+      '<small>норма '+n[0]+'…'+n[1]+(isBad ? (v > n[1] ? ' · выше нормы' : ' · ниже нормы') : '')+'</small></div>';
+  };
+  let life = '';
+  if (ACTIVE.includes(c.status) && d != null && S.maxDays > 0){
+    const pc = Math.min(100, d / S.maxDays * 100), cd = over(c) ? '#ff3860' : pc > 80 ? '#ffa51f' : '#19f5a0';
+    life = '<div class="life"><div class="lh"><span>Срок хранения</span><b style="color:'+cd+'">'+d+' из '+S.maxDays+' дн.'+(over(c) ? ' · превышен' : '')+'</b></div><div class="gauge"><i class="gf" style="width:'+pc.toFixed(0)+'%;background:'+cd+';box-shadow:0 0 10px '+cd+'"></i></div></div>';
+  }
+  $('viewModal').querySelector('.box').style.setProperty('--c', col);
+  $('vmTitle').innerHTML = '<span class="vf">'+culIcon(c.sort, c.crop)+'</span><span class="vt"><small>Камера №'+pad(c.id)+(c.locked ? ' 🔒' : '')+'</small><b>'+val(c.sort)+'</b></span>'+
+    '<span class="pill" style="--c:'+col+'">'+ic(icn)+esc(names[c.status] || c.status)+'</span><button class="x" data-close aria-label="Закрыть">'+ic('x')+'</button>';
   $('vmContent').innerHTML =
     (noEntry(c) ? '<div class="banner">'+ic('ban')+'<span>ВХОД ЗАПРЕЩЁН: O₂ '+(c.o2 != null ? c.o2+' %' : 'не измерен')+', безопасно от '+S.safeO2+' %</span></div>' : '')+
     (c.locked ? '<div class="banner" style="color:var(--ink);border-color:var(--line);background:var(--bg)">🔒 Партия закрыта, редактирование заблокировано</div>' : '')+
     '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+
-    '<div class="rows">'+row('Крыло',wingName(wingOf(c.id)))+row('Культура',val(c.crop))+row('Сорт',val(c.sort))+row('Партия',val(c.batch))+row('Количество',(c.qty||0).toLocaleString('ru-RU')+' кг')+row('Оператор',val(c.operator))+'</div>'+
-    '<div class="rows">'+row('Загрузка',val(c.loadAt))+row('Срок хранения',d != null && ACTIVE.includes(c.status) ? '<span style="color:'+(over(c)?'var(--bad)':'inherit')+'">'+d+' дн.'+(over(c)?' (превышен)':'')+'</span>' : '—')+row('Обработка',val(c.processAt))+row('Вывод на РГС',val(c.rgsAt))+row('Обновлено',c.updatedAt?fmtDT(c.updatedAt):'—')+'</div>'+
-    '<div class="rows">'+row('Уборка',san(c.cleanAt))+row('Дезинфекция',san(c.disAt))+'</div>'+
+    sec('Продукт', row('Крыло', wingName(wingOf(c.id)))+row('Культура', val(c.crop))+row('Сорт', val(c.sort))+row('Партия', val(c.batch))+row('Количество', (c.qty||0).toLocaleString('ru-RU')+' кг')+row('Оператор', val(c.operator)))+
+    sec('Сроки', row('Загрузка', val(c.loadAt))+(life ? life : row('Срок хранения', '—'))+row('Обработка', val(c.processAt))+row('Вывод на РГС', val(c.rgsAt))+row('Обновлено', c.updatedAt ? fmtDT(c.updatedAt) : '—'))+
+    sec('Санитария', row('Уборка', san(c.cleanAt))+row('Дезинфекция', san(c.disAt)))+
     (w ? '<div class="quick"><button class="btn sm" data-act="clean">Отметить уборку</button><button class="btn sm" data-act="disinf">Отметить дезинфекцию</button></div>' : '')+
-    (c.note ? '<div class="rows"><div class="vr" style="flex-direction:column;gap:4px"><span>Примечание</span><b style="text-align:left;font-weight:500">'+esc(c.note)+'</b></div></div>' : '')+
-    '<div class="grp" style="margin-top:14px"><h3>Заметки команды</h3><div class="nl" id="nlist"></div>'+
+    (c.note ? sec('Примечание', '<div class="vr" style="flex-direction:column;gap:4px"><b style="text-align:left;font-weight:500">'+esc(c.note)+'</b></div>') : '')+
+    '<div class="sec"><h4>Заметки команды</h4><div class="nl" id="nlist"></div>'+
     (w ? '<div class="nin"><input id="nin" maxlength="300" placeholder="Заметка, @имя чтобы упомянуть"><button class="btn sm pri" data-act="noteadd">Отправить</button></div>' : '')+'</div>'+
-    (w ? (c.locked ? '<div class="banner" style="color:var(--mut);border-color:var(--line);background:none">Чтобы править, администратор должен открыть партию</div>' : '<button class="btn pri full" data-act="edit" style="margin-top:12px">Редактировать</button>') : '')+
+    (w ? (c.locked ? '<div class="banner" style="color:var(--mut);border-color:var(--line);background:none">Чтобы править, администратор должен открыть партию</div>' : '<button class="btn pri full neon" data-act="edit" style="margin-top:14px">Редактировать</button>') : '')+
     (w && !c.locked && le ? '<button class="btn full" data-act="undo" style="margin-top:8px">↶ Отменить последнее изменение ('+esc(le.date)+')</button>' : '')+
     (isAdmin() ? '<button class="btn full" data-act="lock" style="margin-top:8px">'+(c.locked ? '🔓 Открыть партию' : '🔒 Закрыть партию')+'</button>' : '');
   openModal('viewModal'); renderNotes();
