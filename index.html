@@ -427,6 +427,52 @@ html.lock #appScreen main{visibility:hidden}
 .sk{min-height:190px;animation:skp 1.3s ease-in-out infinite;border:1.5px solid var(--line)!important;box-shadow:none!important;background:var(--card)!important;pointer-events:none}
 @keyframes skp{50%{opacity:.4}}
 .cam:active,.achip:active,.btn:active,.chip:active,.ib:active,.stat:active,[data-theme=dark] .cam:active{transform:scale(.97)}
+
+/* ===== Исправления вёрстки и «вау»-эффекты ===== */
+.sp{display:none}
+.hwrap{gap:8px}
+.ht{flex:1;min-width:0}
+.brand{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(16px,4.6vw,24px)}
+.sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(11px,3.2vw,14px)}
+.ib{width:clamp(38px,11vw,46px);height:clamp(38px,11vw,46px)}
+.logo{width:clamp(40px,12vw,54px);height:clamp(40px,12vw,54px)}
+.attn-h h2{font-size:13px;letter-spacing:.3px;white-space:nowrap;min-width:0;gap:6px}
+.attn-h h2 .i{width:22px;height:22px;flex:none}
+.cnt{background:var(--bad);color:#fff;border-radius:999px;min-width:22px;height:22px;display:inline-grid;place-items:center;font-size:12px;padding:0 6px;text-shadow:none}
+.attn-h button{white-space:nowrap}
+@media(max-width:700px){
+.sbox{flex:1 1 100%}
+#wing,#sort{flex:1 1 calc(50% - 4px);max-width:none}
+}
+.cf{width:40px;height:40px;font-size:30px}.cf .ci{width:40px;height:40px}
+.cn b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word;word-break:normal;hyphens:auto;font-size:15px;line-height:1.15}
+.cn b.long{font-size:13px}
+.cn small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dd{display:block;font-size:12px;color:var(--mut);font-weight:600}.dd.od{color:var(--bad)}
+.nav{padding:6px 6px max(8px,calc(env(safe-area-inset-bottom) - 6px))}
+@keyframes rise{from{opacity:0;transform:translateY(18px) scale(.97)}}
+.intro .cam{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}
+.intro .cam:nth-child(2){animation-delay:.05s}.intro .cam:nth-child(3){animation-delay:.1s}.intro .cam:nth-child(4){animation-delay:.15s}
+.intro .cam:nth-child(5){animation-delay:.2s}.intro .cam:nth-child(6){animation-delay:.25s}.intro .cam:nth-child(7){animation-delay:.3s}.intro .cam:nth-child(8){animation-delay:.35s}
+.ldc{display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--mut);font-weight:600}
+.lgo{font-size:46px;animation:lp 1.6s ease-in-out infinite}
+@keyframes lp{50%{transform:scale(1.14)}}
+.tv{position:fixed;inset:0;z-index:60;background:radial-gradient(900px 500px at 80% -10%,#103a8055,transparent 60%),#04091a;color:#eef3ff;display:flex;flex-direction:column;gap:14px;padding:calc(14px + env(safe-area-inset-top)) 16px calc(14px + env(safe-area-inset-bottom));overflow:auto}
+.tv[hidden]{display:none}
+.tvh{display:flex;align-items:center;gap:12px}
+.tvh b{font-size:clamp(18px,4vw,30px)}.tvh small{display:block;color:var(--mut);text-transform:capitalize}
+.tvc{margin-left:auto;font-size:clamp(24px,7vw,52px);font-weight:800;letter-spacing:1px;text-shadow:0 0 18px #3b82ff}
+.tvk{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tvk>div{border-radius:18px;padding:14px;border:1.5px solid var(--c);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 14%,#071026),#071026);box-shadow:0 0 14px color-mix(in srgb,var(--c) 40%,transparent)}
+.tvk small{color:var(--mut);font-size:clamp(11px,1.8vw,14px)}
+.tvk b{display:block;font-size:clamp(24px,6vw,48px);line-height:1.1;text-shadow:0 0 14px color-mix(in srgb,var(--c) 60%,transparent)}
+.tvb{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;flex:1;min-height:0}
+.tvm{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px;align-content:start}
+.tt{aspect-ratio:1;border-radius:10px;background:color-mix(in srgb,var(--c) 22%,#071026);border:1.5px solid var(--c);display:grid;place-items:center;font:700 13px Inter,sans-serif;font-style:normal;box-shadow:0 0 8px color-mix(in srgb,var(--c) 45%,transparent)}
+.tt.w{outline:2px solid #ff3860;outline-offset:2px}
+.tvf{background:#071026;border:1px solid var(--line);border-radius:16px;padding:12px;overflow:auto}
+.tvf h3{margin:0 0 6px;font-size:13px;color:var(--mut)}
+@media(max-width:700px){.tvk{grid-template-columns:repeat(2,1fr)}.tvb{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -539,7 +585,12 @@ html.lock #appScreen main{visibility:hidden}
 <div class="modal" id="roundModal"><div class="box"><h2 id="rdTitle"></h2><div id="rdBody"></div><div class="acts"><button class="btn" data-close>Закрыть</button></div></div></div>
 <div class="modal" id="dlgModal"><div class="box"><h2 id="dlgTitle"></h2><div id="dlgBody"></div></div></div>
 <input type="file" id="importFile" accept=".json" hidden>
-<div id="loading" class="ld"><div class="spin"></div></div>
+<div id="loading" class="ld"><div class="ldc"><div class="lgo">🍎</div><div class="spin"></div><small>Загрузка…</small></div></div>
+<div id="tv" class="tv" hidden>
+  <div class="tvh"><div><b>Фруктохранилище</b><small id="tvDate"></small></div><div class="tvc" id="tvClock"></div><button class="x" data-act="tvclose" aria-label="Закрыть"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <div class="tvk" id="tvK"></div>
+  <div class="tvb"><div class="tvm" id="tvMap"></div><div class="tvf" id="tvFeed"></div></div>
+</div>
 <div id="toasts" aria-live="polite"></div>
 
 <script type="module">
@@ -652,7 +703,7 @@ function devInfo(){
 }
 
 /* ===== Модальные окна ===== */
-let dirty = false, loaded = false, rq;
+let dirty = false, loaded = false, rq, statsAnim = false, introDone = false, tvT = null;
 const modalOpen = () => !!document.querySelector('.modal.open');
 function openModal(id){
   $(id).classList.add('open');
@@ -711,7 +762,7 @@ async function doAuth(signup){
 }
 onAuthStateChanged(auth, u => {
   user = u; unsubs.forEach(f => f()); unsubs = [];
-  seeded = creating = gated = loaded = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; nexts = []; myShift = null; me = null; SUM = null; TEAM = null;
+  seeded = creating = gated = loaded = false; statsAnim = introDone = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; nexts = []; myShift = null; me = null; SUM = null; TEAM = null;
   if (u){
     $('loginScreen').style.display = 'none'; $('appScreen').style.display = 'block';
     afterRole(); showLoading(true); subscribe();
@@ -806,6 +857,7 @@ function showTab(t){
 }
 function renderTab(){
   if (!user) return;
+  if (!$('tv').hidden) renderTV();
   if (modalOpen()){ dirty = true; badge(); return; }
   cancelAnimationFrame(rq);
   rq = requestAnimationFrame(() => {
@@ -830,20 +882,29 @@ function badge(){
 function renderAttn(){
   const bad = vis().filter(needsAttention);
   $('attn').innerHTML = !bad.length ? '' :
-    '<section class="attn"><div class="attn-h"><h2>'+ic('alert')+'Требуют внимания · '+bad.length+'</h2><button data-act="attnall">Все проблемы '+ic('arrow')+'</button></div><div class="alist">'+
-    bad.slice(0, 4).map(c => { const pr = c.status === 'problem'; return '<button class="achip" data-cam="'+c.id+'" style="--c:'+(pr ? '#ff3860' : '#ffa51f')+'"><span class="ai">'+ic(pr ? 'alertc' : 'alert')+'</span><span class="at"><b>№'+pad(c.id)+' · '+val(c.sort)+'</b>'+(pr ? '<span class="pill" style="--c:#ff3860">Проблема</span>' : '<small>'+reasons(c).join(', ')+'</small>')+'</span>'+ic('chevr')+'</button>'; }).join('')+'</div></section>';
+    '<section class="attn"><div class="attn-h"><h2>'+ic('alert')+'<span>Требуют внимания</span><b class="cnt">'+bad.length+'</b></h2><button data-act="attnall">Все '+ic('arrow')+'</button></div><div class="alist">'+
+    bad.slice(0, 4).map(c => { const pr = c.status === 'problem'; return '<button class="achip" data-cam="'+c.id+'" style="--c:'+(pr ? '#ff3860' : '#ffa51f')+'"><span class="ai">'+ic(pr ? 'alertc' : 'alert')+'</span><span class="at"><b>№'+pad(c.id)+(c.sort ? ' · '+esc(c.sort) : '')+'</b>'+(pr ? '<span class="pill" style="--c:#ff3860">Проблема</span>' : '<small>'+reasons(c).join(', ')+'</small>')+'</span>'+ic('chevr')+'</button>'; }).join('')+'</div></section>';
+}
+function countUps(){
+  if (statsAnim) return; statsAnim = true;
+  document.querySelectorAll('[data-cu]').forEach(el => {
+    const end = Number(el.dataset.cu), fmt = el.dataset.fmt, suf = el.dataset.suf || '', t0 = performance.now();
+    const step = t => { const p = Math.min(1, (t - t0) / 900), v = end * (1 - Math.pow(1 - p, 3)); el.textContent = (fmt === 't' ? v.toFixed(1).replace('.', ',') : Math.round(v)) + suf; if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  });
 }
 function renderStats(){
   const all = vis();
   let kg = 0, occ = 0, emp = 0;
   all.forEach(c => { if (ACTIVE.includes(c.status)){ occ++; kg += c.qty || 0; } else if (c.status === 'empty') emp++; });
-  const pct = Math.round(occ/(all.length||1)*100);
+  const pct = Math.round(occ/(all.length||1)*100), tons = (kg/1000).toFixed(1).replace('.', ',');
   const card = (col, left, l, v, s) => '<div class="stat" style="--c:'+col+'"><div class="sc">'+left+'<div><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div></div></div>';
   $('stats').innerHTML =
-    card('#3b82ff', '<div class="si">'+ic('box')+'</div>', 'На хранении', (kg/1000).toFixed(1).replace('.', ',')+' т', 'Общий вес') +
-    card('#3b82ff', '<div class="rg" style="--p:'+pct+'"><b>'+pct+'%</b></div>', 'Занято', occ+' / '+all.length, 'камер') +
-    card('#19f5a0', '<div class="si">'+ic('door')+'</div>', 'Свободно', emp, 'камер');
-  $('subTitle').textContent = all.length + ' камер · Обновлено ' + hm(Date.now());
+    card('#3b82ff', '<div class="si">'+ic('box')+'</div>', 'На хранении', '<span data-cu="'+(kg/1000)+'" data-fmt="t" data-suf=" т">'+tons+' т</span>', 'Общий вес') +
+    card('#3b82ff', '<div class="rg" style="--p:'+pct+'"><b>'+pct+'%</b></div>', 'Занято', '<span data-cu="'+occ+'">'+occ+'</span> / '+all.length, 'камер') +
+    card('#19f5a0', '<div class="si">'+ic('door')+'</div>', 'Свободно', '<span data-cu="'+emp+'">'+emp+'</span>', 'камер');
+  $('subTitle').textContent = all.length + ' камер · ' + hm(Date.now());
+  if (all.length && loaded) countUps();
 }
 function renderOv(){
   const all = vis(), cnt = {};
@@ -881,8 +942,8 @@ function camCard(c){
   return '<button class="cam '+esc(c.status)+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+c.id+'" style="--c:'+col+'">'+
     '<div class="ch"><span class="pill">'+ic(icn)+esc(names[c.status] || c.status)+'</span><span class="upd">'+ic('clock')+(c.updatedAt ? 'Обновлено '+hm(c.updatedAt) : 'нет данных')+'</span></div>'+
     (noEntry(c) ? '<div class="ch" style="padding-top:6px"><span class="ban">'+ic('ban')+'Вход запрещён</span></div>' : '')+
-    '<div class="cb"><span class="cf">'+culIcon(c.sort, c.crop)+'</span><span class="cn"><span class="no">№'+pad(c.id)+(c.locked ? ' 🔒' : '')+'</span><b>'+val(c.sort)+'</b><small>'+val(c.batch)+'</small>'+
-    '<span class="qq">'+(c.qty || 0).toLocaleString('ru-RU')+' кг'+(d != null ? ' <span class="'+(over(c) ? 'od' : '')+'">· '+d+' дн.</span>' : '')+'</span></span>'+ic('chevr')+'</div>'+
+    '<div class="cb"><span class="cf">'+culIcon(c.sort, c.crop)+'</span><span class="cn"><span class="no">№'+pad(c.id)+(c.locked ? ' 🔒' : '')+'</span><b class="'+(String(c.sort || '').length > 11 ? 'long' : '')+'">'+val(c.sort)+'</b><small>'+val(c.batch)+'</small>'+
+    '<span class="qq">'+(c.qty || 0).toLocaleString('ru-RU')+' кг</span>'+(d != null ? '<span class="dd'+(over(c) ? ' od' : '')+'">'+d+' дн.</span>' : '')+'</span></div>'+
     '<div class="cm">'+cell('temp', ic('thermo'), 'Темп.', '°C')+cell('hum', ic('drop'), 'Влаж.', '%')+cell('o2', ic('o2dot'), 'O₂', '%')+cell('co2', ic('cloud'), 'CO₂', '%')+'</div></button>';
 }
 function sortList(a){
@@ -905,12 +966,13 @@ function render(){
     const wa = all.filter(c => wingOf(c.id) === w), occ = wa.filter(c => ACTIVE.includes(c.status));
     const t = occ.reduce((s,c) => s + (c.qty||0), 0)/1000, pct = Math.round(occ.length/(wa.length||1)*100);
     html += '<section class="wing'+(collapsed[w]?' col':'')+'"><button class="wt" data-toggle="'+w+'" aria-expanded="'+!collapsed[w]+'">'+
-      '<div class="in"><div class="nm">'+wingName(w)+'</div><div class="sm">'+occ.length+' из '+wa.length+' занято · '+t.toFixed(1)+' т</div></div>'+
+      '<div class="in"><div class="nm">'+wingName(w)+'</div><div class="sm">'+occ.length+' из '+wa.length+' занято · '+t.toFixed(1).replace('.', ',')+' т</div></div>'+
       '<div class="bar"><i style="width:'+pct+'%"></i></div>'+ic('chev')+'</button>'+
       '<div class="grid">'+wc.map(camCard).join('')+'</div></section>';
   }
   $('grid').innerHTML = html || (!loaded ? '<div class="grid">'+'<div class="cam sk"></div>'.repeat(6)+'</div>' : '<div class="empty-msg">'+(all.length ? 'Ничего не найдено. Измените фильтр или поиск.' : 'Камер пока нет.')+'</div>');
   $('resultCount').textContent = list.length === all.length ? all.length + ' камер' : list.length + ' из ' + all.length;
+  if (!introDone && all.length){ introDone = true; const g = $('grid'); g.classList.add('intro'); setTimeout(() => g.classList.remove('intro'), 1300); }
 }
 function renderJournal(){
   $('histBody').innerHTML = journal.map(e => '<tr><td>'+esc(e.date)+'</td><td>'+esc(e.cam)+'</td><td>'+esc(e.action)+'</td><td>'+esc(nameOf(e.user))+'</td></tr>').join('')
@@ -1377,8 +1439,8 @@ function userHist(email){
 function openMenu(){
   const b = (a, i, t) => '<button class="btn" data-act="'+a+'">'+ic(i)+t+'</button>';
   const standalone = matchMedia('(display-mode:standalone)').matches || navigator.standalone;
-  $('menuList').innerHTML = '<div class="hint" style="margin:0 0 4px">'+esc($('userName').textContent)+'</div>' + b('csv','table','Скачать таблицу (Excel)') + b('print','print','Печать отчёта') + b('theme','moon','Сменить тему (тёмная / светлая)') + (standalone ? '' : b('install','down','Установить на телефон')) +
-    (isAdmin() ? b('settings','gear','Настройки хранилища') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') : '') + b('logout','out','Выйти');
+  $('menuList').innerHTML = '<div class="hint" style="margin:0 0 4px">'+esc($('userName').textContent)+'</div>' + b('tv','grid','Табло для экрана (режим презентации)') + b('csv','table','Скачать таблицу (Excel)') + b('print','print','Печать отчёта') + b('theme','moon','Сменить тему (тёмная / светлая)') + (standalone ? '' : b('install','down','Установить на телефон')) +
+    (isAdmin() ? b('settings','gear','Настройки хранилища') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') + b('demo','plus','Демо-данные для презентации') : '') + b('logout','out','Выйти');
   openModal('menuModal');
 }
 function openSettings(){
@@ -1459,6 +1521,68 @@ document.addEventListener('change', e => {
   if (t.dataset && t.dataset.role){ run(() => updateDoc(doc(db,'users',t.dataset.role), { role: t.value }), 'Роль изменена'); }
 });
 
+/* ===== Табло для большого экрана ===== */
+function renderTV(){
+  const all = vis(), occ = all.filter(c => ACTIVE.includes(c.status)), kg = occ.reduce((s, c) => s + (c.qty || 0), 0);
+  const bad = all.filter(needsAttention).length, ne = all.filter(noEntry).length, pct = Math.round(occ.length/(all.length||1)*100);
+  const k = (l, v, col) => '<div style="--c:'+col+'"><small>'+l+'</small><b>'+v+'</b></div>';
+  $('tvK').innerHTML = k('На хранении', (kg/1000).toFixed(1).replace('.', ',')+' т', '#3b82ff') + k('Загрузка', pct+'%', '#19f5a0') + k('Требуют внимания', bad, bad ? '#ff3860' : '#19f5a0') + k('Вход запрещён', ne, '#ffa51f');
+  $('tvMap').innerHTML = all.map(c => '<i class="tt'+(needsAttention(c) ? ' w' : '')+'" style="--c:'+(ST[c.status] || ST.empty)[1]+'">'+c.id+'</i>').join('');
+  $('tvFeed').innerHTML = '<h3>События</h3>'+(feedItems().slice(0, 8).map(x => '<div class="fi'+(x.tone ? ' '+x.tone : '')+'"><span class="fic">'+x.icon+'</span><div class="fb">'+x.html+'<small>'+hm(x.ts)+'</small></div></div>').join('') || '<div class="hint">Событий пока нет</div>');
+  $('tvDate').textContent = new Date().toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
+  $('tvClock').textContent = new Date().toLocaleTimeString('ru-RU');
+}
+function tvOpen(){
+  $('tv').hidden = false; document.documentElement.classList.add('lock'); renderTV();
+  clearInterval(tvT); tvT = setInterval(() => { $('tvClock').textContent = new Date().toLocaleTimeString('ru-RU'); }, 1000);
+}
+function tvClose(){
+  $('tv').hidden = true; clearInterval(tvT);
+  if (!modalOpen()) document.documentElement.classList.remove('lock');
+}
+
+/* ===== Демо-данные для презентации (только администратор) ===== */
+async function demoFill(){
+  if (!isAdmin()) return;
+  const v = prompt('Это заполнит ВСЕ камеры демонстрационными данными и добавит примеры задач и событий.\nРезервная копия текущих данных скачается автоматически.\n\nДля подтверждения введите ДЕМО:');
+  if (!v || v.trim().toUpperCase() !== 'ДЕМО') return;
+  exportData(); closeTopModal();
+  await run(async () => {
+    let sd = 11; const rnd = () => (sd = sd * 16807 % 2147483647) / 2147483647, pick = a => a[Math.floor(rnd() * a.length)], now = Date.now(), N = total(), H = 36e5;
+    const P = [['Яблоко','Голден'],['Яблоко','Гала'],['Яблоко','Фуджи'],['Яблоко','Ред Чиф'],['Яблоко','Айдаред'],['Груша','Талгарская красавица'],['Груша','Конференция'],['Овощи','Морковь'],['Овощи','Капуста'],['Овощи','Свекла'],['Виноград','Изабелла']];
+    const ops = ['Адам','Хасан','Руслан','Беслан'], dmy = n => toDmy(dayStr(new Date(now - n * 864e5))), b = writeBatch(db), list = [];
+    for (let id = 1; id <= N; id++){
+      const r = rnd(); let st = r < .1 ? 'empty' : r < .18 ? 'process' : r < .34 ? 'rgs' : r < .4 ? 'inactive' : 'storage';
+      if (id === 2 || id === 12) st = 'problem';
+      if ([7, 19, 23, 31].includes(id)) st = 'storage';
+      const full = st !== 'empty' && st !== 'inactive', [crop, sort] = pick(P);
+      const c = { id, status: st, crop: full ? crop : '', sort: full ? sort : '', batch: full ? 'П-'+(240+id) : '', qty: full ? Math.round((8 + rnd() * 14) * 2) * 500 : 0,
+        temp: +(0.6 + rnd() * 1.8).toFixed(1), hum: Math.round(88 + rnd() * 6), o2: +(1.6 + rnd() * 1.8).toFixed(1), co2: +(2 + rnd() * 2).toFixed(1), operator: pick(ops),
+        loadAt: full ? dmy(4 + Math.floor(rnd() * 120)) : '', processAt: st === 'process' ? dmy(1 + Math.floor(rnd() * 4)) : '', rgsAt: st === 'rgs' ? dmy(2 + Math.floor(rnd() * 30)) : '',
+        note: id === 2 ? 'Конденсат на испарителе, вызван механик' : id === 12 ? 'Не держит температуру, проверить компрессор' : '',
+        updatedAt: now - Math.floor(rnd() * 9 * H), cleanAt: rnd() < .8 ? now - Math.floor(rnd() * 40) * 864e5 : 0, disAt: rnd() < .7 ? now - Math.floor(rnd() * 40) * 864e5 : 0 };
+      if (id === 7) c.temp = 6.8; if (id === 19) c.co2 = 7.4; if (id === 23) c.hum = 74; if (id === 31) c.loadAt = dmy(200);
+      const cc = cleanCam(c); list.push(cc); b.set(doc(db,'cameras','cam'+id), cc);
+    }
+    const acts = ['Статус: Охлаждение → На РГС', 'Изменено: Температура, Влажность', 'Изменено: Количество', 'Статус: Обработка → Охлаждение', 'Изменено: Примечание'];
+    for (let i = 0; i < 12; i++){
+      const c = list[Math.floor(rnd() * list.length)], t = now - (20 + i * 70) * 6e4, a = i % acts.length, q = c.qty || 12000;
+      b.set(doc(collection(db,'journal')), { camId:c.id, cam:'№'+pad(c.id), action:acts[a], user:user.email, ts:t, date:fmtDT(t), st0:c.status, st1:c.status, q0:a === 2 ? q - 2000 : q, q1:q, fixed:i % 4 === 0 ? 1 : 0, prev:{ note:'' } });
+    }
+    const me = user.email, day = dayStr(), yd = dayStr(new Date(now - 864e5)), sl = slotNow();
+    [['Проверить камеру №12 до конца смены', 12, 2 * H], ['Взять пробы твёрдости в камере №4', 4, 5 * H], ['Дезинфекция камеры №6 перед загрузкой', 6, 26 * H]].forEach(([title, camId, dt]) => b.set(doc(collection(db,'tasks')), { title, camId, assignee:'all', due:now + dt, createdBy:me, createdAt:now, done:false }));
+    [['Перед 22:00 проверить температуру в камере №12', 12, true], ['Принять машину с грушей, рампа 2', 0, false], ['Сверить остатки по крылу 1', 0, false]].forEach(([text, camId, urgent], i) => b.set(doc(collection(db,'nextshift')), { text, camId, urgent, by:me, ts:now - (10 + i) * 6e4, done:false }));
+    b.set(doc(collection(db,'announcements')), { title:'Режим работы на неделе', text:'Обход камер выполняем в 8:00 и 18:00. Отмечайте обход в приложении.', by:me, ts:now - 3 * H, ack:{ [user.uid]: now } });
+    b.set(doc(collection(db,'incidents')), { kind:'Простой', camId:0, cause:'Нет электричества', start:now - 26 * H, end:now - 25 * H, by:me, endBy:me });
+    [[12, 'Компрессор шумит, вызвал механика', 90], [2, 'Проверить конденсат при следующем обходе', 200]].forEach(([camId, text, m]) => b.set(doc(collection(db,'notes')), { camId, text, by:me, ts:now - m * 6e4, mentions:[] }));
+    list.forEach(c => {
+      ['am', 'pm'].forEach(s => b.set(doc(db,'rounds',rk(yd, s, c.id)), { day:yd, slot:s, camId:c.id, email:me, uid:user.uid, ts:now - 20 * H, ok:true, note:'' }));
+      if (rnd() < .65) b.set(doc(db,'rounds',rk(day, sl, c.id)), { day, slot:sl, camId:c.id, email:me, uid:user.uid, ts:now - Math.floor(rnd() * 4 * H), ok:true, note:'' });
+    });
+    await W(b.commit());
+  }, 'Демо-данные загружены');
+}
+
 const ACTS = {
   signup: () => doAuth(true), logout: () => signOut(auth), edit: openForm, save, undo, lock: lockToggle, noteadd: noteAdd,
   clean: () => sanit('cleanAt', 'Уборка'), disinf: () => sanit('disAt', 'Дезинфекция'),
@@ -1470,7 +1594,7 @@ const ACTS = {
   theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try { localStorage.setItem('th', n); } catch(_){} },
   shiftstart: shiftStart, shiftend: shiftEnd, shiftdone: shiftDone, handview: handView, handok: handOk,
   round: () => { renderRound(); openModal('roundModal'); },
-  bell: () => showTab('today'), attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
+  bell: () => showTab('today'), tv: () => { closeTopModal(); tvOpen(); }, tvclose: tvClose, demo: demoFill, attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
   newtask: newTask, newnext: newNext, nextsave: nextSave, feedmore: () => { feedN += 30; renderToday(); },
   feedtoggle: () => { feedOpen = !feedOpen; try { localStorage.setItem('feed', feedOpen ? '1' : '0'); } catch(_){} renderToday(); }, tasksave: taskSave, newann: newAnn, annsave: annSave, newinc: newInc, incsave: incSave
 };
@@ -1499,7 +1623,7 @@ document.addEventListener('click', e => {
   const act = ACTS[d.act]; if (act) act();
 });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeTopModal();
+  if (e.key === 'Escape'){ if (!$('tv').hidden) tvClose(); else closeTopModal(); }
   if (e.key === '/' && tab === 'cams' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){ e.preventDefault(); $('q').focus(); }
 });
 /* Запрет зума щипком на iOS (двойной тап отключён через touch-action в CSS) */
