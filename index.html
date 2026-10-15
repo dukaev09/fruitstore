@@ -303,6 +303,51 @@ main{padding-top:6px}
 .card,.ovc,.mw{border-radius:18px}
 .box{border:1px solid var(--line)}
 @media(max-width:700px){.box{max-height:calc(100dvh - env(safe-area-inset-top) - 24px)}}
+
+/* ===== Неон ===== */
+[data-theme=dark]{--bad:#ff3860;--brand:#3b82ff}
+body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top);background:var(--bg);z-index:25;pointer-events:none}
+.chips{top:env(safe-area-inset-top)}
+:root:not([data-theme=dark]) .pill{color:color-mix(in srgb,var(--c) 55%,#000)}
+.cn .no{display:block;color:var(--c);font-size:12px;font-weight:800;letter-spacing:.6px}
+[data-theme=dark] .cn .no{text-shadow:0 0 8px var(--c)}
+[data-theme=dark] .cam{border:1.5px solid var(--c);background:linear-gradient(180deg,color-mix(in srgb,var(--c) 14%,#070f20),#070f20 62%);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 50%,transparent),0 0 10px color-mix(in srgb,var(--c) 70%,transparent),0 0 28px color-mix(in srgb,var(--c) 42%,transparent),0 0 60px color-mix(in srgb,var(--c) 16%,transparent),inset 0 0 22px color-mix(in srgb,var(--c) 14%,transparent)}
+[data-theme=dark] .cam.empty,[data-theme=dark] .cam.inactive{opacity:1;box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 40%,transparent),0 0 12px color-mix(in srgb,var(--c) 35%,transparent),inset 0 0 14px color-mix(in srgb,var(--c) 10%,transparent)}
+[data-theme=dark] .cam:hover{box-shadow:0 0 0 1px var(--c),0 0 16px var(--c),0 0 44px color-mix(in srgb,var(--c) 55%,transparent),inset 0 0 26px color-mix(in srgb,var(--c) 18%,transparent)}
+[data-theme=dark] .cam.warn{outline:2px solid #ff3860;outline-offset:3px;animation:npulse 2.4s ease-in-out infinite}
+@keyframes npulse{0%,100%{filter:drop-shadow(0 0 2px #ff386080)}50%{filter:drop-shadow(0 0 14px #ff3860)}}
+[data-theme=dark] .pill{background:color-mix(in srgb,var(--c) 16%,transparent);border:1px solid color-mix(in srgb,var(--c) 60%,transparent);text-shadow:0 0 8px var(--c)}
+[data-theme=dark] .pill .i,[data-theme=dark] .cm .i,[data-theme=dark] .chip .i{filter:drop-shadow(0 0 4px var(--c,var(--brand)))}
+[data-theme=dark] .cm .i{color:var(--c)}
+[data-theme=dark] .cm{border-top-color:color-mix(in srgb,var(--c) 45%,transparent)}
+[data-theme=dark] .cm>div:nth-child(odd){border-right-color:color-mix(in srgb,var(--c) 35%,transparent)}
+[data-theme=dark] .cm>div:nth-child(-n+2){border-bottom-color:color-mix(in srgb,var(--c) 35%,transparent)}
+[data-theme=dark] .cm .bad .i{color:var(--bad)}
+[data-theme=dark] .cf .ci{filter:drop-shadow(0 0 8px color-mix(in srgb,var(--c) 55%,transparent))}
+[data-theme=dark] .ban{background:#ff3860;color:#fff;box-shadow:0 0 14px #ff3860}
+[data-theme=dark] .chip{border-color:var(--c,var(--brand));box-shadow:0 0 10px color-mix(in srgb,var(--c,var(--brand)) 45%,transparent),inset 0 0 10px color-mix(in srgb,var(--c,var(--brand)) 15%,transparent)}
+[data-theme=dark] .chip.sel{color:#04101f;box-shadow:0 0 16px var(--c,var(--brand)),0 0 36px color-mix(in srgb,var(--c,var(--brand)) 50%,transparent)}
+[data-theme=dark] .chip.sel .i,[data-theme=dark] .chip.sel b{color:#04101f;filter:none}
+[data-theme=dark] .stat{border-color:var(--c);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 40%,transparent),0 0 10px color-mix(in srgb,var(--c) 55%,transparent),0 0 30px color-mix(in srgb,var(--c) 28%,transparent),inset 0 0 18px color-mix(in srgb,var(--c) 12%,transparent)}
+[data-theme=dark] .si{box-shadow:0 0 14px color-mix(in srgb,var(--c) 55%,transparent)}
+[data-theme=dark] .si .i{filter:drop-shadow(0 0 5px var(--c))}
+[data-theme=dark] .stat .v{text-shadow:0 0 12px color-mix(in srgb,var(--c) 65%,transparent)}
+[data-theme=dark] .rg{box-shadow:0 0 14px color-mix(in srgb,var(--c) 55%,transparent)}
+[data-theme=dark] .attn{border-color:#ff3860;box-shadow:0 0 0 1px #ff386055,0 0 14px #ff386080,0 0 40px #ff386038,inset 0 0 24px #ff38601c}
+[data-theme=dark] .attn-h h2{text-shadow:0 0 10px #ff3860}
+[data-theme=dark] .attn-h h2 .i{filter:drop-shadow(0 0 6px #ff3860)}
+[data-theme=dark] .ai{box-shadow:0 0 12px color-mix(in srgb,var(--c) 60%,transparent)}
+[data-theme=dark] .achip{border-color:color-mix(in srgb,var(--c) 45%,var(--line))}
+[data-theme=dark] .logo{box-shadow:0 0 22px #3b82ff80,0 0 50px #3b82ff30}
+[data-theme=dark] .ib{border-color:#27458a;box-shadow:0 0 12px #3b82ff30}
+[data-theme=dark] .bdg{box-shadow:0 0 12px #ff3860}
+[data-theme=dark] .head span{text-shadow:0 0 10px #3b82ff}
+[data-theme=dark] .head h1 .i{filter:drop-shadow(0 0 6px #3b82ff);color:#7fb0ff}
+[data-theme=dark] .nav{box-shadow:0 -8px 34px #3b82ff26}
+[data-theme=dark] .nav button.on{color:#5aa2ff;text-shadow:0 0 12px #3b82ff}
+[data-theme=dark] .nav button.on .i{filter:drop-shadow(0 0 6px #3b82ff)}
+[data-theme=dark] .mc{color:#04101f;box-shadow:0 0 12px color-mix(in srgb,var(--c) 60%,transparent)}
+[data-theme=dark] .mc.warn{outline-color:#fff}
 </style>
 </head>
 <body>
@@ -448,7 +493,7 @@ try { db = initializeFirestore(app, { localCache: persistentLocalCache({ tabMana
 catch(e){ db = initializeFirestore(app, {}); }
 
 const names = {all:'Все',storage:'Охлаждение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
-const ST = {storage:['snow','#2573d9'],process:['layers','#e08a12'],rgs:['flask','#1f9d6b'],inactive:['pause','#6b7788'],problem:['alert','#d63a3a'],empty:['circle','#8896ab']};
+const ST = {storage:['snow','#2db6ff'],process:['layers','#ffa51f'],rgs:['flask','#19f5a0'],inactive:['pause','#98a6c6'],problem:['alert','#ff3860'],empty:['circle','#7d93c4']};
 const ACTIVE = ['storage','process','rgs'];
 const FIELDS = [
   ['crop','Культура','text'],['sort','Сорт','text'],['batch','Партия','text'],
@@ -685,7 +730,7 @@ function renderAttn(){
   const bad = vis().filter(needsAttention);
   $('attn').innerHTML = !bad.length ? '' :
     '<section class="attn"><div class="attn-h"><h2>'+ic('alert')+'Требуют внимания · '+bad.length+'</h2><button data-act="attnall">Все проблемы '+ic('arrow')+'</button></div><div class="alist">'+
-    bad.slice(0, 4).map(c => { const pr = c.status === 'problem'; return '<button class="achip" data-cam="'+c.id+'" style="--c:'+(pr ? '#ff4d5e' : '#f5a524')+'"><span class="ai">'+ic(pr ? 'alertc' : 'alert')+'</span><span class="at"><b>№'+pad(c.id)+' · '+val(c.sort)+'</b>'+(pr ? '<span class="pill" style="--c:#ff4d5e">Проблема</span>' : '<small>'+reasons(c).join(', ')+'</small>')+'</span>'+ic('chevr')+'</button>'; }).join('')+'</div></section>';
+    bad.slice(0, 4).map(c => { const pr = c.status === 'problem'; return '<button class="achip" data-cam="'+c.id+'" style="--c:'+(pr ? '#ff3860' : '#ffa51f')+'"><span class="ai">'+ic(pr ? 'alertc' : 'alert')+'</span><span class="at"><b>№'+pad(c.id)+' · '+val(c.sort)+'</b>'+(pr ? '<span class="pill" style="--c:#ff3860">Проблема</span>' : '<small>'+reasons(c).join(', ')+'</small>')+'</span>'+ic('chevr')+'</button>'; }).join('')+'</div></section>';
 }
 function renderStats(){
   const all = vis();
@@ -694,9 +739,9 @@ function renderStats(){
   const pct = Math.round(occ/(all.length||1)*100);
   const card = (col, left, l, v, s) => '<div class="stat" style="--c:'+col+'"><div class="sc">'+left+'<div><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div></div></div>';
   $('stats').innerHTML =
-    card('#2f7bff', '<div class="si">'+ic('box')+'</div>', 'На хранении', (kg/1000).toFixed(1).replace('.', ',')+' т', 'Общий вес') +
-    card('#2f7bff', '<div class="rg" style="--p:'+pct+'"><b>'+pct+'%</b></div>', 'Занято', occ+' / '+all.length, 'камер') +
-    card('#1fbf8a', '<div class="si">'+ic('door')+'</div>', 'Свободно', emp, 'камер');
+    card('#3b82ff', '<div class="si">'+ic('box')+'</div>', 'На хранении', (kg/1000).toFixed(1).replace('.', ',')+' т', 'Общий вес') +
+    card('#3b82ff', '<div class="rg" style="--p:'+pct+'"><b>'+pct+'%</b></div>', 'Занято', occ+' / '+all.length, 'камер') +
+    card('#19f5a0', '<div class="si">'+ic('door')+'</div>', 'Свободно', emp, 'камер');
   $('subTitle').textContent = all.length + ' камер · Обновлено ' + hm(Date.now());
 }
 function renderOv(){
@@ -721,8 +766,8 @@ function renderChips(){
   const chip = (key, icn, label, n, col) => '<button class="chip'+(filter===key?' sel':'')+'" data-filter="'+key+'"'+(col ? ' style="--c:'+col+'"' : '')+'>'+(icn ? ic(icn) : '')+label+' <b>'+n+'</b></button>';
   const order = ['all','storage','process','rgs','problem','inactive','empty'];
   $('filters').innerHTML = order.map(key => key === 'all' ? chip(key, '', names[key], all.length, '') : chip(key, ST[key][0], names[key], all.filter(x => x.status === key).length, ST[key][1])).join('') +
-    chip('noentry', 'ban', 'Вход запрещён', all.filter(noEntry).length, '#d63a3a') +
-    (filter === 'attn' ? chip('attn', 'alert', 'Внимание', all.filter(needsAttention).length, '#ff4d5e') : '');
+    chip('noentry', 'ban', 'Вход запрещён', all.filter(noEntry).length, '#ff3860') +
+    (filter === 'attn' ? chip('attn', 'alert', 'Внимание', all.filter(needsAttention).length, '#ff3860') : '');
   if (wingFilter !== 'all' && wingFilter > S.wings) wingFilter = 'all';
   let o = '<option value="all">Все крылья</option>';
   for (let i = 1; i <= S.wings; i++) o += '<option value="'+i+'">'+wingName(i)+'</option>';
@@ -735,7 +780,7 @@ function camCard(c){
   return '<button class="cam '+esc(c.status)+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+c.id+'" style="--c:'+col+'">'+
     '<div class="ch"><span class="pill">'+ic(icn)+esc(names[c.status] || c.status)+'</span><span class="upd">'+ic('clock')+(c.updatedAt ? 'Обновлено '+hm(c.updatedAt) : 'нет данных')+'</span></div>'+
     (noEntry(c) ? '<div class="ch" style="padding-top:6px"><span class="ban">'+ic('ban')+'Вход запрещён</span></div>' : '')+
-    '<div class="cb"><span class="cf">'+culIcon(c.sort, c.crop)+'</span><span class="cn"><b>№'+pad(c.id)+' '+val(c.sort)+(c.locked ? ' 🔒' : '')+'</b><small>'+val(c.batch)+'</small>'+
+    '<div class="cb"><span class="cf">'+culIcon(c.sort, c.crop)+'</span><span class="cn"><span class="no">№'+pad(c.id)+(c.locked ? ' 🔒' : '')+'</span><b>'+val(c.sort)+'</b><small>'+val(c.batch)+'</small>'+
     '<span class="qq">'+(c.qty || 0).toLocaleString('ru-RU')+' кг'+(d != null ? ' <span class="'+(over(c) ? 'od' : '')+'">· '+d+' дн.</span>' : '')+'</span></span>'+ic('chevr')+'</div>'+
     '<div class="cm">'+cell('temp', ic('thermo'), 'Темп.', '°C')+cell('hum', ic('drop'), 'Влаж.', '%')+cell('o2', ic('o2dot'), 'O₂', '%')+cell('co2', ic('cloud'), 'CO₂', '%')+'</div></button>';
 }
