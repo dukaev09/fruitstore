@@ -473,6 +473,33 @@ html.lock #appScreen main{visibility:hidden}
 .tvf{background:#071026;border:1px solid var(--line);border-radius:16px;padding:12px;overflow:auto}
 .tvf h3{margin:0 0 6px;font-size:13px;color:var(--mut)}
 @media(max-width:700px){.tvk{grid-template-columns:repeat(2,1fr)}.tvb{grid-template-columns:1fr}}
+
+/* ===== Вход, индекс состояния, единый неон ===== */
+.lw{background:radial-gradient(700px 420px at 15% 0,#1e5bd855,transparent 60%),radial-gradient(600px 400px at 100% 100%,#12b88a33,transparent 60%),#050c1a}
+.lb{background:linear-gradient(180deg,color-mix(in srgb,var(--brand) 10%,var(--card)),var(--card));border:1.5px solid color-mix(in srgb,var(--brand) 60%,transparent);box-shadow:0 0 0 1px #3b82ff30,0 0 40px #3b82ff30}
+.llogo{width:86px;height:86px;border-radius:24px;margin:0 auto 14px;display:grid;place-items:center;font-size:44px;background:linear-gradient(145deg,#12306e,#0a1b3d);border:1px solid #2a5bb0;box-shadow:0 0 28px #3b82ff80;overflow:hidden}
+.llogo img{width:100%;height:100%;object-fit:contain}
+.lb h1.lbrand{text-align:center;font-size:26px;margin:0 0 4px}
+.lb p{text-align:center}
+.lfeat{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:16px;font-size:11px;color:var(--mut)}
+.lfeat span{border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.hero{display:flex;align-items:center;gap:14px;border:1.5px solid var(--c)}
+.rg.big{width:76px;height:76px;flex:none}
+.rg.big b{width:60px;height:60px;font-size:22px}
+.hg{font-size:17px;font-weight:800}.hl{font-size:13px;margin-top:2px}.hs{font-size:12px;color:var(--mut);margin-top:2px}
+.tab.on{animation:tabin .25s ease both}
+@keyframes tabin{from{opacity:0;transform:translateY(8px)}}
+.tvk{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+[data-theme=dark] .card{border-color:color-mix(in srgb,var(--brand) 38%,var(--line));background:linear-gradient(180deg,color-mix(in srgb,var(--brand) 6%,var(--card)),var(--card));box-shadow:0 0 12px color-mix(in srgb,var(--brand) 14%,transparent)}
+[data-theme=dark] .card h3{color:#8fb3ff}
+[data-theme=dark] .card.nx{border-color:#3b82ff;box-shadow:0 0 16px #3b82ff40}
+[data-theme=dark] .hero{border-color:var(--c);box-shadow:0 0 18px color-mix(in srgb,var(--c) 40%,transparent)}
+[data-theme=dark] .hero .rg{box-shadow:0 0 16px color-mix(in srgb,var(--c) 55%,transparent)}
+[data-theme=dark] .box{border:1px solid color-mix(in srgb,var(--brand) 40%,var(--line))}
+[data-theme=dark] #editModal .box,[data-theme=dark] #dlgModal .box,[data-theme=dark] #roundModal .box{border:1.5px solid #3b82ff80;box-shadow:0 0 24px #3b82ff30}
+[data-theme=dark] .btn.pri{background:linear-gradient(135deg,#3b82ff,#6a5cff);border:0;box-shadow:0 0 14px #3b82ff60}
+[data-theme=dark] .seg input:checked+span{box-shadow:0 0 12px color-mix(in srgb,var(--c) 55%,transparent)}
+[data-theme=dark] input:focus,[data-theme=dark] select:focus,[data-theme=dark] textarea:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 3px #3b82ff33}
 </style>
 </head>
 <body>
@@ -520,12 +547,14 @@ html.lock #appScreen main{visibility:hidden}
 
 <div id="loginScreen" class="lw">
   <form class="lb" id="loginForm">
-    <div class="lg">🍎</div><h1>Фруктохранилище</h1><p>Войдите, чтобы работать с камерами</p>
+    <div class="llogo"><img src="/app-icon.png" alt="🍎" onerror="this.replaceWith('🍎')"></div>
+    <h1 class="lbrand">Фруктохранилище</h1><p>Высокое качество низких температур</p>
     <div id="loginErr" class="err" role="alert"></div>
     <input id="loginName" type="text" placeholder="Имя (латиница)" autocomplete="username" autocapitalize="none" required>
     <input id="loginPass" type="password" placeholder="Пароль (минимум 6 символов)" autocomplete="current-password" required>
     <button class="btn pri" type="submit">Войти</button>
     <button class="btn" type="button" id="signupBtn" data-act="signup">Создать аккаунт</button>
+    <div class="lfeat"><span>❄ Контроль температуры</span><span>🔔 Тревоги</span><span>📋 Обходы и смены</span></div>
   </form>
 </div>
 
@@ -614,7 +643,7 @@ const DOMAIN = '@fruit.local';
 const SLOT_HOUR = 14;                   // до этого часа обход «утренний», после — «вечерний»
 const OFFLINE_CACHE = false;            // true — хранить данные на устройстве (чтение без сети), но на iPhone иногда подвисает
 const SAN_DAYS = 30;                    // как часто дезинфицировать камеру
-const DEF = { wings: 4, size: 14, maxDays: 180, safeO2: 19.5, norms: { temp:[-1,5], hum:[80,98], o2:[1,5], co2:[0,6] } };
+const DEF = { wings: 4, size: 14, maxDays: 180, safeO2: 19.5, brand: 'Фруктохранилище', tag: 'Высокое качество низких температур', foot: 'ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт', norms: { temp:[-1,5], hum:[80,98], o2:[1,5], co2:[0,6] } };
 const NL = { temp:['Температура',' °C'], hum:['Влажность',' %'], o2:['O₂',' %'], co2:['CO₂',' %'] };
 let S = structuredClone(DEF);
 
@@ -813,7 +842,8 @@ function subscribe(){
   const rows = s => s.docs.map(d => ({ id: d.id, ...d.data() }));
   on(doc(db,'settings','main'), s => {
     const d = s.exists() ? s.data() : {};
-    S = { wings: d.wings || DEF.wings, size: d.size || DEF.size, maxDays: d.maxDays ?? DEF.maxDays, safeO2: d.safeO2 ?? DEF.safeO2, norms: { ...DEF.norms, ...(d.norms || {}) } };
+    S = { wings: d.wings || DEF.wings, size: d.size || DEF.size, maxDays: d.maxDays ?? DEF.maxDays, safeO2: d.safeO2 ?? DEF.safeO2, norms: { ...DEF.norms, ...(d.norms || {}) }, brand: d.brand || DEF.brand, tag: d.tag ?? DEF.tag, foot: d.foot ?? DEF.foot };
+    applyBrand();
     if (cams.length) renderTab();
   }, 'settings');
   unsubs.push(onSnapshot(collection(db,'cameras'), snap => {
@@ -844,6 +874,12 @@ addEventListener('online', () => $('offline').classList.remove('show'));
 addEventListener('offline', () => $('offline').classList.add('show'));
 addEventListener('beforeinstallprompt', e => { e.preventDefault(); ip = e; });
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+
+function applyBrand(){
+  document.querySelectorAll('.brand,.tvh b').forEach(e => { e.textContent = S.brand; });
+  const f = document.querySelector('.foot'); if (f) f.innerHTML = '<i>'+esc(S.tag)+'</i>'+esc(S.foot);
+  document.title = S.brand;
+}
 
 /* ===== Вкладки ===== */
 function showTab(t){
@@ -1023,6 +1059,7 @@ function openView(id){
     const pc = Math.min(100, d / S.maxDays * 100), cd = over(c) ? '#ff3860' : pc > 80 ? '#ffa51f' : '#19f5a0';
     life = '<div class="life"><div class="lh"><span>Срок хранения</span><b style="color:'+cd+'">'+d+' из '+S.maxDays+' дн.'+(over(c) ? ' · превышен' : '')+'</b></div><div class="gauge"><i class="gf" style="width:'+pc.toFixed(0)+'%;background:'+cd+';box-shadow:0 0 10px '+cd+'"></i></div></div>';
   }
+  const hh = journal.filter(e => e.camId === c.id).slice(0, 5).map(e => '<div class="vr" style="flex-direction:column;gap:2px;align-items:flex-start"><b style="text-align:left;font-weight:600;font-size:13px">'+esc(e.action)+'</b><span style="font-size:11px">'+esc(e.date)+' · '+esc(nameOf(e.user))+'</span></div>').join('') || '<div class="vr"><span>Записей пока нет</span></div>';
   $('viewModal').querySelector('.box').style.setProperty('--c', col);
   $('vmTitle').innerHTML = '<span class="vf">'+culIcon(c.sort, c.crop)+'</span><span class="vt"><small>Камера №'+pad(c.id)+(c.locked ? ' 🔒' : '')+'</small><b>'+val(c.sort)+'</b></span>'+
     '<span class="pill" style="--c:'+col+'">'+ic(icn)+esc(names[c.status] || c.status)+'</span><button class="x" data-close aria-label="Закрыть">'+ic('x')+'</button>';
@@ -1035,7 +1072,7 @@ function openView(id){
     sec('Санитария', row('Уборка', san(c.cleanAt))+row('Дезинфекция', san(c.disAt)))+
     (w ? '<div class="quick"><button class="btn sm" data-act="clean">Отметить уборку</button><button class="btn sm" data-act="disinf">Отметить дезинфекцию</button></div>' : '')+
     (c.note ? sec('Примечание', '<div class="vr" style="flex-direction:column;gap:4px"><b style="text-align:left;font-weight:500">'+esc(c.note)+'</b></div>') : '')+
-    '<div class="sec"><h4>Заметки команды</h4><div class="nl" id="nlist"></div>'+
+    sec('История камеры', hh)+'<div class="sec"><h4>Заметки команды</h4><div class="nl" id="nlist"></div>'+
     (w ? '<div class="nin"><input id="nin" maxlength="300" placeholder="Заметка, @имя чтобы упомянуть"><button class="btn sm pri" data-act="noteadd">Отправить</button></div>' : '')+'</div>'+
     (w ? (c.locked ? '<div class="banner" style="color:var(--mut);border-color:var(--line);background:none">Чтобы править, администратор должен открыть партию</div>' : '<button class="btn pri full neon" data-act="edit" style="margin-top:14px">Редактировать</button>') : '')+
     (w && !c.locked && le ? '<button class="btn full" data-act="undo" style="margin-top:8px">↶ Отменить последнее изменение ('+esc(le.date)+')</button>' : '')+
@@ -1128,6 +1165,22 @@ async function save(){
   $('saveBtn').disabled = false; showLoading(false);
 }
 
+/* ===== Индекс состояния ===== */
+function health(){
+  const all = vis(); if (!all.length) return 100;
+  const prob = all.filter(x => x.status === 'problem').length, iss = all.filter(needsAttention).length - prob, od = all.filter(over).length;
+  return Math.max(0, Math.min(100, Math.round(100 - prob*8 - iss*4 - od*2)));
+}
+const healthColor = s => s >= 90 ? '#19f5a0' : s >= 75 ? '#2db6ff' : s >= 55 ? '#ffa51f' : '#ff3860';
+const healthLabel = s => s >= 90 ? 'Отлично' : s >= 75 ? 'Хорошо' : s >= 55 ? 'Требует внимания' : 'Критично';
+function heroCard(){
+  const all = vis(), hs = health(), col = healthColor(hs), hr = new Date().getHours();
+  const greet = hr < 5 ? 'Доброй ночи' : hr < 12 ? 'Доброе утро' : hr < 18 ? 'Добрый день' : 'Добрый вечер';
+  const nm = nameOf(user.email), prob = all.filter(x => x.status === 'problem').length, att = all.filter(needsAttention).length;
+  return '<div class="card hero" style="--c:'+col+'"><div class="rg big" style="--p:'+hs+'"><b>'+hs+'</b></div><div><div class="hg">'+greet+', '+esc(nm.charAt(0).toUpperCase()+nm.slice(1))+'</div>'+
+    '<div class="hl">Состояние хранилища: <b style="color:'+col+'">'+healthLabel(hs)+'</b></div><div class="hs">'+(att ? 'Проблемных камер: '+prob+' · требуют внимания: '+att : 'Всё под контролем')+'</div></div></div>';
+}
+
 /* ===== Вкладка «Сегодня» ===== */
 const myTasks = () => tasks.filter(t => isAdmin() || t.assignee === 'all' || t.assignee === user.email).sort((a,b) => a.due - b.due);
 function reminders(){
@@ -1159,7 +1212,7 @@ function renderToday(){
   const mt = myTasks(), ms = notes.filter(n => (n.mentions||[]).includes(em) && n.by !== em && n.ts > now - 7*864e5).slice(0, 5);
   const rem = reminders(), oi = incs.filter(i => !i.end);
   $('todayInfo').textContent = new Date().toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
-  let h = '<div class="card"><h3>Смена</h3>';
+  let h = heroCard() + '<div class="card"><h3>Смена</h3>';
   if (myShift){
     const s = shiftStats();
     h += '<div class="li"><div class="t"><b>Смена идёт</b><small>с '+hm(myShift.start)+' · '+dur(now - myShift.start)+'</small></div><button class="btn sm pri" data-act="shiftend">Сдать смену</button></div>'+
@@ -1304,6 +1357,7 @@ function markRound(id, ok){
   if (!ok){ const n = prompt('Что не так? (кратко)'); if (n === null) return; note = n.trim(); }
   const day = dayStr(), sl = slotNow();
   setDoc(doc(db,'rounds',rk(day, sl, id)), { day, slot:sl, camId:id, email:user.email, uid:user.uid, ts:Date.now(), ok, note }).catch(e => toast('Не сохранено: '+e.message, 1));
+  if (!vis().some(x => x.id !== id && !rounds[rk(day, sl, x.id)])) toast('Обход завершён: все камеры проверены ✅');
 }
 
 /* ===== Задачи, объявления, аварии ===== */
@@ -1390,7 +1444,7 @@ function renderSum(){
   const exp = ds.reduce((s, d) => s + (d === dayStr() ? (h < SLOT_HOUR ? 1 : 2) : 2), 0) * N;
   const rd = R.filter(r => r.camId <= total()).length, rp = exp ? Math.min(100, Math.round(rd/exp*100)) : 0;
   const down = I.reduce((s, i) => s + ((i.end || now) - i.start), 0);
-  const kp = (l, v, s, cls) => '<div class="stat '+(cls||'')+'"><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div>';
+  const kp = (l, v, s, cls) => '<div class="stat" style="--c:'+(cls === 'bad' ? '#ff3860' : cls === 'pri' ? '#3b82ff' : '#2db6ff')+'"><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div>';
   const perDay = ds.map(d => J.filter(e => dayStr(new Date(e.ts)) === d).length), mx = Math.max(1, ...perDay), bw = 300/ds.length;
   const bars = '<svg viewBox="0 0 300 70" preserveAspectRatio="none" style="width:100%;height:70px;display:block">'+perDay.map((n, i) => '<rect x="'+(i*bw+1).toFixed(1)+'" y="'+(66 - n/mx*62).toFixed(1)+'" width="'+Math.max(1, bw-2).toFixed(1)+'" height="'+(n/mx*62+4).toFixed(1)+'" rx="2" fill="var(--brand)" opacity=".85"/>').join('')+'</svg>';
   const probs = J.filter(e => e.st1 === 'problem' && e.st0 !== 'problem').slice(0, 8);
@@ -1447,6 +1501,7 @@ function openSettings(){
   if (!isAdmin()) return;
   const n = S.norms;
   $('setForm').innerHTML =
+    '<div class="grp"><h3>Название и подписи</h3><div class="fld"><label for="s_brand">Название</label><input id="s_brand" maxlength="40" value="'+esc(S.brand)+'"></div><div class="fld" style="margin-top:10px"><label for="s_tag">Слоган</label><input id="s_tag" maxlength="80" value="'+esc(S.tag)+'"></div><div class="fld" style="margin-top:10px"><label for="s_foot">Подпись внизу страницы</label><input id="s_foot" maxlength="100" value="'+esc(S.foot)+'"></div></div>'+
     '<div class="grp"><h3>Структура</h3><div class="fg"><div class="fld"><label for="s_wings">Число крыльев</label><input id="s_wings" type="number" min="1" max="12" value="'+S.wings+'"></div>'+
     '<div class="fld"><label for="s_size">Камер в крыле</label><input id="s_size" type="number" min="1" max="60" value="'+S.size+'"></div></div>'+
     '<p class="hint">Всего не больше 400 камер. Недостающие камеры создаются пустыми, лишние только скрываются.</p></div>'+
@@ -1470,7 +1525,7 @@ async function saveSettings(){
   $('setSave').disabled = true;
   await run(async () => {
     const b = writeBatch(db), have = new Set(cams.map(c => c.id));
-    b.set(doc(db,'settings','main'), { wings:w, size:z, maxDays:md, safeO2:so, norms });
+    b.set(doc(db,'settings','main'), { wings:w, size:z, maxDays:md, safeO2:so, norms, brand:($('s_brand').value.trim() || DEF.brand).slice(0, 40), tag:$('s_tag').value.trim().slice(0, 80), foot:$('s_foot').value.trim().slice(0, 100) });
     for (let i = 1; i <= w*z; i++) if (!have.has(i)) b.set(doc(db,'cameras','cam'+i), cleanCam({ id:i, status:'empty' }));
     await W(b.commit()); closeModal('setModal');
   }, 'Настройки сохранены');
@@ -1526,7 +1581,7 @@ function renderTV(){
   const all = vis(), occ = all.filter(c => ACTIVE.includes(c.status)), kg = occ.reduce((s, c) => s + (c.qty || 0), 0);
   const bad = all.filter(needsAttention).length, ne = all.filter(noEntry).length, pct = Math.round(occ.length/(all.length||1)*100);
   const k = (l, v, col) => '<div style="--c:'+col+'"><small>'+l+'</small><b>'+v+'</b></div>';
-  $('tvK').innerHTML = k('На хранении', (kg/1000).toFixed(1).replace('.', ',')+' т', '#3b82ff') + k('Загрузка', pct+'%', '#19f5a0') + k('Требуют внимания', bad, bad ? '#ff3860' : '#19f5a0') + k('Вход запрещён', ne, '#ffa51f');
+  $('tvK').innerHTML = k('На хранении', (kg/1000).toFixed(1).replace('.', ',')+' т', '#3b82ff') + k('Загрузка', pct+'%', '#19f5a0') + k('Требуют внимания', bad, bad ? '#ff3860' : '#19f5a0') + k('Вход запрещён', ne, '#ffa51f') + k('Индекс состояния', health(), healthColor(health()));
   $('tvMap').innerHTML = all.map(c => '<i class="tt'+(needsAttention(c) ? ' w' : '')+'" style="--c:'+(ST[c.status] || ST.empty)[1]+'">'+c.id+'</i>').join('');
   $('tvFeed').innerHTML = '<h3>События</h3>'+(feedItems().slice(0, 8).map(x => '<div class="fi'+(x.tone ? ' '+x.tone : '')+'"><span class="fic">'+x.icon+'</span><div class="fb">'+x.html+'<small>'+hm(x.ts)+'</small></div></div>').join('') || '<div class="hint">Событий пока нет</div>');
   $('tvDate').textContent = new Date().toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
