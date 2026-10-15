@@ -385,6 +385,25 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 .modal{padding:calc(env(safe-area-inset-top) + 10px) 0 0}
 .box{max-height:100%;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
 }
+
+/* ===== Лёгкий режим: без тяжёлых эффектов ===== */
+.modal{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(3,8,18,.82)}
+.chips{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--bg)}
+.nav{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--card)}
+.ld{-webkit-backdrop-filter:none;backdrop-filter:none}
+.cam{transition:none}
+.cam:hover,[data-theme=dark] .cam:hover{transform:none}
+[data-theme=dark] .cam{box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent),0 0 14px color-mix(in srgb,var(--c) 45%,transparent),inset 0 0 14px color-mix(in srgb,var(--c) 12%,transparent)}
+[data-theme=dark] .cam:hover{box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent),0 0 14px color-mix(in srgb,var(--c) 45%,transparent),inset 0 0 14px color-mix(in srgb,var(--c) 12%,transparent)}
+[data-theme=dark] .cam.empty,[data-theme=dark] .cam.inactive{box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 40%,transparent),inset 0 0 10px color-mix(in srgb,var(--c) 8%,transparent)}
+[data-theme=dark] .cam.warn{animation:none;outline:2px solid #ff3860;outline-offset:3px}
+[data-theme=dark] .pill .i,[data-theme=dark] .cm .i,[data-theme=dark] .chip .i,[data-theme=dark] .cf .ci,[data-theme=dark] .si .i,[data-theme=dark] .tile span .i,[data-theme=dark] .nav button.on .i,[data-theme=dark] .head h1 .i,[data-theme=dark] .attn-h h2 .i{filter:none}
+[data-theme=dark] .stat{box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 40%,transparent),0 0 12px color-mix(in srgb,var(--c) 35%,transparent)}
+[data-theme=dark] .attn{box-shadow:0 0 0 1px #ff386055,0 0 16px #ff386050}
+[data-theme=dark] #viewModal .box{box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 35%,transparent),0 0 24px color-mix(in srgb,var(--c) 30%,transparent)}
+[data-theme=dark] .chip{box-shadow:0 0 8px color-mix(in srgb,var(--c,var(--brand)) 40%,transparent)}
+[data-theme=dark] .chip.sel{box-shadow:0 0 14px var(--c,var(--brand))}
+[data-theme=dark] .nav{box-shadow:none}
 </style>
 </head>
 <body>
@@ -503,7 +522,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, collection, writeBatch, onSnapshot, query, orderBy, limit, where, getDocs, setDoc, updateDoc, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { initializeFirestore, persistentLocalCache, persistentSingleTabManager, memoryLocalCache, doc, collection, writeBatch, onSnapshot, query, orderBy, limit, where, getDocs, setDoc, updateDoc as _updateDoc, addDoc as _addDoc, deleteDoc as _deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQtB3vJh84ELKJg0qs0ycFSGw9Q62ZAOY",
@@ -519,6 +538,7 @@ const ADMIN_EMAIL = 'adam@fruit.local'; // главный администрат
 const ALLOW_SIGNUP = true;              // false — убрать «Создать аккаунт»
 const DOMAIN = '@fruit.local';
 const SLOT_HOUR = 14;                   // до этого часа обход «утренний», после — «вечерний»
+const OFFLINE_CACHE = false;            // true — хранить данные на устройстве (чтение без сети), но на iPhone иногда подвисает
 const SAN_DAYS = 30;                    // как часто дезинфицировать камеру
 const DEF = { wings: 4, size: 14, maxDays: 180, safeO2: 19.5, norms: { temp:[-1,5], hum:[80,98], o2:[1,5], co2:[0,6] } };
 const NL = { temp:['Температура',' °C'], hum:['Влажность',' %'], o2:['O₂',' %'], co2:['CO₂',' %'] };
@@ -527,7 +547,7 @@ let S = structuredClone(DEF);
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 let db;
-try { db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) }); }
+try { db = initializeFirestore(app, { localCache: OFFLINE_CACHE ? persistentLocalCache({ tabManager: persistentSingleTabManager({ forceOwnership: true }) }) : memoryLocalCache() }); }
 catch(e){ db = initializeFirestore(app, {}); }
 
 const names = {all:'Все',storage:'Охлаждение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
@@ -568,7 +588,11 @@ const toIso = s => { const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(s||''); return
 const toDmy = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s||''); return m ? m[3]+'.'+m[2]+'.'+m[1] : ''; };
 const wingOf = id => Math.floor((id-1)/S.size)+1;
 const total = () => S.wings * S.size;
-const showLoading = s => $('loading').classList.toggle('show', s);
+let lt;
+const showLoading = s => {
+  clearTimeout(lt); $('loading').classList.toggle('show', s);
+  if (s) lt = setTimeout(() => { $('loading').classList.remove('show'); if (!cams.length) toast('Нет связи с сервером. Проверьте интернет.', 1); }, 12000);
+};
 const val = (v, u='') => v != null && v !== '' ? esc(v)+u : '—';
 const unit = k => FIELDS.find(f => f[0] === k)[6] || '';
 const toast = (m, err) => { const d = document.createElement('div'); d.className = 'toast'+(err?' err':''); d.textContent = m; $('toasts').append(d); setTimeout(() => d.remove(), 3600); };
@@ -582,6 +606,13 @@ const noEntry = c => c.status === 'rgs' && (c.o2 == null || c.o2 < S.safeO2);
 const needsAttention = c => c.status === 'problem' || issues(c).length > 0 || over(c);
 const reasons = c => c.status === 'problem' ? ['Проблема'] : [...issues(c).map(k => NL[k][0]+(c[k] > S.norms[k][1] ? ' выше нормы' : ' ниже нормы')), ...(over(c) ? ['Срок хранения превышен'] : [])];
 const rk = (day, slot, id) => day+'_'+slot+'_'+id;
+const W = p => {
+  let late = false;
+  const t = new Promise(r => setTimeout(() => { late = true; toast('Слабая связь: изменения отправятся позже'); r('queued'); }, 6000));
+  p.catch(e => { if (late) toast('Не отправлено: ' + e.message, 1); });
+  return Promise.race([p, t]);
+};
+const updateDoc = (...a) => W(_updateDoc(...a)), addDoc = (...a) => W(_addDoc(...a)), deleteDoc = (...a) => W(_deleteDoc(...a));
 const run = async (fn, okMsg) => { showLoading(true); try { await fn(); if (okMsg) toast(okMsg); } catch(e){ toast('Ошибка: '+e.message, 1); } showLoading(false); };
 
 function culIcon(sort, crop){
@@ -648,7 +679,7 @@ async function doAuth(signup){
   loginErr('');
   const c = credentials(signup); if (!c) return;
   showLoading(true);
-  try { await (signup ? createUserWithEmailAndPassword : signInWithEmailAndPassword)(auth, c.email, c.pass); }
+  try { await Promise.race([(signup ? createUserWithEmailAndPassword : signInWithEmailAndPassword)(auth, c.email, c.pass), new Promise((_, rej) => setTimeout(() => rej(new Error('network timeout')), 15000))]); }
   catch(e){ showLoading(false); loginErr(authError(e)); }
 }
 onAuthStateChanged(auth, u => {
@@ -687,7 +718,7 @@ async function commitAll(list){
   for (let i = 0; i < list.length; i += 400){
     const b = writeBatch(db);
     list.slice(i, i+400).forEach(c => b.set(doc(db,'cameras','cam'+c.id), c));
-    await b.commit();
+    await W(b.commit());
   }
 }
 const seedCams = () => Array.from({length: total()}, (_, k) => cleanCam({ id: k+1, status: 'empty' }));
@@ -695,7 +726,7 @@ async function commitCam(c, patch, action, extra = {}, touch = true){
   const b = writeBatch(db), t = Date.now();
   b.update(doc(db,'cameras','cam'+c.id), touch ? { ...patch, updatedBy: user.email, updatedAt: t } : patch);
   b.set(doc(collection(db,'journal')), { camId: c.id, cam: '№'+pad(c.id), action, user: user.email, ts: t, date: fmtDT(t), ...extra });
-  await b.commit();
+  await W(b.commit());
 }
 function subscribe(){
   const fail = e => { showLoading(false); toast('Ошибка загрузки: ' + e.message, 1); };
@@ -1151,7 +1182,7 @@ async function shiftDone(){
     b.update(doc(db,'shifts',myShift.id), { end:t, summary:s });
     b.set(doc(collection(db,'handovers')), { fromUid:user.uid, fromEmail:user.email, ts:t, note, photo, summary:s, acceptedBy:null, acceptedAt:null });
     ($('d_next').value || '').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 15).forEach(line => b.set(doc(collection(db,'nextshift')), { text:line.slice(0, 160), camId:0, urgent:false, by:user.email, ts:t, done:false }));
-    await b.commit(); closeModal('dlgModal');
+    await W(b.commit()); closeModal('dlgModal');
   }, 'Смена сдана');
 }
 function handView(){
@@ -1347,7 +1378,7 @@ async function saveSettings(){
     const b = writeBatch(db), have = new Set(cams.map(c => c.id));
     b.set(doc(db,'settings','main'), { wings:w, size:z, maxDays:md, safeO2:so, norms });
     for (let i = 1; i <= w*z; i++) if (!have.has(i)) b.set(doc(db,'cameras','cam'+i), cleanCam({ id:i, status:'empty' }));
-    await b.commit(); closeModal('setModal');
+    await W(b.commit()); closeModal('setModal');
   }, 'Настройки сохранены');
   $('setSave').disabled = false;
 }
@@ -1441,6 +1472,8 @@ document.addEventListener('keydown', e => {
 });
 /* Запрет зума щипком на iOS (двойной тап отключён через touch-action в CSS) */
 document.addEventListener('gesturestart', e => e.preventDefault());
+document.addEventListener('visibilitychange', () => { if (!document.hidden) showLoading(false); });
+addEventListener('pageshow', () => showLoading(false));
 </script>
 </body>
 </html>
