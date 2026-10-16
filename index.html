@@ -500,6 +500,17 @@ html.lock #appScreen main{visibility:hidden}
 [data-theme=dark] .btn.pri{background:linear-gradient(135deg,#3b82ff,#6a5cff);border:0;box-shadow:0 0 14px #3b82ff60}
 [data-theme=dark] .seg input:checked+span{box-shadow:0 0 12px color-mix(in srgb,var(--c) 55%,transparent)}
 [data-theme=dark] input:focus,[data-theme=dark] select:focus,[data-theme=dark] textarea:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 3px #3b82ff33}
+
+/* ===== Смены: кто на смене, что сделал и что пропустил ===== */
+.shc{padding:12px 0;border-bottom:1px solid var(--line)}.shc:last-child{border:0}
+.shh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}.shh b{font-size:15px}
+.tl2{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:3px 0}.tl2 span{color:var(--mut)}.tl2 b{text-align:right}
+.miss{margin:8px 0;border:1px solid var(--bad);border-radius:12px;padding:8px 10px;background:color-mix(in srgb,var(--bad) 8%,transparent)}
+.miss summary{cursor:pointer;color:var(--bad);font-weight:700}
+.mi{font-size:12px;padding:6px 0;border-top:1px dashed color-mix(in srgb,var(--bad) 35%,transparent);overflow-wrap:anywhere}
+.mi2{font-size:13px;margin:8px 0;overflow-wrap:anywhere}.mi2>div{padding:2px 0}
+.chk{display:flex;gap:8px;align-items:center;font-size:13px;margin:8px 0}
+.chk input{width:20px;height:20px;min-height:0;flex:none}
 </style>
 </head>
 <body>
@@ -754,7 +765,7 @@ function dlg(title, body, act, lab){
 function danger(msg, id){ const v = prompt(msg+'\n\nДля подтверждения введите номер камеры ('+id+'):'); return v !== null && v.trim() === String(id); }
 
 /* ===== Состояние ===== */
-let user = null, me = null, cams = [], journal = [], users = [], rounds = {}, tasks = [], notes = [], anns = [], incs = [], hands = [], myShift = null, nexts = [];
+let user = null, me = null, cams = [], journal = [], users = [], rounds = {}, tasks = [], notes = [], anns = [], incs = [], hands = [], myShift = null, nexts = [], shifts = [];
 let selected = null, tab = 'cams', filter = 'all', wingFilter = 'all', search = '', sortBy = 'num', collapsed = {};
 let feedOpen = (() => { try { return localStorage.getItem('feed') !== '0'; } catch(e){ return true; } })(), feedN = 30, unsubs = [], seeded = false, creating = false, gated = false, SUM = null, sumRange = 'day', TEAM = null, hpId = null, ip = null;
 const myRole = () => !user ? 'viewer' : user.email === ADMIN_EMAIL ? 'admin' : (me && me.role) || 'viewer';
@@ -791,7 +802,7 @@ async function doAuth(signup){
 }
 onAuthStateChanged(auth, u => {
   user = u; unsubs.forEach(f => f()); unsubs = [];
-  seeded = creating = gated = loaded = false; statsAnim = introDone = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; nexts = []; myShift = null; me = null; SUM = null; TEAM = null;
+  seeded = creating = gated = loaded = false; statsAnim = introDone = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; nexts = []; shifts = []; myShift = null; me = null; SUM = null; TEAM = null;
   if (u){
     $('loginScreen').style.display = 'none'; $('appScreen').style.display = 'block';
     afterRole(); showLoading(true); subscribe();
@@ -868,7 +879,7 @@ function subscribe(){
   on(q('incidents', orderBy('start','desc'), limit(60)), s => { incs = rows(s); refreshLive(); }, 'inc');
   on(q('handovers', orderBy('ts','desc'), limit(5)), s => { hands = rows(s); refreshLive(); }, 'hand');
   on(q('nextshift', orderBy('ts','desc'), limit(60)), s => { nexts = rows(s); refreshLive(); }, 'next');
-  on(q('shifts', where('uid','==',user.uid), where('end','==',null)), s => { myShift = s.docs[0] ? { id: s.docs[0].id, ...s.docs[0].data() } : null; refreshLive(); }, 'shift');
+  on(q('shifts', orderBy('start','desc'), limit(40)), s => { shifts = rows(s); myShift = shifts.find(x => x.uid === user.uid && !x.end) || null; refreshLive(); }, 'shift');
 }
 addEventListener('online', () => $('offline').classList.remove('show'));
 addEventListener('offline', () => $('offline').classList.add('show'));
@@ -1212,14 +1223,15 @@ function renderToday(){
   const mt = myTasks(), ms = notes.filter(n => (n.mentions||[]).includes(em) && n.by !== em && n.ts > now - 7*864e5).slice(0, 5);
   const rem = reminders(), oi = incs.filter(i => !i.end);
   $('todayInfo').textContent = new Date().toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
-  let h = heroCard() + '<div class="card"><h3>Смена</h3>';
-  if (myShift){
-    const s = shiftStats();
-    h += '<div class="li"><div class="t"><b>Смена идёт</b><small>с '+hm(myShift.start)+' · '+dur(now - myShift.start)+'</small></div><button class="btn sm pri" data-act="shiftend">Сдать смену</button></div>'+
-      '<div class="tags"><span class="tag">Обходов: '+s.rounds+'</span><span class="tag ok">Устранено отклонений: '+s.fixed+'</span><span class="tag">Действий: '+s.acts+'</span></div>';
-  } else h += w ? '<div class="li"><div class="t"><b>Смена не начата</b><small>Начните смену, чтобы учитывалось рабочее время</small></div><button class="btn sm pri" data-act="shiftstart">Начать смену</button></div>' : '<div class="hint">Режим просмотра: правки недоступны</div>';
+  let h = heroCard();
+  h += '<div class="card"><h3>Моя смена</h3>';
+  if (myShift) h += '<div class="li"><div class="t"><b>Вы на смене</b><small>с '+hm(myShift.start)+' · '+dur(now - myShift.start)+'</small></div><button class="btn sm pri" data-act="shiftend">Сдать смену</button></div>';
+  else h += w ? '<div class="li"><div class="t"><b>Смена не начата</b><small>'+(hp ? 'Вам передали смену: примите её и начните' : 'Начните смену, чтобы учитывалось рабочее время')+'</small></div><button class="btn sm pri" data-act="shiftstart">'+(hp ? 'Принять и начать' : 'Начать смену')+'</button></div>' : '<div class="hint">Режим просмотра: правки недоступны</div>';
   h += '</div>';
-  if (hp) h += '<div class="card"><h3>Передача смены</h3><div class="li"><div class="t"><b>'+esc(nameOf(hp.fromEmail))+' сдал(а) смену</b><small>'+fmtDT(hp.ts)+(hp.note ? ' · '+esc(hp.note.slice(0,60)) : '')+'</small></div><button class="btn sm pri" data-act="handview">Принять</button></div></div>';
+  if (hp) h += handoverCard(hp, w);
+  const onS = openShifts(), prevS = shifts.filter(x => x.end && x.end > now - 3*864e5).slice(0, 6);
+  h += '<div class="card"><h3>Сейчас на смене<span>'+onS.length+'</span></h3>'+(onS.map(shiftCard).join('') || '<div class="banner">Сейчас на смене никого нет</div>')+'</div>';
+  h += '<div class="card"><h3>Предыдущие смены</h3>'+(prevS.map(shiftCard).join('') || '<div class="hint">Смен за последние 3 дня не было</div>')+'</div>';
   un.forEach(a => { h += '<div class="card"><h3>📢 Объявление<span class="tag bad">нужно подтвердить</span></h3><b>'+esc(a.title)+'</b><div style="margin:6px 0">'+esc(a.text)+'</div><small style="color:var(--mut)">'+esc(nameOf(a.by))+' · '+fmtDT(a.ts)+'</small><button class="btn pri full" style="margin-top:10px" data-ack="'+a.id+'">Прочитал(а)</button></div>'; });
   const nx = nextOpen();
   h += '<div class="card nx"><h3>Следующему оператору<span>'+nx.length+'</span></h3>'+(nx.map(nextRow).join('') || '<div class="hint">Пока ничего не передано</div>')+(w ? '<button class="btn full" data-act="newnext" style="margin-top:8px">+ Добавить пункт</button>' : '')+'</div>';
@@ -1271,7 +1283,10 @@ function feedItems(){
   Object.values(g).forEach(x => add(x.ts, '✅', nm(x.email)+' · '+SL[x.slot].toLowerCase()+' обход: '+x.n+' из '+vis().length));
   incs.forEach(i => { add(i.start, '🚨', nm(i.by)+' · '+esc(incLabel(i)), i.camId, 'bad'); if (i.end) add(i.end, '🔧', 'Закрыто: '+esc(incLabel(i))+' ('+dur(i.end - i.start)+')', i.camId); });
   notes.forEach(n => add(n.ts, '💬', nm(n.by)+' · заметка, камера №'+pad(n.camId)+': '+esc(n.text), n.camId));
-  hands.forEach(h => { add(h.ts, '🔄', nm(h.fromEmail)+' сдал(а) смену'+(h.note ? ': '+esc(h.note.slice(0, 80)) : '')); if (h.acceptedAt) add(h.acceptedAt, '🤝', nm(h.acceptedBy)+' принял(а) смену от '+esc(nameOf(h.fromEmail))); });
+  shifts.forEach(sh => {
+    add(sh.start, '▶️', nm(sh.email)+' начал(а) смену'+(sh.acceptedFrom ? ' · принял(а) от '+esc(nameOf(sh.acceptedFrom)) : ''));
+    if (sh.end){ const mt = missTotal(sh.missed || {}); add(sh.end, '⏹️', nm(sh.email)+' закончил(а) смену · '+dur(sh.end - sh.start)+(mt ? ' · не сделано: '+mt : ' · пропусков нет'), 0, mt ? 'bad' : ''); }
+  });
   anns.forEach(a => add(a.ts, '📢', 'Объявление «'+esc(a.title)+'» · '+esc(nameOf(a.by))));
   nexts.forEach(n => { add(n.ts, '📌', nm(n.by)+' → следующей смене: '+esc(n.text), n.camId, n.urgent && !n.done ? 'bad' : ''); if (n.doneAt) add(n.doneAt, '✔', nm(n.doneBy)+' выполнил(а): '+esc(n.text), n.camId); });
   return it.sort((a, b) => b.ts - a.ts);
@@ -1300,46 +1315,123 @@ function stat(since, email){
 }
 const shiftStats = () => stat(myShift.start, user.email);
 const sumTags = s => '<div class="tags"><span class="tag ok">Принято '+kgf(s.in)+'</span><span class="tag">Отгружено '+kgf(s.out)+'</span><span class="tag">Обходов '+s.rounds+'</span><span class="tag ok">Устранено '+s.fixed+'</span><span class="tag '+(s.prob ? 'bad' : '')+'">Проблем '+s.prob+'</span></div>';
-const shiftStart = () => run(async () => {
-  await addDoc(collection(db,'shifts'), { uid:user.uid, email:user.email, start:Date.now(), end:null });
-  if (hands.some(x => !x.acceptedBy && x.fromEmail !== user.email)) toast('Не забудьте принять смену от коллеги');
-}, 'Смена начата');
+const pendingHand = () => hands.find(x => !x.acceptedBy && x.fromEmail !== user.email);
+const openShifts = () => shifts.filter(x => !x.end);
+const missTotal = m => (m.roundsTotal || 0) + (m.tasks || []).length + (m.nexts || []).length;
+const dm = d => d.slice(8)+'.'+d.slice(5, 7);
+function slotsOf(start, end){
+  const out = [], d = new Date(start); d.setHours(0, 0, 0, 0);
+  while (d.getTime() <= end){
+    const s = d.getTime(), mid = s + SLOT_HOUR*36e5, ds = dayStr(d);
+    out.push({ day: ds, slot: 'am', s, e: mid - 1 }, { day: ds, slot: 'pm', s: mid, e: s + 864e5 - 1 });
+    d.setDate(d.getDate() + 1);
+  }
+  return out;
+}
+function missedFor(start, end, email){
+  const all = vis(), res = [], oldest = dayStr(new Date(Date.now() - 2*864e5));
+  slotsOf(start, end).forEach(sl => {
+    if (sl.day < oldest || Math.min(end, sl.e) - Math.max(start, sl.s) < 3*36e5) return;
+    const ids = all.filter(x => !rounds[rk(sl.day, sl.slot, x.id)]).map(x => x.id);
+    if (ids.length) res.push({ day: sl.day, slot: sl.slot, ids });
+  });
+  return {
+    rounds: res, roundsTotal: res.reduce((s, r) => s + r.ids.length, 0),
+    tasks: tasks.filter(t => t.due <= end && (t.assignee === 'all' || t.assignee === email)).map(t => t.title).slice(0, 15),
+    nexts: nexts.filter(x => !x.done && x.by !== email && x.ts <= end).map(x => x.text).slice(0, 15),
+    attn: all.filter(needsAttention).length
+  };
+}
+function missItems(m){
+  return (m.rounds || []).map(r => '<div class="mi">🔄 '+SL[r.slot]+' обход '+dm(r.day)+': не проверено '+r.ids.length+' камер ('+r.ids.slice(0, 14).map(i => '№'+pad(i)).join(', ')+(r.ids.length > 14 ? '…' : '')+')</div>').join('') +
+    (m.tasks || []).map(t => '<div class="mi">✔ Задача не выполнена: '+esc(t)+'</div>').join('') +
+    (m.nexts || []).map(t => '<div class="mi">📌 Не выполнено из переданного: '+esc(t)+'</div>').join('');
+}
+function carryLines(m){
+  return [...(m.rounds || []).map(r => (SL[r.slot]+' обход '+dm(r.day)+' не завершён: камеры '+r.ids.slice(0, 12).map(i => '№'+pad(i)).join(', ')+(r.ids.length > 12 ? '…' : '')).slice(0, 160)),
+    ...(m.tasks || []).map(t => ('Просрочена задача: '+t).slice(0, 160)), ...(m.nexts || []).map(t => ('Не выполнено с прошлой смены: '+t).slice(0, 160))];
+}
+function shiftCard(sh){
+  const act = !sh.end, now = Date.now(), end = sh.end || now;
+  const s = act ? stat(sh.start, sh.email) : (sh.summary || stat(sh.start, sh.end)), m = act ? missedFor(sh.start, now, sh.email) : (sh.missed || {}), mt = missTotal(m);
+  const stale = act && now - sh.start > 16*36e5, hd = hands.find(x => x.shiftId === sh.id);
+  const mine = nexts.filter(x => x.by === sh.email && x.ts >= sh.start - 1000 && x.ts <= end + 60000);
+  return '<div class="shc"><div class="shh"><b>'+esc(nameOf(sh.email))+'</b><span class="tag '+(stale ? 'bad' : act ? 'ok' : '')+'">'+(stale ? 'не закрыта более 16 ч' : act ? 'на смене' : 'завершена')+'</span></div>'+
+    '<div class="tl2"><span>Принял смену</span><b>'+(sh.acceptedAt ? hm(sh.acceptedAt)+' от '+esc(nameOf(sh.acceptedFrom)) : 'без передачи')+'</b></div>'+
+    '<div class="tl2"><span>Начал</span><b>'+fmtDT(sh.start)+'</b></div>'+
+    '<div class="tl2"><span>'+(act ? 'Идёт' : 'Закончил')+'</span><b>'+(act ? dur(now - sh.start) : fmtDT(sh.end)+' · '+dur(sh.end - sh.start))+'</b></div>'+
+    '<div class="tags"><span class="tag">Обходов: '+(s.rounds || 0)+'</span><span class="tag ok">Устранено: '+(s.fixed || 0)+'</span><span class="tag">Принято '+kgf(s.in || 0)+'</span><span class="tag">Отгружено '+kgf(s.out || 0)+'</span><span class="tag">Действий: '+(s.acts || 0)+'</span></div>'+
+    (mt ? '<details class="miss"><summary>'+(act ? 'Пока не сделано' : 'Не сделано')+': '+mt+'</summary>'+missItems(m)+'</details>' : '<span class="tag ok">Пропусков нет ✓</span>')+
+    ((hd && hd.note) || (sh.endNote) ? '<div class="mi2"><b>Заметка:</b> '+esc((hd && hd.note) || sh.endNote)+'</div>' : '')+
+    (mine.length ? '<div class="mi2"><b>Передал следующему:</b>'+mine.map(x => '<div>'+(x.done ? '✅' : '⬜')+' '+(x.urgent ? '🔥 ' : '')+esc(x.text)+'</div>').join('')+'</div>' : (!act ? '<div class="hint">Следующему задач не передано</div>' : ''))+
+    (isAdmin() && stale ? '<button class="btn sm" data-shclose="'+sh.id+'" style="margin-top:8px">Закрыть смену</button>' : '')+'</div>';
+}
+function handoverCard(hp, w){
+  const m = hp.missed || {}, mt = missTotal(m), nx = nextOpen();
+  return '<div class="card nx"><h3>Вам передали смену<span>'+esc(nameOf(hp.fromEmail))+' · '+fmtDT(hp.ts)+'</span></h3>'+
+    (hp.note ? '<div class="mi2"><b>Заметка:</b> '+esc(hp.note)+'</div>' : '')+
+    (nx.length ? '<div class="mi2"><b>Что сделать:</b>'+nx.map(x => '<div>'+(x.urgent ? '🔥 ' : '• ')+esc(x.text)+'</div>').join('')+'</div>' : '<div class="hint">Задач от прошлой смены нет</div>')+
+    (mt ? '<div class="banner" style="margin:8px 0">Прошлая смена не сделала: '+mt+' (подробнее ниже в «Предыдущих сменах»)</div>' : '')+
+    (w ? '<button class="btn pri full" data-act="'+(myShift ? 'handok' : 'shiftstart')+'">'+(myShift ? 'Принял(а) смену' : 'Принять и начать смену')+'</button>' : '')+'</div>';
+}
+function shiftStart(){ if (!canW()) return; const hp = pendingHand(); if (hp) handView(true); else doStart(null); }
+const doStart = hp => run(async () => {
+  const b = writeBatch(db), now = Date.now();
+  b.set(doc(collection(db,'shifts')), { uid:user.uid, email:user.email, start:now, end:null, acceptedFrom:hp ? hp.fromEmail : null, acceptedAt:hp ? now : null });
+  if (hp) b.update(doc(db,'handovers',hp.id), { acceptedBy:user.email, acceptedAt:now });
+  await W(b.commit()); closeModal('dlgModal');
+}, hp ? 'Смена принята и начата' : 'Смена начата');
 function shiftEnd(){
   if (!myShift) return;
-  dlg('Сдать смену', '<div class="hint">Итоги смены с '+hm(myShift.start)+' ('+dur(Date.now()-myShift.start)+')</div>'+sumTags(shiftStats())+
+  const m = missedFor(myShift.start, Date.now(), user.email), mt = missTotal(m);
+  dlg('Сдать смену', '<div class="hint">Итоги смены с '+hm(myShift.start)+' ('+dur(Date.now() - myShift.start)+')</div>'+sumTags(shiftStats())+
+    (mt ? '<div class="banner" style="margin:8px 0;flex-direction:column;align-items:flex-start;gap:4px"><b>Пока не сделано: '+mt+'</b><div style="width:100%;font-weight:500;color:var(--ink)">'+missItems(m)+'</div><small>Это увидят все. Лучше сделать сейчас или передать следующему.</small></div><label class="chk"><input type="checkbox" id="d_carry" checked> Добавить невыполненное в задачи следующему оператору</label>' : '<div class="tag ok" style="margin:8px 0">Пропусков нет ✓</div>')+
     '<div class="fld"><label for="d_note">Заметка следующей смене (что важно знать)</label><textarea id="d_note" maxlength="600"></textarea></div>'+
-    '<div class="fld" style="margin-top:10px"><label for="d_next">Что сделать следующему оператору (каждая строка — отдельный пункт)</label><textarea id="d_next" maxlength="800" placeholder="Проверить камеру 12 в 22:00"></textarea></div>'+
-    '<div class="fld" style="margin-top:10px"><label for="d_photo">Фото (по желанию)</label><input id="d_photo" type="file" accept="image/*"></div>', 'shiftdone', 'Сдать смену');
+    '<div class="fld" style="margin-top:10px"><label for="d_next">Что сделать следующему оператору (каждая строка — отдельный пункт) *</label><textarea id="d_next" maxlength="800" placeholder="Проверить камеру 12 в 22:00"></textarea></div>'+
+    '<label class="chk"><input type="checkbox" id="d_none"> Особых задач для следующей смены нет</label>'+
+    '<div class="fld" style="margin-top:6px"><label for="d_photo">Фото (по желанию)</label><input id="d_photo" type="file" accept="image/*"></div>', 'shiftdone', 'Сдать смену');
 }
 function shrink(file){
   return new Promise((res, rej) => {
     const img = new Image(), u = URL.createObjectURL(file);
-    img.onload = () => { const k = Math.min(1, 800/Math.max(img.width, img.height)), c = document.createElement('canvas'); c.width = img.width*k; c.height = img.height*k; c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(u); res(c.toDataURL('image/jpeg', .6)); };
+    img.onload = () => { const k = Math.min(1, 800/Math.max(img.width, img.height)), cv = document.createElement('canvas'); cv.width = img.width*k; cv.height = img.height*k; cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height); URL.revokeObjectURL(u); res(cv.toDataURL('image/jpeg', .6)); };
     img.onerror = rej; img.src = u;
   });
 }
 async function shiftDone(){
   if (!myShift) return;
+  const t = Date.now(), m = missedFor(myShift.start, t, user.email);
+  const lines = ($('d_next').value || '').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 15);
+  const carry = $('d_carry') && $('d_carry').checked ? carryLines(m) : [];
+  if (!lines.length && !carry.length && !$('d_none').checked){ toast('Укажите, что сделать следующему оператору, или отметьте «задач нет»', 1); return; }
   const f = $('d_photo').files[0]; let photo = '';
   if (f){ try { photo = await shrink(f); } catch(e){ toast('Фото не обработано', 1); } }
   if (photo.length > 700000){ photo = ''; toast('Фото слишком большое, пропущено', 1); }
-  const s = shiftStats(), t = Date.now(), note = $('d_note').value.trim();
+  const s = stat(myShift.start, user.email), note = $('d_note').value.trim(), sid = myShift.id;
   await run(async () => {
     const b = writeBatch(db);
-    b.update(doc(db,'shifts',myShift.id), { end:t, summary:s });
-    b.set(doc(collection(db,'handovers')), { fromUid:user.uid, fromEmail:user.email, ts:t, note, photo, summary:s, acceptedBy:null, acceptedAt:null });
-    ($('d_next').value || '').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 15).forEach(line => b.set(doc(collection(db,'nextshift')), { text:line.slice(0, 160), camId:0, urgent:false, by:user.email, ts:t, done:false }));
+    b.update(doc(db,'shifts',sid), { end:t, summary:s, missed:m, endNote:note });
+    b.set(doc(collection(db,'handovers')), { fromUid:user.uid, fromEmail:user.email, ts:t, note, photo, summary:s, missed:m, shiftId:sid, acceptedBy:null, acceptedAt:null });
+    [...lines.map(x => [x, false]), ...carry.map(x => [x, true])].slice(0, 30).forEach(([text, urgent]) => b.set(doc(collection(db,'nextshift')), { text:text.slice(0, 160), camId:0, urgent, by:user.email, ts:t, done:false }));
     await W(b.commit()); closeModal('dlgModal');
   }, 'Смена сдана');
 }
-function handView(){
-  const h = hands.find(x => !x.acceptedBy && x.fromEmail !== user.email); if (!h) return;
-  hpId = h.id;
+function handView(forStart){
+  const h = pendingHand(); if (!h) return;
+  const m = h.missed || {}, mt = missTotal(m);
   dlg('Принять смену', '<div class="hint">'+esc(nameOf(h.fromEmail))+' · '+fmtDT(h.ts)+'</div>'+sumTags(h.summary || { in:0, out:0, rounds:0, fixed:0, prob:0 })+
+    (mt ? '<div class="banner" style="margin:8px 0;flex-direction:column;align-items:flex-start;gap:4px"><b>Прошлая смена не сделала: '+mt+'</b><div style="width:100%;font-weight:500;color:var(--ink)">'+missItems(m)+'</div></div>' : '')+
     '<div class="rows"><div class="vr" style="flex-direction:column;gap:4px"><span>Заметка</span><b style="text-align:left;font-weight:500">'+(esc(h.note) || '—')+'</b></div></div>'+
-    (h.photo ? '<img class="pimg" src="'+h.photo+'" alt="Фото смены">' : '')+nextList(), 'handok', 'Принял(а) смену');
+    (h.photo ? '<img class="pimg" src="'+h.photo+'" alt="Фото смены">' : '')+nextList(), forStart ? 'handstart' : 'handok', forStart ? 'Принял(а) и начать смену' : 'Принял(а) смену');
 }
-const handOk = () => run(async () => { await updateDoc(doc(db,'handovers',hpId), { acceptedBy:user.email, acceptedAt:Date.now() }); closeModal('dlgModal'); }, 'Смена принята');
+const handOk = () => { const h = pendingHand(); if (!h) return; run(async () => { await updateDoc(doc(db,'handovers',h.id), { acceptedBy:user.email, acceptedAt:Date.now() }); closeModal('dlgModal'); }, 'Смена принята'); };
+const handStart = () => doStart(pendingHand());
+const shClose = id => {
+  const sh = shifts.find(x => x.id === id); if (!sh || !isAdmin()) return;
+  if (!confirm('Закрыть смену сотрудника '+nameOf(sh.email)+'? Время окончания будет поставлено сейчас.')) return;
+  const t = Date.now();
+  run(() => updateDoc(doc(db,'shifts',id), { end:t, summary:stat(sh.start, sh.email), missed:missedFor(sh.start, t, sh.email), closedBy:user.email }), 'Смена закрыта');
+};
 
 /* ===== Обходы ===== */
 function renderRound(){
@@ -1581,7 +1673,7 @@ function renderTV(){
   const all = vis(), occ = all.filter(c => ACTIVE.includes(c.status)), kg = occ.reduce((s, c) => s + (c.qty || 0), 0);
   const bad = all.filter(needsAttention).length, ne = all.filter(noEntry).length, pct = Math.round(occ.length/(all.length||1)*100);
   const k = (l, v, col) => '<div style="--c:'+col+'"><small>'+l+'</small><b>'+v+'</b></div>';
-  $('tvK').innerHTML = k('На хранении', (kg/1000).toFixed(1).replace('.', ',')+' т', '#3b82ff') + k('Загрузка', pct+'%', '#19f5a0') + k('Требуют внимания', bad, bad ? '#ff3860' : '#19f5a0') + k('Вход запрещён', ne, '#ffa51f') + k('Индекс состояния', health(), healthColor(health()));
+  $('tvK').innerHTML = k('На хранении', (kg/1000).toFixed(1).replace('.', ',')+' т', '#3b82ff') + k('Загрузка', pct+'%', '#19f5a0') + k('Требуют внимания', bad, bad ? '#ff3860' : '#19f5a0') + k('Вход запрещён', ne, '#ffa51f') + k('Индекс состояния', health(), healthColor(health())) + k('На смене', openShifts().length, openShifts().length ? '#19f5a0' : '#ff3860');
   $('tvMap').innerHTML = all.map(c => '<i class="tt'+(needsAttention(c) ? ' w' : '')+'" style="--c:'+(ST[c.status] || ST.empty)[1]+'">'+c.id+'</i>').join('');
   $('tvFeed').innerHTML = '<h3>События</h3>'+(feedItems().slice(0, 8).map(x => '<div class="fi'+(x.tone ? ' '+x.tone : '')+'"><span class="fic">'+x.icon+'</span><div class="fb">'+x.html+'<small>'+hm(x.ts)+'</small></div></div>').join('') || '<div class="hint">Событий пока нет</div>');
   $('tvDate').textContent = new Date().toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
@@ -1624,6 +1716,12 @@ async function demoFill(){
       const c = list[Math.floor(rnd() * list.length)], t = now - (20 + i * 70) * 6e4, a = i % acts.length, q = c.qty || 12000;
       b.set(doc(collection(db,'journal')), { camId:c.id, cam:'№'+pad(c.id), action:acts[a], user:user.email, ts:t, date:fmtDT(t), st0:c.status, st1:c.status, q0:a === 2 ? q - 2000 : q, q1:q, fixed:i % 4 === 0 ? 1 : 0, prev:{ note:'' } });
     }
+    const shRef = doc(collection(db,'shifts')), miss1 = { rounds: [{ day: dayStr(new Date(now - 24 * H)), slot: 'pm', ids: [7, 12, 19, 23, 31, 40].filter(i => i <= N) }], roundsTotal: 0, tasks: ['Взять пробы твёрдости в камере №4'], nexts: [] };
+    miss1.roundsTotal = miss1.rounds[0].ids.length;
+    const sum1 = { in: 12000, out: 8000, fixed: 2, acts: 14, prob: 0, rounds: 60 };
+    b.set(shRef, { uid:'demo1', email:'hasan@fruit.local', start:now - 30 * H, end:now - 18 * H, acceptedFrom:'anna@fruit.local', acceptedAt:now - 30 * H, summary:sum1, missed:miss1, endNote:'' });
+    b.set(doc(collection(db,'handovers')), { fromUid:'demo1', fromEmail:'hasan@fruit.local', ts:now - 18 * H, note:'Камера №12 не держит температуру, наблюдать каждый час.', photo:'', summary:sum1, missed:miss1, shiftId:shRef.id, acceptedBy:'ruslan@fruit.local', acceptedAt:now - 17.5 * H });
+    b.set(doc(collection(db,'shifts')), { uid:'demo2', email:'ruslan@fruit.local', start:now - 5 * H, end:null, acceptedFrom:'hasan@fruit.local', acceptedAt:now - 5 * H });
     const me = user.email, day = dayStr(), yd = dayStr(new Date(now - 864e5)), sl = slotNow();
     [['Проверить камеру №12 до конца смены', 12, 2 * H], ['Взять пробы твёрдости в камере №4', 4, 5 * H], ['Дезинфекция камеры №6 перед загрузкой', 6, 26 * H]].forEach(([title, camId, dt]) => b.set(doc(collection(db,'tasks')), { title, camId, assignee:'all', due:now + dt, createdBy:me, createdAt:now, done:false }));
     [['Перед 22:00 проверить температуру в камере №12', 12, true], ['Принять машину с грушей, рампа 2', 0, false], ['Сверить остатки по крылу 1', 0, false]].forEach(([text, camId, urgent], i) => b.set(doc(collection(db,'nextshift')), { text, camId, urgent, by:me, ts:now - (10 + i) * 6e4, done:false }));
@@ -1647,7 +1745,7 @@ const ACTS = {
   export: () => isAdmin() && exportData(), import: () => isAdmin() && $('importFile').click(),
   install: () => { closeTopModal(); if (ip){ ip.prompt(); ip = null; } else toast('iPhone: «Поделиться» → «На экран Домой». Android: меню браузера → «Установить»'); },
   theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try { localStorage.setItem('th', n); } catch(_){} },
-  shiftstart: shiftStart, shiftend: shiftEnd, shiftdone: shiftDone, handview: handView, handok: handOk,
+  shiftstart: shiftStart, shiftend: shiftEnd, shiftdone: shiftDone, handview: () => handView(false), handok: handOk, handstart: handStart,
   round: () => { renderRound(); openModal('roundModal'); },
   bell: () => showTab('today'), tv: () => { closeTopModal(); tvOpen(); }, tvclose: tvClose, demo: demoFill, attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
   newtask: newTask, newnext: newNext, nextsave: nextSave, feedmore: () => { feedN += 30; renderToday(); },
@@ -1656,7 +1754,7 @@ const ACTS = {
 document.addEventListener('click', e => {
   const t = e.target;
   if (t.classList && t.classList.contains('modal')) return closeModal(t.id);
-  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-toggle],[data-q],[data-tab],[data-r],[data-ack],[data-done],[data-deltask],[data-delann],[data-incclose],[data-range],[data-uh],[data-ndone],[data-ndel]');
+  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-toggle],[data-q],[data-tab],[data-r],[data-ack],[data-done],[data-deltask],[data-delann],[data-incclose],[data-range],[data-uh],[data-ndone],[data-ndel],[data-shclose]');
   if (!x) return;
   const d = x.dataset;
   if (x.hasAttribute('data-close')) return closeTopModal();
@@ -1666,6 +1764,7 @@ document.addEventListener('click', e => {
   if (d.filter){ filter = d.filter; return render(); }
   if (d.toggle){ collapsed[d.toggle] = !collapsed[d.toggle]; return render(); }
   if (d.q) return quick(d.q);
+  if (d.shclose) return shClose(d.shclose);
   if (d.ndone) return nextDone(d.ndone);
   if (d.ndel) return nextDel(d.ndel);
   if (d.ack) return ack(d.ack);
