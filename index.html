@@ -511,6 +511,16 @@ html.lock #appScreen main{visibility:hidden}
 .mi2{font-size:13px;margin:8px 0;overflow-wrap:anywhere}.mi2>div{padding:2px 0}
 .chk{display:flex;gap:8px;align-items:center;font-size:13px;margin:8px 0}
 .chk input{width:20px;height:20px;min-height:0;flex:none}
+
+/* ===== Простота: крупные кнопки, понятные подсказки ===== */
+.btn.sm{min-height:44px}
+.li.click{cursor:pointer}.li.click>.i{color:var(--mut);flex:none}
+.step{margin-top:6px;font-size:13px;font-weight:700}
+.mh{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);margin:12px 0 2px}
+.tour p{font-size:15px;line-height:1.55;margin:4px 0}
+.dots{display:flex;gap:6px;justify-content:center;margin:16px 0 4px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--brand);box-shadow:0 0 8px var(--brand)}
 </style>
 </head>
 <body>
@@ -576,7 +586,6 @@ html.lock #appScreen main{visibility:hidden}
     <div class="sp"></div>
     <span id="userName" hidden></span>
     <div class="hbw"><button class="ib" data-act="history" aria-label="История"><svg class="i"><use href="#i-clock"/></svg></button><small>История</small></div>
-    <div class="hbw"><button class="ib" data-act="bell" aria-label="Уведомления"><svg class="i"><use href="#i-bell"/></svg><i class="bdg" id="bdBell"></i></button></div>
     <div class="hbw"><button class="ib" data-act="menu" aria-label="Меню"><svg class="i"><use href="#i-menu"/></svg></button></div>
   </div></header>
   <div class="offline" id="offline">Нет связи. Показаны сохранённые данные, изменения отправятся при подключении.</div>
@@ -743,7 +752,7 @@ function devInfo(){
 }
 
 /* ===== Модальные окна ===== */
-let dirty = false, loaded = false, rq, statsAnim = false, introDone = false, tvT = null;
+let dirty = false, loaded = false, rq, statsAnim = false, introDone = false, tvT = null, tourDone = false, tourI = 0;
 const modalOpen = () => !!document.querySelector('.modal.open');
 function openModal(id){
   $(id).classList.add('open');
@@ -757,9 +766,9 @@ function closeModal(id){
   }
 }
 function closeTopModal(){ const o = [...document.querySelectorAll('.modal.open')].pop(); if (o) closeModal(o.id); }
-function dlg(title, body, act, lab){
+function dlg(title, body, act, lab, cancel = 'Отмена'){
   $('dlgTitle').innerHTML = title;
-  $('dlgBody').innerHTML = body + '<div class="acts"><button class="btn" data-close>'+(act ? 'Отмена' : 'Закрыть')+'</button>'+(act ? '<button class="btn pri" data-act="'+act+'">'+lab+'</button>' : '')+'</div>';
+  $('dlgBody').innerHTML = body + '<div class="acts"><button class="btn" data-close>'+(act ? cancel : 'Закрыть')+'</button>'+(act ? '<button class="btn pri" data-act="'+act+'">'+lab+'</button>' : '')+'</div>';
   openModal('dlgModal');
 }
 function danger(msg, id){ const v = prompt(msg+'\n\nДля подтверждения введите номер камеры ('+id+'):'); return v !== null && v.trim() === String(id); }
@@ -861,7 +870,8 @@ function subscribe(){
     $('offline').classList.toggle('show', snap.metadata.fromCache && !navigator.onLine);
     if (snap.empty && !snap.metadata.fromCache && isAdmin() && !seeded){ seeded = true; commitAll(seedCams()).catch(fail); return; }
     cams = snap.docs.map(d => d.data()).sort((a,b) => a.id - b.id);
-    loaded = true; showLoading(false); renderTab(); renderNotes();
+    loaded = true; showLoading(false);
+    if (!tourDone){ tourDone = true; try { if (!localStorage.getItem('tour1')){ localStorage.setItem('tour1', '1'); setTimeout(() => { if (!modalOpen()) tour(0); }, 900); } } catch(_){} } renderTab(); renderNotes();
   }, fail));
   on(q('journal', orderBy('ts','desc'), limit(200)), s => { journal = s.docs.map(d => d.data()); renderJournal(); }, 'journal');
   on(collection(db,'users'), s => {
@@ -922,7 +932,6 @@ function badge(){
   if (!user) return;
   const n = anns.filter(a => !(a.ack && a.ack[user.uid])).length + (hands.some(x => !x.acceptedBy && x.fromEmail !== user.email) ? 1 : 0) + myTasks().filter(t => t.due <= todayEnd()).length + nexts.filter(x => !x.done).length;
   const b = $('bdToday'); b.textContent = n; b.style.display = n ? 'grid' : 'none';
-  const nb = n + vis().filter(needsAttention).length, bb = $('bdBell'); bb.textContent = nb; bb.style.display = nb ? 'grid' : 'none';
 }
 
 /* ===== Отрисовка камер ===== */
@@ -1119,7 +1128,7 @@ function buildForm(){
   $('editForm').innerHTML =
     '<div class="grp"><h3>Статус</h3><div class="seg">'+Object.keys(ST).map(k =>
       '<label style="--c:'+ST[k][1]+'"><input type="radio" name="st" value="'+k+'"><span>'+ic(ST[k][0])+names[k]+'</span></label>').join('')+'</div>'+
-    '<div class="quick"><button type="button" class="btn sm" data-q="free">Освободить камеру</button><button type="button" class="btn sm" data-q="process">На обработку</button><button type="button" class="btn sm" data-q="rgs">На РГС</button></div></div>'+
+    '<div class="quick"><button type="button" class="btn sm" data-q="free">Освободить камеру (очистить поля)</button></div></div>'+
     GROUPS.map(([t, ks]) => '<div class="grp"><h3>'+t+'</h3><div class="fg">'+ks.map(fld).join('')+'</div></div>').join('')+
     '<div class="grp"><h3>Примечание</h3><textarea id="f_note" maxlength="500" style="width:100%"></textarea></div>';
 }
@@ -1184,12 +1193,21 @@ function health(){
 }
 const healthColor = s => s >= 90 ? '#19f5a0' : s >= 75 ? '#2db6ff' : s >= 55 ? '#ffa51f' : '#ff3860';
 const healthLabel = s => s >= 90 ? 'Отлично' : s >= 75 ? 'Хорошо' : s >= 55 ? 'Требует внимания' : 'Критично';
+function nextStep(){
+  if (!canW()) return 'Вы в режиме просмотра: можно смотреть камеры и отчёты';
+  if (!myShift) return pendingHand() ? 'Примите смену от коллеги и начните свою' : 'Начните смену';
+  const left = vis().filter(x => !rounds[rk(dayStr(), slotNow(), x.id)]).length;
+  if (left) return 'Пройдите '+SL[slotNow()].toLowerCase()+' обход: осталось камер — '+left;
+  const t = myTasks().filter(x => x.due <= todayEnd()).length; if (t) return 'Выполните задачи на сегодня: '+t;
+  const n = nextOpen().length; if (n) return 'Выполните пункты от прошлой смены: '+n;
+  return 'Всё сделано. Когда будете уходить, сдайте смену';
+}
 function heroCard(){
   const all = vis(), hs = health(), col = healthColor(hs), hr = new Date().getHours();
   const greet = hr < 5 ? 'Доброй ночи' : hr < 12 ? 'Доброе утро' : hr < 18 ? 'Добрый день' : 'Добрый вечер';
   const nm = nameOf(user.email), prob = all.filter(x => x.status === 'problem').length, att = all.filter(needsAttention).length;
   return '<div class="card hero" style="--c:'+col+'"><div class="rg big" style="--p:'+hs+'"><b>'+hs+'</b></div><div><div class="hg">'+greet+', '+esc(nm.charAt(0).toUpperCase()+nm.slice(1))+'</div>'+
-    '<div class="hl">Состояние хранилища: <b style="color:'+col+'">'+healthLabel(hs)+'</b></div><div class="hs">'+(att ? 'Проблемных камер: '+prob+' · требуют внимания: '+att : 'Всё под контролем')+'</div></div></div>';
+    '<div class="hl">Состояние хранилища: <b style="color:'+col+'">'+healthLabel(hs)+'</b></div><div class="hs">'+(att ? 'Проблемных камер: '+prob+' · требуют внимания: '+att : 'Всё под контролем')+'</div><div class="step">👉 '+nextStep()+'</div></div></div>';
 }
 
 /* ===== Вкладка «Сегодня» ===== */
@@ -1212,43 +1230,37 @@ function complHtml(ds, cnt){
 function taskRow(t){
   const od = t.due < Date.now(), adm = isAdmin();
   return '<div class="li"><div class="t"><b>'+esc(t.title)+'</b><small>'+(t.camId ? 'Камера №'+pad(t.camId)+' · ' : '')+fmtDT(t.due)+' · '+rel(t.due)+(adm ? ' · '+(t.assignee === 'all' ? 'все' : esc(nameOf(t.assignee))) : '')+'</small></div>'+
-    (od ? '<span class="tag bad">срок</span>' : '')+(canW() ? '<button class="btn sm" data-done="'+t.id+'">✓</button>' : '')+(adm ? '<button class="btn sm" data-deltask="'+t.id+'" aria-label="Удалить">✕</button>' : '')+'</div>';
+    (od ? '<span class="tag bad">срок</span>' : '')+(canW() ? '<button class="btn sm" data-done="'+t.id+'">Готово</button>' : '')+(adm ? '<button class="btn sm" data-deltask="'+t.id+'" aria-label="Удалить">✕</button>' : '')+'</div>';
 }
 function renderToday(){
   if (!user) return;
   const el = $('today'), w = canW(), adm = isAdmin(), em = user.email, now = Date.now(), day = dayStr(), sl = slotNow(), all = vis();
   const done = all.filter(c => rounds[rk(day, sl, c.id)]).length, pct = Math.round(done/(all.length||1)*100);
-  const hp = hands.find(x => !x.acceptedBy && x.fromEmail !== em);
-  const un = anns.filter(a => !(a.ack && a.ack[user.uid]));
-  const mt = myTasks(), ms = notes.filter(n => (n.mentions||[]).includes(em) && n.by !== em && n.ts > now - 7*864e5).slice(0, 5);
-  const rem = reminders(), oi = incs.filter(i => !i.end);
-  $('todayInfo').textContent = new Date().toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
-  let h = heroCard();
-  h += '<div class="card"><h3>Моя смена</h3>';
-  if (myShift) h += '<div class="li"><div class="t"><b>Вы на смене</b><small>с '+hm(myShift.start)+' · '+dur(now - myShift.start)+'</small></div><button class="btn sm pri" data-act="shiftend">Сдать смену</button></div>';
-  else h += w ? '<div class="li"><div class="t"><b>Смена не начата</b><small>'+(hp ? 'Вам передали смену: примите её и начните' : 'Начните смену, чтобы учитывалось рабочее время')+'</small></div><button class="btn sm pri" data-act="shiftstart">'+(hp ? 'Принять и начать' : 'Начать смену')+'</button></div>' : '<div class="hint">Режим просмотра: правки недоступны</div>';
-  h += '</div>';
-  if (hp) h += handoverCard(hp, w);
-  const onS = openShifts(), prevS = shifts.filter(x => x.end && x.end > now - 3*864e5).slice(0, 6);
-  h += '<div class="card"><h3>Сейчас на смене<span>'+onS.length+'</span></h3>'+(onS.map(shiftCard).join('') || '<div class="banner">Сейчас на смене никого нет</div>')+'</div>';
-  h += '<div class="card"><h3>Предыдущие смены</h3>'+(prevS.map(shiftCard).join('') || '<div class="hint">Смен за последние 3 дня не было</div>')+'</div>';
-  un.forEach(a => { h += '<div class="card"><h3>📢 Объявление<span class="tag bad">нужно подтвердить</span></h3><b>'+esc(a.title)+'</b><div style="margin:6px 0">'+esc(a.text)+'</div><small style="color:var(--mut)">'+esc(nameOf(a.by))+' · '+fmtDT(a.ts)+'</small><button class="btn pri full" style="margin-top:10px" data-ack="'+a.id+'">Прочитал(а)</button></div>'; });
-  const nx = nextOpen();
-  h += '<div class="card nx"><h3>Следующему оператору<span>'+nx.length+'</span></h3>'+(nx.map(nextRow).join('') || '<div class="hint">Пока ничего не передано</div>')+(w ? '<button class="btn full" data-act="newnext" style="margin-top:8px">+ Добавить пункт</button>' : '')+'</div>';
-  h += '<div class="card"><h3>'+SL[sl]+' обход<span>'+done+' / '+all.length+'</span></h3><div class="bar" style="margin:0 0 10px"><i style="width:'+pct+'%"></i></div>'+(w ? '<button class="btn pri full" data-act="round">'+(done >= all.length ? 'Обход завершён · открыть' : 'Начать обход')+'</button>' : '')+'</div>';
-  h += '<div class="card"><h3>Мои дела'+(adm ? '<button class="btn sm" data-act="newtask">+ Задача</button>' : '')+'</h3>'+(mt.map(taskRow).join('') || '<div class="hint">Задач нет</div>')+'</div>';
-  if (oi.length) h += '<div class="card"><h3>Аварии и простои сейчас</h3>'+oi.map(incRow).join('')+'</div>';
-  h += '<div class="card"><h3>Напоминания</h3>'+(rem.slice(0, 8).map(([id, t]) => '<div class="li"><div class="t"><b>Камера №'+pad(id)+'</b><small>'+t+'</small></div><button class="btn sm" data-cam="'+id+'">Открыть</button></div>').join('') || '<div class="hint">Всё в порядке</div>')+(rem.length > 8 ? '<div class="hint">и ещё '+(rem.length-8)+'</div>' : '')+'</div>';
-  if (ms.length) h += '<div class="card"><h3>Вас упомянули</h3>'+ms.map(n => '<div class="li"><div class="t"><b>'+esc(nameOf(n.by))+' · камера №'+pad(n.camId)+'</b><small>'+esc(n.text)+'</small></div><button class="btn sm" data-cam="'+n.camId+'">Открыть</button></div>').join('')+'</div>';
+  const hp = pendingHand(), un = anns.filter(a => !(a.ack && a.ack[user.uid]));
+  const mt = myTasks(), ms = notes.filter(n => (n.mentions || []).includes(em) && n.by !== em && n.ts > now - 7*864e5).slice(0, 5);
+  const rem = reminders(), oi = incs.filter(i => !i.end), nx = nextOpen(), onS = openShifts(), prevS = shifts.filter(x => x.end && x.end > now - 3*864e5).slice(0, 6);
   const fn = feedItems().filter(x => x.ts >= startDay()).length;
-  h += '<div class="card"><h3><button class="fh" data-act="feedtoggle" aria-expanded="'+feedOpen+'"><span>Лента событий <span class="tag">сегодня: '+fn+'</span></span>'+ic('chev')+'</button></h3>'+(feedOpen ? feedHtml() : '')+'</div>';
-  if (w) h += '<div class="card"><h3>Быстрые действия</h3><div class="hbtn"><button class="btn sm" data-act="newinc">⚠ Авария / простой</button>'+(adm ? '<button class="btn sm" data-act="newann">📢 Объявление</button>' : '')+'</div></div>';
-  if (adm){
-    const ds = [0,1,2].map(i => dayStr(new Date(now - i*864e5)));
-    h += '<div class="card"><h3>Обходы за 3 дня (руководителю)</h3>'+complHtml(ds, (d, s) => all.filter(c => rounds[rk(d, s, c.id)]).length)+'</div>';
-    h += '<div class="card"><h3>Объявления</h3>'+(anns.slice(0, 5).map(a => { const got = Object.keys(a.ack || {}).length; return '<div class="li"><div class="t"><b>'+esc(a.title)+'</b><small>Прочитали '+got+' из '+users.length+'</small></div><button class="btn sm" data-delann="'+a.id+'" aria-label="Удалить">✕</button></div>'; }).join('') || '<div class="hint">Объявлений нет</div>')+'</div>';
-  }
-  el.innerHTML = h;
+  $('todayInfo').textContent = new Date().toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
+  const card = (title, body, cls) => '<div class="card'+(cls ? ' '+cls : '')+'"><h3>'+title+'</h3>'+body+'</div>';
+  const row = (id, title, sub) => '<div class="li click" data-cam="'+id+'"><div class="t"><b>'+title+'</b><small>'+sub+'</small></div>'+ic('chevr')+'</div>';
+  const sec = [heroCard()];
+  un.forEach(a => sec.push('<div class="card"><h3>📢 Объявление<span class="tag bad">нужно подтвердить</span></h3><b>'+esc(a.title)+'</b><div style="margin:6px 0">'+esc(a.text)+'</div><small style="color:var(--mut)">'+esc(nameOf(a.by))+' · '+fmtDT(a.ts)+'</small><button class="btn pri full" style="margin-top:10px" data-ack="'+a.id+'">Прочитал(а)</button></div>'));
+  if (hp) sec.push(handoverCard(hp, w));
+  sec.push(card('Моя смена', myShift
+    ? '<div class="li"><div class="t"><b>Вы на смене</b><small>с '+hm(myShift.start)+' · '+dur(now - myShift.start)+'</small></div><button class="btn sm pri" data-act="shiftend">Сдать смену</button></div>'
+    : w ? '<div class="li"><div class="t"><b>Смена не начата</b><small>'+(hp ? 'Сначала примите смену в карточке выше' : 'Начните смену, чтобы учитывалось рабочее время')+'</small></div>'+(hp ? '' : '<button class="btn sm pri" data-act="shiftstart">Начать смену</button>')+'</div>'
+    : '<div class="hint">Режим просмотра: правки недоступны</div>'));
+  sec.push(card('Следующему оператору<span>'+nx.length+'</span>', (nx.map(nextRow).join('') || '<div class="hint">Пока ничего не передано</div>')+(w ? '<button class="btn full" data-act="newnext" style="margin-top:8px">+ Добавить пункт</button>' : ''), 'nx'));
+  sec.push(card(SL[sl]+' обход<span>'+done+' / '+all.length+'</span>', '<div class="bar" style="margin:0 0 10px"><i style="width:'+pct+'%"></i></div>'+(w ? '<button class="btn pri full" data-act="round">'+(done >= all.length ? 'Обход завершён · открыть' : 'Начать обход')+'</button>' : '')));
+  sec.push(card('Мои дела'+(adm ? '<button class="btn sm" data-act="newtask">+ Задача</button>' : ''), mt.map(taskRow).join('') || '<div class="hint">Задач нет 🎉</div>'));
+  sec.push(card('Сейчас на смене<span>'+onS.length+'</span>', onS.map(shiftCard).join('') || '<div class="banner">Сейчас на смене никого нет</div>'));
+  sec.push(card('Аварии и простои'+(w ? '<button class="btn sm" data-act="newinc">+ Записать</button>' : ''), oi.map(incRow).join('') || '<div class="hint">Сейчас аварий и простоев нет ✓</div>'));
+  sec.push(card('Напоминания', (rem.slice(0, 8).map(([id, t]) => row(id, 'Камера №'+pad(id), t)).join('') || '<div class="hint">Всё в порядке</div>')+(rem.length > 8 ? '<div class="hint">и ещё '+(rem.length - 8)+'</div>' : '')));
+  if (ms.length) sec.push(card('Вас упомянули', ms.map(n => row(n.camId, esc(nameOf(n.by))+' · камера №'+pad(n.camId), esc(n.text))).join('')));
+  sec.push(card('Предыдущие смены', prevS.map(shiftCard).join('') || '<div class="hint">Смен за последние 3 дня не было</div>'));
+  sec.push('<div class="card"><h3><button class="fh" data-act="feedtoggle" aria-expanded="'+feedOpen+'"><span>Лента событий <span class="tag">сегодня: '+fn+'</span></span>'+ic('chev')+'</button></h3>'+(feedOpen ? feedHtml() : '')+'</div>');
+  if (adm) sec.push(card('Объявления<button class="btn sm" data-act="newann">+ Объявление</button>', anns.slice(0, 5).map(a => '<div class="li"><div class="t"><b>'+esc(a.title)+'</b><small>Прочитали '+Object.keys(a.ack || {}).length+' из '+users.length+'</small></div><button class="btn sm" data-delann="'+a.id+'" aria-label="Удалить">✕</button></div>').join('') || '<div class="hint">Объявлений нет</div>'));
+  el.innerHTML = sec.join('');
 }
 
 /* ===== Следующему оператору и лента событий ===== */
@@ -1256,7 +1268,7 @@ const nextOpen = () => nexts.filter(x => !x.done).sort((a, b) => (b.urgent|0) - 
 function nextRow(x){
   const mine = x.by === user.email || isAdmin();
   return '<div class="li"><div class="t"><b>'+(x.urgent ? '🔥 ' : '')+esc(x.text)+'</b><small>'+(x.camId ? 'Камера №'+pad(x.camId)+' · ' : '')+esc(nameOf(x.by))+' · '+fmtDT(x.ts)+'</small></div>'+
-    (canW() ? '<button class="btn sm" data-ndone="'+x.id+'" aria-label="Выполнено">✓</button>' : '')+(mine && canW() ? '<button class="btn sm" data-ndel="'+x.id+'" aria-label="Удалить">✕</button>' : '')+'</div>';
+    (canW() ? '<button class="btn sm" data-ndone="'+x.id+'">Готово</button>' : '')+(mine && canW() ? '<button class="btn sm" data-ndel="'+x.id+'" aria-label="Удалить">✕</button>' : '')+'</div>';
 }
 const nextList = () => { const l = nextOpen(); return l.length ? '<div class="rows"><div class="vr" style="flex-direction:column;gap:4px;align-items:flex-start"><span>Задачи для этой смены</span>'+l.map(x => '<b style="text-align:left;font-weight:500">'+(x.urgent ? '🔥 ' : '• ')+esc(x.text)+'</b>').join('')+'</div></div>' : ''; };
 function newNext(){
@@ -1491,7 +1503,7 @@ function gateCheck(){
 }
 const incLabel = i => (i.kind || 'Простой')+' · '+(i.camId ? 'камера №'+pad(i.camId) : 'всё хранилище')+' · '+esc(i.cause||'');
 const incRow = i => '<div class="li"><div class="t"><b>'+incLabel(i)+'</b><small>'+fmtDT(i.start)+' · '+(i.end ? dur(i.end - i.start) : 'идёт '+dur(Date.now() - i.start))+'</small></div>'+
-  (!i.end && canW() ? '<button class="btn sm" data-incclose="'+i.id+'">Закрыть</button>' : '<span class="tag '+(i.end ? 'ok' : 'bad')+'">'+(i.end ? 'закрыто' : 'идёт')+'</span>')+'</div>';
+  (!i.end && canW() ? '<button class="btn sm" data-incclose="'+i.id+'">Завершить</button>' : '<span class="tag '+(i.end ? 'ok' : 'bad')+'">'+(i.end ? 'закрыто' : 'идёт')+'</span>')+'</div>';
 function newInc(){
   if (!canW()) return;
   const cams_ = '<option value="0">Всё хранилище</option>'+vis().map(c => '<option value="'+c.id+'">№'+pad(c.id)+' '+esc(c.sort||'')+'</option>').join('');
@@ -1545,8 +1557,8 @@ function renderSum(){
     '<div class="kpis">'+kp('Изменений', J.length, 'записей')+kp('Аварии', I.length, 'простой '+dur(down), I.length ? 'bad' : '')+kp('Задач готово', T.length, 'просрочено сейчас: '+tasks.filter(t => t.due < now).length)+kp('Проблем', probs.length, 'новых за период', probs.length ? 'bad' : '')+'</div>'+
     (ds.length > 1 ? '<div class="card"><h3>Активность по дням</h3>'+bars+'</div>' : '')+
     '<div class="card"><h3>Выполнение обходов</h3>'+complHtml([...ds].reverse().slice(0, 14), (d, s) => R.filter(r => r.day === d && r.slot === s && r.camId <= total()).length)+'</div>'+
-    '<div class="card"><h3>Аварии и простои'+(canW() ? '<button class="btn sm" data-act="newinc">+ Записать</button>' : '')+'</h3>'+(I.sort((x, y) => y.start - x.start).slice(0, 10).map(incRow).join('') || '<div class="hint">За период не было</div>')+'</div>'+
-    (probs.length ? '<div class="card"><h3>Камеры, ставшие проблемными</h3>'+probs.map(e => '<div class="li"><div class="t"><b>'+esc(e.cam)+'</b><small>'+esc(e.date)+' · '+esc(nameOf(e.user))+'</small></div><button class="btn sm" data-cam="'+e.camId+'">Открыть</button></div>').join('')+'</div>' : '');
+    '<div class="card"><h3>Аварии и простои</h3>'+(I.sort((x, y) => y.start - x.start).slice(0, 10).map(incRow).join('') || '<div class="hint">За период не было</div>')+'</div>'+
+    (probs.length ? '<div class="card"><h3>Камеры, ставшие проблемными</h3>'+probs.map(e => '<div class="li click" data-cam="'+e.camId+'"><div class="t"><b>'+esc(e.cam)+'</b><small>'+esc(e.date)+' · '+esc(nameOf(e.user))+'</small></div>'+ic('chevr')+'</div>').join('')+'</div>' : '');
 }
 async function loadTeam(){
   if (!isAdmin()) return;
@@ -1583,10 +1595,13 @@ function userHist(email){
 
 /* ===== Меню и настройки ===== */
 function openMenu(){
-  const b = (a, i, t) => '<button class="btn" data-act="'+a+'">'+ic(i)+t+'</button>';
+  const b = (a, i, t) => '<button class="btn" data-act="'+a+'">'+ic(i)+t+'</button>', h = t => '<div class="mh">'+t+'</div>';
   const standalone = matchMedia('(display-mode:standalone)').matches || navigator.standalone;
-  $('menuList').innerHTML = '<div class="hint" style="margin:0 0 4px">'+esc($('userName').textContent)+'</div>' + b('tv','grid','Табло для экрана (режим презентации)') + b('csv','table','Скачать таблицу (Excel)') + b('print','print','Печать отчёта') + b('theme','moon','Сменить тему (тёмная / светлая)') + (standalone ? '' : b('install','down','Установить на телефон')) +
-    (isAdmin() ? b('settings','gear','Настройки хранилища') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') + b('demo','plus','Демо-данные для презентации') : '') + b('logout','out','Выйти');
+  $('menuList').innerHTML = '<div class="hint" style="margin:0 0 4px">'+esc($('userName').textContent)+'</div>'+
+    h('Отчёты и экраны') + b('tv','grid','Табло для экрана (презентация)') + b('csv','table','Таблица камер (Excel)') + b('print','print','Печать отчёта') +
+    h('Приложение') + b('help','list','Как пользоваться') + b('theme','moon','Сменить тему') + (standalone ? '' : b('install','down','Установить на телефон')) +
+    (isAdmin() ? h('Администратор') + b('settings','gear','Настройки хранилища') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') + b('demo','plus','Демо-данные для презентации') : '') +
+    h('Аккаунт') + b('logout','out','Выйти');
   openModal('menuModal');
 }
 function openSettings(){
@@ -1736,6 +1751,20 @@ async function demoFill(){
   }, 'Демо-данные загружены');
 }
 
+/* ===== Подсказки для новых сотрудников ===== */
+const TOUR = [
+  ['❄️', 'Камеры', 'Здесь все камеры хранилища. Цвет рамки показывает состояние: голубой — охлаждение, жёлтый — обработка, зелёный — РГС (газовая среда), красный — проблема. Нажмите на камеру, чтобы увидеть всё о ней.'],
+  ['✅', 'Сегодня — ваш рабочий день', 'Откройте вкладку «Сегодня»: там начало смены, обход камер, задачи и то, что передали с прошлой смены. Вверху написано, что делать дальше.'],
+  ['🔄', 'Обход камер', 'Нажмите «Начать обход» и отмечайте камеры: зелёная галочка — всё в порядке, красный знак — есть замечание (напишите, что не так).'],
+  ['✏️', 'Как изменить данные камеры', 'Откройте камеру и нажмите «Редактировать». Измените значения и сохраните. Если ошиблись, нажмите «Отменить последнее изменение».'],
+  ['🤝', 'Как сдать смену', 'Вкладка «Сегодня» → «Сдать смену». Обязательно напишите, что сделать следующему оператору. Всё, что вы не успели сделать, увидят все.'],
+  ['🚨', 'Красный цвет — это внимание', 'Красным светится всё, что требует внимания: замер вне нормы, истёк срок хранения, проблема. Надпись «Вход запрещён» значит, что в камере с газовой средой мало кислорода и заходить нельзя.']
+];
+function tour(i = 0){
+  tourI = i; const [e, t, tx] = TOUR[i], last = i === TOUR.length - 1;
+  dlg(e+' '+t, '<div class="tour"><p>'+tx+(!canW() && i === 0 ? '<br><br><b>У вас режим просмотра:</b> менять данные может оператор или администратор.' : '')+'</p><div class="dots">'+TOUR.map((_, k) => '<i class="'+(k === i ? 'on' : '')+'"></i>').join('')+'</div></div>', last ? 'tourend' : 'tournext', last ? 'Понятно!' : 'Далее', 'Пропустить');
+}
+
 const ACTS = {
   signup: () => doAuth(true), logout: () => signOut(auth), edit: openForm, save, undo, lock: lockToggle, noteadd: noteAdd,
   clean: () => sanit('cleanAt', 'Уборка'), disinf: () => sanit('disAt', 'Дезинфекция'),
@@ -1747,7 +1776,7 @@ const ACTS = {
   theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try { localStorage.setItem('th', n); } catch(_){} },
   shiftstart: shiftStart, shiftend: shiftEnd, shiftdone: shiftDone, handview: () => handView(false), handok: handOk, handstart: handStart,
   round: () => { renderRound(); openModal('roundModal'); },
-  bell: () => showTab('today'), tv: () => { closeTopModal(); tvOpen(); }, tvclose: tvClose, demo: demoFill, attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
+  help: () => { closeTopModal(); tour(0); }, tournext: () => tour(tourI + 1), tourend: () => closeModal('dlgModal'), tv: () => { closeTopModal(); tvOpen(); }, tvclose: tvClose, demo: demoFill, attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
   newtask: newTask, newnext: newNext, nextsave: nextSave, feedmore: () => { feedN += 30; renderToday(); },
   feedtoggle: () => { feedOpen = !feedOpen; try { localStorage.setItem('feed', feedOpen ? '1' : '0'); } catch(_){} renderToday(); }, tasksave: taskSave, newann: newAnn, annsave: annSave, newinc: newInc, incsave: incSave
 };
