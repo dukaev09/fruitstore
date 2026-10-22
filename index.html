@@ -521,6 +521,18 @@ html.lock #appScreen main{visibility:hidden}
 .dots{display:flex;gap:6px;justify-content:center;margin:16px 0 4px}
 .dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
 .dots i.on{background:var(--brand);box-shadow:0 0 8px var(--brand)}
+
+/* ===== Окна подтверждения, одобрение доступа, проверка системы ===== */
+#askModal{z-index:80}
+#askModal .box{width:min(420px,100%)}
+#askT{margin:0 0 8px}
+.ask-p{font-size:14px;line-height:1.5;margin:0 0 12px;overflow-wrap:anywhere}
+#askI{width:100%;margin-bottom:6px}
+.btn.dng{background:linear-gradient(135deg,#ff3860,#d6204a);border:0;color:#fff}
+[data-theme=dark] .btn.dng{box-shadow:0 0 14px #ff386070}
+.dg{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
+.dg small{display:block;color:var(--mut);overflow-wrap:anywhere}
+.ver{text-align:center;color:var(--mut);font-size:12px;margin-top:12px}
 </style>
 </head>
 <body>
@@ -543,16 +555,13 @@ html.lock #appScreen main{visibility:hidden}
 <symbol id="i-table" viewBox="0 0 24 24"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18"/></symbol>
 <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol>
 <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a1 1 0 01-1-1v-6a1 1 0 011-1h16a1 1 0 011 1v6a1 1 0 01-1 1h-2M6 14h12v7H6z"/></symbol>
-<symbol id="i-dots" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"/></symbol>
 <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 3L3 5v16l6-2 6 2 6-2V3l-6 2zM9 3v16M15 5v16"/></symbol>
-<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
 <symbol id="i-todo" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></symbol>
 <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.9M16 3.1a4 4 0 010 7.8"/></symbol>
 <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M7 14v4M12 8v10M17 11v7"/></symbol>
 <symbol id="i-ban" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM5.6 5.6l12.8 12.8"/></symbol>
 <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
 <symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2"/></symbol>
-<symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></symbol>
 <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
 <symbol id="i-door" viewBox="0 0 24 24"><path d="M5 21V4a1 1 0 011-1h12a1 1 0 011 1v17M3 21h18M15 12h.01"/></symbol>
 <symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2zM12 17a4 4 0 100-8 4 4 0 000 8z"/></symbol>
@@ -578,6 +587,8 @@ html.lock #appScreen main{visibility:hidden}
     <div class="lfeat"><span>❄ Контроль температуры</span><span>🔔 Тревоги</span><span>📋 Обходы и смены</span></div>
   </form>
 </div>
+
+<div id="pendingScreen" class="lw" style="display:none"><div class="lb"><div class="llogo">⏳</div><h1 class="lbrand">Ожидайте одобрения</h1><p>Аккаунт создан. Администратор должен подтвердить доступ, обычно это занимает немного времени.</p><p class="hint" id="pendEmail"></p><button class="btn pri" data-act="pendrefresh">Проверить снова</button><button class="btn" data-act="logout">Выйти</button></div></div>
 
 <div id="appScreen" style="display:none">
   <header class="hd"><div class="hwrap">
@@ -616,7 +627,7 @@ html.lock #appScreen main{visibility:hidden}
     <button data-tab="map"><svg class="i"><use href="#i-map"/></svg>Схема</button>
     <button data-tab="today"><svg class="i"><use href="#i-todo"/></svg>Сегодня<i class="bd" id="bdToday"></i></button>
     <button data-tab="sum"><svg class="i"><use href="#i-chart"/></svg>Сводка</button>
-    <button data-tab="team" id="navTeam" style="display:none"><svg class="i"><use href="#i-users"/></svg>Команда</button>
+    <button data-tab="team" id="navTeam" style="display:none"><svg class="i"><use href="#i-users"/></svg>Команда<i class="bd" id="bdTeam"></i></button>
   </nav>
 </div>
 
@@ -633,6 +644,7 @@ html.lock #appScreen main{visibility:hidden}
 
 <div class="modal" id="roundModal"><div class="box"><h2 id="rdTitle"></h2><div id="rdBody"></div><div class="acts"><button class="btn" data-close>Закрыть</button></div></div></div>
 <div class="modal" id="dlgModal"><div class="box"><h2 id="dlgTitle"></h2><div id="dlgBody"></div></div></div>
+<div class="modal" id="askModal"><div class="box"><h2 id="askT"></h2><div class="ask-p" id="askP"></div><input id="askI" type="text" hidden autocomplete="off"><div class="acts"><button class="btn" id="askNo" data-ask="0">Отмена</button><button class="btn pri" id="askOk" data-ask="1">Да</button></div></div></div>
 <input type="file" id="importFile" accept=".json" hidden>
 <div id="loading" class="ld"><div class="ldc"><div class="lgo">🍎</div><div class="spin"></div><small>Загрузка…</small></div></div>
 <div id="tv" class="tv" hidden>
@@ -660,6 +672,8 @@ const firebaseConfig = {
 const ADMIN_EMAIL = 'adam@fruit.local'; // главный администратор (защита — firestore.rules)
 const ALLOW_SIGNUP = true;              // false — убрать «Создать аккаунт»
 const DOMAIN = '@fruit.local';
+const APP_VERSION = '3.0';
+const DEMO_TOOLS = true;                // false — спрятать кнопку «Демо-данные» (после презентации)
 const SLOT_HOUR = 14;                   // до этого часа обход «утренний», после — «вечерний»
 const OFFLINE_CACHE = false;            // true — хранить данные на устройстве (чтение без сети), но на iPhone иногда подвисает
 const SAN_DAYS = 30;                    // как часто дезинфицировать камеру
@@ -687,7 +701,7 @@ const FIELDS = [
 const GROUPS = [['Продукт',['crop','sort','batch','qty','operator']],['Условия в камере',['temp','hum','o2','co2']],['Даты',['loadAt','processAt','rgsAt']]];
 const LABEL = Object.fromEntries(FIELDS.map(f => [f[0], f[1].split(',')[0]]));
 Object.assign(LABEL, {status:'Статус', note:'Примечание'});
-const ROLE_RU = {viewer:'Просмотр', operator:'Оператор', admin:'Администратор'};
+const ROLE_RU = {pending:'Ожидает одобрения', viewer:'Просмотр', operator:'Оператор', admin:'Администратор'};
 const SL = {am:'Утренний', pm:'Вечерний'};
 const wingName = n => 'Крыло ' + n;
 
@@ -736,6 +750,15 @@ const W = p => {
   return Promise.race([p, t]);
 };
 const updateDoc = (...a) => W(_updateDoc(...a)), addDoc = (...a) => W(_addDoc(...a)), deleteDoc = (...a) => W(_deleteDoc(...a));
+let errN = 0, errLast = 0;
+function logErr(msg, stack){
+  msg = String(msg || 'ошибка'); if (/ResizeObserver|Script error/i.test(msg)) return;
+  console.error(msg); const now = Date.now(); if (now - errLast < 4000) return; errLast = now;
+  if (errN++ < 3) toast('Что-то пошло не так. Ошибка записана, администратор увидит.', 1);
+  if (user && started) _addDoc(collection(db,'errors'), { email:user.email, msg:msg.slice(0, 300), stack:String(stack || '').slice(0, 600), ua:devInfo(), ver:APP_VERSION, ts:now }).catch(() => {});
+}
+addEventListener('error', e => logErr(e.message, e.error && e.error.stack));
+addEventListener('unhandledrejection', e => logErr((e.reason && e.reason.message) || e.reason, e.reason && e.reason.stack));
 const run = async (fn, okMsg) => { showLoading(true); try { await fn(); if (okMsg) toast(okMsg); } catch(e){ toast('Ошибка: '+e.message, 1); } showLoading(false); };
 
 function culIcon(sort, crop){
@@ -752,7 +775,8 @@ function devInfo(){
 }
 
 /* ===== Модальные окна ===== */
-let dirty = false, loaded = false, rq, statsAnim = false, introDone = false, tvT = null, tourDone = false, tourI = 0;
+let dirty = false, loaded = false, rq, statsAnim = false, introDone = false, tvT = null, tourDone = false, tourI = 0, started = false;
+let askRes = null, askIn = false;
 const modalOpen = () => !!document.querySelector('.modal.open');
 function openModal(id){
   $(id).classList.add('open');
@@ -760,18 +784,37 @@ function openModal(id){
 }
 function closeModal(id){
   $(id).classList.remove('open');
+  if (id === 'askModal' && askRes){ const r = askRes, v = askIn ? null : false; askRes = null; r(v); }
   if (!modalOpen()){
     document.documentElement.classList.remove('lock');
     if (dirty){ dirty = false; renderTab(); }
   }
 }
 function closeTopModal(){ const o = [...document.querySelectorAll('.modal.open')].pop(); if (o) closeModal(o.id); }
+function ask({ title, text = '', ok = 'Да', cancel = 'Отмена', input = null, danger = false }){
+  return new Promise(res => {
+    if (askRes){ const r = askRes; askRes = null; r(askIn ? null : false); }
+    askRes = res; askIn = input !== null;
+    $('askT').textContent = title; $('askP').innerHTML = text;
+    const i = $('askI'); i.hidden = !askIn; i.value = ''; i.placeholder = input || '';
+    const b = $('askOk'); b.textContent = ok; b.className = 'btn ' + (danger ? 'dng' : 'pri');
+    $('askNo').textContent = cancel;
+    openModal('askModal'); if (askIn) setTimeout(() => i.focus(), 280);
+  });
+}
+function askDone(yes){
+  const r = askRes, v = askIn ? (yes ? $('askI').value : null) : yes; askRes = null;
+  closeModal('askModal'); if (r) r(v);
+}
 function dlg(title, body, act, lab, cancel = 'Отмена'){
   $('dlgTitle').innerHTML = title;
   $('dlgBody').innerHTML = body + '<div class="acts"><button class="btn" data-close>'+(act ? cancel : 'Закрыть')+'</button>'+(act ? '<button class="btn pri" data-act="'+act+'">'+lab+'</button>' : '')+'</div>';
   openModal('dlgModal');
 }
-function danger(msg, id){ const v = prompt(msg+'\n\nДля подтверждения введите номер камеры ('+id+'):'); return v !== null && v.trim() === String(id); }
+async function danger(msg, id){
+  const v = await ask({ title:'Опасное действие', text: esc(msg)+'<br><br>Для подтверждения введите номер камеры <b>'+id+'</b>', input:'Номер камеры', ok:'Подтвердить', danger:true });
+  return v !== null && String(v).trim() === String(id);
+}
 
 /* ===== Состояние ===== */
 let user = null, me = null, cams = [], journal = [], users = [], rounds = {}, tasks = [], notes = [], anns = [], incs = [], hands = [], myShift = null, nexts = [], shifts = [];
@@ -811,10 +854,11 @@ async function doAuth(signup){
 }
 onAuthStateChanged(auth, u => {
   user = u; unsubs.forEach(f => f()); unsubs = [];
-  seeded = creating = gated = loaded = false; statsAnim = introDone = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; nexts = []; shifts = []; myShift = null; me = null; SUM = null; TEAM = null;
+  seeded = creating = gated = loaded = started = false; statsAnim = introDone = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; nexts = []; shifts = []; myShift = null; me = null; SUM = null; TEAM = null;
+  $('pendingScreen').style.display = 'none';
   if (u){
-    $('loginScreen').style.display = 'none'; $('appScreen').style.display = 'block';
-    afterRole(); showLoading(true); subscribe();
+    $('loginScreen').style.display = 'none'; $('appScreen').style.display = 'none';
+    showLoading(true); subscribe();
     if (!sessionStorage.getItem('lg'+u.uid)){ sessionStorage.setItem('lg'+u.uid, '1'); addDoc(collection(db,'logins'), { uid:u.uid, email:u.email, ts:Date.now(), device:devInfo() }).catch(() => {}); }
   } else {
     document.querySelectorAll('.modal.open').forEach(m => closeModal(m.id));
@@ -849,13 +893,31 @@ async function commitAll(list){
   }
 }
 const seedCams = () => Array.from({length: total()}, (_, k) => cleanCam({ id: k+1, status: 'empty' }));
-async function commitCam(c, patch, action, extra = {}, touch = true){
+async function commitCam(c, patch, action, extra = {}, touch = true, reading = null){
   const b = writeBatch(db), t = Date.now();
   b.update(doc(db,'cameras','cam'+c.id), touch ? { ...patch, updatedBy: user.email, updatedAt: t } : patch);
   b.set(doc(collection(db,'journal')), { camId: c.id, cam: '№'+pad(c.id), action, user: user.email, ts: t, date: fmtDT(t), ...extra });
+  if (reading) b.set(doc(collection(db,'cameras','cam'+c.id,'readings')), reading);
   await W(b.commit());
 }
 function subscribe(){
+  unsubs.push(onSnapshot(doc(db,'users',user.uid), s => {
+    me = s.exists() ? { id: s.id, ...s.data() } : null;
+    if (!s.exists() && !s.metadata.fromCache && !creating){
+      creating = true;
+      setDoc(doc(db,'users',user.uid), { email:user.email, name:user.email.replace(DOMAIN,''), role: user.email === ADMIN_EMAIL ? 'admin' : 'pending', createdAt:Date.now() }).catch(console.error);
+    }
+    const member = user.email === ADMIN_EMAIL || (me && ['viewer','operator','admin'].includes(me.role));
+    if (member){
+      $('pendingScreen').style.display = 'none'; $('appScreen').style.display = 'block';
+      if (!started){ started = true; startAll(); }
+    } else if (me){
+      showLoading(false); $('appScreen').style.display = 'none'; $('pendingScreen').style.display = 'flex'; $('pendEmail').textContent = user.email.replace(DOMAIN, '');
+    }
+    afterRole();
+  }, e => { showLoading(false); toast('Нет доступа: ' + e.message, 1); }));
+}
+function startAll(){
   const fail = e => { showLoading(false); toast('Ошибка загрузки: ' + e.message, 1); };
   const q = (c, ...a) => query(collection(db, c), ...a);
   const on = (ref, fn, nm) => unsubs.push(onSnapshot(ref, fn, e => console.error(nm, e)));
@@ -873,23 +935,16 @@ function subscribe(){
     loaded = true; showLoading(false);
     if (!tourDone){ tourDone = true; try { if (!localStorage.getItem('tour1')){ localStorage.setItem('tour1', '1'); setTimeout(() => { if (!modalOpen()) tour(0); }, 900); } } catch(_){} } renderTab(); renderNotes();
   }, fail));
-  on(q('journal', orderBy('ts','desc'), limit(200)), s => { journal = s.docs.map(d => d.data()); renderJournal(); }, 'journal');
-  on(collection(db,'users'), s => {
-    users = rows(s); me = users.find(x => x.id === user.uid) || null;
-    if (!me && !s.metadata.fromCache && !creating){
-      creating = true;
-      setDoc(doc(db,'users',user.uid), { email:user.email, name:user.email.replace(DOMAIN,''), role: user.email === ADMIN_EMAIL ? 'admin' : 'viewer', createdAt:Date.now() }).catch(console.error);
-    }
-    afterRole();
-  }, 'users');
-  on(q('rounds', where('day','>=', dayStr(new Date(Date.now() - 2*864e5)))), s => { rounds = {}; s.docs.forEach(d => rounds[d.id] = d.data()); refreshLive(); }, 'rounds');
+  on(q('journal', orderBy('ts','desc'), limit(120)), s => { journal = s.docs.map(d => d.data()); renderJournal(); }, 'journal');
+  on(collection(db,'users'), s => { users = rows(s); afterRole(); }, 'users');
+  on(q('rounds', where('day','>=', dayStr(new Date(Date.now() - 1*864e5)))), s => { rounds = {}; s.docs.forEach(d => rounds[d.id] = d.data()); refreshLive(); }, 'rounds');
   on(q('tasks', where('done','==',false)), s => { tasks = rows(s); refreshLive(); }, 'tasks');
-  on(q('notes', orderBy('ts','desc'), limit(300)), s => { notes = rows(s); renderNotes(); refreshLive(); }, 'notes');
-  on(q('announcements', orderBy('ts','desc'), limit(30)), s => { anns = rows(s); refreshLive(); gateCheck(); }, 'ann');
-  on(q('incidents', orderBy('start','desc'), limit(60)), s => { incs = rows(s); refreshLive(); }, 'inc');
+  on(q('notes', orderBy('ts','desc'), limit(80)), s => { notes = rows(s); renderNotes(); refreshLive(); }, 'notes');
+  on(q('announcements', orderBy('ts','desc'), limit(10)), s => { anns = rows(s); refreshLive(); gateCheck(); }, 'ann');
+  on(q('incidents', orderBy('start','desc'), limit(30)), s => { incs = rows(s); refreshLive(); }, 'inc');
   on(q('handovers', orderBy('ts','desc'), limit(5)), s => { hands = rows(s); refreshLive(); }, 'hand');
-  on(q('nextshift', orderBy('ts','desc'), limit(60)), s => { nexts = rows(s); refreshLive(); }, 'next');
-  on(q('shifts', orderBy('start','desc'), limit(40)), s => { shifts = rows(s); myShift = shifts.find(x => x.uid === user.uid && !x.end) || null; refreshLive(); }, 'shift');
+  on(q('nextshift', orderBy('ts','desc'), limit(40)), s => { nexts = rows(s); refreshLive(); }, 'next');
+  on(q('shifts', orderBy('start','desc'), limit(30)), s => { shifts = rows(s); myShift = shifts.find(x => x.uid === user.uid && !x.end) || null; refreshLive(); }, 'shift');
 }
 addEventListener('online', () => $('offline').classList.remove('show'));
 addEventListener('offline', () => $('offline').classList.add('show'));
@@ -932,6 +987,7 @@ function badge(){
   if (!user) return;
   const n = anns.filter(a => !(a.ack && a.ack[user.uid])).length + (hands.some(x => !x.acceptedBy && x.fromEmail !== user.email) ? 1 : 0) + myTasks().filter(t => t.due <= todayEnd()).length + nexts.filter(x => !x.done).length;
   const b = $('bdToday'); b.textContent = n; b.style.display = n ? 'grid' : 'none';
+  const bt = $('bdTeam'), pn = isAdmin() ? users.filter(u => u.role === 'pending').length : 0; if (bt){ bt.textContent = pn; bt.style.display = pn ? 'grid' : 'none'; }
 }
 
 /* ===== Отрисовка камер ===== */
@@ -1087,6 +1143,7 @@ function openView(id){
     (noEntry(c) ? '<div class="banner">'+ic('ban')+'<span>ВХОД ЗАПРЕЩЁН: O₂ '+(c.o2 != null ? c.o2+' %' : 'не измерен')+', безопасно от '+S.safeO2+' %</span></div>' : '')+
     (c.locked ? '<div class="banner" style="color:var(--ink);border-color:var(--line);background:var(--bg)">🔒 Партия закрыта, редактирование заблокировано</div>' : '')+
     '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+
+    '<div class="sec"><h4>Динамика замеров</h4><div id="rdgs"><div class="hint">Загрузка…</div></div></div>'+
     sec('Продукт', row('Крыло', wingName(wingOf(c.id)))+row('Культура', val(c.crop))+row('Сорт', val(c.sort))+row('Партия', val(c.batch))+row('Количество', (c.qty||0).toLocaleString('ru-RU')+' кг')+row('Оператор', val(c.operator)))+
     sec('Сроки', row('Загрузка', val(c.loadAt))+(life ? life : row('Срок хранения', '—'))+row('Обработка', val(c.processAt))+row('Вывод на РГС', val(c.rgsAt))+row('Обновлено', c.updatedAt ? fmtDT(c.updatedAt) : '—'))+
     sec('Санитария', row('Уборка', san(c.cleanAt))+row('Дезинфекция', san(c.disAt)))+
@@ -1097,7 +1154,24 @@ function openView(id){
     (w ? (c.locked ? '<div class="banner" style="color:var(--mut);border-color:var(--line);background:none">Чтобы править, администратор должен открыть партию</div>' : '<button class="btn pri full neon" data-act="edit" style="margin-top:14px">Редактировать</button>') : '')+
     (w && !c.locked && le ? '<button class="btn full" data-act="undo" style="margin-top:8px">↶ Отменить последнее изменение ('+esc(le.date)+')</button>' : '')+
     (isAdmin() ? '<button class="btn full" data-act="lock" style="margin-top:8px">'+(c.locked ? '🔓 Открыть партию' : '🔒 Закрыть партию')+'</button>' : '');
-  openModal('viewModal'); renderNotes();
+  openModal('viewModal'); renderNotes(); loadReadings(c.id);
+}
+async function loadReadings(id){
+  if (!$('rdgs')) return;
+  try {
+    const q = await getDocs(query(collection(db,'cameras','cam'+id,'readings'), orderBy('ts','desc'), limit(20)));
+    const l = q.docs.map(d => d.data()).reverse();
+    if (selected !== id || !$('rdgs')) return;
+    $('rdgs').innerHTML = l.length >= 2 ? lineChart(l, 'temp') + lineChart(l, 'hum') : '<div class="hint">График появится после двух сохранений замеров. Сейчас записей: '+l.length+'.</div>';
+  } catch(e){ if ($('rdgs')) $('rdgs').innerHTML = '<div class="hint">График недоступен</div>'; }
+}
+function lineChart(l, k){
+  const h = l.filter(p => p[k] != null); if (h.length < 2) return '';
+  const n = S.norms[k], vals = h.map(p => p[k]), lo = Math.min(...vals, n[0]), hi = Math.max(...vals, n[1]), r = (hi - lo) || 1;
+  const X = i => 6 + i * 288 / (h.length - 1), Y = v => 6 + (1 - (v - lo) / r) * 78;
+  const pts = h.map((p, i) => X(i).toFixed(1)+','+Y(p[k]).toFixed(1)).join(' ');
+  const last = h[h.length - 1], bad = last[k] < n[0] || last[k] > n[1], fd = t => new Date(t).toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit' });
+  return '<div class="chart"><h4><span>'+NL[k][0]+' · '+h.length+' замеров</span><span>'+fd(h[0].ts)+' — '+fd(last.ts)+'</span></h4><svg viewBox="0 0 300 90" preserveAspectRatio="none"><rect x="0" y="'+Y(n[1]).toFixed(1)+'" width="300" height="'+Math.max(1, Y(n[0]) - Y(n[1])).toFixed(1)+'" fill="#19f5a0" opacity=".16"/><polyline points="'+pts+'" fill="none" stroke="'+(bad ? 'var(--bad)' : 'var(--brand)')+'" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg></div>';
 }
 async function noteAdd(){
   const i = $('nin'), t = i.value.trim(); if (!t) return;
@@ -1107,16 +1181,16 @@ async function noteAdd(){
   catch(e){ toast('Не отправлено: ' + e.message, 1); }
 }
 const sanit = (key, label) => { const c = camById(selected); if (c && canW()) run(() => commitCam(c, { [key]: Date.now() }, label, {}, false), label+' отмечена').then(() => setTimeout(() => openView(c.id), 600)); };
-function undo(){
+async function undo(){
   const c = camById(selected), e = lastChange(selected); if (!c || !e || !canW() || c.locked) return;
-  if (!confirm('Отменить изменение от '+e.date+'?\n\n'+e.action)) return;
+  if (!(await ask({ title:'Отменить изменение?', text: esc(e.date)+'<br>'+esc(e.action), ok:'Отменить изменение' }))) return;
   const cur = {}; Object.keys(e.prev).forEach(k => cur[k] = c[k] ?? null);
   run(() => commitCam(c, { ...e.prev }, 'Откат: '+e.action, { prev: cur }), 'Изменение отменено').then(() => closeModal('viewModal'));
 }
-function lockToggle(){
+async function lockToggle(){
   const c = camById(selected); if (!c || !isAdmin()) return;
   const lock = !c.locked;
-  if (!confirm(lock ? 'Закрыть партию? Редактирование будет заблокировано.' : 'Открыть партию для редактирования?')) return;
+  if (!(await ask({ title: lock ? 'Закрыть партию?' : 'Открыть партию?', text: lock ? 'Редактирование камеры будет заблокировано.' : 'Камеру снова можно будет редактировать.', ok: lock ? 'Закрыть партию' : 'Открыть партию' }))) return;
   run(() => commitCam(c, { locked: lock }, lock ? 'Партия закрыта' : 'Партия открыта', {}, false), lock ? 'Партия закрыта' : 'Партия открыта').then(() => closeModal('viewModal'));
 }
 
@@ -1172,15 +1246,16 @@ async function save(){
   const changed = Object.keys(upd).filter(k => String(upd[k] ?? '') !== String(c[k] ?? ''));
   if (!changed.length){ closeModal('editModal'); return; }
   const freeing = (c.qty||0) > 0 && ((upd.qty||0) === 0 || upd.status === 'empty' || upd.status === 'inactive');
-  if (freeing){ if (!danger('Камера №'+pad(c.id)+' содержит '+(c.qty||0).toLocaleString('ru-RU')+' кг ('+(c.sort||'—')+'). Вы убираете из неё запасы.', c.id)) return; }
-  else if (!confirm('Сохранить изменения?\n\nКамера №' + pad(c.id) + ' · ' + (c.sort||'—'))) return;
+  if (freeing){ if (!(await danger('Камера №'+pad(c.id)+' содержит '+(c.qty||0).toLocaleString('ru-RU')+' кг ('+(c.sort||'—')+'). Вы убираете из неё запасы.', c.id))) return; }
+  else if (!(await ask({ title:'Сохранить изменения?', text:'Камера №'+pad(c.id)+' · '+esc(c.sort||'—'), ok:'Сохранить' }))) return;
   const after = { ...c, ...upd };
   const fixed = Math.max(0, issues(c).length - issues(after).length) + (c.status === 'problem' && upd.status !== 'problem' ? 1 : 0);
   const prev = {}; changed.forEach(k => prev[k] = c[k] ?? null);
   const action = changed.includes('status') ? 'Статус: '+names[c.status]+' → '+names[upd.status]+(changed.length>1?' (+ ещё '+(changed.length-1)+')':'')
     : 'Изменено: ' + changed.map(k => LABEL[k]).join(', ');
+  const reading = ['temp','hum','o2','co2'].some(k => upd[k] != null && upd[k] !== c[k]) ? { ts: Date.now(), temp: upd.temp, hum: upd.hum, o2: upd.o2, co2: upd.co2, by: user.email } : null;
   $('saveBtn').disabled = true; showLoading(true);
-  try { await commitCam(c, { ...upd }, action, { st0: c.status, st1: upd.status, q0: c.qty||0, q1: upd.qty||0, fixed, prev }); closeModal('editModal'); toast('Сохранено'); }
+  try { await commitCam(c, { ...upd }, action, { st0: c.status, st1: upd.status, q0: c.qty||0, q1: upd.qty||0, fixed, prev }, true, reading); closeModal('editModal'); toast('Сохранено'); }
   catch(e){ toast('Не удалось сохранить: ' + e.message, 1); }
   $('saveBtn').disabled = false; showLoading(false);
 }
@@ -1282,7 +1357,7 @@ const nextSave = () => {
   run(async () => { await addDoc(collection(db,'nextshift'), { text, camId:Number($('d_cam').value)||0, urgent:$('d_urg').value === '1', by:user.email, ts:Date.now(), done:false }); closeModal('dlgModal'); }, 'Добавлено');
 };
 const nextDone = id => run(() => updateDoc(doc(db,'nextshift',id), { done:true, doneAt:Date.now(), doneBy:user.email }), 'Выполнено');
-const nextDel = id => { if (confirm('Удалить пункт?')) run(() => deleteDoc(doc(db,'nextshift',id))); };
+const nextDel = async id => { if (await ask({ title:'Удалить пункт?', ok:'Удалить', danger:true })) run(() => deleteDoc(doc(db,'nextshift',id))); };
 function feedItems(){
   const it = [], add = (ts, icon, html, cam, tone) => it.push({ ts, icon, html, cam, tone }), nm = e => '<b>'+esc(nameOf(e))+'</b>';
   journal.forEach(e => add(e.ts, e.prev ? '📝' : '🧹', nm(e.user)+' · '+esc(e.cam)+': '+esc(e.action), e.camId, e.st1 === 'problem' && e.st0 !== 'problem' ? 'bad' : ''));
@@ -1316,14 +1391,19 @@ function feedHtml(){
 }
 
 /* ===== Смены и передача ===== */
-function stat(since, email){
+function statFrom(list, since, email){
   const r = { in:0, out:0, fixed:0, acts:0, prob:0, rounds:0 };
-  journal.filter(e => e.ts >= since && (!email || e.user === email)).forEach(e => {
+  list.filter(e => e.ts >= since && (!email || e.user === email)).forEach(e => {
     const d = (e.q1||0) - (e.q0||0); if (d > 0) r.in += d; else r.out -= d;
     r.fixed += e.fixed || 0; r.acts++; if (e.st1 === 'problem' && e.st0 !== 'problem') r.prob++;
   });
   r.rounds = Object.values(rounds).filter(x => x.email === email && x.ts >= since).length;
   return r;
+}
+const stat = (since, email) => statFrom(journal, since, email);
+async function statExact(since, email){
+  try { const q = await getDocs(query(collection(db,'journal'), where('ts','>=',since), orderBy('ts','desc'), limit(500))); return statFrom(q.docs.map(d => d.data()), since, email); }
+  catch(e){ return stat(since, email); }
 }
 const shiftStats = () => stat(myShift.start, user.email);
 const sumTags = s => '<div class="tags"><span class="tag ok">Принято '+kgf(s.in)+'</span><span class="tag">Отгружено '+kgf(s.out)+'</span><span class="tag">Обходов '+s.rounds+'</span><span class="tag ok">Устранено '+s.fixed+'</span><span class="tag '+(s.prob ? 'bad' : '')+'">Проблем '+s.prob+'</span></div>';
@@ -1341,7 +1421,7 @@ function slotsOf(start, end){
   return out;
 }
 function missedFor(start, end, email){
-  const all = vis(), res = [], oldest = dayStr(new Date(Date.now() - 2*864e5));
+  const all = vis(), res = [], oldest = dayStr(new Date(Date.now() - 1*864e5));
   slotsOf(start, end).forEach(sl => {
     if (sl.day < oldest || Math.min(end, sl.e) - Math.max(start, sl.s) < 3*36e5) return;
     const ids = all.filter(x => !rounds[rk(sl.day, sl.slot, x.id)]).map(x => x.id);
@@ -1419,7 +1499,7 @@ async function shiftDone(){
   const f = $('d_photo').files[0]; let photo = '';
   if (f){ try { photo = await shrink(f); } catch(e){ toast('Фото не обработано', 1); } }
   if (photo.length > 700000){ photo = ''; toast('Фото слишком большое, пропущено', 1); }
-  const s = stat(myShift.start, user.email), note = $('d_note').value.trim(), sid = myShift.id;
+  const s = await statExact(myShift.start, user.email), note = $('d_note').value.trim(), sid = myShift.id;
   await run(async () => {
     const b = writeBatch(db);
     b.update(doc(db,'shifts',sid), { end:t, summary:s, missed:m, endNote:note });
@@ -1438,11 +1518,11 @@ function handView(forStart){
 }
 const handOk = () => { const h = pendingHand(); if (!h) return; run(async () => { await updateDoc(doc(db,'handovers',h.id), { acceptedBy:user.email, acceptedAt:Date.now() }); closeModal('dlgModal'); }, 'Смена принята'); };
 const handStart = () => doStart(pendingHand());
-const shClose = id => {
+const shClose = async id => {
   const sh = shifts.find(x => x.id === id); if (!sh || !isAdmin()) return;
-  if (!confirm('Закрыть смену сотрудника '+nameOf(sh.email)+'? Время окончания будет поставлено сейчас.')) return;
+  if (!(await ask({ title:'Закрыть смену?', text:'Сотрудник: '+esc(nameOf(sh.email))+'.<br>Время окончания будет поставлено сейчас.', ok:'Закрыть смену' }))) return;
   const t = Date.now();
-  run(() => updateDoc(doc(db,'shifts',id), { end:t, summary:stat(sh.start, sh.email), missed:missedFor(sh.start, t, sh.email), closedBy:user.email }), 'Смена закрыта');
+  run(async () => { const sm = await statExact(sh.start, sh.email); await updateDoc(doc(db,'shifts',id), { end:t, summary:sm, missed:missedFor(sh.start, t, sh.email), closedBy:user.email }); }, 'Смена закрыта');
 };
 
 /* ===== Обходы ===== */
@@ -1456,9 +1536,9 @@ function renderRound(){
     (td.map(c => row(c)).join('') || '<div class="banner" style="color:#1f9d6b;border-color:#1f9d6b">Все камеры обойдены</div>')+
     (dn.length ? '<h3 style="margin:14px 0 4px;font-size:13px;color:var(--mut)">Уже отмечены</h3>'+dn.map(c => row(c, rounds[key(c)])).join('') : '');
 }
-function markRound(id, ok){
+async function markRound(id, ok){
   let note = '';
-  if (!ok){ const n = prompt('Что не так? (кратко)'); if (n === null) return; note = n.trim(); }
+  if (!ok){ const n = await ask({ title:'Что не так?', text:'Кратко опишите замечание по камере №'+pad(id), input:'Например: конденсат на стене', ok:'Записать' }); if (n === null) return; note = n.trim(); }
   const day = dayStr(), sl = slotNow();
   setDoc(doc(db,'rounds',rk(day, sl, id)), { day, slot:sl, camId:id, email:user.email, uid:user.uid, ts:Date.now(), ok, note }).catch(e => toast('Не сохранено: '+e.message, 1));
   if (!vis().some(x => x.id !== id && !rounds[rk(day, sl, x.id)])) toast('Обход завершён: все камеры проверены ✅');
@@ -1570,10 +1650,14 @@ async function loadTeam(){
   } catch(e){ TEAM = null; toast('Не удалось загрузить: '+e.message, 1); }
   renderTeam();
 }
+function pendCard(){
+  const p = users.filter(u => u.role === 'pending'); if (!p.length) return '';
+  return '<div class="card" style="border-color:var(--bad)"><h3>Ожидают одобрения<span class="tag bad">'+p.length+'</span></h3>'+p.map(u => '<div class="li"><div class="t"><b>'+esc(u.name || u.email)+'</b><small>'+esc(u.email)+(u.createdAt ? ' · '+fmtDT(u.createdAt) : '')+'</small></div><button class="btn sm pri" data-approve="'+u.id+'|operator">Оператор</button><button class="btn sm" data-approve="'+u.id+'|viewer">Просмотр</button></div>').join('')+'<div class="hint">«Оператор» может править данные, «Просмотр» только смотреть.</div></div>';
+}
 function renderTeam(){
   const el = $('team'); if (!user || tab !== 'team') return;
   if (!isAdmin()){ el.innerHTML = '<div class="empty-msg">Раздел доступен администратору</div>'; return; }
-  if (!TEAM || TEAM === 'load'){ el.innerHTML = '<div class="empty-msg">Загрузка…</div>'; return; }
+  if (!TEAM || TEAM === 'load'){ el.innerHTML = pendCard() + '<div class="empty-msg">Загрузка…</div>'; return; }
   const { J, R, T, SH, L } = TEAM, st = {}, g = e => st[e] || (st[e] = { h:0, r:0, t:0, f:0, a:0 });
   SH.forEach(s => g(s.email).h += ((s.end || Date.now()) - s.start)/36e5);
   R.forEach(r => g(r.email).r++); T.forEach(t => g(t.doneBy).t++); J.forEach(e => { const x = g(e.user); x.f += e.fixed || 0; x.a++; });
@@ -1581,7 +1665,7 @@ function renderTeam(){
   const rows = Object.entries(st).map(([e, x]) => ({ e, ...x, sc: x.r + 3*x.t + 2*x.f + Math.floor(x.h) })).sort((a, b) => b.sc - a.sc);
   const medal = ['🥇','🥈','🥉'];
   el.innerHTML =
-    '<div class="card"><h3>Рейтинг за 30 дней<span>условные баллы</span></h3><div class="tw"><table class="ht"><thead><tr><th></th><th>Сотрудник</th><th>Часы</th><th>Обходы</th><th>Задачи</th><th>Устран.</th><th>Балл</th></tr></thead><tbody>'+
+    pendCard()+'<div class="card"><h3>Рейтинг за 30 дней<span>условные баллы</span></h3><div class="tw"><table class="ht"><thead><tr><th></th><th>Сотрудник</th><th>Часы</th><th>Обходы</th><th>Задачи</th><th>Устран.</th><th>Балл</th></tr></thead><tbody>'+
     rows.map((x, i) => '<tr data-uh="'+esc(x.e)+'" style="cursor:pointer"><td>'+(medal[i]||'')+'</td><td>'+esc(nameOf(x.e))+'</td><td>'+x.h.toFixed(1)+'</td><td>'+x.r+'</td><td>'+x.t+'</td><td>'+x.f+'</td><td><b>'+x.sc+'</b></td></tr>').join('')+'</tbody></table></div><div class="hint">Балл = обходы + 3×задачи + 2×устранённые отклонения + часы смен. Нажмите на строку, чтобы увидеть историю действий.</div></div>'+
     '<div class="card"><h3>Роли сотрудников</h3>'+users.map(u => '<div class="li"><div class="t"><b>'+esc(u.name||u.email)+'</b><small>'+esc(u.email)+'</small></div><select data-role="'+u.id+'"'+(u.email === ADMIN_EMAIL ? ' disabled' : '')+'>'+Object.keys(ROLE_RU).map(r => '<option value="'+r+'"'+((u.email === ADMIN_EMAIL ? 'admin' : u.role) === r ? ' selected' : '')+'>'+ROLE_RU[r]+'</option>').join('')+'</select></div>').join('')+'<div class="hint">Новые сотрудники входят с ролью «Просмотр». Назначьте им «Оператор».</div></div>'+
     '<div class="card"><h3>Журнал входов</h3><div class="tw"><table class="ht"><thead><tr><th>Когда</th><th>Кто</th><th>Устройство</th></tr></thead><tbody>'+
@@ -1594,14 +1678,43 @@ function userHist(email){
 }
 
 /* ===== Меню и настройки ===== */
+async function diagnose(){
+  closeTopModal(); dlg('Проверка системы', '<div class="hint">Проверяю…</div>', '', '');
+  const rows = [], ok = (n, v) => rows.push([true, n, v || '']), bad = (n, e) => rows.push([false, n, e]);
+  ok('Версия приложения', APP_VERSION); ok('Ваша роль', ROLE_RU[myRole()]); ok('Интернет', navigator.onLine ? 'есть' : 'нет');
+  ok('Кэш на устройстве', OFFLINE_CACHE ? 'включён' : 'выключен: данные всегда с сервера');
+  ok('Фоновая служба (sw.js)', navigator.serviceWorker && navigator.serviceWorker.controller ? 'работает' : 'пока не активна, заработает после перезапуска');
+  for (const c of ['cameras','settings','journal','users','rounds','tasks','notes','announcements','shifts','handovers','incidents','nextshift']){
+    const t0 = performance.now();
+    try { await getDocs(query(collection(db, c), limit(1))); ok('Чтение: '+c, Math.round(performance.now() - t0)+' мс'); }
+    catch(e){ bad('Чтение: '+c, /permission/i.test(e.message) ? 'нет доступа — обновите правила Firestore' : e.message); }
+  }
+  if (isAdmin()){
+    try { await W(setDoc(doc(db,'diag','ping'), { ts: Date.now(), by: user.email })); await _deleteDoc(doc(db,'diag','ping')); ok('Запись в базу (админ)', 'работает'); }
+    catch(e){ bad('Запись в базу (админ)', /permission/i.test(e.message) ? 'правила не разрешают запись — обновите правила Firestore' : e.message); }
+  }
+  const bads = rows.filter(r => !r[0]).length;
+  dlg('Проверка системы', '<div class="tags"><span class="tag '+(bads ? 'bad' : 'ok')+'">'+(bads ? 'Проблем: '+bads : 'Всё работает ✓')+'</span></div>'+rows.map(([g, n, v]) => '<div class="dg"><span>'+(g ? '✅' : '❌')+'</span><div><b>'+esc(n)+'</b><small>'+esc(v)+'</small></div></div>').join(''), '', '');
+}
+async function showErrors(){
+  closeTopModal();
+  try {
+    const q = await getDocs(query(collection(db,'errors'), orderBy('ts','desc'), limit(30))), l = q.docs.map(d => d.data());
+    dlg('Журнал ошибок', '<div class="tw"><table class="ht"><thead><tr><th>Когда</th><th>Кто</th><th>Ошибка</th></tr></thead><tbody>'+(l.map(x => '<tr><td>'+fmtDT(x.ts)+'<br><small>v'+esc(x.ver || '')+'</small></td><td>'+esc(nameOf(x.email))+'</td><td>'+esc(x.msg)+'<br><small>'+esc(x.ua || '')+'</small></td></tr>').join('') || '<tr><td colspan="3">Ошибок нет ✓</td></tr>')+'</tbody></table></div>', '', '');
+  } catch(e){ toast('Не удалось загрузить: '+e.message, 1); }
+}
+async function updateApp(){
+  try { const rs = await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r => r.unregister())); const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } catch(e){}
+  location.reload();
+}
 function openMenu(){
   const b = (a, i, t) => '<button class="btn" data-act="'+a+'">'+ic(i)+t+'</button>', h = t => '<div class="mh">'+t+'</div>';
   const standalone = matchMedia('(display-mode:standalone)').matches || navigator.standalone;
   $('menuList').innerHTML = '<div class="hint" style="margin:0 0 4px">'+esc($('userName').textContent)+'</div>'+
     h('Отчёты и экраны') + b('tv','grid','Табло для экрана (презентация)') + b('csv','table','Таблица камер (Excel)') + b('print','print','Печать отчёта') +
-    h('Приложение') + b('help','list','Как пользоваться') + b('theme','moon','Сменить тему') + (standalone ? '' : b('install','down','Установить на телефон')) +
-    (isAdmin() ? h('Администратор') + b('settings','gear','Настройки хранилища') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') + b('demo','plus','Демо-данные для презентации') : '') +
-    h('Аккаунт') + b('logout','out','Выйти');
+    h('Приложение') + b('help','list','Как пользоваться') + b('theme','moon','Сменить тему') + (standalone ? '' : b('install','down','Установить на телефон')) + b('update','up','Обновить приложение') +
+    (isAdmin() ? h('Администратор') + b('settings','gear','Настройки хранилища') + b('diag','gear','Проверка системы') + b('errors','alert','Журнал ошибок') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') + (DEMO_TOOLS ? b('demo','plus','Демо-данные для презентации') : '') : '') +
+    h('Аккаунт') + b('logout','out','Выйти') + '<div class="ver">Версия '+APP_VERSION+'</div>';
   openModal('menuModal');
 }
 function openSettings(){
@@ -1628,7 +1741,7 @@ async function saveSettings(){
     if (!Number.isFinite(a) || !Number.isFinite(b) || a > b){ toast(NL[k][0]+': «от» должно быть меньше «до»', 1); return; }
     norms[k] = [a, b];
   }
-  if (w*z < total() && !confirm('Камеры с номерами выше '+w*z+' будут скрыты. Продолжить?')) return;
+  if (w*z < total() && !(await ask({ title:'Скрыть камеры?', text:'Камеры с номерами выше '+w*z+' будут скрыты, данные сохранятся.', ok:'Продолжить' }))) return;
   $('setSave').disabled = true;
   await run(async () => {
     const b = writeBatch(db), have = new Set(cams.map(c => c.id));
@@ -1660,7 +1773,7 @@ $('importFile').addEventListener('change', e => {
       if (!Array.isArray(p.cams)) throw new Error('Неверный формат файла');
       const list = p.cams.filter(c => Number.isInteger(Number(c.id)) && c.id >= 1 && c.id <= 500).map(cleanCam);
       if (!list.length) throw new Error('В файле нет камер');
-      const v = prompt('Будут заменены данные '+list.length+' камер. Для подтверждения введите ДА:');
+      const v = await ask({ title:'Восстановить из копии?', text:'Будут заменены данные '+list.length+' камер.', input:'Введите ДА', ok:'Заменить', danger:true });
       if (!v || v.trim().toUpperCase() !== 'ДА') return;
       showLoading(true); await commitAll(list); showLoading(false); toast('Импорт завершён');
     } catch(err){ showLoading(false); toast('Ошибка импорта: ' + err.message, 1); }
@@ -1671,6 +1784,7 @@ $('importFile').addEventListener('change', e => {
 /* ===== События ===== */
 if (!ALLOW_SIGNUP) $('signupBtn').style.display = 'none';
 buildForm();
+$('askI').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); askDone(true); } });
 $('loginForm').addEventListener('submit', e => { e.preventDefault(); doAuth(false); });
 $('editForm').addEventListener('submit', e => { e.preventDefault(); save(); });
 $('setForm').addEventListener('submit', e => { e.preventDefault(); saveSettings(); });
@@ -1706,7 +1820,7 @@ function tvClose(){
 /* ===== Демо-данные для презентации (только администратор) ===== */
 async function demoFill(){
   if (!isAdmin()) return;
-  const v = prompt('Это заполнит ВСЕ камеры демонстрационными данными и добавит примеры задач и событий.\nРезервная копия текущих данных скачается автоматически.\n\nДля подтверждения введите ДЕМО:');
+  const v = await ask({ title:'Заполнить демо-данными?', text:'Будут заполнены ВСЕ камеры демонстрационными данными и добавлены примеры задач и событий.<br>Резервная копия текущих данных скачается автоматически.', input:'Введите ДЕМО', ok:'Заполнить', danger:true });
   if (!v || v.trim().toUpperCase() !== 'ДЕМО') return;
   exportData(); closeTopModal();
   await run(async () => {
@@ -1730,6 +1844,10 @@ async function demoFill(){
     for (let i = 0; i < 12; i++){
       const c = list[Math.floor(rnd() * list.length)], t = now - (20 + i * 70) * 6e4, a = i % acts.length, q = c.qty || 12000;
       b.set(doc(collection(db,'journal')), { camId:c.id, cam:'№'+pad(c.id), action:acts[a], user:user.email, ts:t, date:fmtDT(t), st0:c.status, st1:c.status, q0:a === 2 ? q - 2000 : q, q1:q, fixed:i % 4 === 0 ? 1 : 0, prev:{ note:'' } });
+    }
+    for (let id = 1; id <= Math.min(6, N); id++){
+      const bs = list[id - 1];
+      for (let k = 0; k < 12; k++){ const jt = () => rnd() - .5; b.set(doc(collection(db,'cameras','cam'+id,'readings')), { ts: now - (12 - k) * 3 * H, temp: +((bs.temp ?? 1.5) + jt()).toFixed(1), hum: Math.round((bs.hum ?? 90) + jt() * 4), o2: bs.o2, co2: bs.co2, by: user.email }); }
     }
     const shRef = doc(collection(db,'shifts')), miss1 = { rounds: [{ day: dayStr(new Date(now - 24 * H)), slot: 'pm', ids: [7, 12, 19, 23, 31, 40].filter(i => i <= N) }], roundsTotal: 0, tasks: ['Взять пробы твёрдости в камере №4'], nexts: [] };
     miss1.roundsTotal = miss1.rounds[0].ids.length;
@@ -1776,14 +1894,14 @@ const ACTS = {
   theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try { localStorage.setItem('th', n); } catch(_){} },
   shiftstart: shiftStart, shiftend: shiftEnd, shiftdone: shiftDone, handview: () => handView(false), handok: handOk, handstart: handStart,
   round: () => { renderRound(); openModal('roundModal'); },
-  help: () => { closeTopModal(); tour(0); }, tournext: () => tour(tourI + 1), tourend: () => closeModal('dlgModal'), tv: () => { closeTopModal(); tvOpen(); }, tvclose: tvClose, demo: demoFill, attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
+  help: () => { closeTopModal(); tour(0); }, tournext: () => tour(tourI + 1), tourend: () => closeModal('dlgModal'), tv: () => { closeTopModal(); tvOpen(); }, tvclose: tvClose, demo: demoFill, diag: diagnose, errors: showErrors, update: updateApp, pendrefresh: () => location.reload(), attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
   newtask: newTask, newnext: newNext, nextsave: nextSave, feedmore: () => { feedN += 30; renderToday(); },
   feedtoggle: () => { feedOpen = !feedOpen; try { localStorage.setItem('feed', feedOpen ? '1' : '0'); } catch(_){} renderToday(); }, tasksave: taskSave, newann: newAnn, annsave: annSave, newinc: newInc, incsave: incSave
 };
-document.addEventListener('click', e => {
+document.addEventListener('click', async e => {
   const t = e.target;
   if (t.classList && t.classList.contains('modal')) return closeModal(t.id);
-  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-toggle],[data-q],[data-tab],[data-r],[data-ack],[data-done],[data-deltask],[data-delann],[data-incclose],[data-range],[data-uh],[data-ndone],[data-ndel],[data-shclose]');
+  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-toggle],[data-q],[data-tab],[data-r],[data-ack],[data-done],[data-deltask],[data-delann],[data-incclose],[data-range],[data-uh],[data-ndone],[data-ndel],[data-shclose],[data-ask],[data-approve]');
   if (!x) return;
   const d = x.dataset;
   if (x.hasAttribute('data-close')) return closeTopModal();
@@ -1793,13 +1911,15 @@ document.addEventListener('click', e => {
   if (d.filter){ filter = d.filter; return render(); }
   if (d.toggle){ collapsed[d.toggle] = !collapsed[d.toggle]; return render(); }
   if (d.q) return quick(d.q);
+  if (d.ask !== undefined) return askDone(d.ask === '1');
+  if (d.approve){ const [uid, role] = d.approve.split('|'); run(() => updateDoc(doc(db,'users',uid), { role }), 'Доступ выдан'); return; }
   if (d.shclose) return shClose(d.shclose);
   if (d.ndone) return nextDone(d.ndone);
   if (d.ndel) return nextDel(d.ndel);
   if (d.ack) return ack(d.ack);
   if (d.done) return taskDone(d.done);
-  if (d.deltask){ if (confirm('Удалить задачу?')) run(() => deleteDoc(doc(db,'tasks',d.deltask))); return; }
-  if (d.delann){ if (confirm('Удалить объявление?')) run(() => deleteDoc(doc(db,'announcements',d.delann))); return; }
+  if (d.deltask){ if (await ask({ title:'Удалить задачу?', ok:'Удалить', danger:true })) run(() => deleteDoc(doc(db,'tasks',d.deltask))); return; }
+  if (d.delann){ if (await ask({ title:'Удалить объявление?', ok:'Удалить', danger:true })) run(() => deleteDoc(doc(db,'announcements',d.delann))); return; }
   if (d.incclose) return incClose(d.incclose);
   if (d.range){ sumRange = d.range; SUM = null; loadSum(); return; }
   if (d.uh) return userHist(d.uh);
