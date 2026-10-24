@@ -533,6 +533,22 @@ html.lock #appScreen main{visibility:hidden}
 .dg{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
 .dg small{display:block;color:var(--mut);overflow-wrap:anywhere}
 .ver{text-align:center;color:var(--mut);font-size:12px;margin-top:12px}
+
+/* ===== v3.1: компактное «Внимание», спрятанный поиск, фиолетовые «Пустые» ===== */
+.head .hr{display:flex;align-items:center;gap:10px}
+.ib2{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;flex:none}
+.ib2.act{border-color:var(--brand);color:var(--brand);box-shadow:0 0 10px color-mix(in srgb,var(--brand) 50%,transparent)}
+#fpanel{margin-bottom:6px}
+.attn{padding:0;overflow:hidden}
+.attn-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:46px;padding:8px 14px;background:none;border:0;color:var(--bad);font-weight:800;font-size:13px;letter-spacing:.3px;text-transform:uppercase}
+.attn-bar .l{display:flex;align-items:center;gap:8px}
+.attn-bar .l .i{width:22px;height:22px}
+.attn-bar>.i{transition:transform .2s;color:var(--mut)}
+.attn.open .attn-bar>.i{transform:rotate(180deg)}
+.attn .alist{display:grid;grid-template-columns:1fr;gap:8px;padding:0 12px 12px}
+.attn-more{padding:0 12px 12px}
+.cam.empty{opacity:1}
+[data-theme=dark] .cam.empty{opacity:1;box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent),0 0 14px color-mix(in srgb,var(--c) 45%,transparent),inset 0 0 14px color-mix(in srgb,var(--c) 12%,transparent)}
 </style>
 </head>
 <body>
@@ -605,13 +621,13 @@ html.lock #appScreen main{visibility:hidden}
       <div class="ph"><h1>Отчёт о состоянии хранилища</h1><div id="phDate"></div></div>
       <div id="attn"></div>
       <div class="stats" id="stats"></div>
-      <div class="srow">
+      <div id="fpanel" hidden><div class="srow">
         <label class="sbox"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Номер, сорт, партия, культура (/)" autocomplete="off"></label>
         <select id="wing" aria-label="Крыло"></select>
         <select id="sort" aria-label="Сортировка"><option value="num">По номеру</option><option value="days">Дольше хранятся</option><option value="qty">Больше товара</option><option value="warn">Сначала проблемные</option></select>
-      </div>
+      </div></div>
       <div class="chips" id="filters"></div>
-      <div class="head"><h1><svg class="i"><use href="#i-camera"/></svg>Камеры</h1><span id="resultCount"></span></div>
+      <div class="head"><h1><svg class="i"><use href="#i-camera"/></svg>Камеры</h1><span class="hr"><span id="resultCount"></span><button class="ib2" id="fbtn" data-act="fpanel" aria-label="Поиск и фильтры"><svg class="i"><use href="#i-search"/></svg></button></span></div>
       <div id="grid"></div>
       <div class="head" style="margin-top:22px"><h1 style="font-size:18px">Аналитика</h1></div>
       <div class="ov" id="ov"></div>
@@ -672,7 +688,7 @@ const firebaseConfig = {
 const ADMIN_EMAIL = 'adam@fruit.local'; // главный администратор (защита — firestore.rules)
 const ALLOW_SIGNUP = true;              // false — убрать «Создать аккаунт»
 const DOMAIN = '@fruit.local';
-const APP_VERSION = '3.0';
+const APP_VERSION = '3.1';
 const DEMO_TOOLS = true;                // false — спрятать кнопку «Демо-данные» (после презентации)
 const SLOT_HOUR = 14;                   // до этого часа обход «утренний», после — «вечерний»
 const OFFLINE_CACHE = false;            // true — хранить данные на устройстве (чтение без сети), но на iPhone иногда подвисает
@@ -688,7 +704,7 @@ try { db = initializeFirestore(app, { localCache: OFFLINE_CACHE ? persistentLoca
 catch(e){ db = initializeFirestore(app, {}); }
 
 const names = {all:'Все',storage:'Охлаждение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
-const ST = {storage:['snow','#2db6ff'],process:['layers','#ffa51f'],rgs:['flask','#19f5a0'],inactive:['pause','#98a6c6'],problem:['alert','#ff3860'],empty:['circle','#7d93c4']};
+const ST = {storage:['snow','#2db6ff'],process:['layers','#ffa51f'],rgs:['flask','#19f5a0'],inactive:['pause','#98a6c6'],problem:['alert','#ff3860'],empty:['circle','#b26bff']};
 const ACTIVE = ['storage','process','rgs'];
 const FIELDS = [
   ['crop','Культура','text'],['sort','Сорт','text'],['batch','Партия','text'],
@@ -775,7 +791,7 @@ function devInfo(){
 }
 
 /* ===== Модальные окна ===== */
-let dirty = false, loaded = false, rq, statsAnim = false, introDone = false, tvT = null, tourDone = false, tourI = 0, started = false;
+let dirty = false, loaded = false, rq, statsAnim = false, introDone = false, tvT = null, tourDone = false, tourI = 0, started = false, attnOpen = false;
 let askRes = null, askIn = false;
 const modalOpen = () => !!document.querySelector('.modal.open');
 function openModal(id){
@@ -994,8 +1010,9 @@ function badge(){
 function renderAttn(){
   const bad = vis().filter(needsAttention);
   $('attn').innerHTML = !bad.length ? '' :
-    '<section class="attn"><div class="attn-h"><h2>'+ic('alert')+'<span>Требуют внимания</span><b class="cnt">'+bad.length+'</b></h2><button data-act="attnall">Все '+ic('arrow')+'</button></div><div class="alist">'+
-    bad.slice(0, 4).map(c => { const pr = c.status === 'problem'; return '<button class="achip" data-cam="'+c.id+'" style="--c:'+(pr ? '#ff3860' : '#ffa51f')+'"><span class="ai">'+ic(pr ? 'alertc' : 'alert')+'</span><span class="at"><b>№'+pad(c.id)+(c.sort ? ' · '+esc(c.sort) : '')+'</b>'+(pr ? '<span class="pill" style="--c:#ff3860">Проблема</span>' : '<small>'+reasons(c).join(', ')+'</small>')+'</span>'+ic('chevr')+'</button>'; }).join('')+'</div></section>';
+    '<section class="attn'+(attnOpen ? ' open' : '')+'"><button class="attn-bar" data-act="attntoggle" aria-expanded="'+attnOpen+'"><span class="l">'+ic('alert')+'Требуют внимания <b class="cnt">'+bad.length+'</b></span>'+ic('chev')+'</button>'+
+    (attnOpen ? '<div class="alist">'+bad.slice(0, 12).map(c => { const pr = c.status === 'problem'; return '<button class="achip" data-cam="'+c.id+'" style="--c:'+(pr ? '#ff3860' : '#ffa51f')+'"><span class="ai">'+ic(pr ? 'alertc' : 'alert')+'</span><span class="at"><b>№'+pad(c.id)+(c.sort ? ' · '+esc(c.sort) : '')+'</b>'+(pr ? '<span class="pill" style="--c:#ff3860">Проблема</span>' : '<small>'+reasons(c).join(', ')+'</small>')+'</span>'+ic('chevr')+'</button>'; }).join('')+'</div>'+
+      (bad.length > 12 ? '<div class="attn-more hint">и ещё '+(bad.length - 12)+'</div>' : '')+'<div class="attn-more"><button class="btn sm full" data-act="attnall">Показать в списке</button></div>' : '')+'</section>';
 }
 function countUps(){
   if (statsAnim) return; statsAnim = true;
@@ -1084,6 +1101,7 @@ function render(){
   }
   $('grid').innerHTML = html || (!loaded ? '<div class="grid">'+'<div class="cam sk"></div>'.repeat(6)+'</div>' : '<div class="empty-msg">'+(all.length ? 'Ничего не найдено. Измените фильтр или поиск.' : 'Камер пока нет.')+'</div>');
   $('resultCount').textContent = list.length === all.length ? all.length + ' камер' : list.length + ' из ' + all.length;
+  $('fbtn').classList.toggle('act', !!(search.trim() || wingFilter !== 'all' || sortBy !== 'num'));
   if (!introDone && all.length){ introDone = true; const g = $('grid'); g.classList.add('intro'); setTimeout(() => g.classList.remove('intro'), 1300); }
 }
 function renderJournal(){
@@ -1894,7 +1912,7 @@ const ACTS = {
   theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try { localStorage.setItem('th', n); } catch(_){} },
   shiftstart: shiftStart, shiftend: shiftEnd, shiftdone: shiftDone, handview: () => handView(false), handok: handOk, handstart: handStart,
   round: () => { renderRound(); openModal('roundModal'); },
-  help: () => { closeTopModal(); tour(0); }, tournext: () => tour(tourI + 1), tourend: () => closeModal('dlgModal'), tv: () => { closeTopModal(); tvOpen(); }, tvclose: tvClose, demo: demoFill, diag: diagnose, errors: showErrors, update: updateApp, pendrefresh: () => location.reload(), attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
+  help: () => { closeTopModal(); tour(0); }, tournext: () => tour(tourI + 1), tourend: () => closeModal('dlgModal'), tv: () => { closeTopModal(); tvOpen(); }, tvclose: tvClose, demo: demoFill, attntoggle: () => { attnOpen = !attnOpen; renderAttn(); }, fpanel: () => { const p = $('fpanel'); p.hidden = !p.hidden; if (!p.hidden) setTimeout(() => $('q').focus(), 50); }, diag: diagnose, errors: showErrors, update: updateApp, pendrefresh: () => location.reload(), attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
   newtask: newTask, newnext: newNext, nextsave: nextSave, feedmore: () => { feedN += 30; renderToday(); },
   feedtoggle: () => { feedOpen = !feedOpen; try { localStorage.setItem('feed', feedOpen ? '1' : '0'); } catch(_){} renderToday(); }, tasksave: taskSave, newann: newAnn, annsave: annSave, newinc: newInc, incsave: incSave
 };
