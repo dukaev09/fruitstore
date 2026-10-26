@@ -549,6 +549,21 @@ html.lock #appScreen main{visibility:hidden}
 .attn-more{padding:0 12px 12px}
 .cam.empty{opacity:1}
 [data-theme=dark] .cam.empty{opacity:1;box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent),0 0 14px color-mix(in srgb,var(--c) 45%,transparent),inset 0 0 14px color-mix(in srgb,var(--c) 12%,transparent)}
+
+/* ===== v3.2: вместимость и схема хранилища ===== */
+.fl{display:block;height:5px;border-radius:3px;background:color-mix(in srgb,var(--c) 18%,var(--line));margin:6px 0 3px;overflow:hidden}
+.fl i{display:block;height:100%;border-radius:3px}
+.fp{display:block;font-size:11px;color:var(--mut);font-weight:600}.fp.od{color:var(--bad)}
+.plan{display:grid;grid-template-columns:1fr 20px 1fr 1fr 20px 1fr;gap:6px;height:min(68vh,600px)}
+.strip{display:flex;flex-direction:column;gap:5px;min-height:0}
+.pt{flex:1;min-height:0;border-radius:9px;border:1.5px solid var(--c);background:linear-gradient(to top,color-mix(in srgb,var(--c) 42%,var(--card)) var(--f),color-mix(in srgb,var(--c) 7%,var(--card)) 0);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:2px;color:var(--ink)}
+.pt b{font-size:13px}.pt small{font-size:10px;color:var(--mut);line-height:1.1}
+.pt.warn{outline:2px solid var(--bad);outline-offset:1px}
+.pt.off{opacity:.3;border-style:dashed;border-color:var(--line)}
+[data-theme=dark] .pt{box-shadow:0 0 8px color-mix(in srgb,var(--c) 45%,transparent)}
+.aisle{display:flex;flex-direction:column;align-items:center;justify-content:space-between;border-left:2px dashed var(--line);border-right:2px dashed var(--line);color:var(--mut);font-size:10px;padding:6px 0}
+.aisle span{writing-mode:vertical-rl;letter-spacing:2px}.aisle b{color:var(--brand);font-size:14px}
+.entr{text-align:center;margin:10px 0 4px;color:var(--brand);font-weight:800;letter-spacing:3px;font-size:12px}
 </style>
 </head>
 <body>
@@ -688,14 +703,21 @@ const firebaseConfig = {
 const ADMIN_EMAIL = 'adam@fruit.local'; // главный администратор (защита — firestore.rules)
 const ALLOW_SIGNUP = true;              // false — убрать «Создать аккаунт»
 const DOMAIN = '@fruit.local';
-const APP_VERSION = '3.1';
+const APP_VERSION = '3.2';
 const DEMO_TOOLS = true;                // false — спрятать кнопку «Демо-данные» (после презентации)
 const SLOT_HOUR = 14;                   // до этого часа обход «утренний», после — «вечерний»
 const OFFLINE_CACHE = false;            // true — хранить данные на устройстве (чтение без сети), но на iPhone иногда подвисает
 const SAN_DAYS = 30;                    // как часто дезинфицировать камеру
-const DEF = { wings: 4, size: 14, maxDays: 180, safeO2: 19.5, brand: 'Фруктохранилище', tag: 'Высокое качество низких температур', foot: 'ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт', norms: { temp:[-1,5], hum:[80,98], o2:[1,5], co2:[0,6] } };
+const DEF = { blocks: [9, 5, 5, 9], maxDays: 180, safeO2: 19.5, brand: 'Фруктохранилище', tag: 'Высокое качество низких температур', foot: 'ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт', norms: { temp:[-1,5], hum:[80,98], o2:[1,5], co2:[0,6] } };
 const NL = { temp:['Температура',' °C'], hum:['Влажность',' %'], o2:['O₂',' %'], co2:['CO₂',' %'] };
 let S = structuredClone(DEF);
+const KG_BOX = 300;                      // 1 ящик = 300 кг
+const PLAN = {};                         // вместимость камер по схеме хранилища: [ящиков, схема укладки]
+[[[1, 9, 20], 720, '10x8x9'], [[2, 3, 4, 5, 6, 7, 8, 21, 22, 23, 24, 25, 26, 27], 540, '10x6x9'], [[10, 19], 810, '15x6x9'], [[11, 12, 13, 16, 17, 18], 702, '13x6x9'], [[14, 15], 432, '8x6x9'], [[28], 630, '10x7x9']]
+  .forEach(([ids, n, sc]) => ids.forEach(i => { PLAN[i] = [n, sc]; }));
+const PLAN_ROWS = [[9, 8, 7, 6, 5, 4, 3, 2, 1], [10, 11, 12, 13, 14], [19, 18, 17, 16, 15], [20, 21, 22, 23, 24, 25, 26, 27, 28]]; // сверху вниз, вход снизу
+const capOf = c => c.cap || (PLAN[c.id] ? PLAN[c.id][0] * KG_BOX : 0);
+const overfull = c => { const cp = capOf(c); return cp > 0 && (c.qty || 0) > cp; };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -739,8 +761,8 @@ const rel = t => { const d = t - Date.now(), m = Math.round(Math.abs(d)/6e4), s 
 const kgf = x => x >= 1000 ? (x/1000).toFixed(1)+' т' : Math.round(x)+' кг';
 const toIso = s => { const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(s||''); return m ? m[3]+'-'+m[2]+'-'+m[1] : ''; };
 const toDmy = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s||''); return m ? m[3]+'.'+m[2]+'.'+m[1] : ''; };
-const wingOf = id => Math.floor((id-1)/S.size)+1;
-const total = () => S.wings * S.size;
+const wingOf = id => { let n = id; for (let i = 0; i < S.blocks.length; i++){ if (n <= S.blocks[i]) return i + 1; n -= S.blocks[i]; } return S.blocks.length; };
+const total = () => S.blocks.reduce((a, x) => a + x, 0);
 let lt;
 const showLoading = s => {
   clearTimeout(lt); $('loading').classList.toggle('show', s);
@@ -756,8 +778,8 @@ const days = c => { const i = toIso(c.loadAt); return i ? Math.max(0, Math.floor
 const issues = c => ACTIVE.includes(c.status) ? Object.keys(NL).filter(k => { const n = S.norms[k]; return c[k] != null && n && (c[k] < n[0] || c[k] > n[1]); }) : [];
 const over = c => ACTIVE.includes(c.status) && S.maxDays > 0 && (days(c) || 0) > S.maxDays;
 const noEntry = c => c.status === 'rgs' && (c.o2 == null || c.o2 < S.safeO2);
-const needsAttention = c => c.status === 'problem' || issues(c).length > 0 || over(c);
-const reasons = c => c.status === 'problem' ? ['Проблема'] : [...issues(c).map(k => NL[k][0]+(c[k] > S.norms[k][1] ? ' выше нормы' : ' ниже нормы')), ...(over(c) ? ['Срок хранения превышен'] : [])];
+const needsAttention = c => c.status === 'problem' || issues(c).length > 0 || over(c) || overfull(c);
+const reasons = c => c.status === 'problem' ? ['Проблема'] : [...issues(c).map(k => NL[k][0]+(c[k] > S.norms[k][1] ? ' выше нормы' : ' ниже нормы')), ...(over(c) ? ['Срок хранения превышен'] : []), ...(overfull(c) ? ['Превышена вместимость'] : [])];
 const rk = (day, slot, id) => day+'_'+slot+'_'+id;
 const W = p => {
   let late = false;
@@ -940,7 +962,7 @@ function startAll(){
   const rows = s => s.docs.map(d => ({ id: d.id, ...d.data() }));
   on(doc(db,'settings','main'), s => {
     const d = s.exists() ? s.data() : {};
-    S = { wings: d.wings || DEF.wings, size: d.size || DEF.size, maxDays: d.maxDays ?? DEF.maxDays, safeO2: d.safeO2 ?? DEF.safeO2, norms: { ...DEF.norms, ...(d.norms || {}) }, brand: d.brand || DEF.brand, tag: d.tag ?? DEF.tag, foot: d.foot ?? DEF.foot };
+    S = { blocks: Array.isArray(d.blocks) && d.blocks.length ? d.blocks.map(Number) : DEF.blocks, maxDays: d.maxDays ?? DEF.maxDays, safeO2: d.safeO2 ?? DEF.safeO2, norms: { ...DEF.norms, ...(d.norms || {}) }, brand: d.brand || DEF.brand, tag: d.tag ?? DEF.tag, foot: d.foot ?? DEF.foot };
     applyBrand();
     if (cams.length) renderTab();
   }, 'settings');
@@ -1026,10 +1048,10 @@ function renderStats(){
   const all = vis();
   let kg = 0, occ = 0, emp = 0;
   all.forEach(c => { if (ACTIVE.includes(c.status)){ occ++; kg += c.qty || 0; } else if (c.status === 'empty') emp++; });
-  const pct = Math.round(occ/(all.length||1)*100), tons = (kg/1000).toFixed(1).replace('.', ',');
+  const pct = Math.round(occ/(all.length||1)*100), tons = (kg/1000).toFixed(1).replace('.', ','), capKg = all.reduce((s, c) => s + capOf(c), 0), pctW = capKg ? Math.round(kg / capKg * 100) : 0, capT = (capKg / 1000).toLocaleString('ru-RU', { maximumFractionDigits: 0 });
   const card = (col, left, l, v, s) => '<div class="stat" style="--c:'+col+'"><div class="sc">'+left+'<div><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div></div></div>';
   $('stats').innerHTML =
-    card('#3b82ff', '<div class="si">'+ic('box')+'</div>', 'На хранении', '<span data-cu="'+(kg/1000)+'" data-fmt="t" data-suf=" т">'+tons+' т</span>', 'Общий вес') +
+    card('#3b82ff', '<div class="si">'+ic('box')+'</div>', 'На хранении', '<span data-cu="'+(kg/1000)+'" data-fmt="t" data-suf=" т">'+tons+' т</span>', capKg ? 'из '+capT+' т · '+pctW+'%' : 'Общий вес') +
     card('#3b82ff', '<div class="rg" style="--p:'+pct+'"><b>'+pct+'%</b></div>', 'Занято', '<span data-cu="'+occ+'">'+occ+'</span> / '+all.length, 'камер') +
     card('#19f5a0', '<div class="si">'+ic('door')+'</div>', 'Свободно', '<span data-cu="'+emp+'">'+emp+'</span>', 'камер');
   $('subTitle').textContent = all.length + ' камер · ' + hm(Date.now());
@@ -1046,8 +1068,9 @@ function renderOv(){
   occ.forEach(c => { const k = c.crop || 'Без культуры'; byCrop[k] = (byCrop[k] || 0) + (c.qty || 0); });
   const top = Object.entries(byCrop).sort((x, y) => y[1] - x[1]).slice(0, 5), mx = top.length ? top[0][1] || 1 : 1;
   const ds = occ.map(days).filter(d => d != null), avg = ds.length ? Math.round(ds.reduce((s, d) => s + d, 0) / ds.length) : null;
+  const kgNow = occ.reduce((s, c) => s + (c.qty || 0), 0), capNow = all.reduce((s, c) => s + capOf(c), 0), wl = capNow ? (kgNow / 1000).toFixed(0)+' из '+(capNow / 1000).toFixed(0)+' т' : '';
   $('ov').innerHTML =
-    '<div class="ovc"><h3>Загрузка хранилища</h3><div class="donut"><div class="ring" style="background:conic-gradient('+grad+')"><div><span>'+Math.round(occ.length/(all.length||1)*100)+'%<small>занято</small></span></div></div><div class="lg2">'+legend+'</div></div></div>'+
+    '<div class="ovc"><h3>Загрузка хранилища'+(wl ? ' · '+wl : '')+'</h3><div class="donut"><div class="ring" style="background:conic-gradient('+grad+')"><div><span>'+Math.round(occ.length/(all.length||1)*100)+'%<small>занято</small></span></div></div><div class="lg2">'+legend+'</div></div></div>'+
     '<div class="ovc"><h3>Запасы по культурам'+(avg != null ? ' · средний срок '+avg+' дн.' : '')+'</h3>'+
     (top.map(([k, v]) => '<div class="crop"><span>'+esc(k)+'</span><div class="bar"><i style="width:'+Math.round(v/mx*100)+'%"></i></div><b>'+(v/1000).toFixed(1)+' т</b></div>').join('') || '<div class="hint">Пока нет данных</div>')+'</div>';
 }
@@ -1059,12 +1082,17 @@ function renderChips(){
   $('filters').innerHTML = order.map(key => key === 'all' ? chip(key, '', names[key], all.length, '') : chip(key, ST[key][0], names[key], all.filter(x => x.status === key).length, ST[key][1])).join('') +
     chip('noentry', 'ban', 'Вход запрещён', all.filter(noEntry).length, '#ff3860') +
     (filter === 'attn' ? chip('attn', 'alert', 'Внимание', all.filter(needsAttention).length, '#ff3860') : '');
-  if (wingFilter !== 'all' && wingFilter > S.wings) wingFilter = 'all';
+  if (wingFilter !== 'all' && wingFilter > S.blocks.length) wingFilter = 'all';
   let o = '<option value="all">Все крылья</option>';
-  for (let i = 1; i <= S.wings; i++) o += '<option value="'+i+'">'+wingName(i)+'</option>';
+  for (let i = 1; i <= S.blocks.length; i++) o += '<option value="'+i+'">'+wingName(i)+'</option>';
   $('wing').innerHTML = o; $('wing').value = String(wingFilter);
 }
 const fmtN = v => Number(v).toLocaleString('ru-RU');
+function fillHtml(c){
+  const cp = capOf(c); if (!cp) return '';
+  const p = Math.round((c.qty || 0) / cp * 100), col = p > 100 ? '#ff3860' : p > 90 ? '#ffa51f' : 'var(--c)';
+  return '<span class="fl"><i style="width:'+Math.min(100, p)+'%;background:'+col+'"></i></span><span class="fp'+(p > 100 ? ' od' : '')+'">'+p+'% · из '+(cp / 1000).toLocaleString('ru-RU', { maximumFractionDigits: 0 })+' т</span>';
+}
 function camCard(c){
   const bad = issues(c), [icn, col] = ST[c.status] || ST.empty, d = ACTIVE.includes(c.status) ? days(c) : null;
   const cell = (key, ico, l, u) => '<div class="'+(bad.includes(key) ? 'bad' : '')+'">'+ico+'<span><small>'+l+'</small><b>'+(c[key] == null ? '—' : fmtN(c[key])+u)+'</b></span></div>';
@@ -1072,7 +1100,7 @@ function camCard(c){
     '<div class="ch"><span class="pill">'+ic(icn)+esc(names[c.status] || c.status)+'</span><span class="upd">'+ic('clock')+(c.updatedAt ? 'Обновлено '+hm(c.updatedAt) : 'нет данных')+'</span></div>'+
     (noEntry(c) ? '<div class="ch" style="padding-top:6px"><span class="ban">'+ic('ban')+'Вход запрещён</span></div>' : '')+
     '<div class="cb"><span class="cf">'+culIcon(c.sort, c.crop)+'</span><span class="cn"><span class="no">№'+pad(c.id)+(c.locked ? ' 🔒' : '')+'</span><b class="'+(String(c.sort || '').length > 11 ? 'long' : '')+'">'+val(c.sort)+'</b><small>'+val(c.batch)+'</small>'+
-    '<span class="qq">'+(c.qty || 0).toLocaleString('ru-RU')+' кг</span>'+(d != null ? '<span class="dd'+(over(c) ? ' od' : '')+'">'+d+' дн.</span>' : '')+'</span></div>'+
+    '<span class="qq">'+(c.qty || 0).toLocaleString('ru-RU')+' кг</span>'+fillHtml(c)+(d != null ? '<span class="dd'+(over(c) ? ' od' : '')+'">'+d+' дн.</span>' : '')+'</span></div>'+
     '<div class="cm">'+cell('temp', ic('thermo'), 'Темп.', '°C')+cell('hum', ic('drop'), 'Влаж.', '%')+cell('o2', ic('o2dot'), 'O₂', '%')+cell('co2', ic('cloud'), 'CO₂', '%')+'</div></button>';
 }
 function sortList(a){
@@ -1090,7 +1118,7 @@ function render(){
   const list = all.filter(c => match(c) && (wingFilter === 'all' || wingOf(c.id) === wingFilter) &&
     (!q || [pad(c.id), c.id, c.sort, c.batch, c.crop].join(' ').toLowerCase().includes(q)));
   let html = '';
-  for (let w = 1; w <= S.wings; w++){
+  for (let w = 1; w <= S.blocks.length; w++){
     const wc = sortList(list.filter(c => wingOf(c.id) === w)); if (!wc.length) continue;
     const wa = all.filter(c => wingOf(c.id) === w), occ = wa.filter(c => ACTIVE.includes(c.status));
     const t = occ.reduce((s,c) => s + (c.qty||0), 0)/1000, pct = Math.round(occ.length/(wa.length||1)*100);
@@ -1111,15 +1139,17 @@ function renderJournal(){
 
 /* ===== Схема хранилища ===== */
 function renderMap(){
-  const all = vis();
-  const cell = c => '<button class="mc'+(needsAttention(c)?' warn':'')+'" data-cam="'+c.id+'" style="--c:'+(ST[c.status]||ST.empty)[1]+'"><span>'+(noEntry(c)?'⛔ ':'')+c.id+(c.locked?' 🔒':'')+'</span><small>'+(c.temp != null ? c.temp+'°' : '—')+'</small></button>';
-  let h = '<div class="mapw">';
-  for (let w = 1; w <= S.wings; w++){
-    const wc = all.filter(c => wingOf(c.id) === w); let r = '';
-    for (let i = 0; i < wc.length; i += 2) r += cell(wc[i]) + '<i class="cor"></i>' + (wc[i+1] ? cell(wc[i+1]) : '<span></span>');
-    h += '<div class="mw"><h3>'+wingName(w)+'<span>вход ▼ коридор</span></h3><div class="mg">'+r+'</div></div>';
-  }
-  $('map').innerHTML = h + '</div><div class="leg">'+Object.keys(ST).map(k => '<span style="--c:'+ST[k][1]+'"><i></i>'+names[k]+'</span>').join('')+'<span>⛔ вход запрещён</span><span>🔒 партия закрыта</span></div>';
+  const all = vis(), by = {}; all.forEach(c => { by[c.id] = c; });
+  const tile = id => {
+    const c = by[id]; if (!c) return '<div class="pt off"><b>'+id+'</b><small>нет</small></div>';
+    const cp = capOf(c), p = cp ? Math.min(100, Math.round((c.qty || 0) / cp * 100)) : 0;
+    return '<button class="pt'+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+id+'" style="--c:'+(ST[c.status] || ST.empty)[1]+';--f:'+p+'%"><b>'+(noEntry(c) ? '⛔' : '')+id+'</b><small>'+(c.temp != null ? fmtN(c.temp)+'°' : '—')+'</small><small>'+(cp ? p+'%' : '')+'</small></button>';
+  };
+  const strip = ids => '<div class="strip">'+ids.map(tile).join('')+'</div>', aisle = '<div class="aisle"><span>проход</span><b>▲</b></div>';
+  const known = new Set(PLAN_ROWS.flat()), extra = all.filter(c => !known.has(c.id));
+  $('map').innerHTML = '<div class="plan">'+strip(PLAN_ROWS[0])+aisle+strip(PLAN_ROWS[1])+strip(PLAN_ROWS[2])+aisle+strip(PLAN_ROWS[3])+'</div><div class="entr">▲ вход ▲</div>'+
+    (extra.length ? '<h3 class="mh">Другие камеры</h3><div class="mapw">'+extra.map(c => '<button class="mc'+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+c.id+'" style="--c:'+(ST[c.status] || ST.empty)[1]+'"><span>'+c.id+'</span><small>'+(c.temp != null ? c.temp+'°' : '—')+'</small></button>').join('')+'</div>' : '')+
+    '<div class="leg">'+Object.keys(ST).map(k => '<span style="--c:'+ST[k][1]+'"><i></i>'+names[k]+'</span>').join('')+'<span>⛔ вход запрещён</span></div><div class="hint">Закраска камеры снизу показывает, насколько она заполнена. Номера идут от входа.</div>';
   $('mapInfo').textContent = all.length + ' камер';
 }
 
@@ -1148,6 +1178,9 @@ function openView(id){
     return '<div class="tile'+(isBad ? ' bad' : '')+'" style="--c:'+(isBad ? '#ff3860' : MET[k][1])+'"><span>'+ic(MET[k][0])+NL[k][0]+'</span><b>'+(v == null ? '—' : fmtN(v)+unit(k))+'</b>'+g+
       '<small>норма '+n[0]+'…'+n[1]+(isBad ? (v > n[1] ? ' · выше нормы' : ' · ниже нормы') : '')+'</small></div>';
   };
+  const cpv = capOf(c), qv = c.qty || 0, pcv = cpv ? Math.round(qv / cpv * 100) : 0, plv = PLAN[c.id], t1 = x => (x / 1000).toFixed(1).replace('.', ',');
+  const capText = cpv ? cpv.toLocaleString('ru-RU')+' кг'+(plv ? ' · '+plv[0]+' ящиков ('+plv[1].replace(/x/g, '×')+')' : '') : '—';
+  const fillText = cpv ? '<span style="color:'+(pcv > 100 ? 'var(--bad)' : 'inherit')+'">'+pcv+'% · '+(qv > cpv ? 'превышено на '+t1(qv - cpv)+' т' : 'свободно '+t1(cpv - qv)+' т')+' · ящиков '+Math.round(qv / KG_BOX)+' из '+Math.round(cpv / KG_BOX)+'</span>' : '—';
   let life = '';
   if (ACTIVE.includes(c.status) && d != null && S.maxDays > 0){
     const pc = Math.min(100, d / S.maxDays * 100), cd = over(c) ? '#ff3860' : pc > 80 ? '#ffa51f' : '#19f5a0';
@@ -1162,7 +1195,7 @@ function openView(id){
     (c.locked ? '<div class="banner" style="color:var(--ink);border-color:var(--line);background:var(--bg)">🔒 Партия закрыта, редактирование заблокировано</div>' : '')+
     '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+
     '<div class="sec"><h4>Динамика замеров</h4><div id="rdgs"><div class="hint">Загрузка…</div></div></div>'+
-    sec('Продукт', row('Крыло', wingName(wingOf(c.id)))+row('Культура', val(c.crop))+row('Сорт', val(c.sort))+row('Партия', val(c.batch))+row('Количество', (c.qty||0).toLocaleString('ru-RU')+' кг')+row('Оператор', val(c.operator)))+
+    sec('Продукт', row('Крыло', wingName(wingOf(c.id)))+row('Культура', val(c.crop))+row('Сорт', val(c.sort))+row('Партия', val(c.batch))+row('Количество', (c.qty||0).toLocaleString('ru-RU')+' кг')+row('Вместимость', capText)+row('Заполнение', fillText)+row('Оператор', val(c.operator)))+
     sec('Сроки', row('Загрузка', val(c.loadAt))+(life ? life : row('Срок хранения', '—'))+row('Обработка', val(c.processAt))+row('Вывод на РГС', val(c.rgsAt))+row('Обновлено', c.updatedAt ? fmtDT(c.updatedAt) : '—'))+
     sec('Санитария', row('Уборка', san(c.cleanAt))+row('Дезинфекция', san(c.disAt)))+
     (w ? '<div class="quick"><button class="btn sm" data-act="clean">Отметить уборку</button><button class="btn sm" data-act="disinf">Отметить дезинфекцию</button></div>' : '')+
@@ -1221,7 +1254,7 @@ function buildForm(){
     '<div class="grp"><h3>Статус</h3><div class="seg">'+Object.keys(ST).map(k =>
       '<label style="--c:'+ST[k][1]+'"><input type="radio" name="st" value="'+k+'"><span>'+ic(ST[k][0])+names[k]+'</span></label>').join('')+'</div>'+
     '<div class="quick"><button type="button" class="btn sm" data-q="free">Освободить камеру (очистить поля)</button></div></div>'+
-    GROUPS.map(([t, ks]) => '<div class="grp"><h3>'+t+'</h3><div class="fg">'+ks.map(fld).join('')+'</div></div>').join('')+
+    GROUPS.map(([t, ks], gi) => '<div class="grp"><h3>'+t+'</h3><div class="fg">'+ks.map(fld).join('')+(gi === 0 ? '<div class="fld"><label for="f_boxes">Ящиков (1 ящик = 300 кг)</label><input id="f_boxes" type="number" inputmode="numeric" min="0" step="1"></div>' : '')+'</div>'+(gi === 0 ? '<p class="hint" id="capHint"></p>' : '')+'</div>').join('')+
     '<div class="grp"><h3>Примечание</h3><textarea id="f_note" maxlength="500" style="width:100%"></textarea></div>';
 }
 const getStatus = () => document.querySelector('input[name=st]:checked').value;
@@ -1234,7 +1267,7 @@ function quick(q){
   if (q === 'free'){
     setStatus('empty');
     ['crop','sort','batch','operator','loadAt','processAt','rgsAt'].forEach(k => $('f_'+k).value = '');
-    $('f_qty').value = 0; $('f_note').value = '';
+    $('f_qty').value = 0; $('f_boxes').value = 0; $('f_note').value = '';
   } else { setStatus(q); autoDate(q); }
   toast('Проверьте данные и нажмите «Сохранить»');
 }
@@ -1245,6 +1278,7 @@ function openForm(){
   setStatus(c.status);
   FIELDS.forEach(([k,,t]) => { $('f_'+k).value = t === 'date' ? toIso(c[k]) : (c[k] ?? ''); });
   $('f_note').value = c.note || '';
+  $('f_boxes').value = Math.round((c.qty || 0) / KG_BOX); const cpf = capOf(c); $('capHint').textContent = cpf ? 'Вместимость камеры: '+cpf.toLocaleString('ru-RU')+' кг ('+Math.round(cpf / KG_BOX)+' ящиков)' : '';
   closeModal('viewModal'); openModal('editModal');
 }
 function collect(){
@@ -1264,6 +1298,7 @@ async function save(){
   const changed = Object.keys(upd).filter(k => String(upd[k] ?? '') !== String(c[k] ?? ''));
   if (!changed.length){ closeModal('editModal'); return; }
   const freeing = (c.qty||0) > 0 && ((upd.qty||0) === 0 || upd.status === 'empty' || upd.status === 'inactive');
+  const cpS = capOf(c); if (cpS && (upd.qty || 0) > cpS && !(await ask({ title:'Больше вместимости', text:'Указано '+(upd.qty || 0).toLocaleString('ru-RU')+' кг, а вместимость камеры '+cpS.toLocaleString('ru-RU')+' кг. Всё равно сохранить?', ok:'Сохранить', danger:true }))) return;
   if (freeing){ if (!(await danger('Камера №'+pad(c.id)+' содержит '+(c.qty||0).toLocaleString('ru-RU')+' кг ('+(c.sort||'—')+'). Вы убираете из неё запасы.', c.id))) return; }
   else if (!(await ask({ title:'Сохранить изменения?', text:'Камера №'+pad(c.id)+' · '+esc(c.sort||'—'), ok:'Сохранить' }))) return;
   const after = { ...c, ...upd };
@@ -1740,9 +1775,7 @@ function openSettings(){
   const n = S.norms;
   $('setForm').innerHTML =
     '<div class="grp"><h3>Название и подписи</h3><div class="fld"><label for="s_brand">Название</label><input id="s_brand" maxlength="40" value="'+esc(S.brand)+'"></div><div class="fld" style="margin-top:10px"><label for="s_tag">Слоган</label><input id="s_tag" maxlength="80" value="'+esc(S.tag)+'"></div><div class="fld" style="margin-top:10px"><label for="s_foot">Подпись внизу страницы</label><input id="s_foot" maxlength="100" value="'+esc(S.foot)+'"></div></div>'+
-    '<div class="grp"><h3>Структура</h3><div class="fg"><div class="fld"><label for="s_wings">Число крыльев</label><input id="s_wings" type="number" min="1" max="12" value="'+S.wings+'"></div>'+
-    '<div class="fld"><label for="s_size">Камер в крыле</label><input id="s_size" type="number" min="1" max="60" value="'+S.size+'"></div></div>'+
-    '<p class="hint">Всего не больше 400 камер. Недостающие камеры создаются пустыми, лишние только скрываются.</p></div>'+
+    '<div class="grp"><h3>Структура: камер в каждом крыле</h3><div class="fld"><label for="s_blocks">Числа через запятую</label><input id="s_blocks" type="text" inputmode="numeric" value="'+S.blocks.join(', ')+'"></div><p class="hint">Сейчас: '+S.blocks.join(' + ')+' = '+total()+' камер. Для вашей схемы: 9, 5, 5, 9. Всего не больше 400. Недостающие камеры создаются пустыми, лишние только скрываются.</p></div>'+
     '<div class="grp"><h3>Срок хранения и безопасность</h3><div class="fg"><div class="fld"><label for="s_days">Максимум, дней (0 — не контролировать)</label><input id="s_days" type="number" min="0" max="1000" value="'+S.maxDays+'"></div>'+
     '<div class="fld"><label for="s_o2">Безопасный O₂ для входа в РГС, %</label><input id="s_o2" type="number" step="0.1" min="0" max="25" value="'+S.safeO2+'"></div></div></div>'+
     '<div class="grp"><h3>Нормы (за пределами подсвечиваются красным)</h3><div class="fg">'+
@@ -1750,8 +1783,8 @@ function openSettings(){
   closeModal('menuModal'); openModal('setModal');
 }
 async function saveSettings(){
-  const w = Number($('s_wings').value), z = Number($('s_size').value), md = Number($('s_days').value), so = Number($('s_o2').value), norms = {};
-  if (!Number.isInteger(w) || !Number.isInteger(z) || w < 1 || w > 12 || z < 1 || z > 60 || w*z > 400){ toast('Проверьте число крыльев и камер (всего до 400)', 1); return; }
+  const bl = ($('s_blocks').value || '').split(/[^0-9]+/).filter(Boolean).map(Number), nt = bl.reduce((a, x) => a + x, 0), md = Number($('s_days').value), so = Number($('s_o2').value), norms = {};
+  if (!bl.length || bl.length > 12 || bl.some(x => x < 1 || x > 60) || nt > 400){ toast('Камеры по крыльям: числа через запятую, например 9, 5, 5, 9 (всего до 400)', 1); return; }
   if (!Number.isInteger(md) || md < 0 || md > 1000){ toast('Срок хранения: целое число от 0 до 1000', 1); return; }
   if (!Number.isFinite(so) || so < 0 || so > 25){ toast('Безопасный O₂: от 0 до 25 %', 1); return; }
   for (const k of Object.keys(NL)){
@@ -1759,12 +1792,12 @@ async function saveSettings(){
     if (!Number.isFinite(a) || !Number.isFinite(b) || a > b){ toast(NL[k][0]+': «от» должно быть меньше «до»', 1); return; }
     norms[k] = [a, b];
   }
-  if (w*z < total() && !(await ask({ title:'Скрыть камеры?', text:'Камеры с номерами выше '+w*z+' будут скрыты, данные сохранятся.', ok:'Продолжить' }))) return;
+  if (nt < total() && !(await ask({ title:'Скрыть камеры?', text:'Камеры с номерами выше '+nt+' будут скрыты, данные сохранятся.', ok:'Продолжить' }))) return;
   $('setSave').disabled = true;
   await run(async () => {
     const b = writeBatch(db), have = new Set(cams.map(c => c.id));
-    b.set(doc(db,'settings','main'), { wings:w, size:z, maxDays:md, safeO2:so, norms, brand:($('s_brand').value.trim() || DEF.brand).slice(0, 40), tag:$('s_tag').value.trim().slice(0, 80), foot:$('s_foot').value.trim().slice(0, 100) });
-    for (let i = 1; i <= w*z; i++) if (!have.has(i)) b.set(doc(db,'cameras','cam'+i), cleanCam({ id:i, status:'empty' }));
+    b.set(doc(db,'settings','main'), { blocks:bl, maxDays:md, safeO2:so, norms, brand:($('s_brand').value.trim() || DEF.brand).slice(0, 40), tag:$('s_tag').value.trim().slice(0, 80), foot:$('s_foot').value.trim().slice(0, 100) });
+    for (let i = 1; i <= nt; i++) if (!have.has(i)) b.set(doc(db,'cameras','cam'+i), cleanCam({ id:i, status:'empty' }));
     await W(b.commit()); closeModal('setModal');
   }, 'Настройки сохранены');
   $('setSave').disabled = false;
@@ -1806,6 +1839,10 @@ $('askI').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDe
 $('loginForm').addEventListener('submit', e => { e.preventDefault(); doAuth(false); });
 $('editForm').addEventListener('submit', e => { e.preventDefault(); save(); });
 $('setForm').addEventListener('submit', e => { e.preventDefault(); saveSettings(); });
+$('editForm').addEventListener('input', e => {
+  if (e.target.id === 'f_boxes') $('f_qty').value = Math.round((Number(e.target.value) || 0) * KG_BOX);
+  else if (e.target.id === 'f_qty') $('f_boxes').value = Math.round((Number(e.target.value) || 0) / KG_BOX);
+});
 $('editForm').addEventListener('change', e => { if (e.target.name === 'st') autoDate(e.target.value); });
 $('q').addEventListener('input', e => { search = e.target.value; render(); });
 $('wing').addEventListener('change', e => { wingFilter = e.target.value === 'all' ? 'all' : Number(e.target.value); render(); });
@@ -1820,7 +1857,7 @@ function renderTV(){
   const all = vis(), occ = all.filter(c => ACTIVE.includes(c.status)), kg = occ.reduce((s, c) => s + (c.qty || 0), 0);
   const bad = all.filter(needsAttention).length, ne = all.filter(noEntry).length, pct = Math.round(occ.length/(all.length||1)*100);
   const k = (l, v, col) => '<div style="--c:'+col+'"><small>'+l+'</small><b>'+v+'</b></div>';
-  $('tvK').innerHTML = k('На хранении', (kg/1000).toFixed(1).replace('.', ',')+' т', '#3b82ff') + k('Загрузка', pct+'%', '#19f5a0') + k('Требуют внимания', bad, bad ? '#ff3860' : '#19f5a0') + k('Вход запрещён', ne, '#ffa51f') + k('Индекс состояния', health(), healthColor(health())) + k('На смене', openShifts().length, openShifts().length ? '#19f5a0' : '#ff3860');
+  $('tvK').innerHTML = k('На хранении', (kg/1000).toFixed(1).replace('.', ',')+' т', '#3b82ff') + k('Заполнение по весу', (all.reduce((s, c) => s + capOf(c), 0) ? Math.round(kg / all.reduce((s, c) => s + capOf(c), 0) * 100) : pct)+'%', '#19f5a0') + k('Требуют внимания', bad, bad ? '#ff3860' : '#19f5a0') + k('Вход запрещён', ne, '#ffa51f') + k('Индекс состояния', health(), healthColor(health())) + k('На смене', openShifts().length, openShifts().length ? '#19f5a0' : '#ff3860');
   $('tvMap').innerHTML = all.map(c => '<i class="tt'+(needsAttention(c) ? ' w' : '')+'" style="--c:'+(ST[c.status] || ST.empty)[1]+'">'+c.id+'</i>').join('');
   $('tvFeed').innerHTML = '<h3>События</h3>'+(feedItems().slice(0, 8).map(x => '<div class="fi'+(x.tone ? ' '+x.tone : '')+'"><span class="fic">'+x.icon+'</span><div class="fb">'+x.html+'<small>'+hm(x.ts)+'</small></div></div>').join('') || '<div class="hint">Событий пока нет</div>');
   $('tvDate').textContent = new Date().toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
@@ -1850,7 +1887,7 @@ async function demoFill(){
       if (id === 2 || id === 12) st = 'problem';
       if ([7, 19, 23, 31].includes(id)) st = 'storage';
       const full = st !== 'empty' && st !== 'inactive', [crop, sort] = pick(P);
-      const c = { id, status: st, crop: full ? crop : '', sort: full ? sort : '', batch: full ? 'П-'+(240+id) : '', qty: full ? Math.round((8 + rnd() * 14) * 2) * 500 : 0,
+      const c = { id, status: st, crop: full ? crop : '', sort: full ? sort : '', batch: full ? 'П-'+(240+id) : '', qty: full ? (capOf({ id }) ? Math.round(capOf({ id }) * (.45 + rnd() * .5) / 500) * 500 : Math.round((8 + rnd() * 14) * 2) * 500) : 0,
         temp: +(0.6 + rnd() * 1.8).toFixed(1), hum: Math.round(88 + rnd() * 6), o2: +(1.6 + rnd() * 1.8).toFixed(1), co2: +(2 + rnd() * 2).toFixed(1), operator: pick(ops),
         loadAt: full ? dmy(4 + Math.floor(rnd() * 120)) : '', processAt: st === 'process' ? dmy(1 + Math.floor(rnd() * 4)) : '', rgsAt: st === 'rgs' ? dmy(2 + Math.floor(rnd() * 30)) : '',
         note: id === 2 ? 'Конденсат на испарителе, вызван механик' : id === 12 ? 'Не держит температуру, проверить компрессор' : '',
