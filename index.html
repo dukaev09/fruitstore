@@ -564,6 +564,17 @@ html.lock #appScreen main{visibility:hidden}
 .aisle{display:flex;flex-direction:column;align-items:center;justify-content:space-between;border-left:2px dashed var(--line);border-right:2px dashed var(--line);color:var(--mut);font-size:10px;padding:6px 0}
 .aisle span{writing-mode:vertical-rl;letter-spacing:2px}.aisle b{color:var(--brand);font-size:14px}
 .entr{text-align:center;margin:10px 0 4px;color:var(--brand);font-weight:800;letter-spacing:3px;font-size:12px}
+
+/* ===== v3.3: коридоры ===== */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cor{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px;min-width:0}
+.cor-h{display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-bottom:6px;font-size:13px}
+.cor-h span{color:var(--mut);font-size:11px}
+.cplan{display:grid;grid-template-columns:1fr 12px 1fr;gap:4px;height:min(52vh,460px)}
+.cor .aisle{padding:4px 0;justify-content:flex-end;border-left:2px dashed var(--line);border-right:2px dashed var(--line)}
+.cor .aisle b{font-size:12px}
+.cor .entr{margin:6px 0 0;font-size:11px;letter-spacing:1px}
+[data-theme=dark] .cor{border-color:color-mix(in srgb,var(--brand) 38%,var(--line))}
 </style>
 </head>
 <body>
@@ -638,7 +649,7 @@ html.lock #appScreen main{visibility:hidden}
       <div class="stats" id="stats"></div>
       <div id="fpanel" hidden><div class="srow">
         <label class="sbox"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Номер, сорт, партия, культура (/)" autocomplete="off"></label>
-        <select id="wing" aria-label="Крыло"></select>
+        <select id="wing" aria-label="Коридор"></select>
         <select id="sort" aria-label="Сортировка"><option value="num">По номеру</option><option value="days">Дольше хранятся</option><option value="qty">Больше товара</option><option value="warn">Сначала проблемные</option></select>
       </div></div>
       <div class="chips" id="filters"></div>
@@ -703,19 +714,23 @@ const firebaseConfig = {
 const ADMIN_EMAIL = 'adam@fruit.local'; // главный администратор (защита — firestore.rules)
 const ALLOW_SIGNUP = true;              // false — убрать «Создать аккаунт»
 const DOMAIN = '@fruit.local';
-const APP_VERSION = '3.2';
+const APP_VERSION = '3.3';
 const DEMO_TOOLS = true;                // false — спрятать кнопку «Демо-данные» (после презентации)
 const SLOT_HOUR = 14;                   // до этого часа обход «утренний», после — «вечерний»
 const OFFLINE_CACHE = false;            // true — хранить данные на устройстве (чтение без сети), но на iPhone иногда подвисает
 const SAN_DAYS = 30;                    // как часто дезинфицировать камеру
-const DEF = { blocks: [9, 5, 5, 9], maxDays: 180, safeO2: 19.5, brand: 'Фруктохранилище', tag: 'Высокое качество низких температур', foot: 'ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт', norms: { temp:[-1,5], hum:[80,98], o2:[1,5], co2:[0,6] } };
+const DEF = { blocks: [14, 14], maxDays: 180, safeO2: 19.5, brand: 'Фруктохранилище', tag: 'Высокое качество низких температур', foot: 'ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт', norms: { temp:[-1,5], hum:[80,98], o2:[1,5], co2:[0,6] } };
 const NL = { temp:['Температура',' °C'], hum:['Влажность',' %'], o2:['O₂',' %'], co2:['CO₂',' %'] };
 let S = structuredClone(DEF);
 const KG_BOX = 300;                      // 1 ящик = 300 кг
-const PLAN = {};                         // вместимость камер по схеме хранилища: [ящиков, схема укладки]
-[[[1, 9, 20], 720, '10x8x9'], [[2, 3, 4, 5, 6, 7, 8, 21, 22, 23, 24, 25, 26, 27], 540, '10x6x9'], [[10, 19], 810, '15x6x9'], [[11, 12, 13, 16, 17, 18], 702, '13x6x9'], [[14, 15], 432, '8x6x9'], [[28], 630, '10x7x9']]
+const rg = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+const PLAN = {};                         // вместимость камер по схеме хранилища (56 камер): [ящиков, схема укладки]
+[[[1, 9, 20, 37, 48, 56], 720, '10x8x9'], [[...rg(2, 8), ...rg(21, 27), ...rg(30, 36), ...rg(49, 55)], 540, '10x6x9'], [[10, 19, 38, 47], 810, '15x6x9'],
+ [[11, 12, 13, 16, 17, 18, 39, 40, 41, 44, 45, 46], 702, '13x6x9'], [[14, 15, 42, 43], 432, '8x6x9'], [[28, 29], 630, '10x7x9']]
   .forEach(([ids, n, sc]) => ids.forEach(i => { PLAN[i] = [n, sc]; }));
-const PLAN_ROWS = [[9, 8, 7, 6, 5, 4, 3, 2, 1], [10, 11, 12, 13, 14], [19, 18, 17, 16, 15], [20, 21, 22, 23, 24, 25, 26, 27, 28]]; // сверху вниз, вход снизу
+// коридоры: у каждого две стороны, камеры сверху вниз (дальний конец сверху, вход снизу)
+const CORR = [[[9, 8, 7, 6, 5, 4, 3, 2, 1], [10, 11, 12, 13, 14]], [[19, 18, 17, 16, 15], rg(20, 28)], [[37, 36, 35, 34, 33, 32, 31, 30, 29], [38, 39, 40, 41, 42]], [[47, 46, 45, 44, 43], rg(48, 56)]];
+const fixBlocks = b => (b.length === 4 && b[0] === 9 && b[1] === 5 && b[2] === 5 && b[3] === 9) ? [14, 14] : b;
 const capOf = c => c.cap || (PLAN[c.id] ? PLAN[c.id][0] * KG_BOX : 0);
 const overfull = c => { const cp = capOf(c); return cp > 0 && (c.qty || 0) > cp; };
 
@@ -741,7 +756,7 @@ const LABEL = Object.fromEntries(FIELDS.map(f => [f[0], f[1].split(',')[0]]));
 Object.assign(LABEL, {status:'Статус', note:'Примечание'});
 const ROLE_RU = {pending:'Ожидает одобрения', viewer:'Просмотр', operator:'Оператор', admin:'Администратор'};
 const SL = {am:'Утренний', pm:'Вечерний'};
-const wingName = n => 'Крыло ' + n;
+const wingName = n => 'Коридор ' + n;
 
 /* ===== Утилиты ===== */
 const $ = id => document.getElementById(id);
@@ -962,7 +977,7 @@ function startAll(){
   const rows = s => s.docs.map(d => ({ id: d.id, ...d.data() }));
   on(doc(db,'settings','main'), s => {
     const d = s.exists() ? s.data() : {};
-    S = { blocks: Array.isArray(d.blocks) && d.blocks.length ? d.blocks.map(Number) : DEF.blocks, maxDays: d.maxDays ?? DEF.maxDays, safeO2: d.safeO2 ?? DEF.safeO2, norms: { ...DEF.norms, ...(d.norms || {}) }, brand: d.brand || DEF.brand, tag: d.tag ?? DEF.tag, foot: d.foot ?? DEF.foot };
+    S = { blocks: fixBlocks(Array.isArray(d.blocks) && d.blocks.length ? d.blocks.map(Number) : DEF.blocks), maxDays: d.maxDays ?? DEF.maxDays, safeO2: d.safeO2 ?? DEF.safeO2, norms: { ...DEF.norms, ...(d.norms || {}) }, brand: d.brand || DEF.brand, tag: d.tag ?? DEF.tag, foot: d.foot ?? DEF.foot };
     applyBrand();
     if (cams.length) renderTab();
   }, 'settings');
@@ -1083,7 +1098,7 @@ function renderChips(){
     chip('noentry', 'ban', 'Вход запрещён', all.filter(noEntry).length, '#ff3860') +
     (filter === 'attn' ? chip('attn', 'alert', 'Внимание', all.filter(needsAttention).length, '#ff3860') : '');
   if (wingFilter !== 'all' && wingFilter > S.blocks.length) wingFilter = 'all';
-  let o = '<option value="all">Все крылья</option>';
+  let o = '<option value="all">Все коридоры</option>';
   for (let i = 1; i <= S.blocks.length; i++) o += '<option value="'+i+'">'+wingName(i)+'</option>';
   $('wing').innerHTML = o; $('wing').value = String(wingFilter);
 }
@@ -1141,15 +1156,20 @@ function renderJournal(){
 function renderMap(){
   const all = vis(), by = {}; all.forEach(c => { by[c.id] = c; });
   const tile = id => {
-    const c = by[id]; if (!c) return '<div class="pt off"><b>'+id+'</b><small>нет</small></div>';
+    const c = by[id]; if (!c) return '<div class="pt off"><b>'+id+'</b></div>';
     const cp = capOf(c), p = cp ? Math.min(100, Math.round((c.qty || 0) / cp * 100)) : 0;
     return '<button class="pt'+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+id+'" style="--c:'+(ST[c.status] || ST.empty)[1]+';--f:'+p+'%"><b>'+(noEntry(c) ? '⛔' : '')+id+'</b><small>'+(c.temp != null ? fmtN(c.temp)+'°' : '—')+'</small><small>'+(cp ? p+'%' : '')+'</small></button>';
   };
-  const strip = ids => '<div class="strip">'+ids.map(tile).join('')+'</div>', aisle = '<div class="aisle"><span>проход</span><b>▲</b></div>';
-  const known = new Set(PLAN_ROWS.flat()), extra = all.filter(c => !known.has(c.id));
-  $('map').innerHTML = '<div class="plan">'+strip(PLAN_ROWS[0])+aisle+strip(PLAN_ROWS[1])+strip(PLAN_ROWS[2])+aisle+strip(PLAN_ROWS[3])+'</div><div class="entr">▲ вход ▲</div>'+
+  const strip = ids => '<div class="strip">'+ids.map(tile).join('')+'</div>';
+  const panels = CORR.map((sides, i) => {
+    const ids = sides.flat(); if (!ids.some(id => by[id])) return '';
+    return '<div class="cor"><div class="cor-h"><b>'+wingName(i + 1)+'</b><span>камеры '+Math.min(...ids)+'–'+Math.max(...ids)+'</span></div><div class="cplan">'+strip(sides[0])+'<div class="aisle"><b>▲</b></div>'+strip(sides[1])+'</div><div class="entr">▲ вход</div></div>';
+  }).join('');
+  const known = new Set(CORR.flat(2)), extra = all.filter(c => !known.has(c.id));
+  $('map').innerHTML = '<div class="cgrid">'+panels+'</div>'+
+    (S.blocks.length < 4 ? '<div class="hint" style="margin-top:8px">Коридоры '+(S.blocks.length + 1)+'–4 выключены (Меню → Настройки хранилища).</div>' : '')+
     (extra.length ? '<h3 class="mh">Другие камеры</h3><div class="mapw">'+extra.map(c => '<button class="mc'+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+c.id+'" style="--c:'+(ST[c.status] || ST.empty)[1]+'"><span>'+c.id+'</span><small>'+(c.temp != null ? c.temp+'°' : '—')+'</small></button>').join('')+'</div>' : '')+
-    '<div class="leg">'+Object.keys(ST).map(k => '<span style="--c:'+ST[k][1]+'"><i></i>'+names[k]+'</span>').join('')+'<span>⛔ вход запрещён</span></div><div class="hint">Закраска камеры снизу показывает, насколько она заполнена. Номера идут от входа.</div>';
+    '<div class="leg">'+Object.keys(ST).map(k => '<span style="--c:'+ST[k][1]+'"><i></i>'+names[k]+'</span>').join('')+'<span>⛔ вход запрещён</span></div><div class="hint">Закраска камеры снизу показывает, насколько она заполнена. Вход в коридор снизу, номера идут от входа.</div>';
   $('mapInfo').textContent = all.length + ' камер';
 }
 
@@ -1195,7 +1215,7 @@ function openView(id){
     (c.locked ? '<div class="banner" style="color:var(--ink);border-color:var(--line);background:var(--bg)">🔒 Партия закрыта, редактирование заблокировано</div>' : '')+
     '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+
     '<div class="sec"><h4>Динамика замеров</h4><div id="rdgs"><div class="hint">Загрузка…</div></div></div>'+
-    sec('Продукт', row('Крыло', wingName(wingOf(c.id)))+row('Культура', val(c.crop))+row('Сорт', val(c.sort))+row('Партия', val(c.batch))+row('Количество', (c.qty||0).toLocaleString('ru-RU')+' кг')+row('Вместимость', capText)+row('Заполнение', fillText)+row('Оператор', val(c.operator)))+
+    sec('Продукт', row('Коридор', wingName(wingOf(c.id)))+row('Культура', val(c.crop))+row('Сорт', val(c.sort))+row('Партия', val(c.batch))+row('Количество', (c.qty||0).toLocaleString('ru-RU')+' кг')+row('Вместимость', capText)+row('Заполнение', fillText)+row('Оператор', val(c.operator)))+
     sec('Сроки', row('Загрузка', val(c.loadAt))+(life ? life : row('Срок хранения', '—'))+row('Обработка', val(c.processAt))+row('Вывод на РГС', val(c.rgsAt))+row('Обновлено', c.updatedAt ? fmtDT(c.updatedAt) : '—'))+
     sec('Санитария', row('Уборка', san(c.cleanAt))+row('Дезинфекция', san(c.disAt)))+
     (w ? '<div class="quick"><button class="btn sm" data-act="clean">Отметить уборку</button><button class="btn sm" data-act="disinf">Отметить дезинфекцию</button></div>' : '')+
@@ -1775,7 +1795,7 @@ function openSettings(){
   const n = S.norms;
   $('setForm').innerHTML =
     '<div class="grp"><h3>Название и подписи</h3><div class="fld"><label for="s_brand">Название</label><input id="s_brand" maxlength="40" value="'+esc(S.brand)+'"></div><div class="fld" style="margin-top:10px"><label for="s_tag">Слоган</label><input id="s_tag" maxlength="80" value="'+esc(S.tag)+'"></div><div class="fld" style="margin-top:10px"><label for="s_foot">Подпись внизу страницы</label><input id="s_foot" maxlength="100" value="'+esc(S.foot)+'"></div></div>'+
-    '<div class="grp"><h3>Структура: камер в каждом крыле</h3><div class="fld"><label for="s_blocks">Числа через запятую</label><input id="s_blocks" type="text" inputmode="numeric" value="'+S.blocks.join(', ')+'"></div><p class="hint">Сейчас: '+S.blocks.join(' + ')+' = '+total()+' камер. Для вашей схемы: 9, 5, 5, 9. Всего не больше 400. Недостающие камеры создаются пустыми, лишние только скрываются.</p></div>'+
+    '<div class="grp"><h3>Структура: камер в каждом коридоре</h3><div class="fld"><label for="s_blocks">Числа через запятую</label><input id="s_blocks" type="text" inputmode="numeric" value="'+S.blocks.join(', ')+'"></div><p class="hint">Сейчас: '+S.blocks.join(' + ')+' = '+total()+' камер. В хранилище 4 коридора по 14 камер, сейчас включены первые. Чтобы включить все, введите 14, 14, 14, 14. Всего не больше 400. Недостающие камеры создаются пустыми, лишние только скрываются.</p></div>'+
     '<div class="grp"><h3>Срок хранения и безопасность</h3><div class="fg"><div class="fld"><label for="s_days">Максимум, дней (0 — не контролировать)</label><input id="s_days" type="number" min="0" max="1000" value="'+S.maxDays+'"></div>'+
     '<div class="fld"><label for="s_o2">Безопасный O₂ для входа в РГС, %</label><input id="s_o2" type="number" step="0.1" min="0" max="25" value="'+S.safeO2+'"></div></div></div>'+
     '<div class="grp"><h3>Нормы (за пределами подсвечиваются красным)</h3><div class="fg">'+
@@ -1784,7 +1804,7 @@ function openSettings(){
 }
 async function saveSettings(){
   const bl = ($('s_blocks').value || '').split(/[^0-9]+/).filter(Boolean).map(Number), nt = bl.reduce((a, x) => a + x, 0), md = Number($('s_days').value), so = Number($('s_o2').value), norms = {};
-  if (!bl.length || bl.length > 12 || bl.some(x => x < 1 || x > 60) || nt > 400){ toast('Камеры по крыльям: числа через запятую, например 9, 5, 5, 9 (всего до 400)', 1); return; }
+  if (!bl.length || bl.length > 12 || bl.some(x => x < 1 || x > 60) || nt > 400){ toast('Камеры по коридорам: числа через запятую, например 14, 14 (всего до 400)', 1); return; }
   if (!Number.isInteger(md) || md < 0 || md > 1000){ toast('Срок хранения: целое число от 0 до 1000', 1); return; }
   if (!Number.isFinite(so) || so < 0 || so > 25){ toast('Безопасный O₂: от 0 до 25 %', 1); return; }
   for (const k of Object.keys(NL)){
@@ -1809,7 +1829,7 @@ function download(name, blob){
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 function exportCsv(){
-  const cols = [['id','№'],['wing','Крыло'],['status','Статус'],...FIELDS.map(f => [f[0], f[1]]),['days','Срок, дн.'],['note','Примечание']];
+  const cols = [['id','№'],['wing','Коридор'],['status','Статус'],...FIELDS.map(f => [f[0], f[1]]),['days','Срок, дн.'],['note','Примечание']];
   const cell = v => '"' + String(v ?? '').replace(/"/g,'""') + '"';
   const rows = vis().map(c => cols.map(([k]) => cell(k==='wing' ? wingOf(c.id) : k==='status' ? names[c.status] : k==='days' ? days(c) : c[k])).join(';'));
   download('kamery-' + todayIso() + '.csv', new Blob(['\ufeff' + cols.map(c => cell(c[1])).join(';') + '\n' + rows.join('\n')], {type:'text/csv;charset=utf-8'}));
@@ -1912,7 +1932,7 @@ async function demoFill(){
     b.set(doc(collection(db,'shifts')), { uid:'demo2', email:'ruslan@fruit.local', start:now - 5 * H, end:null, acceptedFrom:'hasan@fruit.local', acceptedAt:now - 5 * H });
     const me = user.email, day = dayStr(), yd = dayStr(new Date(now - 864e5)), sl = slotNow();
     [['Проверить камеру №12 до конца смены', 12, 2 * H], ['Взять пробы твёрдости в камере №4', 4, 5 * H], ['Дезинфекция камеры №6 перед загрузкой', 6, 26 * H]].forEach(([title, camId, dt]) => b.set(doc(collection(db,'tasks')), { title, camId, assignee:'all', due:now + dt, createdBy:me, createdAt:now, done:false }));
-    [['Перед 22:00 проверить температуру в камере №12', 12, true], ['Принять машину с грушей, рампа 2', 0, false], ['Сверить остатки по крылу 1', 0, false]].forEach(([text, camId, urgent], i) => b.set(doc(collection(db,'nextshift')), { text, camId, urgent, by:me, ts:now - (10 + i) * 6e4, done:false }));
+    [['Перед 22:00 проверить температуру в камере №12', 12, true], ['Принять машину с грушей, рампа 2', 0, false], ['Сверить остатки по коридору 1', 0, false]].forEach(([text, camId, urgent], i) => b.set(doc(collection(db,'nextshift')), { text, camId, urgent, by:me, ts:now - (10 + i) * 6e4, done:false }));
     b.set(doc(collection(db,'announcements')), { title:'Режим работы на неделе', text:'Обход камер выполняем в 8:00 и 18:00. Отмечайте обход в приложении.', by:me, ts:now - 3 * H, ack:{ [user.uid]: now } });
     b.set(doc(collection(db,'incidents')), { kind:'Простой', camId:0, cause:'Нет электричества', start:now - 26 * H, end:now - 25 * H, by:me, endBy:me });
     [[12, 'Компрессор шумит, вызвал механика', 90], [2, 'Проверить конденсат при следующем обходе', 200]].forEach(([camId, text, m]) => b.set(doc(collection(db,'notes')), { camId, text, by:me, ts:now - m * 6e4, mentions:[] }));
