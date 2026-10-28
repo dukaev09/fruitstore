@@ -575,6 +575,37 @@ html.lock #appScreen main{visibility:hidden}
 .cor .aisle b{font-size:12px}
 .cor .entr{margin:6px 0 0;font-size:11px;letter-spacing:1px}
 [data-theme=dark] .cor{border-color:color-mix(in srgb,var(--brand) 38%,var(--line))}
+
+/* ===== v3.4: клиенты, значки, схема, свёрнутые разделы ===== */
+.dt{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden}
+.dt>summary{cursor:pointer;list-style:none;padding:12px 14px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:48px}
+.dt>summary::-webkit-details-marker{display:none}
+.dt>summary::after{content:'▾';color:var(--mut);transition:transform .2s;margin-left:6px}
+.dt[open]>summary::after{transform:rotate(180deg)}
+.dt>summary>span:first-child{flex:1;min-width:0;overflow-wrap:anywhere}
+.dtb{padding:0 14px 14px}
+[data-theme=dark] .dt{border-color:color-mix(in srgb,var(--brand) 38%,var(--line))}
+.em{line-height:1;display:inline-block}
+.apy{filter:hue-rotate(48deg) saturate(1.5) brightness(1.12)}
+.mi3{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;font-size:17px;line-height:1;max-width:46px}
+.mi3 .ci{width:19px;height:19px}
+.vf .mi3{font-size:15px;max-width:38px}
+.pt .pti{font-size:14px;line-height:1}.pt .pti .em{font-size:14px}.pt .pti .mi3{font-size:11px;max-width:none}.pt .pti img{width:16px;height:16px}
+.muted{color:var(--mut);font-weight:600}
+.bk{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;border:1px solid var(--b);color:var(--ink);margin-right:4px}
+.bk i{width:9px;height:9px;border-radius:2px;background:var(--b)}
+.itemr{align-items:center}.itemr .it b{display:flex;align-items:center;gap:6px;text-align:left}.itemr .it small{display:block;color:var(--mut);margin-top:3px}
+.kpis3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.kpis3>div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}
+.kpis3 small{display:block;color:var(--mut);font-size:11px}.kpis3 b{font-size:clamp(15px,4.4vw,20px)}
+.fg3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pp{flex:1;min-height:54px;border:1.5px solid var(--c);border-radius:8px;background:color-mix(in srgb,var(--c) 10%,var(--card));color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:2px;line-height:1.15}
+.pp b{font-size:13px}.pp span{font-size:9.5px;color:var(--mut);white-space:nowrap}
+.pp.off{opacity:.35;border-style:dashed}
+.cplan.big{height:auto}
+.cor .aisle.t{justify-content:flex-start}
+.hall{margin:10px 0;border:1.5px dashed var(--line);border-radius:12px;padding:10px;text-align:center;color:var(--mut);font-size:12px;letter-spacing:1px}
+#planModal .box{width:min(720px,100%)}
 </style>
 </head>
 <body>
@@ -615,6 +646,7 @@ html.lock #appScreen main{visibility:hidden}
 <symbol id="i-chevr" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
 <symbol id="i-alertc" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM12 8v5M12 16h.01"/></symbol>
 <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+<symbol id="i-wh" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12M7 21v-9h10v9M7 15h10M7 18h10"/></symbol>
 </svg>
 
 <div id="loginScreen" class="lw">
@@ -653,14 +685,14 @@ html.lock #appScreen main{visibility:hidden}
         <select id="sort" aria-label="Сортировка"><option value="num">По номеру</option><option value="days">Дольше хранятся</option><option value="qty">Больше товара</option><option value="warn">Сначала проблемные</option></select>
       </div></div>
       <div class="chips" id="filters"></div>
-      <div class="head"><h1><svg class="i"><use href="#i-camera"/></svg>Камеры</h1><span class="hr"><span id="resultCount"></span><button class="ib2" id="fbtn" data-act="fpanel" aria-label="Поиск и фильтры"><svg class="i"><use href="#i-search"/></svg></button></span></div>
+      <div class="head"><h1><svg class="i"><use href="#i-wh"/></svg>Камеры хранения</h1><span class="hr"><span id="resultCount"></span><button class="ib2" id="fbtn" data-act="fpanel" aria-label="Поиск и фильтры"><svg class="i"><use href="#i-search"/></svg></button></span></div>
       <div id="grid"></div>
       <div class="head" style="margin-top:22px"><h1 style="font-size:18px">Аналитика</h1></div>
       <div class="ov" id="ov"></div>
     </section>
     <section class="tab" id="t-map"><div class="head"><h1>Схема хранилища</h1><span id="mapInfo"></span></div><div id="map"></div></section>
     <section class="tab" id="t-today"><div class="head"><h1>Сегодня</h1><span id="todayInfo"></span></div><div id="today"></div></section>
-    <section class="tab" id="t-sum"><div class="head"><h1>Сводка</h1></div><div id="sum"></div></section>
+    <section class="tab" id="t-cl"><div class="head"><h1>Клиенты</h1><span class="hr"><button class="btn sm pri" data-act="recvany">+ Приёмка</button></span></div><div id="cl"></div></section>
     <section class="tab" id="t-team"><div class="head"><h1>Команда</h1></div><div id="team"></div></section>
     <div class="foot"><i>Высокое качество низких температур</i>ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт</div>
   </main>
@@ -668,7 +700,7 @@ html.lock #appScreen main{visibility:hidden}
     <button data-tab="cams" class="on"><svg class="i"><use href="#i-grid"/></svg>Камеры</button>
     <button data-tab="map"><svg class="i"><use href="#i-map"/></svg>Схема</button>
     <button data-tab="today"><svg class="i"><use href="#i-todo"/></svg>Сегодня<i class="bd" id="bdToday"></i></button>
-    <button data-tab="sum"><svg class="i"><use href="#i-chart"/></svg>Сводка</button>
+    <button data-tab="cl"><svg class="i"><use href="#i-box"/></svg>Клиенты</button>
     <button data-tab="team" id="navTeam" style="display:none"><svg class="i"><use href="#i-users"/></svg>Команда<i class="bd" id="bdTeam"></i></button>
   </nav>
 </div>
@@ -686,6 +718,7 @@ html.lock #appScreen main{visibility:hidden}
 
 <div class="modal" id="roundModal"><div class="box"><h2 id="rdTitle"></h2><div id="rdBody"></div><div class="acts"><button class="btn" data-close>Закрыть</button></div></div></div>
 <div class="modal" id="dlgModal"><div class="box"><h2 id="dlgTitle"></h2><div id="dlgBody"></div></div></div>
+<div class="modal" id="planModal"><div class="box"><h2>Схема камер хранилища</h2><div id="planBody"></div><div class="acts"><button class="btn" data-close>Закрыть</button></div></div></div>
 <div class="modal" id="askModal"><div class="box"><h2 id="askT"></h2><div class="ask-p" id="askP"></div><input id="askI" type="text" hidden autocomplete="off"><div class="acts"><button class="btn" id="askNo" data-ask="0">Отмена</button><button class="btn pri" id="askOk" data-ask="1">Да</button></div></div></div>
 <input type="file" id="importFile" accept=".json" hidden>
 <div id="loading" class="ld"><div class="ldc"><div class="lgo">🍎</div><div class="spin"></div><small>Загрузка…</small></div></div>
@@ -714,8 +747,7 @@ const firebaseConfig = {
 const ADMIN_EMAIL = 'adam@fruit.local'; // главный администратор (защита — firestore.rules)
 const ALLOW_SIGNUP = true;              // false — убрать «Создать аккаунт»
 const DOMAIN = '@fruit.local';
-const APP_VERSION = '3.3';
-const DEMO_TOOLS = true;                // false — спрятать кнопку «Демо-данные» (после презентации)
+const APP_VERSION = '3.4';
 const SLOT_HOUR = 14;                   // до этого часа обход «утренний», после — «вечерний»
 const OFFLINE_CACHE = false;            // true — хранить данные на устройстве (чтение без сети), но на iPhone иногда подвисает
 const SAN_DAYS = 30;                    // как часто дезинфицировать камеру
@@ -733,6 +765,37 @@ const CORR = [[[9, 8, 7, 6, 5, 4, 3, 2, 1], [10, 11, 12, 13, 14]], [[19, 18, 17,
 const fixBlocks = b => (b.length === 4 && b[0] === 9 && b[1] === 5 && b[2] === 5 && b[3] === 9) ? [14, 14] : b;
 const capOf = c => c.cap || (PLAN[c.id] ? PLAN[c.id][0] * KG_BOX : 0);
 const overfull = c => { const cp = capOf(c); return cp > 0 && (c.qty || 0) > cp; };
+const BX = { g:['Зелёные', '#2fbf71'], s:['Серые', '#9aa5b5'], w:['Деревянные', '#b9824a'] };
+const bxN = bx => bx ? (bx.g || 0) + (bx.s || 0) + (bx.w || 0) : 0;
+const bxAdd = (a, b) => { ['g', 's', 'w'].forEach(k => { a[k] = (a[k] || 0) + ((b && b[k]) || 0); }); return a; };
+const bxChips = bx => ['g', 's', 'w'].filter(k => bx && bx[k]).map(k => '<span class="bk" style="--b:'+BX[k][1]+'"><i></i>'+bx[k]+'</span>').join('');
+const itemsOf = c => Array.isArray(c.items) ? c.items : ((c.qty || 0) > 0 ? [{ cl:'', crop:c.crop || '', sort:c.sort || '', kg:c.qty, bx:{} }] : []);
+const summarize = items => ({ qty: items.reduce((a, i) => a + (i.kg || 0), 0), crop: [...new Set(items.map(i => i.crop).filter(Boolean))].join(', '), sort: [...new Set(items.map(i => i.sort).filter(Boolean))].join(' + ') });
+function kindOf(crop, sort){
+  const t = ((crop || '') + ' ' + (sort || '')).toLowerCase();
+  if (/груш/.test(t)) return 'pear'; if (/виноград/.test(t)) return 'grapes'; if (/морков/.test(t)) return 'carrot';
+  if (/капуст/.test(t)) return 'cabbage'; if (/свекл/.test(t)) return 'beet'; if (/слив/.test(t)) return 'plum';
+  if (!crop || /яблок/.test(t)) return 'apple';
+  return /голден|гала|фуджи|ред чиф|айдаред|семерен|гренни|джонагол|чемпион/.test(t) ? 'apple' : 'box';
+}
+function appleColor(sort){
+  const t = (sort || '').toLowerCase();
+  if (/семерен|симирен|гренни|гренн|зелен|зелён|смит/.test(t)) return 'g';
+  if (/голден|golden|гольден|жёлт|желт/.test(t)) return 'y';
+  return 'r';
+}
+function icoOne(crop, sort){
+  const k = kindOf(crop, sort);
+  if (k === 'apple'){ const col = appleColor(sort); return '<span class="em ap'+col+'">'+(col === 'g' ? '🍏' : '🍎')+'</span>'; }
+  const m = { pear:['pear','🍐'], grapes:['grapes','🍇'], carrot:['carrot','🥕'], cabbage:['cabbage','🥬'], beet:['beet','🟣'], plum:['plum','🟣'], box:['box','📦'] }[k];
+  return '<img src="/'+m[0]+'.png" class="ci" alt="" onerror="this.replaceWith(\''+m[1]+'\')">';
+}
+function camIcons(c){
+  const its = itemsOf(c); if (!its.length) return '';
+  const seen = new Set(), list = [];
+  its.forEach(i => { const cr = i.crop || c.crop || '', k = kindOf(cr, i.sort), key = k + (k === 'apple' ? appleColor(i.sort) : ''); if (!seen.has(key)){ seen.add(key); list.push(icoOne(cr, i.sort)); } });
+  return list.length === 1 ? list[0] : '<span class="mi3">'+list.slice(0, 4).join('')+'</span>';
+}
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -790,12 +853,14 @@ const nameOf = e => { const u = users.find(x => x.email === e); return u && u.na
 const camById = id => cams.find(x => x.id === id);
 const vis = () => cams.filter(c => c.id <= total());
 const days = c => { const i = toIso(c.loadAt); return i ? Math.max(0, Math.floor((Date.now() - new Date(i)) / 864e5)) : null; };
-const issues = c => ACTIVE.includes(c.status) ? Object.keys(NL).filter(k => { const n = S.norms[k]; return c[k] != null && n && (c[k] < n[0] || c[k] > n[1]); }) : [];
+const issues = c => ACTIVE.includes(c.status) ? Object.keys(NL).filter(k => { const n = S.norms[k]; if (c[k] == null || !n) return false; if (k === 'o2') return c.status === 'rgs' && c[k] > n[1]; return c[k] < n[0] || c[k] > n[1]; }) : [];
 const over = c => ACTIVE.includes(c.status) && S.maxDays > 0 && (days(c) || 0) > S.maxDays;
 const noEntry = c => c.status === 'rgs' && (c.o2 == null || c.o2 < S.safeO2);
 const needsAttention = c => c.status === 'problem' || issues(c).length > 0 || over(c) || overfull(c);
 const reasons = c => c.status === 'problem' ? ['Проблема'] : [...issues(c).map(k => NL[k][0]+(c[k] > S.norms[k][1] ? ' выше нормы' : ' ниже нормы')), ...(over(c) ? ['Срок хранения превышен'] : []), ...(overfull(c) ? ['Превышена вместимость'] : [])];
 const rk = (day, slot, id) => day+'_'+slot+'_'+id;
+const detOpen = {};
+const det = (k, title, body) => '<details class="dt" data-k="'+k+'"'+(detOpen[k] ? ' open' : '')+'><summary>'+title+'</summary><div class="dtb">'+body+'</div></details>';
 const W = p => {
   let late = false;
   const t = new Promise(r => setTimeout(() => { late = true; toast('Слабая связь: изменения отправятся позже'); r('queued'); }, 6000));
@@ -814,12 +879,7 @@ addEventListener('error', e => logErr(e.message, e.error && e.error.stack));
 addEventListener('unhandledrejection', e => logErr((e.reason && e.reason.message) || e.reason, e.reason && e.reason.stack));
 const run = async (fn, okMsg) => { showLoading(true); try { await fn(); if (okMsg) toast(okMsg); } catch(e){ toast('Ошибка: '+e.message, 1); } showLoading(false); };
 
-function culIcon(sort, crop){
-  const s = ((sort||'')+' '+(crop||'')).toLowerCase();
-  const map = [['груш','pear','🍐'],['морков','carrot','🥕'],['лук','onion','🧅'],['капуст','cabbage','🥬'],['свекл','beet','🟣'],['виноград','grapes','🍇'],['слив','plum','🟣']];
-  const m = map.find(x => s.includes(x[0])) || [0,'apple','🍎'];
-  return '<img src="/'+m[1]+'.png" class="ci" alt="" onerror="this.replaceWith(\''+m[2]+'\')">';
-}
+function culIcon(sort, crop){ return icoOne(crop, sort); }
 function devInfo(){
   const u = navigator.userAgent;
   const os = /iPhone|iPad/.test(u) ? 'iOS' : /Android/.test(u) ? 'Android' : /Windows/.test(u) ? 'Windows' : /Mac/.test(u) ? 'macOS' : /Linux/.test(u) ? 'Linux' : '?';
@@ -828,7 +888,7 @@ function devInfo(){
 }
 
 /* ===== Модальные окна ===== */
-let dirty = false, loaded = false, rq, statsAnim = false, introDone = false, tvT = null, tourDone = false, tourI = 0, started = false, attnOpen = false;
+let dirty = false, loaded = false, rq, statsAnim = false, introDone = false, tvT = null, tourDone = false, tourI = 0, started = false, attnOpen = false, MOVES = null, dlgCam = null;
 let askRes = null, askIn = false;
 const modalOpen = () => !!document.querySelector('.modal.open');
 function openModal(id){
@@ -907,7 +967,7 @@ async function doAuth(signup){
 }
 onAuthStateChanged(auth, u => {
   user = u; unsubs.forEach(f => f()); unsubs = [];
-  seeded = creating = gated = loaded = started = false; statsAnim = introDone = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; nexts = []; shifts = []; myShift = null; me = null; SUM = null; TEAM = null;
+  seeded = creating = gated = loaded = started = false; statsAnim = introDone = false; cams = []; journal = []; users = []; rounds = {}; tasks = []; notes = []; anns = []; incs = []; hands = []; nexts = []; shifts = []; myShift = null; me = null; SUM = null; TEAM = null; MOVES = null;
   $('pendingScreen').style.display = 'none';
   if (u){
     $('loginScreen').style.display = 'none'; $('appScreen').style.display = 'none';
@@ -936,6 +996,7 @@ const cleanCam = c => {
     if (t === 'num'){ const n = c[k] === '' || c[k] == null ? null : Number(c[k]); o[k] = Number.isFinite(n) ? n : (k === 'qty' ? 0 : null); }
     else o[k] = String(c[k] ?? '');
   });
+  if (Array.isArray(c.items)) o.items = c.items.map(i => ({ cl:String(i.cl || ''), crop:String(i.crop || ''), sort:String(i.sort || ''), kg:Number(i.kg) || 0, bx:{ g:Number(i.bx && i.bx.g) || 0, s:Number(i.bx && i.bx.s) || 0, w:Number(i.bx && i.bx.w) || 0 } }));
   return o;
 };
 async function commitAll(list){
@@ -946,11 +1007,11 @@ async function commitAll(list){
   }
 }
 const seedCams = () => Array.from({length: total()}, (_, k) => cleanCam({ id: k+1, status: 'empty' }));
-async function commitCam(c, patch, action, extra = {}, touch = true, reading = null){
+async function commitCam(c, patch, action, extra = {}, touch = true, mv = null){
   const b = writeBatch(db), t = Date.now();
   b.update(doc(db,'cameras','cam'+c.id), touch ? { ...patch, updatedBy: user.email, updatedAt: t } : patch);
   b.set(doc(collection(db,'journal')), { camId: c.id, cam: '№'+pad(c.id), action, user: user.email, ts: t, date: fmtDT(t), ...extra });
-  if (reading) b.set(doc(collection(db,'cameras','cam'+c.id,'readings')), reading);
+  (Array.isArray(mv) ? mv : mv ? [mv] : []).forEach(m => b.set(doc(collection(db,'moves')), m));
   await W(b.commit());
 }
 function subscribe(){
@@ -1016,7 +1077,7 @@ function showTab(t){
   document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x.id === 't-'+t));
   document.querySelectorAll('#nav button').forEach(x => x.classList.toggle('on', x.dataset.tab === t));
   window.scrollTo(0, 0);
-  if (t === 'sum' && !SUM) loadSum();
+  if (t === 'cl' && MOVES === null) loadMoves();
   if (t === 'team' && !TEAM) loadTeam();
   renderTab();
 }
@@ -1027,7 +1088,7 @@ function renderTab(){
   cancelAnimationFrame(rq);
   rq = requestAnimationFrame(() => {
     if (!user) return;
-    if (tab === 'cams') render(); else if (tab === 'map') renderMap(); else if (tab === 'today') renderToday(); else if (tab === 'sum') renderSum(); else if (tab === 'team') renderTeam();
+    if (tab === 'cams') render(); else if (tab === 'map') renderMap(); else if (tab === 'today') renderToday(); else if (tab === 'cl') renderCl(); else if (tab === 'team') renderTeam();
     badge();
   });
 }
@@ -1109,12 +1170,11 @@ function fillHtml(c){
   return '<span class="fl"><i style="width:'+Math.min(100, p)+'%;background:'+col+'"></i></span><span class="fp'+(p > 100 ? ' od' : '')+'">'+p+'% · из '+(cp / 1000).toLocaleString('ru-RU', { maximumFractionDigits: 0 })+' т</span>';
 }
 function camCard(c){
-  const bad = issues(c), [icn, col] = ST[c.status] || ST.empty, d = ACTIVE.includes(c.status) ? days(c) : null;
+  const bad = issues(c), [icn, col] = ST[c.status] || ST.empty, d = ACTIVE.includes(c.status) ? days(c) : null, ics = camIcons(c);
   const cell = (key, ico, l, u) => '<div class="'+(bad.includes(key) ? 'bad' : '')+'">'+ico+'<span><small>'+l+'</small><b>'+(c[key] == null ? '—' : fmtN(c[key])+u)+'</b></span></div>';
   return '<button class="cam '+esc(c.status)+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+c.id+'" style="--c:'+col+'">'+
-    '<div class="ch"><span class="pill">'+ic(icn)+esc(names[c.status] || c.status)+'</span><span class="upd">'+ic('clock')+(c.updatedAt ? 'Обновлено '+hm(c.updatedAt) : 'нет данных')+'</span></div>'+
-    (noEntry(c) ? '<div class="ch" style="padding-top:6px"><span class="ban">'+ic('ban')+'Вход запрещён</span></div>' : '')+
-    '<div class="cb"><span class="cf">'+culIcon(c.sort, c.crop)+'</span><span class="cn"><span class="no">№'+pad(c.id)+(c.locked ? ' 🔒' : '')+'</span><b class="'+(String(c.sort || '').length > 11 ? 'long' : '')+'">'+val(c.sort)+'</b><small>'+val(c.batch)+'</small>'+
+    '<div class="ch"><span class="pill">'+ic(icn)+esc(names[c.status] || c.status)+'</span>'+(noEntry(c) ? '<span class="ban">'+ic('ban')+'Вход запрещён</span>' : '')+'</div>'+
+    '<div class="cb">'+(ics ? '<span class="cf">'+ics+'</span>' : '')+'<span class="cn"><span class="no">№'+pad(c.id)+(c.locked ? ' 🔒' : '')+'</span><b class="'+(String(c.sort || '').length > 11 ? 'long' : '')+'">'+(c.sort ? esc(c.sort) : '<span class="muted">пусто</span>')+'</b>'+
     '<span class="qq">'+(c.qty || 0).toLocaleString('ru-RU')+' кг</span>'+fillHtml(c)+(d != null ? '<span class="dd'+(over(c) ? ' od' : '')+'">'+d+' дн.</span>' : '')+'</span></div>'+
     '<div class="cm">'+cell('temp', ic('thermo'), 'Темп.', '°C')+cell('hum', ic('drop'), 'Влаж.', '%')+cell('o2', ic('o2dot'), 'O₂', '%')+cell('co2', ic('cloud'), 'CO₂', '%')+'</div></button>';
 }
@@ -1131,7 +1191,7 @@ function render(){
   renderStats(); renderOv(); renderAttn(); renderChips();
   const all = vis(), q = search.trim().toLowerCase();
   const list = all.filter(c => match(c) && (wingFilter === 'all' || wingOf(c.id) === wingFilter) &&
-    (!q || [pad(c.id), c.id, c.sort, c.batch, c.crop].join(' ').toLowerCase().includes(q)));
+    (!q || [pad(c.id), c.id, c.sort, c.batch, c.crop, ...itemsOf(c).map(i => i.cl)].join(' ').toLowerCase().includes(q)));
   let html = '';
   for (let w = 1; w <= S.blocks.length; w++){
     const wc = sortList(list.filter(c => wingOf(c.id) === w)); if (!wc.length) continue;
@@ -1158,7 +1218,7 @@ function renderMap(){
   const tile = id => {
     const c = by[id]; if (!c) return '<div class="pt off"><b>'+id+'</b></div>';
     const cp = capOf(c), p = cp ? Math.min(100, Math.round((c.qty || 0) / cp * 100)) : 0;
-    return '<button class="pt'+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+id+'" style="--c:'+(ST[c.status] || ST.empty)[1]+';--f:'+p+'%"><b>'+(noEntry(c) ? '⛔' : '')+id+'</b><small>'+(c.temp != null ? fmtN(c.temp)+'°' : '—')+'</small><small>'+(cp ? p+'%' : '')+'</small></button>';
+    return '<button class="pt'+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+id+'" style="--c:'+(ST[c.status] || ST.empty)[1]+';--f:'+p+'%"><b>'+(noEntry(c) ? '⛔' : '')+id+'</b>'+(camIcons(c) ? '<span class="pti">'+camIcons(c)+'</span>' : '')+'<small>'+(c.temp != null ? fmtN(c.temp)+'°' : '—')+'</small><small>'+(cp ? p+'%' : '')+'</small></button>';
   };
   const strip = ids => '<div class="strip">'+ids.map(tile).join('')+'</div>';
   const panels = CORR.map((sides, i) => {
@@ -1174,7 +1234,6 @@ function renderMap(){
 }
 
 /* ===== Просмотр камеры ===== */
-const lastChange = id => journal.find(e => e.camId === id && e.prev);
 function renderNotes(){
   const el = $('nlist'); if (!el || !selected) return;
   const l = notes.filter(n => n.camId === selected).slice(0, 15).reverse();
@@ -1184,11 +1243,10 @@ function renderNotes(){
 function openView(id){
   const c = camById(id); if (!c) return;
   selected = id;
-  const [icn, col] = ST[c.status] || ST.empty, bad = issues(c), d = days(c), w = canW(), le = lastChange(id);
+  const [icn, col] = ST[c.status] || ST.empty, bad = issues(c), d = days(c), w = canW();
   const MET = { temp:['thermo','#2db6ff'], hum:['drop','#a78bfa'], o2:['o2dot','#19f5a0'], co2:['cloud','#ffa51f'] };
   const row = (l, v) => '<div class="vr"><span>'+l+'</span><b>'+v+'</b></div>';
   const sec = (t, body) => '<div class="sec"><h4>'+t+'</h4><div class="rows">'+body+'</div></div>';
-  const san = t => t ? fmtD(t)+' ('+Math.floor((Date.now()-t)/864e5)+' дн. назад)' : '<span style="color:var(--bad)">нет данных</span>';
   const tile = k => {
     const v = c[k], n = S.norms[k], isBad = bad.includes(k); let g = '';
     if (v != null && n){
@@ -1198,51 +1256,32 @@ function openView(id){
     return '<div class="tile'+(isBad ? ' bad' : '')+'" style="--c:'+(isBad ? '#ff3860' : MET[k][1])+'"><span>'+ic(MET[k][0])+NL[k][0]+'</span><b>'+(v == null ? '—' : fmtN(v)+unit(k))+'</b>'+g+
       '<small>норма '+n[0]+'…'+n[1]+(isBad ? (v > n[1] ? ' · выше нормы' : ' · ниже нормы') : '')+'</small></div>';
   };
-  const cpv = capOf(c), qv = c.qty || 0, pcv = cpv ? Math.round(qv / cpv * 100) : 0, plv = PLAN[c.id], t1 = x => (x / 1000).toFixed(1).replace('.', ',');
+  const its = itemsOf(c), cpv = capOf(c), qv = c.qty || 0, pcv = cpv ? Math.round(qv / cpv * 100) : 0, plv = PLAN[c.id], t1 = x => (x / 1000).toFixed(1).replace('.', ',');
   const capText = cpv ? cpv.toLocaleString('ru-RU')+' кг'+(plv ? ' · '+plv[0]+' ящиков ('+plv[1].replace(/x/g, '×')+')' : '') : '—';
-  const fillText = cpv ? '<span style="color:'+(pcv > 100 ? 'var(--bad)' : 'inherit')+'">'+pcv+'% · '+(qv > cpv ? 'превышено на '+t1(qv - cpv)+' т' : 'свободно '+t1(cpv - qv)+' т')+' · ящиков '+Math.round(qv / KG_BOX)+' из '+Math.round(cpv / KG_BOX)+'</span>' : '—';
+  const fillText = cpv ? '<span style="color:'+(pcv > 100 ? 'var(--bad)' : 'inherit')+'">'+pcv+'% · '+(qv > cpv ? 'превышено на '+t1(qv - cpv)+' т' : 'свободно '+t1(cpv - qv)+' т')+' · корзин '+Math.round(qv / KG_BOX)+' из '+Math.round(cpv / KG_BOX)+'</span>' : '—';
   let life = '';
   if (ACTIVE.includes(c.status) && d != null && S.maxDays > 0){
     const pc = Math.min(100, d / S.maxDays * 100), cd = over(c) ? '#ff3860' : pc > 80 ? '#ffa51f' : '#19f5a0';
     life = '<div class="life"><div class="lh"><span>Срок хранения</span><b style="color:'+cd+'">'+d+' из '+S.maxDays+' дн.'+(over(c) ? ' · превышен' : '')+'</b></div><div class="gauge"><i class="gf" style="width:'+pc.toFixed(0)+'%;background:'+cd+';box-shadow:0 0 10px '+cd+'"></i></div></div>';
   }
-  const hh = journal.filter(e => e.camId === c.id).slice(0, 5).map(e => '<div class="vr" style="flex-direction:column;gap:2px;align-items:flex-start"><b style="text-align:left;font-weight:600;font-size:13px">'+esc(e.action)+'</b><span style="font-size:11px">'+esc(e.date)+' · '+esc(nameOf(e.user))+'</span></div>').join('') || '<div class="vr"><span>Записей пока нет</span></div>';
+  const hh = journal.filter(e => e.camId === c.id).slice(0, 8).map(e => '<div class="vr" style="flex-direction:column;gap:2px;align-items:flex-start"><b style="text-align:left;font-weight:600;font-size:13px">'+esc(e.action)+'</b><span style="font-size:11px">'+esc(e.date)+' · '+esc(nameOf(e.user))+'</span></div>').join('') || '<div class="vr"><span>Записей пока нет</span></div>';
+  const itemRows = its.map((it, i) => '<div class="vr itemr"><div class="it"><b>'+icoOne(it.crop || c.crop, it.sort)+' '+esc(it.cl || 'Без клиента')+' · '+esc(it.sort || it.crop || '—')+'</b><small>'+(it.kg || 0).toLocaleString('ru-RU')+' кг'+(bxChips(it.bx) ? ' · '+bxChips(it.bx) : '')+'</small></div>'+(w && !c.locked ? '<button class="btn sm" data-ship="'+c.id+':'+i+'">Отгрузить</button>' : '')+'</div>').join('') || '<div class="vr"><span>Камера пуста</span></div>';
   $('viewModal').querySelector('.box').style.setProperty('--c', col);
-  $('vmTitle').innerHTML = '<span class="vf">'+culIcon(c.sort, c.crop)+'</span><span class="vt"><small>Камера №'+pad(c.id)+(c.locked ? ' 🔒' : '')+'</small><b>'+val(c.sort)+'</b></span>'+
+  $('vmTitle').innerHTML = '<span class="vf">'+(camIcons(c) || '❄️')+'</span><span class="vt"><small>Камера №'+pad(c.id)+(c.locked ? ' 🔒' : '')+'</small><b>'+(c.sort ? esc(c.sort) : 'Пусто')+'</b></span>'+
     '<span class="pill" style="--c:'+col+'">'+ic(icn)+esc(names[c.status] || c.status)+'</span><button class="x" data-close aria-label="Закрыть">'+ic('x')+'</button>';
   $('vmContent').innerHTML =
     (noEntry(c) ? '<div class="banner">'+ic('ban')+'<span>ВХОД ЗАПРЕЩЁН: O₂ '+(c.o2 != null ? c.o2+' %' : 'не измерен')+', безопасно от '+S.safeO2+' %</span></div>' : '')+
-    (c.locked ? '<div class="banner" style="color:var(--ink);border-color:var(--line);background:var(--bg)">🔒 Партия закрыта, редактирование заблокировано</div>' : '')+
+    (c.locked ? '<div class="banner" style="color:var(--ink);border-color:var(--line);background:var(--bg)">🔒 Партия закрыта: приёмка, отгрузка и правки заблокированы</div>' : '')+
     '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+
-    '<div class="sec"><h4>Динамика замеров</h4><div id="rdgs"><div class="hint">Загрузка…</div></div></div>'+
-    sec('Продукт', row('Коридор', wingName(wingOf(c.id)))+row('Культура', val(c.crop))+row('Сорт', val(c.sort))+row('Партия', val(c.batch))+row('Количество', (c.qty||0).toLocaleString('ru-RU')+' кг')+row('Вместимость', capText)+row('Заполнение', fillText)+row('Оператор', val(c.operator)))+
-    sec('Сроки', row('Загрузка', val(c.loadAt))+(life ? life : row('Срок хранения', '—'))+row('Обработка', val(c.processAt))+row('Вывод на РГС', val(c.rgsAt))+row('Обновлено', c.updatedAt ? fmtDT(c.updatedAt) : '—'))+
-    sec('Санитария', row('Уборка', san(c.cleanAt))+row('Дезинфекция', san(c.disAt)))+
-    (w ? '<div class="quick"><button class="btn sm" data-act="clean">Отметить уборку</button><button class="btn sm" data-act="disinf">Отметить дезинфекцию</button></div>' : '')+
+    sec('Что в камере', itemRows + row('Коридор', wingName(wingOf(c.id))) + row('Вместимость', capText) + row('Заполнение', fillText) + row('Оператор', val(c.operator)))+
+    (w && !c.locked ? '<button class="btn pri full neon" data-act="recv" style="margin-top:14px">+ Принять продукцию</button><button class="btn full" data-act="edit" style="margin-top:8px">Редактировать замеры и статус</button>' : '')+
     (c.note ? sec('Примечание', '<div class="vr" style="flex-direction:column;gap:4px"><b style="text-align:left;font-weight:500">'+esc(c.note)+'</b></div>') : '')+
-    sec('История камеры', hh)+'<div class="sec"><h4>Заметки команды</h4><div class="nl" id="nlist"></div>'+
-    (w ? '<div class="nin"><input id="nin" maxlength="300" placeholder="Заметка, @имя чтобы упомянуть"><button class="btn sm pri" data-act="noteadd">Отправить</button></div>' : '')+'</div>'+
-    (w ? (c.locked ? '<div class="banner" style="color:var(--mut);border-color:var(--line);background:none">Чтобы править, администратор должен открыть партию</div>' : '<button class="btn pri full neon" data-act="edit" style="margin-top:14px">Редактировать</button>') : '')+
-    (w && !c.locked && le ? '<button class="btn full" data-act="undo" style="margin-top:8px">↶ Отменить последнее изменение ('+esc(le.date)+')</button>' : '')+
-    (isAdmin() ? '<button class="btn full" data-act="lock" style="margin-top:8px">'+(c.locked ? '🔓 Открыть партию' : '🔒 Закрыть партию')+'</button>' : '');
-  openModal('viewModal'); renderNotes(); loadReadings(c.id);
-}
-async function loadReadings(id){
-  if (!$('rdgs')) return;
-  try {
-    const q = await getDocs(query(collection(db,'cameras','cam'+id,'readings'), orderBy('ts','desc'), limit(20)));
-    const l = q.docs.map(d => d.data()).reverse();
-    if (selected !== id || !$('rdgs')) return;
-    $('rdgs').innerHTML = l.length >= 2 ? lineChart(l, 'temp') + lineChart(l, 'hum') : '<div class="hint">График появится после двух сохранений замеров. Сейчас записей: '+l.length+'.</div>';
-  } catch(e){ if ($('rdgs')) $('rdgs').innerHTML = '<div class="hint">График недоступен</div>'; }
-}
-function lineChart(l, k){
-  const h = l.filter(p => p[k] != null); if (h.length < 2) return '';
-  const n = S.norms[k], vals = h.map(p => p[k]), lo = Math.min(...vals, n[0]), hi = Math.max(...vals, n[1]), r = (hi - lo) || 1;
-  const X = i => 6 + i * 288 / (h.length - 1), Y = v => 6 + (1 - (v - lo) / r) * 78;
-  const pts = h.map((p, i) => X(i).toFixed(1)+','+Y(p[k]).toFixed(1)).join(' ');
-  const last = h[h.length - 1], bad = last[k] < n[0] || last[k] > n[1], fd = t => new Date(t).toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit' });
-  return '<div class="chart"><h4><span>'+NL[k][0]+' · '+h.length+' замеров</span><span>'+fd(h[0].ts)+' — '+fd(last.ts)+'</span></h4><svg viewBox="0 0 300 90" preserveAspectRatio="none"><rect x="0" y="'+Y(n[1]).toFixed(1)+'" width="300" height="'+Math.max(1, Y(n[0]) - Y(n[1])).toFixed(1)+'" fill="#19f5a0" opacity=".16"/><polyline points="'+pts+'" fill="none" stroke="'+(bad ? 'var(--bad)' : 'var(--brand)')+'" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg></div>';
+    '<div style="margin-top:12px"></div>'+
+    det('d_time', 'Сроки', '<div class="rows">'+row('Загрузка', val(c.loadAt))+(life || row('Срок хранения', '—'))+row('Обработка', val(c.processAt))+row('Вывод на РГС', val(c.rgsAt))+row('Обновлено', c.updatedAt ? fmtDT(c.updatedAt) : '—')+'</div>')+
+    det('d_hist', 'История камеры', '<div class="rows">'+hh+'</div>')+
+    det('d_note', 'Заметки команды', '<div class="nl" id="nlist"></div>'+(w ? '<div class="nin"><input id="nin" maxlength="300" placeholder="Заметка, @имя чтобы упомянуть"><button class="btn sm pri" data-act="noteadd">Отправить</button></div>' : ''))+
+    (w ? '<button class="btn full" data-act="lock" style="margin-top:8px">'+(c.locked ? '🔓 Открыть партию' : '🔒 Закрыть партию')+'</button>' : '');
+  openModal('viewModal'); renderNotes();
 }
 async function noteAdd(){
   const i = $('nin'), t = i.value.trim(); if (!t) return;
@@ -1251,17 +1290,10 @@ async function noteAdd(){
   try { await addDoc(collection(db,'notes'), { camId: selected, text: t, by: user.email, ts: Date.now(), mentions }); i.value = ''; }
   catch(e){ toast('Не отправлено: ' + e.message, 1); }
 }
-const sanit = (key, label) => { const c = camById(selected); if (c && canW()) run(() => commitCam(c, { [key]: Date.now() }, label, {}, false), label+' отмечена').then(() => setTimeout(() => openView(c.id), 600)); };
-async function undo(){
-  const c = camById(selected), e = lastChange(selected); if (!c || !e || !canW() || c.locked) return;
-  if (!(await ask({ title:'Отменить изменение?', text: esc(e.date)+'<br>'+esc(e.action), ok:'Отменить изменение' }))) return;
-  const cur = {}; Object.keys(e.prev).forEach(k => cur[k] = c[k] ?? null);
-  run(() => commitCam(c, { ...e.prev }, 'Откат: '+e.action, { prev: cur }), 'Изменение отменено').then(() => closeModal('viewModal'));
-}
 async function lockToggle(){
-  const c = camById(selected); if (!c || !isAdmin()) return;
+  const c = camById(selected); if (!c || !canW()) return;
   const lock = !c.locked;
-  if (!(await ask({ title: lock ? 'Закрыть партию?' : 'Открыть партию?', text: lock ? 'Редактирование камеры будет заблокировано.' : 'Камеру снова можно будет редактировать.', ok: lock ? 'Закрыть партию' : 'Открыть партию' }))) return;
+  if (!(await ask({ title: lock ? 'Закрыть партию?' : 'Открыть партию?', text: lock ? 'Приёмка, отгрузка и правки камеры будут заблокированы.' : 'Камеру снова можно будет редактировать.', ok: lock ? 'Закрыть партию' : 'Открыть партию' }))) return;
   run(() => commitCam(c, { locked: lock }, lock ? 'Партия закрыта' : 'Партия открыта', {}, false), lock ? 'Партия закрыта' : 'Партия открыта').then(() => closeModal('viewModal'));
 }
 
@@ -1273,8 +1305,9 @@ function buildForm(){
   $('editForm').innerHTML =
     '<div class="grp"><h3>Статус</h3><div class="seg">'+Object.keys(ST).map(k =>
       '<label style="--c:'+ST[k][1]+'"><input type="radio" name="st" value="'+k+'"><span>'+ic(ST[k][0])+names[k]+'</span></label>').join('')+'</div>'+
-    '<div class="quick"><button type="button" class="btn sm" data-q="free">Освободить камеру (очистить поля)</button></div></div>'+
-    GROUPS.map(([t, ks], gi) => '<div class="grp"><h3>'+t+'</h3><div class="fg">'+ks.map(fld).join('')+(gi === 0 ? '<div class="fld"><label for="f_boxes">Ящиков (1 ящик = 300 кг)</label><input id="f_boxes" type="number" inputmode="numeric" min="0" step="1"></div>' : '')+'</div>'+(gi === 0 ? '<p class="hint" id="capHint"></p>' : '')+'</div>').join('')+
+    '<div class="quick"><button type="button" class="btn sm" data-q="free">Освободить камеру (списать всю продукцию)</button></div></div>'+
+    '<div class="grp"><h3>Условия в камере</h3><div class="fg">'+['temp','hum','o2','co2'].map(fld).join('')+'</div></div>'+
+    '<details class="dt"><summary>Даты и оператор (необязательно)</summary><div class="dtb"><div class="fg">'+['operator','loadAt','processAt','rgsAt'].map(fld).join('')+'</div></div></details>'+
     '<div class="grp"><h3>Примечание</h3><textarea id="f_note" maxlength="500" style="width:100%"></textarea></div>';
 }
 const getStatus = () => document.querySelector('input[name=st]:checked').value;
@@ -1286,27 +1319,27 @@ function autoDate(s){
 function quick(q){
   if (q === 'free'){
     setStatus('empty');
-    ['crop','sort','batch','operator','loadAt','processAt','rgsAt'].forEach(k => $('f_'+k).value = '');
-    $('f_qty').value = 0; $('f_boxes').value = 0; $('f_note').value = '';
-  } else { setStatus(q); autoDate(q); }
-  toast('Проверьте данные и нажмите «Сохранить»');
+    ['operator','loadAt','processAt','rgsAt'].forEach(k => { $('f_'+k).value = ''; });
+    $('f_note').value = ''; $('editForm').dataset.free = '1';
+  }
+  toast('Проверьте и нажмите «Сохранить»');
 }
 function openForm(){
   const c = camById(selected); if (!c || !canW()) return;
-  if (c.locked){ toast('Партия закрыта. Администратор должен её открыть.', 1); return; }
+  if (c.locked){ toast('Партия закрыта. Откройте её кнопкой «Открыть партию».', 1); return; }
   $('emNum').textContent = '№' + pad(c.id);
+  $('editForm').dataset.free = '';
   setStatus(c.status);
-  FIELDS.forEach(([k,,t]) => { $('f_'+k).value = t === 'date' ? toIso(c[k]) : (c[k] ?? ''); });
+  ['temp','hum','o2','co2','operator','loadAt','processAt','rgsAt'].forEach(k => { const t = FIELDS.find(f => f[0] === k)[2]; $('f_'+k).value = t === 'date' ? toIso(c[k]) : (c[k] ?? ''); });
   $('f_note').value = c.note || '';
-  $('f_boxes').value = Math.round((c.qty || 0) / KG_BOX); const cpf = capOf(c); $('capHint').textContent = cpf ? 'Вместимость камеры: '+cpf.toLocaleString('ru-RU')+' кг ('+Math.round(cpf / KG_BOX)+' ящиков)' : '';
   closeModal('viewModal'); openModal('editModal');
 }
 function collect(){
   const o = { status: getStatus(), note: $('f_note').value.trim() };
-  for (const [k,l,t,mn,mx] of FIELDS){
-    const raw = $('f_'+k).value.trim();
+  for (const k of ['temp','hum','o2','co2','operator','loadAt','processAt','rgsAt']){
+    const [, l, t, mn, mx] = FIELDS.find(f => f[0] === k), raw = $('f_'+k).value.trim();
     if (t === 'num'){
-      if (raw === '') o[k] = k === 'qty' ? 0 : null;
+      if (raw === '') o[k] = null;
       else { const n = Number(raw); if (!Number.isFinite(n) || n < mn || n > mx){ toast(l.split(',')[0]+': допустимо от '+mn+' до '+mx, 1); return null; } o[k] = n; }
     } else o[k] = t === 'date' ? toDmy(raw) : raw;
   }
@@ -1315,20 +1348,25 @@ function collect(){
 async function save(){
   const c = camById(selected); if (!c || !user || !canW()) return;
   const upd = collect(); if (!upd) return;
-  const changed = Object.keys(upd).filter(k => String(upd[k] ?? '') !== String(c[k] ?? ''));
+  const hasStock = (c.qty || 0) > 0, freeing = $('editForm').dataset.free === '1' || upd.status === 'empty';
+  let mvs = null;
+  if (freeing){
+    if (hasStock){
+      if (!(await danger('Камера №'+pad(c.id)+' содержит '+(c.qty||0).toLocaleString('ru-RU')+' кг. Вы освобождаете её: вся продукция будет списана.', c.id))) return;
+      mvs = itemsOf(c).map(it => ({ type:'out', client: it.cl || '', camId:c.id, crop: it.crop || '', sort: it.sort || '', kg: it.kg || 0, bx: it.bx || {}, ts: Date.now(), by: user.email, note:'Освобождение камеры' }));
+    }
+    Object.assign(upd, { status:'empty', items:[], qty:0, crop:'', sort:'', batch:'', loadAt:'', processAt:'', rgsAt:'' });
+  }
+  const changed = Object.keys(upd).filter(k => JSON.stringify(upd[k] ?? '') !== JSON.stringify(c[k] ?? ''));
   if (!changed.length){ closeModal('editModal'); return; }
-  const freeing = (c.qty||0) > 0 && ((upd.qty||0) === 0 || upd.status === 'empty' || upd.status === 'inactive');
-  const cpS = capOf(c); if (cpS && (upd.qty || 0) > cpS && !(await ask({ title:'Больше вместимости', text:'Указано '+(upd.qty || 0).toLocaleString('ru-RU')+' кг, а вместимость камеры '+cpS.toLocaleString('ru-RU')+' кг. Всё равно сохранить?', ok:'Сохранить', danger:true }))) return;
-  if (freeing){ if (!(await danger('Камера №'+pad(c.id)+' содержит '+(c.qty||0).toLocaleString('ru-RU')+' кг ('+(c.sort||'—')+'). Вы убираете из неё запасы.', c.id))) return; }
-  else if (!(await ask({ title:'Сохранить изменения?', text:'Камера №'+pad(c.id)+' · '+esc(c.sort||'—'), ok:'Сохранить' }))) return;
+  if (!freeing && !(await ask({ title:'Сохранить изменения?', text:'Камера №'+pad(c.id)+(c.sort ? ' · '+esc(c.sort) : ''), ok:'Сохранить' }))) return;
   const after = { ...c, ...upd };
   const fixed = Math.max(0, issues(c).length - issues(after).length) + (c.status === 'problem' && upd.status !== 'problem' ? 1 : 0);
-  const prev = {}; changed.forEach(k => prev[k] = c[k] ?? null);
-  const action = changed.includes('status') ? 'Статус: '+names[c.status]+' → '+names[upd.status]+(changed.length>1?' (+ ещё '+(changed.length-1)+')':'')
-    : 'Изменено: ' + changed.map(k => LABEL[k]).join(', ');
-  const reading = ['temp','hum','o2','co2'].some(k => upd[k] != null && upd[k] !== c[k]) ? { ts: Date.now(), temp: upd.temp, hum: upd.hum, o2: upd.o2, co2: upd.co2, by: user.email } : null;
+  const prev = {}; changed.forEach(k => { prev[k] = c[k] ?? null; });
+  const action = freeing ? 'Камера освобождена' : changed.includes('status') ? 'Статус: '+names[c.status]+' → '+names[upd.status]+(changed.length>1?' (+ ещё '+(changed.length-1)+')':'')
+    : 'Изменено: ' + changed.map(k => LABEL[k] || k).join(', ');
   $('saveBtn').disabled = true; showLoading(true);
-  try { await commitCam(c, { ...upd }, action, { st0: c.status, st1: upd.status, q0: c.qty||0, q1: upd.qty||0, fixed, prev }, true, reading); closeModal('editModal'); toast('Сохранено'); }
+  try { await commitCam(c, { ...upd }, action, { st0: c.status, st1: upd.status, q0: c.qty||0, q1: upd.qty ?? (c.qty||0), fixed, prev }, true, mvs); if (mvs && Array.isArray(MOVES)) MOVES.unshift(...mvs); closeModal('editModal'); toast('Сохранено'); }
   catch(e){ toast('Не удалось сохранить: ' + e.message, 1); }
   $('saveBtn').disabled = false; showLoading(false);
 }
@@ -1364,7 +1402,6 @@ function reminders(){
   const r = [];
   vis().forEach(c => {
     if (ACTIVE.includes(c.status) && S.maxDays > 0){ const d = days(c); if (d != null && d <= S.maxDays && S.maxDays - d <= 3) r.push([c.id, 'Срок хранения истекает через '+(S.maxDays-d)+' дн.']); }
-    if (c.status === 'empty' && (!c.disAt || Date.now() - c.disAt > SAN_DAYS*864e5)) r.push([c.id, 'Нужна дезинфекция перед загрузкой']);
   });
   return r;
 }
@@ -1686,41 +1723,11 @@ async function fetchRange(since){
 }
 const sinceOf = r => startDay() - (r === 'day' ? 0 : r === '7' ? 6 : 29) * 864e5;
 const dayList = since => { const out = [], d = new Date(since); while (d.getTime() <= Date.now()){ out.push(dayStr(d)); d.setDate(d.getDate()+1); } return out; };
-async function loadSum(){
-  SUM = 'load'; renderSum();
-  try { SUM = { range: sumRange, ...(await fetchRange(sinceOf(sumRange))) }; }
-  catch(e){ SUM = null; toast('Не удалось загрузить сводку: '+e.message, 1); }
-  renderSum();
-}
-function renderSum(){
-  const el = $('sum'); if (!user || tab !== 'sum') return;
-  const seg = '<div class="sg">'+[['day','Сегодня'],['7','7 дней'],['30','30 дней']].map(([k,l]) => '<button data-range="'+k+'" class="'+(sumRange===k?'on':'')+'">'+l+'</button>').join('')+'</div>';
-  if (SUM === 'load' || !SUM){ el.innerHTML = seg + '<div class="empty-msg">Загрузка…</div>'; return; }
-  const { J, R, I, T, since } = SUM, all = vis(), N = all.length, ds = dayList(since), now = Date.now(), h = new Date().getHours();
-  const a = { in:0, out:0, fixed:0 }; J.forEach(e => { const d = (e.q1||0) - (e.q0||0); if (d > 0) a.in += d; else a.out -= d; a.fixed += e.fixed || 0; });
-  const exp = ds.reduce((s, d) => s + (d === dayStr() ? (h < SLOT_HOUR ? 1 : 2) : 2), 0) * N;
-  const rd = R.filter(r => r.camId <= total()).length, rp = exp ? Math.min(100, Math.round(rd/exp*100)) : 0;
-  const down = I.reduce((s, i) => s + ((i.end || now) - i.start), 0);
-  const kp = (l, v, s, cls) => '<div class="stat" style="--c:'+(cls === 'bad' ? '#ff3860' : cls === 'pri' ? '#3b82ff' : '#2db6ff')+'"><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div>';
-  const perDay = ds.map(d => J.filter(e => dayStr(new Date(e.ts)) === d).length), mx = Math.max(1, ...perDay), bw = 300/ds.length;
-  const bars = '<svg viewBox="0 0 300 70" preserveAspectRatio="none" style="width:100%;height:70px;display:block">'+perDay.map((n, i) => '<rect x="'+(i*bw+1).toFixed(1)+'" y="'+(66 - n/mx*62).toFixed(1)+'" width="'+Math.max(1, bw-2).toFixed(1)+'" height="'+(n/mx*62+4).toFixed(1)+'" rx="2" fill="var(--brand)" opacity=".85"/>').join('')+'</svg>';
-  const probs = J.filter(e => e.st1 === 'problem' && e.st0 !== 'problem').slice(0, 8);
-  el.innerHTML = seg +
-    '<div class="kpis">'+kp('Принято', kgf(a.in), 'по журналу', 'pri')+kp('Отгружено', kgf(a.out), 'по журналу')+kp('Обходы', rp+'%', rd+' из '+exp, rp < 80 && exp ? 'bad' : '')+kp('Устранено', a.fixed, 'отклонений')+'</div>'+
-    '<div class="kpis">'+kp('Изменений', J.length, 'записей')+kp('Аварии', I.length, 'простой '+dur(down), I.length ? 'bad' : '')+kp('Задач готово', T.length, 'просрочено сейчас: '+tasks.filter(t => t.due < now).length)+kp('Проблем', probs.length, 'новых за период', probs.length ? 'bad' : '')+'</div>'+
-    (ds.length > 1 ? '<div class="card"><h3>Активность по дням</h3>'+bars+'</div>' : '')+
-    '<div class="card"><h3>Выполнение обходов</h3>'+complHtml([...ds].reverse().slice(0, 14), (d, s) => R.filter(r => r.day === d && r.slot === s && r.camId <= total()).length)+'</div>'+
-    '<div class="card"><h3>Аварии и простои</h3>'+(I.sort((x, y) => y.start - x.start).slice(0, 10).map(incRow).join('') || '<div class="hint">За период не было</div>')+'</div>'+
-    (probs.length ? '<div class="card"><h3>Камеры, ставшие проблемными</h3>'+probs.map(e => '<div class="li click" data-cam="'+e.camId+'"><div class="t"><b>'+esc(e.cam)+'</b><small>'+esc(e.date)+' · '+esc(nameOf(e.user))+'</small></div>'+ic('chevr')+'</div>').join('')+'</div>' : '');
-}
 async function loadTeam(){
   if (!isAdmin()) return;
   TEAM = 'load'; renderTeam();
-  try {
-    const d = await fetchRange(startDay() - 29*864e5);
-    const L = await getDocs(query(collection(db,'logins'), orderBy('ts','desc'), limit(60)));
-    TEAM = { ...d, L: L.docs.map(x => x.data()) };
-  } catch(e){ TEAM = null; toast('Не удалось загрузить: '+e.message, 1); }
+  try { const L = await getDocs(query(collection(db,'logins'), orderBy('ts','desc'), limit(60))); TEAM = { L: L.docs.map(x => x.data()) }; }
+  catch(e){ TEAM = null; toast('Не удалось загрузить: '+e.message, 1); }
   renderTeam();
 }
 function pendCard(){
@@ -1730,24 +1737,10 @@ function pendCard(){
 function renderTeam(){
   const el = $('team'); if (!user || tab !== 'team') return;
   if (!isAdmin()){ el.innerHTML = '<div class="empty-msg">Раздел доступен администратору</div>'; return; }
-  if (!TEAM || TEAM === 'load'){ el.innerHTML = pendCard() + '<div class="empty-msg">Загрузка…</div>'; return; }
-  const { J, R, T, SH, L } = TEAM, st = {}, g = e => st[e] || (st[e] = { h:0, r:0, t:0, f:0, a:0 });
-  SH.forEach(s => g(s.email).h += ((s.end || Date.now()) - s.start)/36e5);
-  R.forEach(r => g(r.email).r++); T.forEach(t => g(t.doneBy).t++); J.forEach(e => { const x = g(e.user); x.f += e.fixed || 0; x.a++; });
-  users.forEach(u => g(u.email));
-  const rows = Object.entries(st).map(([e, x]) => ({ e, ...x, sc: x.r + 3*x.t + 2*x.f + Math.floor(x.h) })).sort((a, b) => b.sc - a.sc);
-  const medal = ['🥇','🥈','🥉'];
-  el.innerHTML =
-    pendCard()+'<div class="card"><h3>Рейтинг за 30 дней<span>условные баллы</span></h3><div class="tw"><table class="ht"><thead><tr><th></th><th>Сотрудник</th><th>Часы</th><th>Обходы</th><th>Задачи</th><th>Устран.</th><th>Балл</th></tr></thead><tbody>'+
-    rows.map((x, i) => '<tr data-uh="'+esc(x.e)+'" style="cursor:pointer"><td>'+(medal[i]||'')+'</td><td>'+esc(nameOf(x.e))+'</td><td>'+x.h.toFixed(1)+'</td><td>'+x.r+'</td><td>'+x.t+'</td><td>'+x.f+'</td><td><b>'+x.sc+'</b></td></tr>').join('')+'</tbody></table></div><div class="hint">Балл = обходы + 3×задачи + 2×устранённые отклонения + часы смен. Нажмите на строку, чтобы увидеть историю действий.</div></div>'+
-    '<div class="card"><h3>Роли сотрудников</h3>'+users.map(u => '<div class="li"><div class="t"><b>'+esc(u.name||u.email)+'</b><small>'+esc(u.email)+'</small></div><select data-role="'+u.id+'"'+(u.email === ADMIN_EMAIL ? ' disabled' : '')+'>'+Object.keys(ROLE_RU).map(r => '<option value="'+r+'"'+((u.email === ADMIN_EMAIL ? 'admin' : u.role) === r ? ' selected' : '')+'>'+ROLE_RU[r]+'</option>').join('')+'</select></div>').join('')+'<div class="hint">Новые сотрудники входят с ролью «Просмотр». Назначьте им «Оператор».</div></div>'+
-    '<div class="card"><h3>Журнал входов</h3><div class="tw"><table class="ht"><thead><tr><th>Когда</th><th>Кто</th><th>Устройство</th></tr></thead><tbody>'+
-    (L.map(x => '<tr><td>'+fmtDT(x.ts)+'</td><td>'+esc(nameOf(x.email))+'</td><td>'+esc(x.device)+'</td></tr>').join('') || '<tr><td colspan="3">Пока пусто</td></tr>')+'</tbody></table></div></div>';
-}
-function userHist(email){
-  if (!TEAM || TEAM === 'load') return;
-  const l = TEAM.J.filter(e => e.user === email).slice(0, 100);
-  dlg('История: '+esc(nameOf(email)), '<div class="tw"><table class="ht"><thead><tr><th>Дата</th><th>Камера</th><th>Действие</th></tr></thead><tbody>'+(l.map(e => '<tr><td>'+esc(e.date)+'</td><td>'+esc(e.cam)+'</td><td>'+esc(e.action)+'</td></tr>').join('') || '<tr><td colspan="3">За 30 дней действий нет</td></tr>')+'</tbody></table></div>', '', '');
+  const L = TEAM && TEAM !== 'load' ? TEAM.L : null;
+  el.innerHTML = pendCard() +
+    '<div class="card"><h3>Роли сотрудников</h3>'+users.map(u => '<div class="li"><div class="t"><b>'+esc(u.name||u.email)+'</b><small>'+esc(u.email)+'</small></div><select data-role="'+u.id+'"'+(u.email === ADMIN_EMAIL ? ' disabled' : '')+'>'+Object.keys(ROLE_RU).map(r => '<option value="'+r+'"'+((u.email === ADMIN_EMAIL ? 'admin' : u.role) === r ? ' selected' : '')+'>'+ROLE_RU[r]+'</option>').join('')+'</select></div>').join('')+'<div class="hint">Новые сотрудники входят с ролью «Ожидает одобрения». Назначьте им «Оператор» или «Просмотр».</div></div>'+
+    det('t_log', 'Журнал входов', L ? '<div class="tw"><table class="ht"><thead><tr><th>Когда</th><th>Кто</th><th>Устройство</th></tr></thead><tbody>'+(L.map(x => '<tr><td>'+fmtDT(x.ts)+'</td><td>'+esc(nameOf(x.email))+'</td><td>'+esc(x.device)+'</td></tr>').join('') || '<tr><td colspan="3">Пока пусто</td></tr>')+'</tbody></table></div>' : '<div class="hint">Загрузка…</div>');
 }
 
 /* ===== Меню и настройки ===== */
@@ -1784,9 +1777,9 @@ function openMenu(){
   const b = (a, i, t) => '<button class="btn" data-act="'+a+'">'+ic(i)+t+'</button>', h = t => '<div class="mh">'+t+'</div>';
   const standalone = matchMedia('(display-mode:standalone)').matches || navigator.standalone;
   $('menuList').innerHTML = '<div class="hint" style="margin:0 0 4px">'+esc($('userName').textContent)+'</div>'+
-    h('Отчёты и экраны') + b('tv','grid','Табло для экрана (презентация)') + b('csv','table','Таблица камер (Excel)') + b('print','print','Печать отчёта') +
+    h('Отчёты и экраны') + b('plan','map','Схема камер хранилища') + b('tv','grid','Табло для экрана') + b('csv','table','Таблица камер (Excel)') + b('print','print','Печать отчёта') +
     h('Приложение') + b('help','list','Как пользоваться') + b('theme','moon','Сменить тему') + (standalone ? '' : b('install','down','Установить на телефон')) + b('update','up','Обновить приложение') +
-    (isAdmin() ? h('Администратор') + b('settings','gear','Настройки хранилища') + b('diag','gear','Проверка системы') + b('errors','alert','Журнал ошибок') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') + (DEMO_TOOLS ? b('demo','plus','Демо-данные для презентации') : '') : '') +
+    (isAdmin() ? h('Администратор') + b('settings','gear','Настройки хранилища') + b('diag','gear','Проверка системы') + b('errors','alert','Журнал ошибок') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') + b('reset','alert','Очистить все камеры') : '') +
     h('Аккаунт') + b('logout','out','Выйти') + '<div class="ver">Версия '+APP_VERSION+'</div>';
   openModal('menuModal');
 }
@@ -1855,14 +1848,15 @@ $('importFile').addEventListener('change', e => {
 /* ===== События ===== */
 if (!ALLOW_SIGNUP) $('signupBtn').style.display = 'none';
 buildForm();
+$('dlgBody').addEventListener('input', e => {
+  const id = e.target.id;
+  if (id === 'd_kg') e.target.dataset.m = '1';
+  else if (['d_bg', 'd_bs', 'd_bw'].includes(id) && $('d_kg') && $('d_kg').dataset.m !== '1') $('d_kg').value = ((Number($('d_bg').value) || 0) + (Number($('d_bs').value) || 0) + (Number($('d_bw').value) || 0)) * KG_BOX || '';
+});
 $('askI').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); askDone(true); } });
 $('loginForm').addEventListener('submit', e => { e.preventDefault(); doAuth(false); });
 $('editForm').addEventListener('submit', e => { e.preventDefault(); save(); });
 $('setForm').addEventListener('submit', e => { e.preventDefault(); saveSettings(); });
-$('editForm').addEventListener('input', e => {
-  if (e.target.id === 'f_boxes') $('f_qty').value = Math.round((Number(e.target.value) || 0) * KG_BOX);
-  else if (e.target.id === 'f_qty') $('f_boxes').value = Math.round((Number(e.target.value) || 0) / KG_BOX);
-});
 $('editForm').addEventListener('change', e => { if (e.target.name === 'st') autoDate(e.target.value); });
 $('q').addEventListener('input', e => { search = e.target.value; render(); });
 $('wing').addEventListener('change', e => { wingFilter = e.target.value === 'all' ? 'all' : Number(e.target.value); render(); });
@@ -1893,63 +1887,13 @@ function tvClose(){
 }
 
 /* ===== Демо-данные для презентации (только администратор) ===== */
-async function demoFill(){
-  if (!isAdmin()) return;
-  const v = await ask({ title:'Заполнить демо-данными?', text:'Будут заполнены ВСЕ камеры демонстрационными данными и добавлены примеры задач и событий.<br>Резервная копия текущих данных скачается автоматически.', input:'Введите ДЕМО', ok:'Заполнить', danger:true });
-  if (!v || v.trim().toUpperCase() !== 'ДЕМО') return;
-  exportData(); closeTopModal();
-  await run(async () => {
-    let sd = 11; const rnd = () => (sd = sd * 16807 % 2147483647) / 2147483647, pick = a => a[Math.floor(rnd() * a.length)], now = Date.now(), N = total(), H = 36e5;
-    const P = [['Яблоко','Голден'],['Яблоко','Гала'],['Яблоко','Фуджи'],['Яблоко','Ред Чиф'],['Яблоко','Айдаред'],['Груша','Талгарская красавица'],['Груша','Конференция'],['Овощи','Морковь'],['Овощи','Капуста'],['Овощи','Свекла'],['Виноград','Изабелла']];
-    const ops = ['Адам','Хасан','Руслан','Беслан'], dmy = n => toDmy(dayStr(new Date(now - n * 864e5))), b = writeBatch(db), list = [];
-    for (let id = 1; id <= N; id++){
-      const r = rnd(); let st = r < .1 ? 'empty' : r < .18 ? 'process' : r < .34 ? 'rgs' : r < .4 ? 'inactive' : 'storage';
-      if (id === 2 || id === 12) st = 'problem';
-      if ([7, 19, 23, 31].includes(id)) st = 'storage';
-      const full = st !== 'empty' && st !== 'inactive', [crop, sort] = pick(P);
-      const c = { id, status: st, crop: full ? crop : '', sort: full ? sort : '', batch: full ? 'П-'+(240+id) : '', qty: full ? (capOf({ id }) ? Math.round(capOf({ id }) * (.45 + rnd() * .5) / 500) * 500 : Math.round((8 + rnd() * 14) * 2) * 500) : 0,
-        temp: +(0.6 + rnd() * 1.8).toFixed(1), hum: Math.round(88 + rnd() * 6), o2: +(1.6 + rnd() * 1.8).toFixed(1), co2: +(2 + rnd() * 2).toFixed(1), operator: pick(ops),
-        loadAt: full ? dmy(4 + Math.floor(rnd() * 120)) : '', processAt: st === 'process' ? dmy(1 + Math.floor(rnd() * 4)) : '', rgsAt: st === 'rgs' ? dmy(2 + Math.floor(rnd() * 30)) : '',
-        note: id === 2 ? 'Конденсат на испарителе, вызван механик' : id === 12 ? 'Не держит температуру, проверить компрессор' : '',
-        updatedAt: now - Math.floor(rnd() * 9 * H), cleanAt: rnd() < .8 ? now - Math.floor(rnd() * 40) * 864e5 : 0, disAt: rnd() < .7 ? now - Math.floor(rnd() * 40) * 864e5 : 0 };
-      if (id === 7) c.temp = 6.8; if (id === 19) c.co2 = 7.4; if (id === 23) c.hum = 74; if (id === 31) c.loadAt = dmy(200);
-      const cc = cleanCam(c); list.push(cc); b.set(doc(db,'cameras','cam'+id), cc);
-    }
-    const acts = ['Статус: Охлаждение → На РГС', 'Изменено: Температура, Влажность', 'Изменено: Количество', 'Статус: Обработка → Охлаждение', 'Изменено: Примечание'];
-    for (let i = 0; i < 12; i++){
-      const c = list[Math.floor(rnd() * list.length)], t = now - (20 + i * 70) * 6e4, a = i % acts.length, q = c.qty || 12000;
-      b.set(doc(collection(db,'journal')), { camId:c.id, cam:'№'+pad(c.id), action:acts[a], user:user.email, ts:t, date:fmtDT(t), st0:c.status, st1:c.status, q0:a === 2 ? q - 2000 : q, q1:q, fixed:i % 4 === 0 ? 1 : 0, prev:{ note:'' } });
-    }
-    for (let id = 1; id <= Math.min(6, N); id++){
-      const bs = list[id - 1];
-      for (let k = 0; k < 12; k++){ const jt = () => rnd() - .5; b.set(doc(collection(db,'cameras','cam'+id,'readings')), { ts: now - (12 - k) * 3 * H, temp: +((bs.temp ?? 1.5) + jt()).toFixed(1), hum: Math.round((bs.hum ?? 90) + jt() * 4), o2: bs.o2, co2: bs.co2, by: user.email }); }
-    }
-    const shRef = doc(collection(db,'shifts')), miss1 = { rounds: [{ day: dayStr(new Date(now - 24 * H)), slot: 'pm', ids: [7, 12, 19, 23, 31, 40].filter(i => i <= N) }], roundsTotal: 0, tasks: ['Взять пробы твёрдости в камере №4'], nexts: [] };
-    miss1.roundsTotal = miss1.rounds[0].ids.length;
-    const sum1 = { in: 12000, out: 8000, fixed: 2, acts: 14, prob: 0, rounds: 60 };
-    b.set(shRef, { uid:'demo1', email:'hasan@fruit.local', start:now - 30 * H, end:now - 18 * H, acceptedFrom:'anna@fruit.local', acceptedAt:now - 30 * H, summary:sum1, missed:miss1, endNote:'' });
-    b.set(doc(collection(db,'handovers')), { fromUid:'demo1', fromEmail:'hasan@fruit.local', ts:now - 18 * H, note:'Камера №12 не держит температуру, наблюдать каждый час.', photo:'', summary:sum1, missed:miss1, shiftId:shRef.id, acceptedBy:'ruslan@fruit.local', acceptedAt:now - 17.5 * H });
-    b.set(doc(collection(db,'shifts')), { uid:'demo2', email:'ruslan@fruit.local', start:now - 5 * H, end:null, acceptedFrom:'hasan@fruit.local', acceptedAt:now - 5 * H });
-    const me = user.email, day = dayStr(), yd = dayStr(new Date(now - 864e5)), sl = slotNow();
-    [['Проверить камеру №12 до конца смены', 12, 2 * H], ['Взять пробы твёрдости в камере №4', 4, 5 * H], ['Дезинфекция камеры №6 перед загрузкой', 6, 26 * H]].forEach(([title, camId, dt]) => b.set(doc(collection(db,'tasks')), { title, camId, assignee:'all', due:now + dt, createdBy:me, createdAt:now, done:false }));
-    [['Перед 22:00 проверить температуру в камере №12', 12, true], ['Принять машину с грушей, рампа 2', 0, false], ['Сверить остатки по коридору 1', 0, false]].forEach(([text, camId, urgent], i) => b.set(doc(collection(db,'nextshift')), { text, camId, urgent, by:me, ts:now - (10 + i) * 6e4, done:false }));
-    b.set(doc(collection(db,'announcements')), { title:'Режим работы на неделе', text:'Обход камер выполняем в 8:00 и 18:00. Отмечайте обход в приложении.', by:me, ts:now - 3 * H, ack:{ [user.uid]: now } });
-    b.set(doc(collection(db,'incidents')), { kind:'Простой', camId:0, cause:'Нет электричества', start:now - 26 * H, end:now - 25 * H, by:me, endBy:me });
-    [[12, 'Компрессор шумит, вызвал механика', 90], [2, 'Проверить конденсат при следующем обходе', 200]].forEach(([camId, text, m]) => b.set(doc(collection(db,'notes')), { camId, text, by:me, ts:now - m * 6e4, mentions:[] }));
-    list.forEach(c => {
-      ['am', 'pm'].forEach(s => b.set(doc(db,'rounds',rk(yd, s, c.id)), { day:yd, slot:s, camId:c.id, email:me, uid:user.uid, ts:now - 20 * H, ok:true, note:'' }));
-      if (rnd() < .65) b.set(doc(db,'rounds',rk(day, sl, c.id)), { day, slot:sl, camId:c.id, email:me, uid:user.uid, ts:now - Math.floor(rnd() * 4 * H), ok:true, note:'' });
-    });
-    await W(b.commit());
-  }, 'Демо-данные загружены');
-}
 
 /* ===== Подсказки для новых сотрудников ===== */
 const TOUR = [
   ['❄️', 'Камеры', 'Здесь все камеры хранилища. Цвет рамки показывает состояние: голубой — охлаждение, жёлтый — обработка, зелёный — РГС (газовая среда), красный — проблема. Нажмите на камеру, чтобы увидеть всё о ней.'],
   ['✅', 'Сегодня — ваш рабочий день', 'Откройте вкладку «Сегодня»: там начало смены, обход камер, задачи и то, что передали с прошлой смены. Вверху написано, что делать дальше.'],
   ['🔄', 'Обход камер', 'Нажмите «Начать обход» и отмечайте камеры: зелёная галочка — всё в порядке, красный знак — есть замечание (напишите, что не так).'],
-  ['✏️', 'Как изменить данные камеры', 'Откройте камеру и нажмите «Редактировать». Измените значения и сохраните. Если ошиблись, нажмите «Отменить последнее изменение».'],
+  ['✏️', 'Как изменить данные камеры', 'Откройте камеру и нажмите «Редактировать». Измените значения и сохраните. Продукцию принимают и отгружают кнопками «Принять продукцию» и «Отгрузить».'],
   ['🤝', 'Как сдать смену', 'Вкладка «Сегодня» → «Сдать смену». Обязательно напишите, что сделать следующему оператору. Всё, что вы не успели сделать, увидят все.'],
   ['🚨', 'Красный цвет — это внимание', 'Красным светится всё, что требует внимания: замер вне нормы, истёк срок хранения, проблема. Надпись «Вход запрещён» значит, что в камере с газовой средой мало кислорода и заходить нельзя.']
 ];
@@ -1958,9 +1902,129 @@ function tour(i = 0){
   dlg(e+' '+t, '<div class="tour"><p>'+tx+(!canW() && i === 0 ? '<br><br><b>У вас режим просмотра:</b> менять данные может оператор или администратор.' : '')+'</p><div class="dots">'+TOUR.map((_, k) => '<i class="'+(k === i ? 'on' : '')+'"></i>').join('')+'</div></div>', last ? 'tourend' : 'tournext', last ? 'Понятно!' : 'Далее', 'Пропустить');
 }
 
+/* ===== Клиенты: приёмка и отгрузка ===== */
+const dtTs = iso => { if (!iso || iso === todayIso()) return Date.now(); const t = new Date(iso + 'T12:00:00').getTime(); return Number.isFinite(t) ? t : Date.now(); };
+const uniq = a => [...new Set(a.filter(Boolean))].sort((x, y) => String(x).localeCompare(String(y), 'ru'));
+const knownClients = () => uniq([...cams.flatMap(c => itemsOf(c).map(i => i.cl)), ...(Array.isArray(MOVES) ? MOVES : []).map(m => m.client)]);
+const knownSorts = () => uniq([...cams.flatMap(c => itemsOf(c).map(i => i.sort)), ...(Array.isArray(MOVES) ? MOVES : []).map(m => m.sort)]);
+async function loadMoves(){
+  MOVES = 'load'; renderCl();
+  try { const q = await getDocs(query(collection(db,'moves'), orderBy('ts','desc'), limit(3000))); MOVES = q.docs.map(d => ({ id:d.id, ...d.data() })); }
+  catch(e){ MOVES = []; toast('Не удалось загрузить приёмки: '+e.message, 1); }
+  renderCl();
+}
+function clientsData(){
+  const map = {}, blank = () => ({ g:0, s:0, w:0 });
+  const g = name => { const nm = (name || '').trim(), k = nm.toLowerCase() || '—'; return map[k] || (map[k] = { name: nm || 'Без клиента', key:k, in:0, out:0, bxIn:blank(), bxOut:blank(), left:0, bxLeft:blank(), sorts:new Set(), cams:{}, items:[], moves:[] }); };
+  (Array.isArray(MOVES) ? MOVES : []).forEach(m => { const c = g(m.client); if (m.type === 'in'){ c.in += m.kg || 0; bxAdd(c.bxIn, m.bx); } else { c.out += m.kg || 0; bxAdd(c.bxOut, m.bx); } if (m.sort) c.sorts.add(m.sort); c.moves.push(m); });
+  cams.forEach(cam => itemsOf(cam).forEach((it, idx) => { const c = g(it.cl); c.left += it.kg || 0; bxAdd(c.bxLeft, it.bx); c.cams[cam.id] = (c.cams[cam.id] || 0) + (it.kg || 0); if (it.sort) c.sorts.add(it.sort); c.items.push({ cam: cam.id, idx, kg: it.kg || 0, sort: it.sort || it.crop || '' }); }));
+  return Object.values(map).sort((a, b) => b.left - a.left || b.in - a.in);
+}
+function clientCard(c){
+  const row = (l, v) => '<div class="vr"><span>'+l+'</span><b>'+v+'</b></div>';
+  const bxl = bx => bxN(bx) ? bxN(bx)+' корз. '+bxChips(bx) : '—';
+  const body = '<div class="rows">'+row('Принёс', kgf(c.in)+' · '+bxl(c.bxIn))+row('Забрал', kgf(c.out)+' · '+bxl(c.bxOut))+row('Осталось', kgf(c.left)+' · '+bxl(c.bxLeft))+row('Сорта', [...c.sorts].map(esc).join(', ') || '—')+row('Где лежит', Object.entries(c.cams).map(([id, kg]) => '№'+pad(id)+' ('+kgf(kg)+')').join(', ') || '—')+'</div>'+
+    (canW() && c.items.length ? '<div class="quick">'+c.items.map(x => '<button class="btn sm" data-ship="'+x.cam+':'+x.idx+'">Отгрузить №'+pad(x.cam)+' · '+esc(x.sort || '—')+'</button>').join('')+'</div>' : '')+
+    (c.moves.length ? '<div class="mh">История</div>'+c.moves.slice().sort((a, b) => b.ts - a.ts).slice(0, 30).map(m => '<div class="vr" style="align-items:flex-start"><span>'+fmtD(m.ts)+'<br><span class="tag '+(m.type === 'in' ? 'ok' : '')+'">'+(m.type === 'in' ? 'Приёмка' : 'Отгрузка')+'</span></span><b style="text-align:right">№'+pad(m.camId)+' · '+esc(m.sort || m.crop || '—')+'<br>'+(m.kg || 0).toLocaleString('ru-RU')+' кг'+(bxChips(m.bx) ? '<br>'+bxChips(m.bx) : '')+'</b></div>').join('') : '');
+  return det('cl_'+encodeURIComponent(c.key).slice(0, 40), '<span>'+esc(c.name)+'</span><span class="tag '+(c.left ? 'ok' : '')+'">осталось '+kgf(c.left)+'</span>', body);
+}
+function renderCl(){
+  const el = $('cl'); if (!el || !user) return;
+  if (MOVES === null || MOVES === 'load'){ el.innerHTML = '<div class="empty-msg">Загрузка…</div>'; return; }
+  const list = clientsData(), T = list.reduce((a, c) => ({ in: a.in + c.in, out: a.out + c.out, left: a.left + c.left }), { in:0, out:0, left:0 });
+  el.innerHTML = '<div class="kpis3"><div><small>Принято</small><b>'+kgf(T.in)+'</b></div><div><small>Отгружено</small><b>'+kgf(T.out)+'</b></div><div><small>Осталось</small><b>'+kgf(T.left)+'</b></div></div>'+
+    (list.length ? list.map(clientCard).join('') : '<div class="empty-msg">Пока нет клиентов. Нажмите «+ Приёмка», чтобы записать первую приёмку.</div>');
+}
+const bxInputs = () => '<div class="mh">Корзины (1 корзина = 300 кг)</div><div class="fg3"><div class="fld"><label for="d_bg">🟩 Зелёные</label><input id="d_bg" type="number" inputmode="numeric" min="0" step="1"></div><div class="fld"><label for="d_bs">⬜ Серые</label><input id="d_bs" type="number" inputmode="numeric" min="0" step="1"></div><div class="fld"><label for="d_bw">🟫 Деревянные</label><input id="d_bw" type="number" inputmode="numeric" min="0" step="1"></div></div>';
+const readBx = () => ({ g:Math.max(0, Math.round(Number($('d_bg').value) || 0)), s:Math.max(0, Math.round(Number($('d_bs').value) || 0)), w:Math.max(0, Math.round(Number($('d_bw').value) || 0)) });
+function recvDlg(camId, fromView){
+  if (!canW()) return;
+  dlgCam = fromView ? camId : null;
+  const opts = vis().map(c => '<option value="'+c.id+'"'+(c.id === camId ? ' selected' : '')+'>№'+pad(c.id)+(c.sort ? ' · '+esc(c.sort) : ' · пусто')+(c.locked ? ' (закрыта)' : '')+'</option>').join('');
+  dlg('Приёмка продукции',
+    '<datalist id="clList">'+knownClients().map(x => '<option value="'+esc(x)+'">').join('')+'</datalist><datalist id="sortList">'+knownSorts().map(x => '<option value="'+esc(x)+'">').join('')+'</datalist>'+
+    '<div class="fld"><label for="d_cl">Клиент</label><input id="d_cl" list="clList" maxlength="60" placeholder="Название клиента" autocomplete="off"></div>'+
+    '<div class="fg" style="margin-top:10px"><div class="fld"><label for="d_cam">Камера</label><select id="d_cam">'+opts+'</select></div><div class="fld"><label for="d_crop">Культура</label><select id="d_crop"><option>Яблоко</option><option>Груша</option><option>Виноград</option><option>Другое</option></select></div></div>'+
+    '<div class="fld" style="margin-top:10px"><label for="d_sort">Сорт</label><input id="d_sort" list="sortList" maxlength="40" placeholder="Например: Голден" autocomplete="off"></div>'+
+    bxInputs()+
+    '<div class="fld" style="margin-top:10px"><label for="d_kg">Вес, кг (если пусто, считается по корзинам)</label><input id="d_kg" type="number" inputmode="numeric" min="0" step="1"></div>'+
+    '<div class="fld" style="margin-top:10px"><label for="d_dt">Дата</label><input id="d_dt" type="date" value="'+todayIso()+'"></div>', 'recvsave', 'Принять');
+}
+async function recvSave(){
+  const cl = $('d_cl').value.trim(), camId = Number($('d_cam').value), crop = $('d_crop').value, sort = $('d_sort').value.trim(), bx = readBx();
+  let kg = Math.round(Number($('d_kg').value) || 0); if (!kg && bxN(bx)) kg = bxN(bx) * KG_BOX;
+  if (!cl){ toast('Укажите клиента', 1); return; }
+  if (!sort && !crop){ toast('Укажите сорт', 1); return; }
+  if (kg <= 0){ toast('Укажите вес или число корзин', 1); return; }
+  const c = camById(camId); if (!c) return;
+  if (c.locked){ toast('Партия закрыта. Откройте её в карточке камеры.', 1); return; }
+  const items = itemsOf(c).map(i => ({ ...i, bx: { ...(i.bx || {}) } })), cp = capOf(c), total1 = items.reduce((a, i) => a + (i.kg || 0), 0) + kg;
+  if (cp && total1 > cp && !(await ask({ title:'Больше вместимости', text:'После приёмки в камере будет '+total1.toLocaleString('ru-RU')+' кг, а вместимость '+cp.toLocaleString('ru-RU')+' кг. Всё равно принять?', ok:'Принять', danger:true }))) return;
+  const it = items.find(i => (i.cl || '').trim().toLowerCase() === cl.toLowerCase() && (i.crop || '') === crop && (i.sort || '').toLowerCase() === sort.toLowerCase());
+  if (it){ it.kg += kg; bxAdd(it.bx, bx); } else items.push({ cl, crop, sort, kg, bx });
+  const sm = summarize(items), patch = { items, qty: sm.qty, crop: sm.crop, sort: sm.sort }, ts = dtTs($('d_dt').value);
+  if (c.status === 'empty' || c.status === 'inactive') patch.status = 'storage';
+  if (!c.loadAt) patch.loadAt = toDmy($('d_dt').value || todayIso());
+  const mv = { type:'in', client:cl, camId, crop, sort, kg, bx, ts, by:user.email, note:'' }, back = dlgCam;
+  closeModal('dlgModal');
+  await run(async () => { await commitCam(c, patch, 'Приёмка: '+cl+' · '+(sort || crop)+' · '+kg.toLocaleString('ru-RU')+' кг', { st0:c.status, st1:patch.status || c.status, q0:c.qty || 0, q1:sm.qty, fixed:0 }, true, mv); if (Array.isArray(MOVES)) MOVES.unshift(mv); }, 'Принято');
+  if (back) setTimeout(() => openView(back), 700);
+}
+function shipDlg(camId, idx, fromView){
+  if (!canW()) return;
+  dlgCam = fromView ? camId : null;
+  const list = []; vis().forEach(c => itemsOf(c).forEach((it, i) => list.push({ c, it, i })));
+  if (!list.length){ toast('Нет продукции для отгрузки', 1); return; }
+  let sel = list.findIndex(x => x.c.id === camId && (idx === undefined || x.i === idx)); if (sel < 0) sel = 0;
+  const opts = list.map((x, n) => '<option value="'+x.c.id+':'+x.i+'"'+(n === sel ? ' selected' : '')+'>№'+pad(x.c.id)+' · '+esc(x.it.cl || 'Без клиента')+' · '+esc(x.it.sort || x.it.crop || '—')+' — '+(x.it.kg || 0).toLocaleString('ru-RU')+' кг</option>').join('');
+  dlg('Отгрузка', '<div class="fld"><label for="d_it">Что отгружаем</label><select id="d_it">'+opts+'</select></div>'+bxInputs()+
+    '<div class="fld" style="margin-top:10px"><label for="d_kg">Вес, кг (если пусто, считается по корзинам)</label><input id="d_kg" type="number" inputmode="numeric" min="0" step="1"></div>'+
+    '<button type="button" class="btn sm" data-act="shipall" style="margin-top:8px">Отгрузить всё</button>'+
+    '<div class="fld" style="margin-top:10px"><label for="d_dt">Дата</label><input id="d_dt" type="date" value="'+todayIso()+'"></div>', 'shipsave', 'Отгрузить');
+}
+function shipAll(){
+  const [cid, ix] = $('d_it').value.split(':').map(Number), c = camById(cid), it = c && itemsOf(c)[ix]; if (!it) return;
+  $('d_kg').value = it.kg || 0; $('d_kg').dataset.m = '1';
+  $('d_bg').value = (it.bx && it.bx.g) || ''; $('d_bs').value = (it.bx && it.bx.s) || ''; $('d_bw').value = (it.bx && it.bx.w) || '';
+}
+async function shipSave(){
+  const [cid, ix] = $('d_it').value.split(':').map(Number), c = camById(cid); if (!c) return;
+  if (c.locked){ toast('Партия закрыта. Откройте её в карточке камеры.', 1); return; }
+  const items = itemsOf(c).map(i => ({ ...i, bx: { ...(i.bx || {}) } })), it = items[ix]; if (!it) return;
+  const bx = readBx(); let kg = Math.round(Number($('d_kg').value) || 0); if (!kg && bxN(bx)) kg = bxN(bx) * KG_BOX;
+  if (kg <= 0){ toast('Укажите вес или число корзин', 1); return; }
+  if (kg > (it.kg || 0)){ toast('Нельзя отгрузить больше, чем есть: '+(it.kg || 0).toLocaleString('ru-RU')+' кг', 1); return; }
+  for (const k of ['g', 's', 'w']) if (bx[k] > ((it.bx && it.bx[k]) || 0)){ toast('Корзин «'+BX[k][0].toLowerCase()+'» меньше, чем вы указали', 1); return; }
+  it.kg -= kg; ['g', 's', 'w'].forEach(k => { it.bx[k] = (it.bx[k] || 0) - bx[k]; });
+  const left = items.filter(i => (i.kg || 0) > 0), sm = summarize(left), patch = { items: left, qty: sm.qty, crop: sm.crop, sort: sm.sort }, ts = dtTs($('d_dt').value);
+  if (!left.length) Object.assign(patch, { status:'empty', batch:'', loadAt:'', processAt:'', rgsAt:'' });
+  const mv = { type:'out', client: it.cl || '', camId:cid, crop: it.crop || '', sort: it.sort || '', kg, bx, ts, by:user.email, note:'' }, back = dlgCam;
+  closeModal('dlgModal');
+  await run(async () => { await commitCam(c, patch, 'Отгрузка: '+(it.cl || 'Без клиента')+' · '+(it.sort || it.crop || '—')+' · '+kg.toLocaleString('ru-RU')+' кг', { st0:c.status, st1:patch.status || c.status, q0:c.qty || 0, q1:sm.qty, fixed:0 }, true, mv); if (Array.isArray(MOVES)) MOVES.unshift(mv); }, 'Отгружено');
+  if (back) setTimeout(() => openView(back), 700);
+}
+/* ===== Схема камер хранилища (как на плане) ===== */
+const PLAN_VIEW = { top: [{ n:3, a:[37, 36, 35, 34, 33, 32, 31, 30, 29], b:[38, 39, 40, 41, 42] }, { n:4, a:[47, 46, 45, 44, 43], b:rg(48, 56) }],
+                    bot: [{ n:2, a:rg(20, 28).reverse(), b:rg(15, 19) }, { n:1, a:[14, 13, 12, 11, 10], b:rg(1, 9) }] };
+function openPlan(){
+  const tile = id => { const p = PLAN[id], c = camById(id), act = !!c && id <= total();
+    return '<button class="pp'+(act ? '' : ' off')+'"'+(act ? ' data-cam="'+id+'"' : ' disabled')+' style="--c:'+(c ? (ST[c.status] || ST.empty)[1] : '#6b7788')+'"><b>'+id+'</b><span>'+p[0]+' ящиков</span><span>'+p[1]+'</span><span>'+(p[0] * KG_BOX).toLocaleString('ru-RU')+' кг</span></button>'; };
+  const strip = ids => '<div class="strip">'+ids.map(tile).join('')+'</div>';
+  const panel = (p, up) => '<div class="cor"><div class="cor-h"><b>Коридор '+p.n+'</b></div><div class="cplan big">'+strip(p.a)+'<div class="aisle'+(up ? '' : ' t')+'"><b>'+(up ? '▲' : '▼')+'</b></div>'+strip(p.b)+'</div></div>';
+  $('planBody').innerHTML = '<div class="cgrid">'+PLAN_VIEW.top.map(p => panel(p, true)).join('')+'</div><div class="hall">ЗАЛ · отсюда вход в коридоры</div><div class="cgrid">'+PLAN_VIEW.bot.map(p => panel(p, false)).join('')+'</div>'+
+    '<div class="hint" style="margin-top:8px">На каждой камере: номер, ящиков, схема укладки, вместимость. 1 ящик = 300 кг. Затемнены камеры выключенных коридоров. Нажмите на камеру, чтобы открыть её.</div>';
+  openModal('planModal');
+}
+async function resetCams(){
+  if (!isAdmin()) return; closeTopModal();
+  const v = await ask({ title:'Очистить все камеры?', text:'Все камеры станут пустыми: продукция и клиенты в камерах будут удалены. Резервная копия скачается автоматически. Журнал и история приёмок не удаляются.', input:'Введите ОЧИСТИТЬ', ok:'Очистить', danger:true });
+  if (!v || v.trim().toUpperCase() !== 'ОЧИСТИТЬ') return;
+  exportData();
+  await run(async () => { await commitAll(cams.map(c => cleanCam({ id:c.id, status:'empty' }))); }, 'Камеры очищены');
+}
+
 const ACTS = {
-  signup: () => doAuth(true), logout: () => signOut(auth), edit: openForm, save, undo, lock: lockToggle, noteadd: noteAdd,
-  clean: () => sanit('cleanAt', 'Уборка'), disinf: () => sanit('disAt', 'Дезинфекция'),
+  signup: () => doAuth(true), logout: () => signOut(auth), edit: openForm, save, lock: lockToggle, noteadd: noteAdd,
   history: () => { renderJournal(); openModal('histModal'); },
   menu: openMenu, settings: openSettings, setsave: saveSettings,
   csv: exportCsv, print: () => { $('phDate').textContent = fmtDT(Date.now()); closeTopModal(); setTimeout(() => print(), 100); },
@@ -1969,19 +2033,20 @@ const ACTS = {
   theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try { localStorage.setItem('th', n); } catch(_){} },
   shiftstart: shiftStart, shiftend: shiftEnd, shiftdone: shiftDone, handview: () => handView(false), handok: handOk, handstart: handStart,
   round: () => { renderRound(); openModal('roundModal'); },
-  help: () => { closeTopModal(); tour(0); }, tournext: () => tour(tourI + 1), tourend: () => closeModal('dlgModal'), tv: () => { closeTopModal(); tvOpen(); }, tvclose: tvClose, demo: demoFill, attntoggle: () => { attnOpen = !attnOpen; renderAttn(); }, fpanel: () => { const p = $('fpanel'); p.hidden = !p.hidden; if (!p.hidden) setTimeout(() => $('q').focus(), 50); }, diag: diagnose, errors: showErrors, update: updateApp, pendrefresh: () => location.reload(), attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
+  help: () => { closeTopModal(); tour(0); }, tournext: () => tour(tourI + 1), tourend: () => closeModal('dlgModal'), tv: () => { closeTopModal(); tvOpen(); }, plan: () => { closeTopModal(); openPlan(); }, reset: resetCams, recv: () => { if ($('viewModal').classList.contains('open')) closeModal('viewModal'); recvDlg(selected, true); }, recvany: () => recvDlg(undefined, false), recvsave: recvSave, shipsave: shipSave, shipall: shipAll, tvclose: tvClose, attntoggle: () => { attnOpen = !attnOpen; renderAttn(); }, fpanel: () => { const p = $('fpanel'); p.hidden = !p.hidden; if (!p.hidden) setTimeout(() => $('q').focus(), 50); }, diag: diagnose, errors: showErrors, update: updateApp, pendrefresh: () => location.reload(), attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
   newtask: newTask, newnext: newNext, nextsave: nextSave, feedmore: () => { feedN += 30; renderToday(); },
   feedtoggle: () => { feedOpen = !feedOpen; try { localStorage.setItem('feed', feedOpen ? '1' : '0'); } catch(_){} renderToday(); }, tasksave: taskSave, newann: newAnn, annsave: annSave, newinc: newInc, incsave: incSave
 };
 document.addEventListener('click', async e => {
   const t = e.target;
   if (t.classList && t.classList.contains('modal')) return closeModal(t.id);
-  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-toggle],[data-q],[data-tab],[data-r],[data-ack],[data-done],[data-deltask],[data-delann],[data-incclose],[data-range],[data-uh],[data-ndone],[data-ndel],[data-shclose],[data-ask],[data-approve]');
+  const x = t.closest('[data-close],[data-act],[data-cam],[data-filter],[data-toggle],[data-q],[data-tab],[data-r],[data-ack],[data-done],[data-deltask],[data-delann],[data-incclose],[data-range],[data-uh],[data-ndone],[data-ndel],[data-shclose],[data-ask],[data-approve],[data-ship]');
   if (!x) return;
   const d = x.dataset;
   if (x.hasAttribute('data-close')) return closeTopModal();
   if (d.r !== undefined) return markRound(Number(d.rc), d.r === '1');
-  if (d.cam){ if ($('roundModal').classList.contains('open')) closeModal('roundModal'); return openView(Number(d.cam)); }
+  if (d.ship){ const [sa, sb] = d.ship.split(':').map(Number), fv = $('viewModal').classList.contains('open'); if (fv) closeModal('viewModal'); shipDlg(sa, sb, fv); return; }
+  if (d.cam){ ['roundModal', 'planModal'].forEach(m => { if ($(m).classList.contains('open')) closeModal(m); }); return openView(Number(d.cam)); }
   if (d.tab) return showTab(d.tab);
   if (d.filter){ filter = d.filter; return render(); }
   if (d.toggle){ collapsed[d.toggle] = !collapsed[d.toggle]; return render(); }
@@ -1996,10 +2061,9 @@ document.addEventListener('click', async e => {
   if (d.deltask){ if (await ask({ title:'Удалить задачу?', ok:'Удалить', danger:true })) run(() => deleteDoc(doc(db,'tasks',d.deltask))); return; }
   if (d.delann){ if (await ask({ title:'Удалить объявление?', ok:'Удалить', danger:true })) run(() => deleteDoc(doc(db,'announcements',d.delann))); return; }
   if (d.incclose) return incClose(d.incclose);
-  if (d.range){ sumRange = d.range; SUM = null; loadSum(); return; }
-  if (d.uh) return userHist(d.uh);
   const act = ACTS[d.act]; if (act) act();
 });
+document.addEventListener('toggle', e => { const t = e.target; if (t && t.dataset && t.dataset.k) detOpen[t.dataset.k] = t.open; }, true);
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape'){ if (!$('tv').hidden) tvClose(); else closeTopModal(); }
   if (e.key === '/' && tab === 'cams' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){ e.preventDefault(); $('q').focus(); }
