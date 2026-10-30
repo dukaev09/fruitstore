@@ -575,7 +575,6 @@ html.lock #appScreen main{visibility:hidden}
 .cor .aisle b{font-size:12px}
 .cor .entr{margin:6px 0 0;font-size:11px;letter-spacing:1px}
 [data-theme=dark] .cor{border-color:color-mix(in srgb,var(--brand) 38%,var(--line))}
-.fruit-green{color:#22c55e!important}.fruit-red{color:#fb5365!important}.fruit-yellow{color:#eab308!important}.map-product{max-width:100%;white-space:normal;line-height:1.1;font-weight:700;color:var(--ink)}details.sec>summary,details.card>summary{cursor:pointer;list-style:none}details.sec>summary::-webkit-details-marker,details.card>summary::-webkit-details-marker{display:none}details.sec>summary:after,details.card>summary:after{content:"＋";float:right;color:var(--brand)}details[open]>summary:after{content:"−"}
 </style>
 </head>
 <body>
@@ -607,7 +606,7 @@ html.lock #appScreen main{visibility:hidden}
 <symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2"/></symbol>
 <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
 <symbol id="i-door" viewBox="0 0 24 24"><path d="M5 21V4a1 1 0 011-1h12a1 1 0 011 1v17M3 21h18M15 12h.01"/></symbol>
-<symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 21V5l9-3 9 3v16l-9-3-9 3zm9-19v16M3 5l9 3 9-3"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2zM12 17a4 4 0 100-8 4 4 0 000 8z"/></symbol>
 <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"/></symbol>
 <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 2.7s7 6.3 7 11.3a7 7 0 01-14 0c0-5 7-11.3 7-11.3z"/></symbol>
 <symbol id="i-o2dot" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM9 12a3 3 0 106 0 3 3 0 00-6 0"/></symbol>
@@ -654,13 +653,14 @@ html.lock #appScreen main{visibility:hidden}
         <select id="sort" aria-label="Сортировка"><option value="num">По номеру</option><option value="days">Дольше хранятся</option><option value="qty">Больше товара</option><option value="warn">Сначала проблемные</option></select>
       </div></div>
       <div class="chips" id="filters"></div>
-      <div class="head"><h1><svg class="i"><use href="#i-box"/></svg>Камеры</h1><span class="hr"><span id="resultCount"></span><button class="ib2" id="fbtn" data-act="fpanel" aria-label="Поиск и фильтры"><svg class="i"><use href="#i-search"/></svg></button></span></div>
+      <div class="head"><h1><svg class="i"><use href="#i-camera"/></svg>Камеры</h1><span class="hr"><span id="resultCount"></span><button class="ib2" id="fbtn" data-act="fpanel" aria-label="Поиск и фильтры"><svg class="i"><use href="#i-search"/></svg></button></span></div>
       <div id="grid"></div>
-
+      <div class="head" style="margin-top:22px"><h1 style="font-size:18px">Аналитика</h1></div>
+      <div class="ov" id="ov"></div>
     </section>
     <section class="tab" id="t-map"><div class="head"><h1>Схема хранилища</h1><span id="mapInfo"></span></div><div id="map"></div></section>
     <section class="tab" id="t-today"><div class="head"><h1>Сегодня</h1><span id="todayInfo"></span></div><div id="today"></div></section>
-    <section class="tab" id="t-clients"><div class="head"><h1>Клиенты и партии</h1></div><div id="clients"><div class="card"><h3>Учёт клиентов и партий</h3><p class="hint">Здесь будет учёт поступлений и отгрузок по клиентам, сортам и цветам тары. Для безопасного ввода операций требуется подключить коллекции клиентских партий в базе.</p></div></div></section>
+    <section class="tab" id="t-sum"><div class="head"><h1>Сводка</h1></div><div id="sum"></div></section>
     <section class="tab" id="t-team"><div class="head"><h1>Команда</h1></div><div id="team"></div></section>
     <div class="foot"><i>Высокое качество низких температур</i>ООО «Фруттис Групп» · Чеченская Республика, Бачи-Юрт</div>
   </main>
@@ -668,7 +668,7 @@ html.lock #appScreen main{visibility:hidden}
     <button data-tab="cams" class="on"><svg class="i"><use href="#i-grid"/></svg>Камеры</button>
     <button data-tab="map"><svg class="i"><use href="#i-map"/></svg>Схема</button>
     <button data-tab="today"><svg class="i"><use href="#i-todo"/></svg>Сегодня<i class="bd" id="bdToday"></i></button>
-    <button data-tab="clients"><svg class="i"><use href="#i-box"/></svg>Клиенты</button>
+    <button data-tab="sum"><svg class="i"><use href="#i-chart"/></svg>Сводка</button>
     <button data-tab="team" id="navTeam" style="display:none"><svg class="i"><use href="#i-users"/></svg>Команда<i class="bd" id="bdTeam"></i></button>
   </nav>
 </div>
@@ -715,7 +715,7 @@ const ADMIN_EMAIL = 'adam@fruit.local'; // главный администрат
 const ALLOW_SIGNUP = true;              // false — убрать «Создать аккаунт»
 const DOMAIN = '@fruit.local';
 const APP_VERSION = '3.3';
-const DEMO_TOOLS = false;                // false — спрятать кнопку «Демо-данные» (после презентации)
+const DEMO_TOOLS = true;                // false — спрятать кнопку «Демо-данные» (после презентации)
 const SLOT_HOUR = 14;                   // до этого часа обход «утренний», после — «вечерний»
 const OFFLINE_CACHE = false;            // true — хранить данные на устройстве (чтение без сети), но на iPhone иногда подвисает
 const SAN_DAYS = 30;                    // как часто дезинфицировать камеру
@@ -741,7 +741,6 @@ try { db = initializeFirestore(app, { localCache: OFFLINE_CACHE ? persistentLoca
 catch(e){ db = initializeFirestore(app, {}); }
 
 const names = {all:'Все',storage:'Охлаждение',process:'Обработка',rgs:'На РГС',inactive:'Неактивные',problem:'Проблема',empty:'Пустые'};
-const statusPhrase = {storage:'в охлаждении',process:'на обработке',rgs:'на РГС',inactive:'неактивна',problem:'проблема',empty:'пустая'};
 const ST = {storage:['snow','#2db6ff'],process:['layers','#ffa51f'],rgs:['flask','#19f5a0'],inactive:['pause','#98a6c6'],problem:['alert','#ff3860'],empty:['circle','#b26bff']};
 const ACTIVE = ['storage','process','rgs'];
 const FIELDS = [
@@ -791,12 +790,11 @@ const nameOf = e => { const u = users.find(x => x.email === e); return u && u.na
 const camById = id => cams.find(x => x.id === id);
 const vis = () => cams.filter(c => c.id <= total());
 const days = c => { const i = toIso(c.loadAt); return i ? Math.max(0, Math.floor((Date.now() - new Date(i)) / 864e5)) : null; };
-const issues = c => ACTIVE.includes(c.status) ? Object.keys(NL).filter(k => { const n = S.norms[k]; if (k === 'o2' && c.status !== 'rgs' && c.o2 != null && c.o2 > n[1]) return false; return c[k] != null && n && (c[k] < n[0] || c[k] > n[1]); }) : [];
-const o2High = c => c.o2 != null && c.o2 > S.norms.o2[1];
+const issues = c => ACTIVE.includes(c.status) ? Object.keys(NL).filter(k => { const n = S.norms[k]; return c[k] != null && n && (c[k] < n[0] || c[k] > n[1]); }) : [];
 const over = c => ACTIVE.includes(c.status) && S.maxDays > 0 && (days(c) || 0) > S.maxDays;
 const noEntry = c => c.status === 'rgs' && (c.o2 == null || c.o2 < S.safeO2);
-const needsAttention = c => c.status === 'problem' || issues(c).length > 0 || (c.status === 'rgs' && o2High(c)) || over(c) || overfull(c);
-const reasons = c => c.status === 'problem' ? ['Проблема'] : [...issues(c).map(k => NL[k][0]+(c[k] > S.norms[k][1] ? ' выше нормы' : ' ниже нормы')), ...(c.status !== 'rgs' && o2High(c) ? ['O₂ выше нормы (напоминание)'] : []), ...(over(c) ? ['Срок хранения превышен'] : []), ...(overfull(c) ? ['Превышена вместимость'] : [])];
+const needsAttention = c => c.status === 'problem' || issues(c).length > 0 || over(c) || overfull(c);
+const reasons = c => c.status === 'problem' ? ['Проблема'] : [...issues(c).map(k => NL[k][0]+(c[k] > S.norms[k][1] ? ' выше нормы' : ' ниже нормы')), ...(over(c) ? ['Срок хранения превышен'] : []), ...(overfull(c) ? ['Превышена вместимость'] : [])];
 const rk = (day, slot, id) => day+'_'+slot+'_'+id;
 const W = p => {
   let late = false;
@@ -1018,7 +1016,6 @@ function showTab(t){
   document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x.id === 't-'+t));
   document.querySelectorAll('#nav button').forEach(x => x.classList.toggle('on', x.dataset.tab === t));
   window.scrollTo(0, 0);
-  if (t === 'clients') loadClients();
   if (t === 'sum' && !SUM) loadSum();
   if (t === 'team' && !TEAM) loadTeam();
   renderTab();
@@ -1030,7 +1027,7 @@ function renderTab(){
   cancelAnimationFrame(rq);
   rq = requestAnimationFrame(() => {
     if (!user) return;
-    if (tab === 'cams') render(); else if (tab === 'map') renderMap(); else if (tab === 'today') renderToday(); else if (tab === 'sum') renderSum(); else if (tab === 'team') renderTeam(); else if (tab === 'clients') renderClients();
+    if (tab === 'cams') render(); else if (tab === 'map') renderMap(); else if (tab === 'today') renderToday(); else if (tab === 'sum') renderSum(); else if (tab === 'team') renderTeam();
     badge();
   });
 }
@@ -1048,11 +1045,11 @@ function badge(){
 
 /* ===== Отрисовка камер ===== */
 function renderAttn(){
-  const bad = vis().filter(needsAttention), o2rem = vis().filter(c => c.status !== 'rgs' && o2High(c));
-  $('attn').innerHTML = (bad.length ?
+  const bad = vis().filter(needsAttention);
+  $('attn').innerHTML = !bad.length ? '' :
     '<section class="attn'+(attnOpen ? ' open' : '')+'"><button class="attn-bar" data-act="attntoggle" aria-expanded="'+attnOpen+'"><span class="l">'+ic('alert')+'Требуют внимания <b class="cnt">'+bad.length+'</b></span>'+ic('chev')+'</button>'+
-    (attnOpen ? '<div class="alist">'+bad.slice(0, 30).map(c => { const pr = c.status === 'problem'; return '<button class="achip" data-cam="'+c.id+'" style="--c:'+(pr ? '#ff3860' : '#ffa51f')+'"><span class="ai">'+ic(pr ? 'alertc' : 'alert')+'</span><span class="at"><b>№'+pad(c.id)+(c.sort ? ' · '+esc(c.sort) : '')+'</b>'+(pr ? '<span class="pill" style="--c:#ff3860">Проблема</span>' : '<small>'+reasons(c).join(', ')+'</small>')+'</span>'+ic('chevr')+'</button>'; }).join('')+'</div><div class="attn-more"><button class="btn sm full" data-act="attnall">Показать в списке</button></div>' : '')+'</section>' : '') +
-    (o2rem.length ? '<section class="card" style="margin-top:10px"><h3>Напоминание: O₂ выше нормы <span class="tag">'+o2rem.length+'</span></h3><p class="hint">Камеры не на РГС. Это только напоминание — карточки камер не подсвечиваются.</p>'+o2rem.map(c=>'<button class="li click" data-cam="'+c.id+'"><div class="t"><b>Камера №'+pad(c.id)+'</b><small>O₂ '+fmtN(c.o2)+'% · '+esc(c.sort||c.crop||'Без продукции')+'</small></div>'+ic('chevr')+'</button>').join('')+'</section>' : '');
+    (attnOpen ? '<div class="alist">'+bad.slice(0, 12).map(c => { const pr = c.status === 'problem'; return '<button class="achip" data-cam="'+c.id+'" style="--c:'+(pr ? '#ff3860' : '#ffa51f')+'"><span class="ai">'+ic(pr ? 'alertc' : 'alert')+'</span><span class="at"><b>№'+pad(c.id)+(c.sort ? ' · '+esc(c.sort) : '')+'</b>'+(pr ? '<span class="pill" style="--c:#ff3860">Проблема</span>' : '<small>'+reasons(c).join(', ')+'</small>')+'</span>'+ic('chevr')+'</button>'; }).join('')+'</div>'+
+      (bad.length > 12 ? '<div class="attn-more hint">и ещё '+(bad.length - 12)+'</div>' : '')+'<div class="attn-more"><button class="btn sm full" data-act="attnall">Показать в списке</button></div>' : '')+'</section>';
 }
 function countUps(){
   if (statsAnim) return; statsAnim = true;
@@ -1111,14 +1108,13 @@ function fillHtml(c){
   const p = Math.round((c.qty || 0) / cp * 100), col = p > 100 ? '#ff3860' : p > 90 ? '#ffa51f' : 'var(--c)';
   return '<span class="fl"><i style="width:'+Math.min(100, p)+'%;background:'+col+'"></i></span><span class="fp'+(p > 100 ? ' od' : '')+'">'+p+'% · из '+(cp / 1000).toLocaleString('ru-RU', { maximumFractionDigits: 0 })+' т</span>';
 }
-function sortTone(c){const x=String(c.sort||'').toLowerCase();if(/гренни|симиренко|голден|зел/.test(x))return 'fruit-green';if(/ред|фуджи|гала|джона|айдаред|красн/.test(x))return 'fruit-red';if(/голд|жёлт|желт|антонов/.test(x))return 'fruit-yellow';return '';}
 function camCard(c){
   const bad = issues(c), [icn, col] = ST[c.status] || ST.empty, d = ACTIVE.includes(c.status) ? days(c) : null;
   const cell = (key, ico, l, u) => '<div class="'+(bad.includes(key) ? 'bad' : '')+'">'+ico+'<span><small>'+l+'</small><b>'+(c[key] == null ? '—' : fmtN(c[key])+u)+'</b></span></div>';
   return '<button class="cam '+esc(c.status)+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+c.id+'" style="--c:'+col+'">'+
-    '<div class="ch"><span class="pill">'+ic(icn)+esc(names[c.status] || c.status)+'</span></div>'+
+    '<div class="ch"><span class="pill">'+ic(icn)+esc(names[c.status] || c.status)+'</span><span class="upd">'+ic('clock')+(c.updatedAt ? 'Обновлено '+hm(c.updatedAt) : 'нет данных')+'</span></div>'+
     (noEntry(c) ? '<div class="ch" style="padding-top:6px"><span class="ban">'+ic('ban')+'Вход запрещён</span></div>' : '')+
-    '<div class="cb"><span class="cf">'+(c.crop || c.sort ? culIcon(c.sort, c.crop) : '🏬')+'</span><span class="cn"><span class="no">№'+pad(c.id)+(c.locked ? ' 🔒' : '')+'</span>'+(c.crop || c.sort ? '<b class="'+(String(c.sort || '').length > 11 ? 'long' : '')+' '+sortTone(c)+'">'+val(c.sort || c.crop)+'</b><small>'+val(c.batch)+'</small>' : '<b>Свободна</b><small>Нет продукции</small>')+
+    '<div class="cb"><span class="cf">'+culIcon(c.sort, c.crop)+'</span><span class="cn"><span class="no">№'+pad(c.id)+(c.locked ? ' 🔒' : '')+'</span><b class="'+(String(c.sort || '').length > 11 ? 'long' : '')+'">'+val(c.sort)+'</b><small>'+val(c.batch)+'</small>'+
     '<span class="qq">'+(c.qty || 0).toLocaleString('ru-RU')+' кг</span>'+fillHtml(c)+(d != null ? '<span class="dd'+(over(c) ? ' od' : '')+'">'+d+' дн.</span>' : '')+'</span></div>'+
     '<div class="cm">'+cell('temp', ic('thermo'), 'Темп.', '°C')+cell('hum', ic('drop'), 'Влаж.', '%')+cell('o2', ic('o2dot'), 'O₂', '%')+cell('co2', ic('cloud'), 'CO₂', '%')+'</div></button>';
 }
@@ -1132,7 +1128,7 @@ function sortList(a){
   return [...a].sort(f);
 }
 function render(){
-  renderStats(); renderAttn(); renderChips();
+  renderStats(); renderOv(); renderAttn(); renderChips();
   const all = vis(), q = search.trim().toLowerCase();
   const list = all.filter(c => match(c) && (wingFilter === 'all' || wingOf(c.id) === wingFilter) &&
     (!q || [pad(c.id), c.id, c.sort, c.batch, c.crop].join(' ').toLowerCase().includes(q)));
@@ -1162,8 +1158,7 @@ function renderMap(){
   const tile = id => {
     const c = by[id]; if (!c) return '<div class="pt off"><b>'+id+'</b></div>';
     const cp = capOf(c), p = cp ? Math.min(100, Math.round((c.qty || 0) / cp * 100)) : 0;
-    const product = (c.crop || c.sort) ? [c.crop,c.sort].filter(Boolean).join(' · ') : ''; const o2bad = c.status === 'rgs' && o2High(c);
-    return '<button class="pt'+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+id+'" style="--c:'+(ST[c.status] || ST.empty)[1]+';--f:'+p+'%"><b>'+(noEntry(c) ? '⛔' : '')+id+'</b><small>'+(c.temp != null ? fmtN(c.temp)+'°' : '—')+' · O₂ '+(c.o2 != null ? fmtN(c.o2)+'%' : '—')+'</small>'+(product ? '<small class="map-product">'+esc(product)+'</small>' : '<small>Пустая</small>')+'<small>'+(cp ? p+'%' : '')+'</small></button>
+    return '<button class="pt'+(needsAttention(c) ? ' warn' : '')+'" data-cam="'+id+'" style="--c:'+(ST[c.status] || ST.empty)[1]+';--f:'+p+'%"><b>'+(noEntry(c) ? '⛔' : '')+id+'</b><small>'+(c.temp != null ? fmtN(c.temp)+'°' : '—')+'</small><small>'+(cp ? p+'%' : '')+'</small></button>';
   };
   const strip = ids => '<div class="strip">'+ids.map(tile).join('')+'</div>';
   const panels = CORR.map((sides, i) => {
@@ -1219,16 +1214,18 @@ function openView(id){
     (noEntry(c) ? '<div class="banner">'+ic('ban')+'<span>ВХОД ЗАПРЕЩЁН: O₂ '+(c.o2 != null ? c.o2+' %' : 'не измерен')+', безопасно от '+S.safeO2+' %</span></div>' : '')+
     (c.locked ? '<div class="banner" style="color:var(--ink);border-color:var(--line);background:var(--bg)">🔒 Партия закрыта, редактирование заблокировано</div>' : '')+
     '<div class="tiles">'+Object.keys(NL).map(tile).join('')+'</div>'+
-    
+    '<div class="sec"><h4>Динамика замеров</h4><div id="rdgs"><div class="hint">Загрузка…</div></div></div>'+
     sec('Продукт', row('Коридор', wingName(wingOf(c.id)))+row('Культура', val(c.crop))+row('Сорт', val(c.sort))+row('Партия', val(c.batch))+row('Количество', (c.qty||0).toLocaleString('ru-RU')+' кг')+row('Вместимость', capText)+row('Заполнение', fillText)+row('Оператор', val(c.operator)))+
     sec('Сроки', row('Загрузка', val(c.loadAt))+(life ? life : row('Срок хранения', '—'))+row('Обработка', val(c.processAt))+row('Вывод на РГС', val(c.rgsAt))+row('Обновлено', c.updatedAt ? fmtDT(c.updatedAt) : '—'))+
-
+    sec('Санитария', row('Уборка', san(c.cleanAt))+row('Дезинфекция', san(c.disAt)))+
+    (w ? '<div class="quick"><button class="btn sm" data-act="clean">Отметить уборку</button><button class="btn sm" data-act="disinf">Отметить дезинфекцию</button></div>' : '')+
     (c.note ? sec('Примечание', '<div class="vr" style="flex-direction:column;gap:4px"><b style="text-align:left;font-weight:500">'+esc(c.note)+'</b></div>') : '')+
-    '<details class="sec" style="margin-top:12px"><summary>История камеры</summary><div class="rows">'+hh+'</div></details>'+'<div class="sec"><h4>Заметки команды</h4><div class="nl" id="nlist"></div>'+
+    sec('История камеры', hh)+'<div class="sec"><h4>Заметки команды</h4><div class="nl" id="nlist"></div>'+
     (w ? '<div class="nin"><input id="nin" maxlength="300" placeholder="Заметка, @имя чтобы упомянуть"><button class="btn sm pri" data-act="noteadd">Отправить</button></div>' : '')+'</div>'+
     (w ? (c.locked ? '<div class="banner" style="color:var(--mut);border-color:var(--line);background:none">Чтобы править, администратор должен открыть партию</div>' : '<button class="btn pri full neon" data-act="edit" style="margin-top:14px">Редактировать</button>') : '')+
-    (canW() ? '<button class="btn full" data-act="lock" style="margin-top:8px">'+(c.locked ? '🔓 Открыть партию' : '🔒 Закрыть партию')+'</button>' : '');
-  openModal('viewModal'); renderNotes();
+    (w && !c.locked && le ? '<button class="btn full" data-act="undo" style="margin-top:8px">↶ Отменить последнее изменение ('+esc(le.date)+')</button>' : '')+
+    (isAdmin() ? '<button class="btn full" data-act="lock" style="margin-top:8px">'+(c.locked ? '🔓 Открыть партию' : '🔒 Закрыть партию')+'</button>' : '');
+  openModal('viewModal'); renderNotes(); loadReadings(c.id);
 }
 async function loadReadings(id){
   if (!$('rdgs')) return;
@@ -1262,7 +1259,7 @@ async function undo(){
   run(() => commitCam(c, { ...e.prev }, 'Откат: '+e.action, { prev: cur }), 'Изменение отменено').then(() => closeModal('viewModal'));
 }
 async function lockToggle(){
-  const c = camById(selected); if (!c || !canW()) return;
+  const c = camById(selected); if (!c || !isAdmin()) return;
   const lock = !c.locked;
   if (!(await ask({ title: lock ? 'Закрыть партию?' : 'Открыть партию?', text: lock ? 'Редактирование камеры будет заблокировано.' : 'Камеру снова можно будет редактировать.', ok: lock ? 'Закрыть партию' : 'Открыть партию' }))) return;
   run(() => commitCam(c, { locked: lock }, lock ? 'Партия закрыта' : 'Партия открыта', {}, false), lock ? 'Партия закрыта' : 'Партия открыта').then(() => closeModal('viewModal'));
@@ -1695,34 +1692,6 @@ async function loadSum(){
   catch(e){ SUM = null; toast('Не удалось загрузить сводку: '+e.message, 1); }
   renderSum();
 }
-let clientRows = [];
-async function loadClients(){
-  const el = $('clients'); if (!el || !user) return;
-  el.innerHTML = '<div class="empty-msg">Загружаю движения клиентов…</div>';
-  try {
-    const q = await getDocs(query(collection(db,'clientMovements'), orderBy('ts','desc'), limit(500)));
-    clientRows = q.docs.map(d => ({id:d.id,...d.data()})); renderClients();
-  } catch(e){ el.innerHTML = '<div class="card"><b>Не удалось загрузить учёт клиентов</b><p class="hint">'+esc(e.message)+'</p>Проверьте права доступа к коллекции clientMovements в Firestore.</div>'; }
-}
-function renderClients(){
-  const el = $('clients'); if (!el || tab !== 'clients') return;
-  const groups = {};
-  clientRows.forEach(x => { const k=(x.client||'Без названия')+'|'+(x.sort||''); const g=groups[k]||(groups[k]={client:x.client||'Без названия',sort:x.sort||'Сорт не указан',inKg:0,outKg:0,inB:0,outB:0,colors:{green:0,grey:0,wood:0}}); const n=Number(x.kg)||0,b=Number(x.baskets)||0; if(x.kind==='out'){g.outKg+=n;g.outB+=b;}else{g.inKg+=n;g.inB+=b;} if(x.kind!=='out'){g.colors.green+=(x.green||0);g.colors.grey+=(x.grey||0);g.colors.wood+=(x.wood||0);} });
-  const rows=Object.values(groups).sort((a,b)=>a.client.localeCompare(b.client,'ru'));
-  el.innerHTML='<div class="card"><h3>Поступление и отгрузка яблок</h3><p class="hint">Записывайте каждую приёмку и каждую отгрузку. Остаток считается по клиенту и сорту.</p><button class="btn pri full" data-act="clientadd">＋ Добавить поступление / отгрузку</button></div>'+
-  (rows.map(g=>'<div class="card"><h3>'+esc(g.client)+' · '+esc(g.sort)+'</h3><div class="kpis"><div class="stat"><div class="l">Принято</div><div class="v">'+kgf(g.inKg)+'</div><div class="s">'+g.inB+' корзин</div></div><div class="stat"><div class="l">Отгружено</div><div class="v">'+kgf(g.outKg)+'</div><div class="s">'+g.outB+' корзин</div></div><div class="stat"><div class="l">Остаток</div><div class="v">'+kgf(g.inKg-g.outKg)+'</div><div class="s">'+(g.inB-g.outB)+' корзин</div></div></div><div class="hint">Тара по поступлениям: 🟩 '+g.colors.green+' зелёных · ⬜ '+g.colors.grey+' серых · 🪵 '+g.colors.wood+' деревянных</div></div>').join('')||'<div class="empty-msg">Пока нет операций по клиентам.</div>')+
-  '<div class="card"><h3>Последние операции</h3><div class="tw"><table class="ht"><thead><tr><th>Дата</th><th>Клиент</th><th>Операция</th><th>Сорт</th><th>Кг</th><th>Корзины</th></tr></thead><tbody>'+(clientRows.slice(0,100).map(x=>'<tr><td>'+fmtDT(x.ts)+'</td><td>'+esc(x.client)+'</td><td>'+(x.kind==='out'?'Отгрузка':'Поступление')+'</td><td>'+esc(x.sort)+'</td><td>'+Number(x.kg||0).toLocaleString('ru-RU')+'</td><td>'+Number(x.baskets||0)+'</td></tr>').join('')||'<tr><td colspan="6">Нет операций</td></tr>')+'</tbody></table></div></div>';
-}
-function clientAdd(){
-  if(!canW()){toast('Нет прав на изменение',1);return;}
-  dlg('Новая операция клиента','<div class="fld"><label>Клиент</label><input id="cl_name" maxlength="80" placeholder="Название клиента"></div><div class="fg"><div class="fld"><label>Операция</label><select id="cl_kind"><option value="in">Поступление</option><option value="out">Отгрузка</option></select></div><div class="fld"><label>Сорт</label><input id="cl_sort" maxlength="80" placeholder="Гала, Голден…"></div></div><div class="fg"><div class="fld"><label>Вес, кг</label><input id="cl_kg" type="number" min="0" step="1"></div><div class="fld"><label>Корзин</label><input id="cl_baskets" type="number" min="0" step="1"></div></div><div class="fld"><label>Зелёные корзины</label><input id="cl_green" type="number" min="0" value="0"></div><div class="fld"><label>Серые корзины</label><input id="cl_grey" type="number" min="0" value="0"></div><div class="fld"><label>Деревянные корзины</label><input id="cl_wood" type="number" min="0" value="0"></div>','clientsave','Сохранить');
-}
-async function clientSave(){
- const client=$('cl_name').value.trim(),sort=$('cl_sort').value.trim(),kg=Number($('cl_kg').value),baskets=Number($('cl_baskets').value); if(!client||!sort||!Number.isFinite(kg)||kg<=0||!Number.isFinite(baskets)||baskets<0){toast('Заполните клиента, сорт, вес и количество корзин',1);return;}
- const x={client,sort,kind:$('cl_kind').value,kg,baskets,green:Number($('cl_green').value)||0,grey:Number($('cl_grey').value)||0,wood:Number($('cl_wood').value)||0,ts:Date.now(),by:user.email};
- await run(async()=>{await addDoc(collection(db,'clientMovements'),x);clientRows.unshift(x);closeModal('dlgModal');renderClients();},'Операция сохранена');
-}
-
 function renderSum(){
   const el = $('sum'); if (!user || tab !== 'sum') return;
   const seg = '<div class="sg">'+[['day','Сегодня'],['7','7 дней'],['30','30 дней']].map(([k,l]) => '<button data-range="'+k+'" class="'+(sumRange===k?'on':'')+'">'+l+'</button>').join('')+'</div>';
@@ -1769,11 +1738,11 @@ function renderTeam(){
   const rows = Object.entries(st).map(([e, x]) => ({ e, ...x, sc: x.r + 3*x.t + 2*x.f + Math.floor(x.h) })).sort((a, b) => b.sc - a.sc);
   const medal = ['🥇','🥈','🥉'];
   el.innerHTML =
-    pendCard()+'<div class="card"><h3>Активность сотрудников</h3><div class="tw"><table class="ht"><thead><tr><th></th><th>Сотрудник</th><th>Часы</th><th>Обходы</th><th>Задачи</th><th>Устран.</th><th>Балл</th></tr></thead><tbody>'+
+    pendCard()+'<div class="card"><h3>Рейтинг за 30 дней<span>условные баллы</span></h3><div class="tw"><table class="ht"><thead><tr><th></th><th>Сотрудник</th><th>Часы</th><th>Обходы</th><th>Задачи</th><th>Устран.</th><th>Балл</th></tr></thead><tbody>'+
     rows.map((x, i) => '<tr data-uh="'+esc(x.e)+'" style="cursor:pointer"><td>'+(medal[i]||'')+'</td><td>'+esc(nameOf(x.e))+'</td><td>'+x.h.toFixed(1)+'</td><td>'+x.r+'</td><td>'+x.t+'</td><td>'+x.f+'</td><td><b>'+x.sc+'</b></td></tr>').join('')+'</tbody></table></div><div class="hint">Балл = обходы + 3×задачи + 2×устранённые отклонения + часы смен. Нажмите на строку, чтобы увидеть историю действий.</div></div>'+
     '<div class="card"><h3>Роли сотрудников</h3>'+users.map(u => '<div class="li"><div class="t"><b>'+esc(u.name||u.email)+'</b><small>'+esc(u.email)+'</small></div><select data-role="'+u.id+'"'+(u.email === ADMIN_EMAIL ? ' disabled' : '')+'>'+Object.keys(ROLE_RU).map(r => '<option value="'+r+'"'+((u.email === ADMIN_EMAIL ? 'admin' : u.role) === r ? ' selected' : '')+'>'+ROLE_RU[r]+'</option>').join('')+'</select></div>').join('')+'<div class="hint">Новые сотрудники входят с ролью «Просмотр». Назначьте им «Оператор».</div></div>'+
-    '<details class="card"><summary><h3 style="display:inline">Журнал входов</h3></summary><div class="tw"><table class="ht"><thead><tr><th>Когда</th><th>Кто</th><th>Устройство</th></tr></thead><tbody>'+
-    (L.map(x => '<tr><td>'+fmtDT(x.ts)+'</td><td>'+esc(nameOf(x.email))+'</td><td>'+esc(x.device)+'</td></tr>').join('') || '<tr><td colspan="3">Пока пусто</td></tr>')+'</tbody></table></div></details>';
+    '<div class="card"><h3>Журнал входов</h3><div class="tw"><table class="ht"><thead><tr><th>Когда</th><th>Кто</th><th>Устройство</th></tr></thead><tbody>'+
+    (L.map(x => '<tr><td>'+fmtDT(x.ts)+'</td><td>'+esc(nameOf(x.email))+'</td><td>'+esc(x.device)+'</td></tr>').join('') || '<tr><td colspan="3">Пока пусто</td></tr>')+'</tbody></table></div></div>';
 }
 function userHist(email){
   if (!TEAM || TEAM === 'load') return;
@@ -1817,7 +1786,7 @@ function openMenu(){
   $('menuList').innerHTML = '<div class="hint" style="margin:0 0 4px">'+esc($('userName').textContent)+'</div>'+
     h('Отчёты и экраны') + b('tv','grid','Табло для экрана (презентация)') + b('csv','table','Таблица камер (Excel)') + b('print','print','Печать отчёта') +
     h('Приложение') + b('help','list','Как пользоваться') + b('theme','moon','Сменить тему') + (standalone ? '' : b('install','down','Установить на телефон')) + b('update','up','Обновить приложение') +
-    (isAdmin() ? h('Администратор') + b('settings','gear','Настройки хранилища') + b('diag','gear','Проверка системы') + b('errors','alert','Журнал ошибок') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') : '') +
+    (isAdmin() ? h('Администратор') + b('settings','gear','Настройки хранилища') + b('diag','gear','Проверка системы') + b('errors','alert','Журнал ошибок') + b('export','down','Резервная копия (JSON)') + b('import','up','Восстановить из копии') + (DEMO_TOOLS ? b('demo','plus','Демо-данные для презентации') : '') : '') +
     h('Аккаунт') + b('logout','out','Выйти') + '<div class="ver">Версия '+APP_VERSION+'</div>';
   openModal('menuModal');
 }
@@ -1990,7 +1959,8 @@ function tour(i = 0){
 }
 
 const ACTS = {
-  clientadd: clientAdd, clientsave: clientSave, signup: () => doAuth(true), logout: () => signOut(auth), edit: openForm, save, lock: lockToggle, noteadd: noteAdd,
+  signup: () => doAuth(true), logout: () => signOut(auth), edit: openForm, save, undo, lock: lockToggle, noteadd: noteAdd,
+  clean: () => sanit('cleanAt', 'Уборка'), disinf: () => sanit('disAt', 'Дезинфекция'),
   history: () => { renderJournal(); openModal('histModal'); },
   menu: openMenu, settings: openSettings, setsave: saveSettings,
   csv: exportCsv, print: () => { $('phDate').textContent = fmtDT(Date.now()); closeTopModal(); setTimeout(() => print(), 100); },
@@ -1999,7 +1969,7 @@ const ACTS = {
   theme: () => { const d = document.documentElement, n = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = n; try { localStorage.setItem('th', n); } catch(_){} },
   shiftstart: shiftStart, shiftend: shiftEnd, shiftdone: shiftDone, handview: () => handView(false), handok: handOk, handstart: handStart,
   round: () => { renderRound(); openModal('roundModal'); },
-  help: () => { closeTopModal(); tour(0); }, tournext: () => tour(tourI + 1), tourend: () => closeModal('dlgModal'), tv: () => { closeTopModal(); tvOpen(); }, tvclose: tvClose,  attntoggle: () => { attnOpen = !attnOpen; renderAttn(); }, fpanel: () => { const p = $('fpanel'); p.hidden = !p.hidden; if (!p.hidden) setTimeout(() => $('q').focus(), 50); }, diag: diagnose, errors: showErrors, update: updateApp, pendrefresh: () => location.reload(), attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
+  help: () => { closeTopModal(); tour(0); }, tournext: () => tour(tourI + 1), tourend: () => closeModal('dlgModal'), tv: () => { closeTopModal(); tvOpen(); }, tvclose: tvClose, demo: demoFill, attntoggle: () => { attnOpen = !attnOpen; renderAttn(); }, fpanel: () => { const p = $('fpanel'); p.hidden = !p.hidden; if (!p.hidden) setTimeout(() => $('q').focus(), 50); }, diag: diagnose, errors: showErrors, update: updateApp, pendrefresh: () => location.reload(), attnall: () => { filter = 'attn'; render(); setTimeout(() => $('grid').scrollIntoView({ behavior:'smooth', block:'start' }), 50); },
   newtask: newTask, newnext: newNext, nextsave: nextSave, feedmore: () => { feedN += 30; renderToday(); },
   feedtoggle: () => { feedOpen = !feedOpen; try { localStorage.setItem('feed', feedOpen ? '1' : '0'); } catch(_){} renderToday(); }, tasksave: taskSave, newann: newAnn, annsave: annSave, newinc: newInc, incsave: incSave
 };
